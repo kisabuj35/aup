@@ -1,7 +1,11 @@
 <!-- ======================================================= -->
 <!-- 11NO AULIAPUR UNION PARISHAD - WARISHAN MODULE          -->
-<!-- File: Warishan.html (Exact 41 & 42 PDF Design Match)    -->
+<!-- File: Warishan.html (Green Ribbon & Perfect Print)      -->
 <!-- ======================================================= -->
+
+<!-- Nikosh ও কালপুরুষ ফন্ট -->
+<link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
 
 <style>
   .war-card-header { background: linear-gradient(135deg, #006837, #004d26); color: #fff; padding: 14px 20px; border-radius: 8px 8px 0 0; }
@@ -9,7 +13,7 @@
   .btn-war-add { background-color: #006837; color: #ffffff; font-weight: bold; border-radius: 6px; font-size: 13px; }
   .btn-war-add:hover { background-color: #004d26; color: #ffffff; }
 
-  /* 🟢 ৪১ ও ৪২ নং ছবির মতো হুবহু A4 ডিজাইন */
+  /* 🟢 নিখুঁত অফিশিয়াল A4 ফ্রেম */
   .war-page-container {
     width: 210mm;
     min-height: 295mm;
@@ -17,25 +21,31 @@
     padding: 10mm 15mm 12mm 15mm;
     margin: 0 auto 25px auto;
     background: #ffffff;
+    border: 3px double #006837;
+    outline: 1.5px solid #006837;
+    outline-offset: 3px;
     box-sizing: border-box;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    font-family: 'Kalpurush', 'SolaimanLipi', 'Tiro Bangla', sans-serif;
+    font-family: 'Nikosh', 'Kalpurush', 'Tiro Bangla', sans-serif;
     color: #000000;
     box-shadow: 0 0 10px rgba(0,0,0,0.15);
   }
 
   .war-watermark-bg {
     position: absolute;
-    top: 52%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 440px;
-    opacity: 0.12;
+    width: 440px !important;
+    opacity: 0.12 !important;
     pointer-events: none;
     z-index: 1;
+    display: block !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .war-content-body {
@@ -47,51 +57,85 @@
     justify-content: space-between;
   }
 
-  /* লাল বর্ডার ওয়ালা ফিতা (Ribbon) */
-  .war-ribbon-wrapper {
+  /* 🟢 ৪নং ছবির মতো হুবহু প্রিমিয়াম গ্রিন রিবন (Green Ribbon) */
+  .war-ribbon-wrap-green {
     text-align: center;
-    margin: 6px 0 10px 0;
+    margin: 6px 0 12px 0;
   }
-  .war-ribbon-exact {
-    display: inline-block;
-    background-color: #2b78c5;
-    color: #ffffff;
-    border: 2px solid #d32f2f;
-    outline: 2px solid #d32f2f;
-    outline-offset: 2px;
-    padding: 3px 35px;
-    font-size: 19px;
-    font-weight: bold;
-    letter-spacing: 1px;
+  .war-ribbon-green {
     position: relative;
+    display: inline-block;
   }
-  .war-ribbon-exact::before, .war-ribbon-exact::after {
+  .war-ribbon-green-center {
+    position: relative;
+    background: #005a36 !important;
+    color: #ffffff !important;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 5px 50px;
+    z-index: 2;
+    display: inline-block;
+    letter-spacing: 1px;
+    border-radius: 2px;
+    font-family: 'Nikosh', sans-serif;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.18);
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .war-ribbon-green-center::after {
     content: "";
-    position: absolute;
-    top: -2px;
-    border: 14px solid #d32f2f;
-    z-index: -1;
+    display: block;
+    width: 65%;
+    height: 2px;
+    background: #ffffff;
+    margin: 3px auto 0 auto;
+    opacity: 0.85;
   }
-  .war-ribbon-exact::before { left: -24px; border-left-color: transparent; }
-  .war-ribbon-exact::after { right: -24px; border-right-color: transparent; }
+  .war-ribbon-green-wing-l {
+    position: absolute;
+    top: 5px;
+    left: -24px;
+    width: 32px;
+    height: 100%;
+    background-color: #003822 !important;
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+    z-index: 1;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .war-ribbon-green-wing-r {
+    position: absolute;
+    top: 5px;
+    right: -24px;
+    width: 32px;
+    height: 100%;
+    background-color: #003822 !important;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+    z-index: 1;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 
   /* নিখুঁত টেবিল কাঠামো */
   .war-main-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 5px;
-    font-size: 13.5px;
+    font-size: 14px;
+    font-family: 'Nikosh', 'Kalpurush', sans-serif;
   }
   .war-main-table th, .war-main-table td {
     border: 1.2px solid #000000;
-    padding: 3px 6px;
+    padding: 3.5px 6px;
     text-align: center;
     vertical-align: middle;
     line-height: 1.25;
   }
   .war-main-table th {
     font-weight: bold;
-    background-color: transparent;
+    background-color: #f8fafc;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   .war-main-table td.text-start-custom {
     text-align: left !important;
@@ -102,7 +146,7 @@
     font-weight: bold;
     text-align: left !important;
     padding: 4px 8px !important;
-    font-size: 13.5px;
+    font-size: 14px;
     border: 1.2px solid #000000;
   }
 
@@ -111,6 +155,18 @@
     display: block;
     width: 80%;
     margin: 0 auto 4px auto;
+  }
+
+  .war-bottom-banner {
+    border-top: 1.5px solid #006837;
+    padding-top: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: bold;
+    color: #006837;
+    font-family: 'Nikosh', sans-serif;
   }
 </style>
 
@@ -220,7 +276,7 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body p-4" id="warAppCopyPrintBody">
-        <div class="p-3 bg-white" style="font-family: 'Kalpurush', sans-serif; font-size: 14px; line-height: 1.7; color: #000;">
+        <div class="p-3 bg-white" style="font-family: 'Nikosh', 'Kalpurush', sans-serif; font-size: 15px; line-height: 1.8; color: #000;">
           <div class="d-flex justify-content-between align-items-center mb-2">
             <div><strong>তারিখ :</strong> <span id="appCopyDate"></span></div>
             <div><span class="badge bg-light text-dark border p-1" id="appCopyTrackingId"></span></div>
@@ -234,7 +290,7 @@
           <p class="text-justify mb-3 ms-3" id="appCopyMainBodyText"></p>
           <h5 class="fw-bold text-center my-3 text-dark text-decoration-underline">ওয়ারিশগণের তালিকা</h5>
           <div id="appCopyTablesContainer" class="mb-4"></div>
-          <div class="d-flex justify-content-between text-center mt-5 pt-4" style="font-size: 13px;">
+          <div class="d-flex justify-content-between text-center mt-5 pt-4" style="font-size: 14px;">
             <div style="border-top: 1px dashed #000; width: 28%; padding-top: 4px;"><strong>গ্রাম পুলিশ</strong><br><small>১১নং আউলিয়াপুর ইউ.পি</small></div>
             <div style="border-top: 1px dashed #000; width: 28%; padding-top: 4px;"><strong>ইউপি সদস্য</strong><br><small>১১নং আউলিয়াপুর ইউ.পি</small></div>
             <div style="border-top: 1px dashed #000; width: 34%; padding-top: 4px;"><strong>আবেদনকারীর স্বাক্ষর</strong><br><span id="appCopySignName" class="fw-bold"></span><br><small>মোবাইলঃ <span id="appCopySignMobile"></span></small></div>
@@ -413,8 +469,8 @@
       (grp.members || []).forEach(function(m) {
         tableRows += `
           <tr>
-            <td style="width: 8%;">${m.sl}</td>
-            <td class="text-start-custom" style="width: 32%;">${m.name}</td>
+            <td style="width: 8%; font-weight: bold;">${m.sl}</td>
+            <td class="text-start-custom" style="width: 32%;"><strong>${m.name}</strong></td>
             <td class="text-start-custom" style="width: 30%;">${m.relName}</td>
             <td style="width: 18%;">${m.address}</td>
             <td style="width: 12%;">${m.relation}</td>
@@ -425,37 +481,54 @@
 
     var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান') ? '(মোঃ আবদুস সালাম)<br>ইউ.পি সদস্য ৬নং ওয়ার্ড ও প্যানেল চেয়ারম্যান-১<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ' : '(অ্যাড. মোঃ হুমায়ুন কবির)<br>চেয়ারম্যান<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>পটুয়াখালী সদর, পটুয়াখালী।';
 
+    // মৃত ব্যক্তির পিতা ও মৃত ব্যক্তির নাম ফরম্যাট
     var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর পুত্র ` : '';
     var decNameText = formatMrito(data.deceasedName);
 
+    var upLogoUrl = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
+    var govtLogoUrl = "https://lh3.googleusercontent.com/d/1EIK74_Afcnqt2cOz0_1EtneeCVkENn_Q";
+
     return `
       <div class="war-page-container">
-        <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" class="war-watermark-bg" alt="Watermark">
+        <!-- ওয়াটারমার্ক -->
+        <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark">
         
         <div class="war-content-body">
           <div>
-            <div class="d-flex justify-content-between align-items-center" style="border-bottom: 2.5px solid #000; padding-bottom: 4px;">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg" width="65" height="65" alt="Govt Logo">
-              <div class="text-center">
-                <h2 class="fw-bold m-0" style="font-size: 22px; color: #000;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কার্যালয়</h2>
-                <p class="m-0 fw-bold" style="font-size: 14px;">ডাকঘরঃ আউলিয়াপুর ময়দান, উপজেলা ও জেলাঃ পটুয়াখালী ।</p>
-                <p class="m-0 text-primary fw-bold" style="font-size: 13px;">web site: www.auliapur.com</p>
+            <!-- শীর্ষ হেডার -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2.5px solid #006837; padding-bottom: 5px;">
+              <div style="width: 75px; text-align: left;">
+                <img src="${govtLogoUrl}" width="65" height="65" alt="Govt Logo" style="display: block; object-fit: contain;">
               </div>
-              <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" width="65" height="65" alt="UP Logo">
+              <div style="text-align: center; flex-grow: 1;">
+                <h2 style="font-weight: 800; margin: 0; font-size: 25px; color: #000; font-family: 'Nikosh', sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কার্যালয়</h2>
+                <p style="margin: 2px 0 0 0; font-weight: bold; font-size: 15px; color: #222; font-family: 'Nikosh', sans-serif;">ডাকঘরঃ আউলিয়াপুর ময়দান, উপজেলা ও জেলাঃ পটুয়াখালী ।</p>
+                <p style="margin: 0; font-size: 13px; font-weight: bold; color: #006837;">web site: www.auliapur.com</p>
+              </div>
+              <div style="width: 75px; text-align: right;">
+                <img src="${upLogoUrl}" width="65" height="65" alt="UP Logo" style="display: block; object-fit: contain;">
+              </div>
             </div>
-            <div style="border-bottom: 1px solid #000; margin-top: 2px; margin-bottom: 6px;"></div>
+            <div style="border-bottom: 1px solid #006837; margin-top: 2px; margin-bottom: 8px;"></div>
 
-            <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 13.5px; font-weight: bold;">
+            <!-- স্মারক নং ও তারিখ -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 15px; font-weight: bold; font-family: 'Nikosh', sans-serif;">
               <div>স্মারক নং- ${data.smarakNo || 'আ/ইউ/পটুয়া/সদর/২০২৬/০৩'}</div>
               <div>তারিখঃ ${data.date || '০৯/০১/২০২৬ইং'}</div>
             </div>
 
-            <div class="war-ribbon-wrapper">
-              <div class="war-ribbon-exact">ওয়ারিশ সার্টিফিকেট</div>
+            <!-- 🟢 ৪নং ছবির মতো গ্রিন রিবন টাইটেল -->
+            <div class="war-ribbon-wrap-green">
+              <div class="war-ribbon-green">
+                <div class="war-ribbon-green-wing-l"></div>
+                <div class="war-ribbon-green-center">ওয়ারিশ সার্টিফিকেট</div>
+                <div class="war-ribbon-green-wing-r"></div>
+              </div>
             </div>
 
-            <div class="mb-2 text-justify" style="font-size: 13.5px; line-height: 1.6;">
-              এই মর্মে ওয়ারিশ সার্টিফিকেট প্রদান করা যাইতেছে যে, পটুয়াখালী সদর উপজেলাধীন ১১নং আউলিয়াপুর ইউনিয়নের ${data.wardNo || '০৭'} নং ওয়ার্ডের ${data.village || 'উত্তর বাদুরা'} গ্রামের ${decFatherText}<strong style="font-size: 14.5px;">${decNameText}</strong> এর লোকান্তরে নিম্নলিখিত ব্যক্তিগণ তাহার স্থাবর-অস্থাবর সকল সম্পত্তির ওয়ারিশ বিদ্যমান থাকেন।
+            <!-- বিবরণী -->
+            <div style="margin-bottom: 8px; text-align: justify; font-size: 15.5px; line-height: 1.8; text-indent: 40px; font-family: 'Nikosh', sans-serif;">
+              এই মর্মে ওয়ারিশ সার্টিফিকেট প্রদান করা যাইতেছে যে, পটুয়াখালী সদর উপজেলাধীন ১১নং আউলিয়াপুর ইউনিয়নের ${data.wardNo || '০৭'} নং ওয়ার্ডের ${data.village || 'উত্তর বাদুরা'} গ্রামের ${decFatherText}<strong style="font-size: 16.5px;">${decNameText}</strong> এর লোকান্তরে নিম্নলিখিত ব্যক্তিগণ তাহার স্থাবর-অস্থাবর সকল সম্পত্তির ওয়ারিশ বিদ্যমান থাকেন।
             </div>
 
             <table class="war-main-table">
@@ -473,28 +546,35 @@
               </tbody>
             </table>
 
-            <div class="mt-2" style="font-size: 12.5px; line-height: 1.45;">
-              <p class="m-0 fw-bold">সংশ্লিষ্ট গ্রাম পুলিশ ও ওয়ার্ড মেম্বার এর প্রত্যয়ন মতে ইহা ছাড়া আর কোন ওয়ারিশ নাই ।</p>
-              <p class="m-0 mt-1">ভবিষ্যতে বর্ণিত তথ্যের কোনরূপ গড়মিল পরিলক্ষিত হইলে উক্ত ওয়ারিশ সনদপত্র বাতিল বলিয়া গণ্য হইবে । এ সনদপত্র দ্বারা সংশ্লিষ্ট আইনে অনুমোদিত অন্য কোন বৈধ ওয়ারিশকে বঞ্চিত করা যাইবে না ।</p>
+            <div style="margin-top: 10px; font-size: 13.5px; line-height: 1.5; font-family: 'Nikosh', sans-serif;">
+              <p style="margin: 0; font-weight: bold;">সংশ্লিষ্ট গ্রাম পুলিশ ও ওয়ার্ড মেম্বার এর প্রত্যয়ন মতে ইহা ছাড়া আর কোন ওয়ারিশ নাই ।</p>
+              <p style="margin: 3px 0 0 0;">ভবিষ্যতে বর্ণিত তথ্যের কোনরূপ গড়মিল পরিলক্ষিত হইলে উক্ত ওয়ারিশ সনদপত্র বাতিল বলিয়া গণ্য হইবে । এ সনদপত্র দ্বারা সংশ্লিষ্ট আইনে অনুমোদিত অন্য কোন বৈধ ওয়ারিশকে বঞ্চিত করা যাইবে না ।</p>
             </div>
           </div>
 
-          <div class="d-flex justify-content-between text-center align-items-end mt-4 pt-3" style="font-size: 13px; line-height: 1.35;">
-            <div style="width: 30%;">
-              <span class="war-sig-line"></span>
-              <strong>গ্রাম পুলিশ</strong><br>
-              ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>
-              পটুয়াখালী সদর,পটুয়াখালী ।
+          <!-- স্বাক্ষর ও ফুটার -->
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; text-align: center; margin-top: 35px; padding-bottom: 10px; font-size: 14.5px; font-family: 'Nikosh', sans-serif;">
+              <div style="width: 30%;">
+                <span class="war-sig-line"></span>
+                <strong>গ্রাম পুলিশ</strong><br>
+                ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ
+              </div>
+              <div style="width: 30%;">
+                <span class="war-sig-line"></span>
+                <strong>ইউপি সদস্য</strong><br>
+                ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ
+              </div>
+              <div style="width: 38%;">
+                <span class="war-sig-line"></span>
+                <strong>${chairTitle}</strong>
+              </div>
             </div>
-            <div style="width: 30%;">
-              <span class="war-sig-line"></span>
-              <strong>ইউপি সদস্য</strong><br>
-              ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>
-              পটুয়াখালী সদর, পটুয়াখালী ।
-            </div>
-            <div style="width: 38%;">
-              <span class="war-sig-line"></span>
-              ${chairTitle}
+
+            <div class="war-bottom-banner">
+              <div><i class="fa fa-check-circle"></i> নিয়মিত ইউনিয়ন পরিষদের কর প্রদান করুন</div>
+              <div>তথ্য যাচাই: www.auliapur.com</div>
+              <div><i class="fa fa-shield-halved"></i> বাল্যবিবাহ রোধ করুন</div>
             </div>
           </div>
 
@@ -518,8 +598,8 @@
         (grp.members || []).forEach(function(m) {
           rows += `
             <tr>
-              <td style="width: 8%;">${m.sl}</td>
-              <td class="text-start-custom" style="width: 32%;">${m.name}</td>
+              <td style="width: 8%; font-weight: bold;">${m.sl}</td>
+              <td class="text-start-custom" style="width: 32%;"><strong>${m.name}</strong></td>
               <td class="text-start-custom" style="width: 30%;">${m.relName}</td>
               <td style="width: 18%;">${m.address}</td>
               <td style="width: 12%;">${m.relation}</td>
@@ -535,33 +615,40 @@
     var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর পুত্র ` : '';
     var decNameText = formatMrito(data.deceasedName);
 
+    var upLogoUrl = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
+    var govtLogoUrl = "https://lh3.googleusercontent.com/d/1EIK74_Afcnqt2cOz0_1EtneeCVkENn_Q";
+
     var page1Html = `
       <div class="war-page-container">
-        <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" class="war-watermark-bg" alt="Watermark">
+        <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark">
         
         <div class="war-content-body">
           <div>
-            <div class="d-flex justify-content-between align-items-center" style="border-bottom: 2.5px solid #000; padding-bottom: 4px;">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg" width="60" height="60" alt="Govt Logo">
-              <div class="text-center">
-                <h2 class="fw-bold m-0" style="font-size: 21px; color: #000;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কার্যালয়</h2>
-                <p class="m-0 fw-bold" style="font-size: 13.5px;">ডাকঘরঃ আউলিয়াপুর ময়দান, উপজেলা ও জেলাঃ পটুয়াখালী ।</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2.5px solid #006837; padding-bottom: 5px;">
+              <div style="width: 75px; text-align: left;"><img src="${govtLogoUrl}" width="60" height="60" alt="Govt Logo" style="display: block;"></div>
+              <div style="text-align: center; flex-grow: 1;">
+                <h2 style="font-weight: 800; margin: 0; font-size: 23px; color: #000; font-family: 'Nikosh', sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কার্যালয়</h2>
+                <p style="margin: 2px 0 0 0; font-weight: bold; font-size: 14px; font-family: 'Nikosh', sans-serif;">ডাকঘরঃ আউলিয়াপুর ময়দান, উপজেলা ও জেলাঃ পটুয়াখালী ।</p>
               </div>
-              <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" width="60" height="60" alt="UP Logo">
+              <div style="width: 75px; text-align: right;"><img src="${upLogoUrl}" width="60" height="60" alt="UP Logo" style="display: block;"></div>
             </div>
-            <div style="border-bottom: 1px solid #000; margin-top: 2px; margin-bottom: 5px;"></div>
+            <div style="border-bottom: 1px solid #006837; margin-top: 2px; margin-bottom: 6px;"></div>
 
-            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 13px; font-weight: bold;">
+            <div style="display: flex; justify-content: space-between; align-items: center; mb-1; font-size: 14px; font-weight: bold; font-family: 'Nikosh', sans-serif;">
               <div>স্মারক নং- ${data.smarakNo || 'আ/ইউ/পটুয়া/সদর/২০২৬/১১১'}</div>
               <div>তারিখঃ ${data.date || '২৮/০৪/২০২৬ইং'}</div>
             </div>
 
-            <div class="war-ribbon-wrapper">
-              <div class="war-ribbon-exact">ওয়ারিশ সার্টিফিকেট</div>
+            <div class="war-ribbon-wrap-green">
+              <div class="war-ribbon-green">
+                <div class="war-ribbon-green-wing-l"></div>
+                <div class="war-ribbon-green-center">ওয়ারিশ সার্টিফিকেট</div>
+                <div class="war-ribbon-green-wing-r"></div>
+              </div>
             </div>
 
-            <div class="mb-2 text-justify" style="font-size: 13px; line-height: 1.55;">
-              এই মর্মে ওয়ারিশ সার্টিফিকেট প্রদান করা যাইতেছে যে, পটুয়াখালী সদর উপজেলাধীন ১১নং আউলিয়াপুর ইউনিয়নের ${data.wardNo || '০২'} নং ওয়ার্ডের ${data.village || 'পশ্চিম আউলিয়াপুর'} গ্রামের ${decFatherText}<strong style="font-size: 14px;">${decNameText}</strong> এর লোকান্তরে নিম্নলিখিত ব্যক্তিগণ তাহার স্থাবর-অস্থাবর সকল সম্পত্তির ওয়ারিশ বিদ্যমান থাকেন।
+            <div style="margin-bottom: 6px; text-align: justify; font-size: 15px; line-height: 1.7; font-family: 'Nikosh', sans-serif;">
+              এই মর্মে ওয়ারিশ সার্টিফিকেট প্রদান করা যাইতেছে যে, পটুয়াখালী সদর উপজেলাধীন ১১নং আউলিয়াপুর ইউনিয়নের ${data.wardNo || '০২'} নং ওয়ার্ডের ${data.village || 'পশ্চিম আউলিয়াপুর'} গ্রামের ${decFatherText}<strong style="font-size: 16px;">${decNameText}</strong> এর লোকান্তরে নিম্নলিখিত ব্যক্তিগণ তাহার স্থাবর-অস্থাবর সকল সম্পত্তির ওয়ারিশ বিদ্যমান থাকেন।
             </div>
 
             <table class="war-main-table">
@@ -581,7 +668,7 @@
           </div>
 
           <div>
-            <div class="d-flex justify-content-between text-center align-items-end mt-4 pt-2" style="font-size: 12.5px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; text-align: center; margin-top: 30px; font-size: 14px; font-family: 'Nikosh', sans-serif;">
               <div style="width: 35%;">
                 <span class="war-sig-line"></span>
                 <strong>গ্রাম পুলিশ</strong><br>
@@ -593,7 +680,7 @@
                 ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ
               </div>
             </div>
-            <div class="text-center mt-3 fw-bold" style="font-size: 12px;">পাতা নং-০১ মোট পাতা-০২টি</div>
+            <div style="text-align: center; margin-top: 10px; font-weight: bold; font-size: 13px;">পাতা নং-০১ মোট পাতা-০২টি</div>
           </div>
         </div>
       </div>
@@ -601,21 +688,21 @@
 
     var page2Html = `
       <div class="war-page-container">
-        <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" class="war-watermark-bg" alt="Watermark">
+        <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark">
         
         <div class="war-content-body">
           <div>
-            <div class="d-flex justify-content-between align-items-center" style="border-bottom: 2.5px solid #000; padding-bottom: 4px;">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg" width="60" height="60" alt="Govt Logo">
-              <div class="text-center">
-                <h2 class="fw-bold m-0" style="font-size: 21px; color: #000;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কার্যালয়</h2>
-                <p class="m-0 fw-bold" style="font-size: 13.5px;">ডাকঘরঃ আউলিয়াপুর ময়দান, উপজেলা ও জেলাঃ পটুয়াখালী ।</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2.5px solid #006837; padding-bottom: 5px;">
+              <div style="width: 75px; text-align: left;"><img src="${govtLogoUrl}" width="60" height="60" alt="Govt Logo" style="display: block;"></div>
+              <div style="text-align: center; flex-grow: 1;">
+                <h2 style="font-weight: 800; margin: 0; font-size: 23px; color: #000; font-family: 'Nikosh', sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কার্যালয়</h2>
+                <p style="margin: 2px 0 0 0; font-weight: bold; font-size: 14px; font-family: 'Nikosh', sans-serif;">ডাকঘরঃ আউলিয়াপুর ময়দান, উপজেলা ও জেলাঃ পটুয়াখালী ।</p>
               </div>
-              <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" width="60" height="60" alt="UP Logo">
+              <div style="width: 75px; text-align: right;"><img src="${upLogoUrl}" width="60" height="60" alt="UP Logo" style="display: block;"></div>
             </div>
-            <div style="border-bottom: 1px solid #000; margin-top: 2px; margin-bottom: 5px;"></div>
+            <div style="border-bottom: 1px solid #006837; margin-top: 2px; margin-bottom: 6px;"></div>
 
-            <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 13px; font-weight: bold;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 14px; font-weight: bold; font-family: 'Nikosh', sans-serif;">
               <div>স্মারক নং- ${data.smarakNo || 'আ/ইউ/পটুয়া/সদর/২০২৬/১১১'}</div>
               <div>তারিখঃ ${data.date || '২৮/০৪/২০২৬ইং'}</div>
             </div>
@@ -635,14 +722,14 @@
               </tbody>
             </table>
 
-            <div class="mt-3" style="font-size: 12.5px; line-height: 1.45;">
-              <p class="m-0 fw-bold">সংশ্লিষ্ট গ্রাম পুলিশ ও ওয়ার্ড মেম্বার এর প্রত্যয়ন মতে ইহা ছাড়া আর কোন ওয়ারিশ নাই ।</p>
-              <p class="m-0 mt-1">ভবিষ্যতে বর্ণিত তথ্যের কোনরূপ গড়মিল পরিলক্ষিত হইলে উক্ত ওয়ারিশ সনদপত্র বাতিল বলিয়া গণ্য হইবে । এ সনদপত্র দ্বারা সংশ্লিষ্ট আইনে অনুমোদিত অন্য কোন বৈধ ওয়ারিশকে বঞ্চিত করা যাইবে না ।</p>
+            <div style="margin-top: 12px; font-size: 13.5px; line-height: 1.5; font-family: 'Nikosh', sans-serif;">
+              <p style="margin: 0; font-weight: bold;">সংশ্লিষ্ট গ্রাম পুলিশ ও ওয়ার্ড মেম্বার এর প্রত্যয়ন মতে ইহা ছাড়া আর কোন ওয়ারিশ নাই ।</p>
+              <p style="margin: 3px 0 0 0;">ভবিষ্যতে বর্ণিত তথ্যের কোনরূপ গড়মিল পরিলক্ষিত হইলে উক্ত ওয়ারিশ সনদপত্র বাতিল বলিয়া গণ্য হইবে । এ সনদপত্র দ্বারা সংশ্লিষ্ট আইনে অনুমোদিত অন্য কোন বৈধ ওয়ারিশকে বঞ্চিত করা যাইবে না ।</p>
             </div>
           </div>
 
           <div>
-            <div class="d-flex justify-content-between text-center align-items-end mt-4 pt-2" style="font-size: 12.5px; line-height: 1.35;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; text-align: center; margin-top: 30px; font-size: 14px; font-family: 'Nikosh', sans-serif;">
               <div style="width: 30%;">
                 <span class="war-sig-line"></span>
                 <strong>গ্রাম পুলিশ</strong><br>
@@ -655,10 +742,10 @@
               </div>
               <div style="width: 38%;">
                 <span class="war-sig-line"></span>
-                ${chairTitle}
+                <strong>${chairTitle}</strong>
               </div>
             </div>
-            <div class="text-center mt-3 fw-bold" style="font-size: 12px;">পাতা নং-০২ মোট পাতা-০২টি</div>
+            <div style="text-align: center; margin-top: 10px; font-weight: bold; font-size: 13px;">পাতা নং-০২ মোট পাতা-০২টি</div>
           </div>
         </div>
       </div>
@@ -687,12 +774,12 @@
     (data.warishanTree || []).forEach(function(grp, idx) {
       var rowsHtml = '';
       (grp.members || []).forEach(function(m) {
-        rowsHtml += `<tr><td>${m.sl}</td><td class="text-start ps-2">${m.name}</td><td>${m.relName}</td><td>${m.address}</td><td>${m.relation}</td></tr>`;
+        rowsHtml += `<tr><td>${m.sl}</td><td class="text-start ps-2"><strong>${m.name}</strong></td><td>${m.relName}</td><td>${m.address}</td><td>${m.relation}</td></tr>`;
       });
       tablesHtml += `
         <div class="mb-3">
-          ${idx > 0 ? `<h6 class="fw-bold text-dark mb-1" style="font-size: 13px;">${grp.groupTitle}</h6>` : ''}
-          <table class="table table-bordered table-sm text-center align-middle" style="font-size: 12.5px; border-color: #000;">
+          ${idx > 0 ? `<h6 class="fw-bold text-dark mb-1" style="font-size: 14px;">${grp.groupTitle}</h6>` : ''}
+          <table class="table table-bordered table-sm text-center align-middle" style="font-size: 13.5px; border-color: #000;">
             <thead class="table-light"><tr><th width="8%">ক্রমিক নং</th><th width="30%">ওয়ারিশগণের নাম</th><th width="28%">পিতা/স্বামী নাম</th><th width="20%">ঠিকানা</th><th width="14%">সম্পর্ক</th></tr></thead>
             <tbody>${rowsHtml}</tbody>
           </table>
@@ -714,6 +801,7 @@
     executeIsolatedIframePrint(printContent);
   }
 
+  // 🟢 নির্ভুল ইমেজ প্রি-লোডার সম্পন্ন প্রিন্ট ইঞ্জিন (লোগো ও ওয়াটারমার্ক মিসিং হবে না)
   function executeIsolatedIframePrint(htmlContent) {
     var oldFrame = document.getElementById('isolated_print_frame');
     if (oldFrame) oldFrame.remove();
@@ -733,31 +821,48 @@
       <html>
       <head>
         <title>Warishan Certificate</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+        <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
         <style>
           @page { size: A4 portrait; margin: 0mm !important; }
           * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-          body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Kalpurush', 'SolaimanLipi', 'Tiro Bangla', sans-serif; }
+          body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Nikosh', 'Kalpurush', sans-serif; }
           .war-page-container {
             width: 210mm !important; height: 295mm !important; max-height: 295mm !important;
             padding: 10mm 15mm 12mm 15mm !important; margin: 0 auto !important;
             background: #ffffff !important; box-sizing: border-box !important; position: relative !important;
+            border: 3px double #006837 !important; outline: 1.5px solid #006837 !important; outline-offset: 3px !important;
             display: flex !important; flex-direction: column !important; justify-content: space-between !important;
             page-break-after: always !important; page-break-inside: avoid !important; overflow: hidden !important;
           }
-          .war-watermark-bg { position: absolute !important; top: 52% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 440px !important; opacity: 0.12 !important; z-index: 1 !important; }
+          .war-watermark-bg { position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 440px !important; opacity: 0.12 !important; z-index: 1 !important; display: block !important; }
           .war-content-body { position: relative !important; z-index: 2 !important; height: 100% !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; }
-          .war-ribbon-wrapper { text-align: center !important; margin: 6px 0 10px 0 !important; }
-          .war-ribbon-exact { display: inline-block !important; background-color: #2b78c5 !important; color: #ffffff !important; border: 2px solid #d32f2f !important; outline: 2px solid #d32f2f !important; outline-offset: 2px !important; padding: 3px 35px !important; font-size: 19px !important; font-weight: bold !important; position: relative !important; }
-          .war-ribbon-exact::before, .war-ribbon-exact::after { content: "" !important; position: absolute !important; top: -2px !important; border: 14px solid #d32f2f !important; z-index: -1 !important; }
-          .war-ribbon-exact::before { left: -24px !important; border-left-color: transparent !important; }
-          .war-ribbon-exact::after { right: -24px !important; border-right-color: transparent !important; }
-          .war-main-table { width: 100% !important; border-collapse: collapse !important; margin-top: 5px !important; font-size: 13.5px !important; }
-          .war-main-table th, .war-main-table td { border: 1.2px solid #000000 !important; padding: 3px 6px !important; text-align: center !important; vertical-align: middle !important; line-height: 1.25 !important; }
-          .war-main-table th { font-weight: bold !important; background-color: transparent !important; }
+          .war-ribbon-wrap-green { text-align: center !important; margin: 6px 0 12px 0 !important; }
+          .war-ribbon-green { position: relative !important; display: inline-block !important; }
+          .war-ribbon-green-center {
+            position: relative !important; background: #005a36 !important; color: #ffffff !important;
+            font-size: 22px !important; font-weight: bold !important; padding: 5px 50px !important;
+            z-index: 2 !important; display: inline-block !important; border-radius: 2px !important; font-family: 'Nikosh', sans-serif !important;
+          }
+          .war-ribbon-green-center::after {
+            content: "" !important; display: block !important; width: 65% !important; height: 2px !important;
+            background: #ffffff !important; margin: 3px auto 0 auto !important; opacity: 0.85 !important;
+          }
+          .war-ribbon-green-wing-l {
+            position: absolute !important; top: 5px !important; left: -24px !important; width: 32px !important;
+            height: 100% !important; background-color: #003822 !important; clip-path: polygon(100% 0, 0 50%, 100% 100%) !important; z-index: 1 !important;
+          }
+          .war-ribbon-green-wing-r {
+            position: absolute !important; top: 5px !important; right: -24px !important; width: 32px !important;
+            height: 100% !important; background-color: #003822 !important; clip-path: polygon(0 0, 100% 50%, 0 100%) !important; z-index: 1 !important;
+          }
+          .war-main-table { width: 100% !important; border-collapse: collapse !important; margin-top: 5px !important; font-size: 14px !important; }
+          .war-main-table th, .war-main-table td { border: 1.2px solid #000000 !important; padding: 3.5px 6px !important; text-align: center !important; vertical-align: middle !important; line-height: 1.25 !important; }
+          .war-main-table th { font-weight: bold !important; background-color: #f8fafc !important; }
           .war-main-table td.text-start-custom { text-align: left !important; padding-left: 8px !important; }
-          .war-subgroup-title-row { font-weight: bold !important; text-align: left !important; padding: 4px 8px !important; font-size: 13.5px !important; border: 1.2px solid #000000 !important; }
+          .war-subgroup-title-row { font-weight: bold !important; text-align: left !important; padding: 4px 8px !important; font-size: 14px !important; border: 1.2px solid #000000 !important; }
           .war-sig-line { border-top: 1.5px solid #000000 !important; display: block !important; width: 80% !important; margin: 0 auto 4px auto !important; }
+          .war-bottom-banner { border-top: 1.5px solid #006837 !important; padding-top: 4px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; font-size: 13px !important; font-weight: bold !important; color: #006837 !important; }
         </style>
       </head>
       <body>${htmlContent}</body>
@@ -765,9 +870,31 @@
     `);
     doc.close();
 
-    setTimeout(function() {
-      iframe.contentWindow.focus();
-      iframe.contentWindow.print();
-    }, 400);
+    var images = doc.getElementsByTagName('img');
+    var totalImgs = images.length;
+    var loadedImgs = 0;
+    var printed = false;
+
+    function triggerPrintNow() {
+      if (!printed) {
+        printed = true;
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+      }
+    }
+
+    if (totalImgs === 0) {
+      setTimeout(triggerPrintNow, 300);
+    } else {
+      for (var i = 0; i < totalImgs; i++) {
+        images[i].onload = images[i].onerror = function() {
+          loadedImgs++;
+          if (loadedImgs >= totalImgs) {
+            setTimeout(triggerPrintNow, 200);
+          }
+        };
+      }
+      setTimeout(triggerPrintNow, 800);
+    }
   }
 </script>

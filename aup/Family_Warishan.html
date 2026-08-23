@@ -1,0 +1,419 @@
+<!-- ======================================================= -->
+<!-- 11NO AULIAPUR UP - FAMILY & SUCCESSION MODULE           -->
+<!-- File: Family_Warishan.html (Dedicated Family Module)    -->
+<!-- ======================================================= -->
+
+<style>
+  .ribbon-wrapper-12 { position: relative; display: inline-block; margin: 8px 0 12px 0; }
+  .ribbon-center-box {
+    position: relative;
+    background-color: #3b71ca !important;
+    color: #ffffff !important;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 6px 36px;
+    border: 2px solid #ffffff !important;
+    outline: 2px solid #3b71ca !important;
+    box-shadow: 0 0 0 1px #2a5298;
+    z-index: 2;
+    display: inline-block;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .ribbon-wing-left {
+    position: absolute; top: 6px; left: -22px; width: 32px; height: 100%;
+    background-color: #2a5298 !important; clip-path: polygon(100% 0, 0 50%, 100% 100%); z-index: 1;
+    -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+  }
+  .ribbon-wing-right {
+    position: absolute; top: 6px; right: -22px; width: 32px; height: 100%;
+    background-color: #2a5298 !important; clip-path: polygon(0 0, 100% 50%, 0 100%); z-index: 1;
+    -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+  }
+
+  .family-cert-container {
+    width: 210mm; min-height: 290mm; margin: 0 auto; background: #ffffff !important;
+    padding: 12mm 15mm; border: 1.5px solid #222222; position: relative; box-sizing: border-box;
+    display: flex; flex-direction: column; justify-content: space-between;
+    font-family: 'Nikosh', 'Kalpurush', 'Tiro Bangla', sans-serif;
+  }
+  .cert-watermark-bg {
+    position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%);
+    width: 330px !important; opacity: 0.12 !important; pointer-events: none; z-index: 1;
+    -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+  }
+  .cert-main-content { position: relative; z-index: 2; }
+  .cert-table-exact { width: 100%; border-collapse: collapse !important; margin: 10px 0; }
+  .cert-table-exact th {
+    background-color: #f8fafc !important; color: #000000 !important; text-align: center;
+    border: 1.5px solid #000000 !important; padding: 6px 4px; font-size: 14px; font-weight: bold;
+    -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+  }
+  .cert-table-exact td { border: 1.5px solid #000000 !important; padding: 6px 4px; font-size: 13.5px; color: #000000; }
+  .table-input-clean { border: 1px solid #ced4da; padding: 4px 8px; border-radius: 4px; width: 100%; font-size: 14px; }
+</style>
+
+<!-- ১. পারিবারিক ও উত্তরাধিকারী সনদের মূল আবেদন ফর্ম -->
+<div id="familyWarishanView" class="view-section container my-4 d-none">
+
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-success text-white py-3 d-flex justify-content-between align-items-center">
+          <h5 class="fw-bold m-0" id="fwFormMainHeading"><i class="fa fa-people-roof me-2"></i> পারিবারিক সনদের আবেদন ফরম</h5>
+          <button class="btn btn-sm btn-light text-success fw-bold" onclick="navToSection('publicHome')"><i class="fa fa-arrow-left me-1"></i> হোম পেজ</button>
+        </div>
+        <div class="card-body p-4">
+          <form id="familyWarishanForm" onsubmit="event.preventDefault(); submitFamilyForm();">
+            <input type="hidden" id="fwServiceType" value="পারিবারিক সনদ">
+
+            <div class="bg-light p-3 border rounded mb-4 text-secondary" style="font-size: 14.5px; line-height: 1.8;">
+              <strong>বরাবর,</strong><br>
+              চেয়ারম্যান<br>
+              ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কার্যালয়<br>
+              পটুয়াখালী সদর, পটুয়াখালী।<br>
+              <strong>বিষয়: <span id="fwSubjectText" class="text-success fw-bold">পারিবারিক সনদপত্র</span> পাওয়ার জন্য আবেদন।</strong>
+            </div>
+
+            <h6 class="fw-bold text-success border-bottom pb-2 mb-3"><i class="fa fa-user me-2"></i> ১. আবেদনকারীর ব্যক্তিগত তথ্য</h6>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6"><label class="form-label fw-bold">আবেদনকারীর পূর্ণ নাম *</label><input type="text" id="fwApplicantName" class="form-control" placeholder="জাতীয় পরিচয়পত্র অনুযায়ী" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold">এনআইডি / জন্ম নিবন্ধন নম্বর *</label><input type="text" id="fwApplicantNid" class="form-control" placeholder="১০, ১৩ বা ১৭ ডিজিট" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold">পিতার নাম *</label><input type="text" id="fwFatherName" class="form-control" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold">মাতার নাম *</label><input type="text" id="fwMotherName" class="form-control" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">মোবাইল নম্বর *</label><input type="tel" id="fwMobile" class="form-control" placeholder="০১XXXXXXXXX" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">ওয়ার্ড নম্বর *</label><select id="fwWardNo" class="form-select" required><option value="০১">ওয়ার্ড-০১</option><option value="০২">ওয়ার্ড-০২</option><option value="০৩">ওয়ার্ড-০৩</option><option value="০৪">ওয়ার্ড-০৪</option><option value="০৫">ওয়ার্ড-০৫</option><option value="০৬">ওয়ার্ড-০৬</option><option value="০৭">ওয়ার্ড-০৭</option><option value="০৮">ওয়ার্ড-০৮</option><option value="০৯">ওয়ার্ড-০৯</option></select></div>
+              <div class="col-md-4"><label class="form-label fw-bold">গ্রাম/মহল্লা *</label><input type="text" id="fwVillage" class="form-control" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold">ডাকঘর *</label><input type="text" id="fwPostOffice" class="form-control" value="বাদুরা হাট" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold">উপজেলা ও জেলা</label><input type="text" class="form-control" value="পটুয়াখালী সদর, পটুয়াখালী" readonly></div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+              <h6 class="fw-bold text-success m-0"><i class="fa fa-users me-2"></i> ২. পরিবারের সদস্যদের বিবরণ</h6>
+              <button type="button" class="btn btn-sm btn-success fw-bold" onclick="addFwMemberRow()"><i class="fa fa-plus-circle me-1"></i> নতুন সদস্য যোগ করুন</button>
+            </div>
+            
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered align-middle text-center" id="fwMembersTable">
+                <thead class="table-dark">
+                  <tr>
+                    <th style="width: 55px;">ক্রমিক</th>
+                    <th>সদস্যের নাম *</th>
+                    <th>ভোটার আইডি / জন্ম নিবন্ধন নম্বর</th>
+                    <th style="width: 140px;">জন্ম তারিখ</th>
+                    <th style="width: 130px;">সম্পর্ক *</th>
+                    <th style="width: 120px;">মন্তব্য</th>
+                    <th style="width: 50px;">অ্যাকশন</th>
+                  </tr>
+                </thead>
+                <tbody id="fwMembersTbody"></tbody>
+              </table>
+            </div>
+
+            <div class="bg-light p-3 border rounded mb-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fwDeclaration" required checked>
+                <label class="form-check-label fw-bold" for="fwDeclaration">
+                  আমি অঙ্গীকার করিতেছি যে, উপরে বর্ণিত সকল তথ্য সম্পূর্ণ সত্য ও সঠিক।
+                </label>
+              </div>
+            </div>
+
+            <div class="text-end">
+              <button type="button" class="btn btn-secondary me-2" onclick="navToSection('publicHome')">বাতিল</button>
+              <button type="submit" class="btn btn-success px-5 fw-bold" id="fwSubmitBtn"><i class="fa fa-paper-plane me-1"></i> আবেদন দাখিল করুন</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ২. অফিসিয়াল পারিবারিক সনদ প্রিন্ট মোডাল -->
+<div class="modal fade" id="familyCertPrintModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white no-print">
+        <h5 class="modal-title fw-bold" id="fwModalHeaderTitle"><i class="fa fa-print me-2"></i> অফিসিয়াল সনদ প্রিন্ট প্রিভিউ</h5>
+        <div class="d-flex gap-2">
+          <button class="btn btn-success fw-bold btn-sm px-3" onclick="printExactCertificate()"><i class="fa fa-print me-1"></i> সরাসরি প্রিন্ট করুন</button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+      </div>
+      <div class="modal-body p-3 bg-secondary bg-opacity-10 overflow-auto">
+        <div class="family-cert-container shadow" id="printableFamilyCert">
+          <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" class="cert-watermark-bg" alt="Watermark">
+
+          <div class="cert-main-content">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <div style="width: 75px;"><img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" alt="UP Logo" width="68" height="68"></div>
+              <div class="text-center flex-grow-1 px-2">
+                <h2 class="fw-bold m-0 text-dark" style="font-size: 26px; font-weight: 800;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কার্যালয়</h2>
+                <h5 class="m-0 text-dark fw-bold" style="font-size: 16px; margin-top: 2px;">ডাকঘরঃ আউলিয়াপুর ময়দান, উপজেলা ও জেলাঃ পটুয়াখালী ।</h5>
+              </div>
+              <div style="width: 75px; text-align: right;"><div style="width: 65px; height: 60px; border: 1.5px dashed #444; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; color: #555;">সিল / ছবি</div></div>
+            </div>
+
+            <div style="border-top: 2px solid #000; border-bottom: 1px solid #000; height: 4px; margin: 6px 0 8px 0;"></div>
+
+            <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 15px; font-weight: bold; color: #000;">
+              <div>স্মারক নং- আ/ইউ/পটুয়া/সদর/২০২৬/<span id="prAppIdShort"></span></div>
+              <div>তারিখঃ <span id="prIssueDate"></span>ইং</div>
+            </div>
+
+            <div class="text-center my-2">
+              <div class="ribbon-wrapper-12">
+                <div class="ribbon-wing-left"></div>
+                <div class="ribbon-center-box" id="prCertTitle">পারিবারিক সনদপত্র</div>
+                <div class="ribbon-wing-right"></div>
+              </div>
+            </div>
+
+            <div class="my-3 text-justify text-dark" style="font-size: 15.5px; line-height: 2.3; text-indent: 45px; font-weight: 500;">
+              এই মর্মে <span id="prCertTypeTitle">পারিবারিক সনদ পত্র</span> প্রদান করা যাইতেছে যে, <strong id="prName"></strong>, পিতা- <strong id="prFather"></strong>, মাতা- <strong id="prMother"></strong>, গ্রাম- <strong id="prVillage"></strong>, ডাকঘর- <strong id="prPost"></strong>, উপজেলা- <strong>পটুয়াখালী সদর</strong>, জেলা- <strong>পটুয়াখালী</strong>। আমি তার পরিবারকে ব্যক্তিগতভাবে চিনি ও জানি। আমার জানা মতে তাহারা বাংলাদেশের নাগরিক এবং পরিবারের সকলের মধ্যে সুসম্পর্ক বিদ্যমান। তাদের পরিবারের সকল সদস্যদের নাম নিম্নে দেওয়া হলোঃ-
+            </div>
+
+            <div class="my-2">
+              <table class="cert-table-exact text-center">
+                <thead>
+                  <tr>
+                    <th style="width: 55px;">ক্রমিক</th>
+                    <th>পরিবারের সদস্যের নাম</th>
+                    <th>ভোটার আইডি/ জন্ম নিবন্ধন নম্বর</th>
+                    <th style="width: 125px;">জন্ম তারিখ</th>
+                    <th style="width: 100px;">সম্পর্ক</th>
+                    <th style="width: 95px;">স্বাক্ষর</th>
+                  </tr>
+                </thead>
+                <tbody id="prMembersTbody"></tbody>
+              </table>
+            </div>
+
+            <p class="mt-3 mb-2 text-dark" style="font-size: 14.5px; font-weight: bold;">
+              আমার জানা মতে উপরোক্ত পরিবারের সদস্য/সদস্যগণ ব্যতিত <strong id="prApplicantFooterName"></strong> এর পরিবারে আর কোন সদস্য নেই।
+            </p>
+
+            <p class="mt-3 mb-2 text-dark" style="font-size: 14px; font-weight: bold; text-decoration: underline;">
+              সংশ্লিষ্ট গ্রাম পুলিশ ও ওয়ার্ড মেম্বার এর প্রত্যয়ন মতে
+            </p>
+          </div>
+
+          <div class="cert-main-content pt-3">
+            <div class="d-flex justify-content-between align-items-end text-center text-dark" style="font-size: 14px; font-weight: bold;">
+              <div><div style="height: 40px;"></div><div class="border-top border-dark pt-1 px-2">গ্রাম পুলিশ<br><small class="fw-normal">আউলিয়াপুর ইউনিয়ন পরিষদ</small></div></div>
+              <div><div style="height: 40px;"></div><div class="border-top border-dark pt-1 px-2">ইউপি সদস্য<br><small class="fw-normal">আউলিয়াপুর ইউনিয়ন পরিষদ</small></div></div>
+              <div><div style="height: 40px;"></div><div class="border-top border-dark pt-1 px-2"><span id="prChairName">(অ্যাড. মোঃ হুমায়ুন কবির)</span><br><span id="prSignRole">চেয়ারম্যান</span><br><small class="fw-normal">আউলিয়াপুর ইউনিয়ন পরিষদ</small></div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<iframe id="secretFamilyPrintFrame" style="display:none; width:0; height:0; border:0;"></iframe>
+
+<script>
+  function toBnDigit(n) {
+    if(!n) return '';
+    var bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+    return (n + '').replace(/\d/g, function(d){ return bn[d]; });
+  }
+
+  // 🟢 নিশ্চিতভাবে পারিবারিক বা উত্তরাধিকারী সনদ ওপেন করার ফাংশন
+  function openFamilyCertPage(type) {
+    navToSection('familyCertView');
+    document.getElementById('familyWarishanForm').reset();
+    document.getElementById('fwServiceType').value = type;
+    
+    var isSuccession = (type === 'উত্তরাধিকারী সনদ');
+    document.getElementById('fwFormMainHeading').innerHTML = isSuccession ? '<i class="fa fa-users me-2"></i> উত্তরাধিকারী সনদের আবেদন ফরম' : '<i class="fa fa-people-roof me-2"></i> পারিবারিক সনদের আবেদন ফরম';
+    document.getElementById('fwSubjectText').innerText = isSuccession ? 'উত্তরাধিকারী সনদপত্র' : 'পারিবারিক সনদপত্র';
+
+    var tbody = document.getElementById('fwMembersTbody');
+    tbody.innerHTML = '';
+    for(var i=0; i<3; i++) { addFwMemberRow(); }
+  }
+
+  function addFwMemberRow() {
+    var tbody = document.getElementById('fwMembersTbody');
+    var tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="fw-bold">${toBnDigit(tbody.rows.length + 1)}</td>
+      <td><input type="text" class="table-input-clean fw-m-name" placeholder="সদস্যের নাম" required></td>
+      <td><input type="text" class="table-input-clean fw-m-nid" placeholder="এনআইডি / জন্ম নিবন্ধন"></td>
+      <td><input type="text" class="table-input-clean fw-m-dob" placeholder="দিন-মাস-সাল"></td>
+      <td>
+        <select class="table-input-clean fw-m-rel" required>
+          <option value="নিজে">নিজে</option><option value="বাবা">বাবা</option><option value="মা">মা</option>
+          <option value="স্বামী">স্বামী</option><option value="স্ত্রী">স্ত্রী</option><option value="ছেলে">ছেলে</option>
+          <option value="মেয়ে">মেয়ে</option><option value="ভাই">ভাই</option><option value="বোন">বোন</option><option value="অন্যান্য">অন্যান্য</option>
+        </select>
+      </td>
+      <td><input type="text" class="table-input-clean fw-m-rem" placeholder="মন্তব্য"></td>
+      <td><button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFwMemberRow(this)"><i class="fa fa-trash"></i></button></td>
+    `;
+    tbody.appendChild(tr);
+    reindexFwMemberRows();
+  }
+
+  function removeFwMemberRow(btn) {
+    var tbody = document.getElementById('fwMembersTbody');
+    if(tbody.rows.length <= 1) return alert('কমপক্ষে একজন সদস্যের তথ্য থাকতে হবে!');
+    btn.closest('tr').remove();
+    reindexFwMemberRows();
+  }
+
+  function reindexFwMemberRows() {
+    var rows = document.getElementById('fwMembersTbody').rows;
+    for(var i=0; i<rows.length; i++) {
+      rows[i].cells[0].innerText = toBnDigit(i + 1);
+    }
+  }
+
+  function submitFamilyForm() {
+    var btn = document.getElementById('fwSubmitBtn');
+    btn.disabled = true; btn.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i> জমা হচ্ছে...';
+
+    var members = [];
+    var rows = document.getElementById('fwMembersTbody').rows;
+    for(var i=0; i<rows.length; i++) {
+      var name = rows[i].querySelector('.fw-m-name').value.trim();
+      var nid = rows[i].querySelector('.fw-m-nid').value.trim();
+      var dob = rows[i].querySelector('.fw-m-dob').value.trim();
+      var rel = rows[i].querySelector('.fw-m-rel').value;
+      var rem = rows[i].querySelector('.fw-m-rem').value.trim();
+      if(name) members.push({ sl: (i+1), name: name, nid: nid, dob: dob, relation: rel, remarks: rem });
+    }
+
+    var payload = {
+      type: document.getElementById('fwServiceType').value,
+      name: document.getElementById('fwApplicantName').value.trim(),
+      nid: document.getElementById('fwApplicantNid').value.trim(),
+      fatherName: document.getElementById('fwFatherName').value.trim(),
+      motherName: document.getElementById('fwMotherName').value.trim(),
+      mobile: document.getElementById('fwMobile').value.trim(),
+      wardNo: document.getElementById('fwWardNo').value,
+      village: document.getElementById('fwVillage').value.trim(),
+      postOffice: document.getElementById('fwPostOffice').value.trim(),
+      members: members
+    };
+
+    google.script.run.withSuccessHandler(function(res) {
+      btn.disabled = false; btn.innerHTML = '<i class="fa fa-paper-plane me-1"></i> আবেদন দাখিল করুন';
+      if(res.success) {
+        document.getElementById('familyWarishanForm').reset();
+        document.getElementById('successAppId').innerText = res.appId;
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('successModal')).show();
+      } else { alert('ত্রুটি: ' + res.error); }
+    }).submitFamilyDirect(payload);
+  }
+
+  function showFamilyPrintPreview(appId) {
+    google.script.run.withSuccessHandler(function(d) {
+      if(!d || !d.found) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
+      
+      document.getElementById('prAppIdShort').innerText = d.appId.replace('AUL-FAM-', '');
+      document.getElementById('prIssueDate').innerText = d.applyDate || '';
+      
+      var isSuccession = (d.type === 'উত্তরাধিকারী সনদ');
+      document.getElementById('prCertTitle').innerText = isSuccession ? 'উত্তরাধিকারী সনদপত্র' : 'পারিবারিক সনদপত্র';
+      document.getElementById('prCertTypeTitle').innerText = isSuccession ? 'উত্তরাধিকারী সনদ পত্র' : 'পারিবারিক সনদ পত্র';
+
+      document.getElementById('prName').innerText = d.name;
+      document.getElementById('prFather').innerText = d.fatherName;
+      document.getElementById('prMother').innerText = d.motherName || '';
+      document.getElementById('prVillage').innerText = d.village;
+      document.getElementById('prPost').innerText = d.postOffice;
+      document.getElementById('prApplicantFooterName').innerText = d.name;
+
+      var sig = d.signatoryRole || 'চেয়ারম্যান';
+      document.getElementById('prSignRole').innerText = sig;
+      if(sig === 'প্যানেল চেয়ারম্যান') {
+        document.getElementById('prChairName').innerText = '(মোঃ আবদুস সালাম মৃধা)';
+      } else if(sig === 'ভারপ্রাপ্ত চেয়ারম্যান') {
+        document.getElementById('prChairName').innerText = '(ভারপ্রাপ্ত চেয়ারম্যান)';
+      } else {
+        document.getElementById('prChairName').innerText = '(অ্যাড. মোঃ হুমায়ুন কবির)';
+      }
+
+      var tbody = document.getElementById('prMembersTbody');
+      tbody.innerHTML = '';
+      var members = d.members || [];
+      if(members.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-muted py-2">কোন সদস্য তালিকা নেই</td></tr>';
+      } else {
+        members.forEach(function(m, idx) {
+          tbody.innerHTML += `
+            <tr>
+              <td>${toBnDigit(idx + 1)}</td>
+              <td class="text-start ps-2"><strong>${m.name}</strong></td>
+              <td>${toBnDigit(m.nid || '-')}</td>
+              <td>${toBnDigit(m.dob || '-')}</td>
+              <td>${m.relation || '-'}</td>
+              <td></td>
+            </tr>
+          `;
+        });
+      }
+
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('familyCertPrintModal')).show();
+    }).getFamilyDetails(appId);
+  }
+
+  function printExactCertificate() {
+    var rawHtml = document.getElementById('printableFamilyCert').innerHTML;
+    var printDoc = document.getElementById('secretFamilyPrintFrame').contentWindow.document;
+    
+    printDoc.open();
+    printDoc.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>পারিবারিক সনদপত্র</title>
+        <link href="https://fonts.googleapis.com/css2?family=Nikosh&family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+        <style>
+          @page { size: A4 portrait; margin: 0mm; }
+          * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          body { margin: 0; padding: 0; background: #ffffff; font-family: 'Nikosh', 'Kalpurush', sans-serif; }
+          .family-cert-container { width: 210mm; height: 295mm; padding: 12mm 15mm; margin: 0 auto; border: 1.5px solid #222; display: flex; flex-direction: column; justify-content: space-between; }
+          .cert-watermark-bg { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 330px; opacity: 0.12; z-index: 1; }
+          .cert-main-content { position: relative; z-index: 2; }
+          .d-flex { display: flex; }
+          .justify-content-between { justify-content: space-between; }
+          .align-items-center { align-items: center; }
+          .align-items-end { align-items: flex-end; }
+          .text-center { text-align: center; }
+          .text-start { text-align: left; }
+          .text-justify { text-align: justify; }
+          .flex-grow-1 { flex-grow: 1; }
+          .m-0 { margin: 0; }
+          .fw-bold { font-weight: bold; }
+          .ribbon-wrapper-12 { position: relative; display: inline-block; margin: 8px 0 12px 0; }
+          .ribbon-center-box { background-color: #3b71ca !important; color: #ffffff !important; font-size: 20px; font-weight: bold; padding: 6px 36px; border: 2px solid #ffffff !important; outline: 2px solid #3b71ca !important; }
+          .ribbon-wing-left { position: absolute; top: 6px; left: -22px; width: 32px; height: 100%; background-color: #2a5298 !important; clip-path: polygon(100% 0, 0 50%, 100% 100%); }
+          .ribbon-wing-right { position: absolute; top: 6px; right: -22px; width: 32px; height: 100%; background-color: #2a5298 !important; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+          .cert-table-exact { width: 100%; border-collapse: collapse !important; margin: 10px 0; }
+          .cert-table-exact th, .cert-table-exact td { border: 1.5px solid #000000 !important; padding: 5px; }
+          .border-top { border-top: 1px solid #000 !important; padding-top: 4px; }
+        </style>
+      </head>
+      <body>
+        <div class="family-cert-container">
+          ${rawHtml}
+        </div>
+      </body>
+      </html>
+    `);
+    printDoc.close();
+
+    setTimeout(function() {
+      document.getElementById('secretFamilyPrintFrame').contentWindow.focus();
+      document.getElementById('secretFamilyPrintFrame').contentWindow.print();
+    }, 400);
+  }
+</script>

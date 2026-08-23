@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ - ক্যাশলেস সেবা সিস্টেম</title>
+
+  <!-- Bootstrap 5 CSS & FontAwesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 JS Bundle in Head -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- SweetAlert2 CSS & JS (প্রফেশনাল পপ-আপ অ্যালার্ট) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- CSS Rules -->
+  <style>
+    body { font-family: 'Kalpurush', 'Tiro Bangla', sans-serif; background-color: #f8fafc; }
+    .top-purple-bar { background-color: #7b1fa2; color: #fff; font-size: 13px; padding: 4px 0; }
+    .uniontax-header { background-color: #006837; color: #ffffff; padding: 10px 0; }
+    .notice-marquee { background-color: #008a43; color: #ffffff; font-size: 14px; padding: 6px 0; }
+    .nav-link-custom { color: #ffffff !important; padding: 8px 14px !important; border-radius: 4px; transition: all 0.2s ease-in-out; font-weight: 500; text-decoration: none; display: inline-block; cursor: pointer; }
+    .nav-link-custom:hover { background-color: #006837 !important; color: #ffeb3b !important; }
+    .active-nav-item { background-color: #006837 !important; color: #ffffff !important; font-weight: bold !important; border-bottom: 3px solid #ffeb3b; }
+    
+    .section-header-green { background-color: #006837; color: white; padding: 10px 16px; font-weight: bold; font-size: 15px; border-radius: 6px 6px 0 0; }
+    .section-body-white { background: white; border: 1px solid #006837; padding: 16px; border-radius: 0 0 6px 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+    .footer-link-list { list-style: none; padding: 0; margin: 0; }
+    .footer-link-list li { margin-bottom: 8px; font-size: 13.5px; color: #334155; }
+    .footer-link-list a { color: #1e293b; text-decoration: none; font-weight: 500; }
+    .footer-link-list a:hover { color: #006837; text-decoration: underline; }
+    .hotline-badge { display: flex; align-items: center; justify-content: space-between; border-radius: 30px; padding: 5px 14px; color: white; font-weight: bold; font-size: 13px; margin-bottom: 7px; text-decoration: none; }
+    
+    .admin-sidebar { background-color: #0f172a; min-height: calc(100vh - 70px); color: #cbd5e1; border-radius: 8px; }
+    .admin-menu-link { color: #cbd5e1; text-decoration: none; padding: 12px 16px; display: block; border-radius: 6px; margin-bottom: 4px; font-size: 15px; }
+    .admin-menu-link:hover, .admin-menu-link.active { background-color: #006837; color: #ffffff; font-weight: bold; }
+    
+    .credit-box-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 12px; height: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+
+    .status-badge-rejected { background-color: #d32f2f; color: #ffffff; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 6px; display: inline-block; }
+    .status-badge-pending { background-color: #fbc02d; color: #000000; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 6px; display: inline-block; }
+    .status-badge-approved { background-color: #00897b; color: #ffffff; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 6px; display: inline-block; }
+
+    .btn-act-approve { background-color: #00897b; color: #ffffff; border: none; border-radius: 6px; width: 32px; height: 32px; font-size: 14px; margin-right: 4px; cursor: pointer; }
+    .btn-act-edit { background-color: #fbc02d; color: #000000; border: none; border-radius: 6px; width: 32px; height: 32px; font-size: 14px; margin-right: 4px; cursor: pointer; }
+    .btn-act-reject { background-color: #e53935; color: #ffffff; border: none; border-radius: 6px; width: 32px; height: 32px; font-size: 14px; margin-right: 4px; cursor: pointer; }
+    .btn-act-print { background-color: #d32f2f; color: #ffffff; border: none; border-radius: 6px; padding: 4px 10px; font-size: 13px; font-weight: bold; margin-left: 2px; cursor: pointer; }
+    
+    @media print { .no-print { display: none !important; } }
+    .swal2-popup {
+      font-family: 'Kalpurush', 'Tiro Bangla', sans-serif !important;
+      border-radius: 12px !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. TOP PURPLE STRIP -->
+  <div class="top-purple-bar no-print">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ ক্যাশলেস সেবা সিস্টেমে স্বাগতম</div>
+      <div>হেল্পলাইনঃ ০১৭১০১৮১০৫৯, Email: kisabuj35@gmail.com</div>
+    </div>
+  </div>
+
+  <!-- 2. MAIN HEADER -->
+  <div class="uniontax-header no-print">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap">
+      <div class="d-flex align-items-center">
+        <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" alt="Auliapur UP Logo" width="60" class="me-3 bg-white rounded-circle p-1">
+        <div>
+          <h3 class="fw-bold m-0" style="font-size: 24px;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</h3>
+          <small>পটুয়াখালী সদর, পটুয়াখালী | ক্যাশলেস ইউনিয়ন পরিষদ অনলাইন সেবা</small>
+        </div>
+      </div>
+      
+      <div class="d-flex gap-2 mt-2 mt-md-0">
+        <select class="form-select form-select-sm"><option>বরিশাল বিভাগ</option></select>
+        <select class="form-select form-select-sm"><option>পটুয়াখালী জেলা</option></select>
+        <select class="form-select form-select-sm"><option>পটুয়াখালী সদর</option></select>
+        <select class="form-select form-select-sm"><option>১১নং আউলিয়াপুর</option></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. MAIN NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-1 no-print">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainMenu">
+        <div class="navbar-nav me-auto align-items-center">
+          <a class="nav-link-custom active-nav-item" href="javascript:void(0)" onclick="navToSection('publicHome', this)"><i class="fa fa-home"></i> হোম</a>
+          
+          <!-- 🟢 সনদের আবেদন ড্রপডাউন সাব-মেনু -->
+          <div class="nav-item dropdown">
+            <a class="nav-link-custom dropdown-toggle text-warning fw-bold" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fa fa-certificate me-1"></i> সনদের আবেদন
+            </a>
+            <ul class="dropdown-menu shadow">
+              <li><a class="dropdown-item fw-bold text-danger py-2" href="javascript:void(0)" onclick="openMasterService('নাগরিকত্ব সনদ')"><i class="fa fa-id-card me-2"></i>নাগরিকত্ব সনদ</a></li>
+              <li><a class="dropdown-item fw-bold text-success py-2" href="javascript:void(0)" onclick="openMasterService('ট্রেড লাইসেন্স')"><i class="fa fa-briefcase me-2"></i>ট্রেড লাইসেন্স</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item fw-bold text-success py-2" href="javascript:void(0)" onclick="openMasterService('পারিবারিক সনদ')"><i class="fa fa-people-roof me-2"></i> পারিবারিক সনদ</a></li>
+              <li><a class="dropdown-item fw-bold text-primary py-2" href="javascript:void(0)" onclick="openMasterService('উত্তরাধিকারী সনদ')"><i class="fa fa-users me-2"></i> উত্তরাধিকারী সনদ</a></li>
+              <li><a class="dropdown-item fw-bold text-dark py-2" href="javascript:void(0)" onclick="openMasterService('ওয়ারিশান সনদ')"><i class="fa fa-sitemap me-2"></i>ওয়ারিশান সনদ</a></li>
+            </ul>
+          </div>
+
+          <a class="nav-link-custom" href="javascript:void(0)" onclick="navToSection('trackSection', this)"><i class="fa fa-search"></i> আবেদন ট্র্যাকিং</a>
+          <a class="nav-link-custom" href="javascript:void(0)" onclick="navToSection('serviceInfoSection', this)"><i class="fa fa-info-circle"></i> ইউপি সেবা পরিচিতি</a>
+          <a class="nav-link-custom" href="javascript:void(0)" onclick="navToSection('noticeSection', this)"><i class="fa fa-bullhorn"></i> নোটিশ</a>
+        </div>
+        <button class="btn btn-sm btn-warning fw-bold px-3" id="adminAuthBtn" onclick="handleNavAuthBtn()"><i class="fa fa-lock me-1"></i> এডমিন লগইন</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 4. MARQUEE NOTICE -->
+  <div class="notice-marquee no-print">
+    <div class="container d-flex">
+      <span class="fw-bold me-2 badge bg-danger fs-6">নোটিশ:</span>
+      <marquee behavior="scroll" direction="left" scrollamount="6">
+        ১১নং আউলিয়াপুর ইউনিয়ন পরিষদের ক্যাশলেস অনলাইন সেবা সিস্টেমে আপনাকে স্বাগতম। এখন থেকে ঘরে বসেই নাগরিকত্ব সনদ, পারিবারিক সনদ ও ওয়ারিশান সনদসহ সকল সেবার আবেদন করুন।
+      </marquee>
+    </div>
+  </div>
+
+  <!-- 🟢 MAIN DYNAMIC SECTIONS CONTAINER -->
+  <!-- নোট: আপনার অন্য HTML ফাইলগুলোর (Home, Citizen ইত্যাদি) ভিতরের কোডগুলো নিচের সংশ্লিষ্ট ডিভগুলোর ভেতরে পেস্ট করবেন -->
+  <div id="mainContent">
+    
+    <!-- Home সেকশন -->
+    <div id="publicHome" class="view-section container my-4">
+      <!-- আপনার Home.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
+    </div>
+
+    <!-- Citizen সেকশন -->
+    <div id="citizenView" class="view-section d-none container my-4">
+      <!-- আপনার Citizen.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
+    </div>
+
+    <!-- Trade License সেকশন -->
+    <div id="tradeView" class="view-section d-none container my-4">
+      <!-- আপনার TradeLicense.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
+    </div>
+
+    <!-- Family / Warishan সেকশন -->
+    <div id="familyWarishanView" class="view-section d-none container my-4">
+      <!-- আপনার Family_Warishan.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
+    </div>
+
+    <!-- Warishan সেকশন -->
+    <div id="warishanView" class="view-section d-none container my-4">
+      <!-- আপনার Warishan.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
+    </div>
+
+    <!-- Admin Panel সেকশন -->
+    <div id="adminPanel" class="view-section d-none container-fluid my-4">
+      <!-- আপনার Admin_Panel.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
+    </div>
+
+  </div>
+
+  <!-- সম্পূর্ণ ফুটার -->
+  <div class="container my-4 no-print">
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <div class="section-header-green">গুরুত্বপূর্ণ লিংক</div>
+        <div class="section-body-white" style="min-height: 245px;">
+          <ul class="footer-link-list">
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="https://bangabhaban.portal.gov.bd" target="_blank">রাষ্ট্রপতির কার্যালয়</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="https://pmo.gov.bd" target="_blank">প্রধানমন্ত্রীর কার্যালয়</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="https://mopa.gov.bd" target="_blank">জনপ্রশাসন মন্ত্রণালয়</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="https://bangladesh.gov.bd" target="_blank">জাতীয় তথ্য বাতায়ন</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="http://forms.gov.bd" target="_blank">বাংলাদেশ ফরম</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="section-header-green">অন্যান্য</div>
+        <div class="section-body-white" style="min-height: 245px;">
+          <ul class="footer-link-list">
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="#">সকল ই-সেবা</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="#">ই-চালান</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="#">ভূমি সেবা</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="#">ভ্রমণ গাইড</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="#">এটুআই (a2i)</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="#">ভিজিটর স্ট্যাটাস</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="#">যোগাযোগ</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="section-header-green">নোটিশ বোর্ড</div>
+        <div class="section-body-white" style="min-height: 245px;">
+          <ul class="footer-link-list">
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="#">ইউনিয়ন ট্যাক্স: আবেদন, পেমেন্ট ও সনদ গাইড</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="#">UnionTax অ্যাডমিন: ইউনিয়ন সেবা পরিচালনার সহজ গাইড</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="#">নতুন ইউনিয়ন/পৌরসভা রেজিস্ট্রেশন</a></li>
+            <li><i class="fa-solid fa-circle-check text-success me-2"></i> <a href="#">হোল্ডিং ট্যাক্স সেবা নিন</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-100 text-center my-3">
+      <img src="https://lh3.googleusercontent.com/d/1o2uF17S05rpSyYCWHwmH5wT45WV6FkMv" alt="Landscape Silhouette" class="w-100 img-fluid" style="max-height: 110px; object-fit: contain;">
+    </div>
+
+    <div class="row g-3 mt-1">
+      <div class="col-md-4">
+        <div class="credit-box-card">
+          <div class="d-flex align-items-center justify-content-center gap-3">
+            <div class="text-center">
+              <small class="fw-bold text-success d-block mb-1" style="font-size: 13.5px;">পরিকল্পনা ও বাস্তবায়নে:</small>
+              <strong class="text-dark d-block" style="font-size: 14px;">মোঃ কামরুল ইসলাম সবুজ</strong>
+              <small class="text-muted d-block">মোবাইলঃ ০১৭১০১৮১০৫৯</small>
+              <small class="text-muted">www.facebook.com/kisabuj35</small>
+            </div>
+            <img src="https://lh3.googleusercontent.com/d/1vZUuzu8m0kk5V3rc5x9Meb8nnh-bL660" alt="a2i Logo" width="70" height="60" class="ms-2">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="credit-box-card">
+          <div class="d-flex align-items-center justify-content-center gap-3">
+            <div class="text-center">
+              <small class="fw-bold text-success d-block mb-1" style="font-size: 13.5px;">ব্যবস্থাপনা ও তত্ত্বাবধানে:</small>
+              <strong class="text-dark d-block" style="font-size: 14px;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</strong>
+              <strong class="text-dark d-block" style="font-size: 14px;">পটুয়াখালী সদর, পটুয়াখালী</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="credit-box-card">
+          <div class="d-flex align-items-center justify-content-center gap-3">
+            <div class="text-center">
+              <small class="fw-bold text-success d-block mb-1" style="font-size: 13.5px;">কারিগরি সহায়তায়:</small>
+              <strong class="text-dark d-block" style="font-size: 14px;">কে আই আইটি সলিউশন</strong>
+              <strong class="text-dark d-block" style="font-size: 14px;">মোঃ কামরুল ইসলাম সবুজ</strong>
+              <strong class="text-dark d-block" style="font-size: 14px;">Email: kisabuj35@gmail.com</strong>
+            </div>
+            <img src="https://lh3.googleusercontent.com/d/1k0NV6v1zPL08GEI93UsicJarQr3o_BxC" width="70" height="70" alt="Logo">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4 pt-3 border-top">
+      <span class="badge bg-danger me-2 fs-6">Pay with ekpay</span>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Visa_2021.svg" height="18" class="me-2">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" height="18" class="me-2">
+      <span class="fw-bold me-2" style="color: #e2136e;">bKash</span>
+      <span class="fw-bold me-2" style="color: #f7941d;">Nagad</span>
+    </div>
+  </div>
+
+  <!-- 🟢 GLOBAL MASTER NAVIGATION & GOOGLE APPS SCRIPT API ENGINE -->
+  <script>
+    // আপনার Google Apps Script Web App URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOiYq6GGLaJaR5RSmniqhffWFXv_qvvundj_CrYlDVUcUQV4qAzV9tknPwfDIIT1kZxQ/exec";
+
+    // 🟢 ব্যাকএন্ডের সাথে ডাটা আদান-প্রদানের ইউনিভার্সাল ফাংশন
+    async function callBackendAPI(actionName, payload = {}) {
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: actionName, data: payload })
+        });
+        return await response.json();
+      } catch (error) {
+        console.error("API Error:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'সার্ভার সমস্যা',
+          text: 'সার্ভারের সাথে সংযোগ স্থাপন করা সম্ভব হয়নি।'
+        });
+        return null;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      checkAdminSession();
+    });
+
+    function checkAdminSession() {
+      var session = localStorage.getItem('upAdminSession');
+      if (session) {
+        var btn = document.getElementById('adminAuthBtn');
+        if(btn) {
+          btn.innerHTML = '<i class="fa fa-tachometer-alt me-1"></i> এডমিন প্যানেল';
+          btn.className = 'btn btn-sm btn-success fw-bold px-3';
+        }
+      }
+    }
+
+    function handleNavAuthBtn() {
+      var session = localStorage.getItem('upAdminSession');
+      if (session) {
+        navToSection('adminPanel');
+        switchAdminTab('dashTab');
+        if (typeof loadAdminDashboard === 'function') loadAdminDashboard();
+        if (typeof loadCitizenshipApps === 'function') loadCitizenshipApps();
+        if (typeof loadFamilyApps === 'function') loadFamilyApps();
+        if (typeof loadWarishanApps === 'function') loadWarishanApps();
+        if (typeof loadAdminApps === 'function') loadAdminApps();
+        if (typeof loadTaxPayers === 'function') loadTaxPayers();
+        if (typeof loadTradeLicenses === 'function') loadTradeLicenses();
+      } else {
+        navToSection('loginSection');
+      }
+    }
+
+    // 🟢 কেন্দ্রীয় পেজ ট্রানজিশন ফাংশন
+    function navToSection(secId, element) {
+      document.querySelectorAll('.view-section').forEach(function(el) {
+        el.classList.add('d-none');
+      });
+
+      var target = document.getElementById(secId);
+      if (target) {
+        target.classList.remove('d-none');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      document.querySelectorAll('.nav-link-custom').forEach(function(link) {
+        link.classList.remove('active-nav-item');
+      });
+      if (element) {
+        element.classList.add('active-nav-item');
+      }
+    }
+
+    // 🟢 কেন্দ্রীয় সার্ভিস ওপেনার
+    function openMasterService(serviceName) {
+      if (serviceName === 'নাগরিকত্ব সনদ') {
+        navToSection('citizenView');
+        return;
+      }
+      
+      if (serviceName === 'ট্রেড লাইসেন্স' || serviceName === 'নতুন ট্রেড লাইসেন্স') {
+        var tradePage = document.getElementById('tradeView');
+        if (tradePage) {
+          navToSection('tradeView');
+        } else {
+          var trModal = document.getElementById('tradeModal') || document.getElementById('tradeLicenseModal');
+          if (trModal) bootstrap.Modal.getOrCreateInstance(trModal).show();
+        }
+        return;
+      }
+
+      if (serviceName === 'ওয়ারিশান সনদ') {
+        navToSection('warishanView');
+        var f = document.getElementById('warishanAppForm');
+        if (f) f.reset();
+        return;
+      }
+
+      if (serviceName === 'পারিবারিক সনদ' || serviceName === 'উত্তরাধিকারী সনদ') {
+        navToSection('familyWarishanView');
+        var f = document.getElementById('familyWarishanForm');
+        if (f) f.reset();
+        
+        var tInput = document.getElementById('fwServiceType');
+        if (tInput) tInput.value = serviceName;
+
+        var isWar = (serviceName === 'উত্তরাধিকারী সনদ');
+        var head = document.getElementById('fwFormMainHeading');
+        if (head) {
+          head.innerHTML = isWar ? '<i class="fa fa-users me-2"></i> চেয়ারম্যান বরাবর উত্তরাধিকারী সনদের আবেদন' : '<i class="fa fa-people-roof me-2"></i> চেয়ারম্যান বরাবর পারিবারিক সনদের আবেদন';
+        }
+        var sub = document.getElementById('fwSubjectText');
+        if (sub) {
+          sub.innerText = isWar ? 'উত্তরাধিকারী সনদপত্র' : 'পারিবারিক সনদপত্র';
+        }
+        var tbody = document.getElementById('fwMembersTbody');
+        if (tbody) {
+          tbody.innerHTML = '';
+          for(var i=0; i<3; i++) {
+            if (typeof addFwMemberRow === 'function') addFwMemberRow();
+          }
+        }
+        return;
+      }
+
+      // সাধারণ প্রত্যয়ন মোডাল ওপেনিং
+      var gTitle = document.getElementById('generalModalTitle');
+      if (gTitle) gTitle.innerText = serviceName + ' এর অনলাইন আবেদন';
+      var gType = document.getElementById('genTypeHidden');
+      if (gType) gType.value = serviceName;
+      var gForm = document.getElementById('generalForm');
+      if (gForm) gForm.reset();
+      
+      var modalEl = document.getElementById('generalProtyayonModal');
+      if (modalEl) bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    }
+
+    function openFamilyWarishanPage(type) { openMasterService(type); }
+    function openServiceModal(type) { openMasterService(type); }
+
+    function switchAdminTab(tabId) {
+      document.querySelectorAll('.admin-tab').forEach(function(el) {
+        el.classList.add('d-none');
+      });
+      var target = document.getElementById(tabId);
+      if(target) target.classList.remove('d-none');
+
+      document.querySelectorAll('.admin-menu-link').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      if(window.event && window.event.target) {
+        window.event.target.classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>

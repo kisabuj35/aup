@@ -1,6 +1,6 @@
 <!-- ========================================== -->
 <!-- 11NO AULIAPUR UNION PARISHAD - HOME MODULE -->
-<!-- File: home.html (Clean & Fully Linked)     -->
+<!-- File: Home.html (Clean, Linked & Apps Script API Supported) -->
 <!-- ========================================== -->
 
 <style>
@@ -16,28 +16,28 @@
 <div id="publicHome" class="view-section container my-4">
   <div class="row g-4">
     
-    <!-- LEFT 25 SERVICES GRID -->
+    <!-- বাম পাশ: ২৫টি সেবার গ্রিড -->
     <div class="col-lg-9">
       <div class="section-header-green">সেবাসমূহ (আবেদন করতে যেকোনো সেবায় ক্লিক করুন)</div>
       <div class="section-body-white mb-4">
         <div class="row g-2">
           
-          <!-- ১. নাগরিকত্ব সনদ (অক্ষত) -->
+          <!-- ১. নাগরিকত্ব সনদ -->
           <div class="col-6 col-md-3"><div class="service-box bg-danger-subtle border-danger" onclick="navToSection('citizenView')"><div class="service-icon-circle border-danger text-danger bg-white"><i class="fa-solid fa-id-card"></i></div><p class="service-title text-danger fw-bold">নাগরিকত্ব সনদ</p></div></div>
           
-          <!-- ২. ট্রেড লাইসেন্স (অক্ষত) -->
+          <!-- ২. ট্রেড লাইসেন্স -->
           <div class="col-6 col-md-3"><div class="service-box" onclick="navToSection('tradeView')"><div class="service-icon-circle"><i class="fa-solid fa-store"></i></div><p class="service-title">ট্রেড লাইসেন্স</p></div></div>
           
-          <!-- ৩. ওয়ারিশান সনদ (অক্ষত) -->
-          <div class="col-6 col-md-3"><div class="service-box bg-warning-subtle border-warning" onclick="openFamilyWarishanPage('ওয়ারিশান সনদ')"><div class="service-icon-circle border-warning text-dark bg-white"><i class="fa-solid fa-sitemap"></i></div><p class="service-title text-dark fw-bold">ওয়ারিশান সনদ</p></div></div>
+          <!-- ৩. ওয়ারিশান সনদ -->
+          <div class="col-6 col-md-3"><div class="service-box bg-warning-subtle border-warning" onclick="openMasterService('ওয়ারিশান সনদ')"><div class="service-icon-circle border-warning text-dark bg-white"><i class="fa-solid fa-sitemap"></i></div><p class="service-title text-dark fw-bold">ওয়ারিশান সনদ</p></div></div>
           
-          <!-- ৪. উত্তরাধিকারী সনদ (অক্ষত) -->
-          <div class="col-6 col-md-3"><div class="service-box" onclick="openFamilyWarishanPage('উত্তরাধিকারী সনদ')"><div class="service-icon-circle"><i class="fa-solid fa-users"></i></div><p class="service-title">উত্তরাধিকারী সনদ</p></div></div>
+          <!-- ৪. উত্তরাধিকারী সনদ -->
+          <div class="col-6 col-md-3"><div class="service-box" onclick="openMasterService('উত্তরাধিকারী সনদ')"><div class="service-icon-circle"><i class="fa-solid fa-users"></i></div><p class="service-title">উত্তরাধিকারী সনদ</p></div></div>
           
-          <!-- ৫. পারিবারিক সনদ (অক্ষত) -->
-          <div class="col-6 col-md-3"><div class="service-box" onclick="openFamilyWarishanPage('পারিবারিক সনদ')"><div class="service-icon-circle"><i class="fa-solid fa-people-roof"></i></div><p class="service-title">পারিবারিক সনদ</p></div></div>
+          <!-- ৫. পারিবারিক সনদ -->
+          <div class="col-6 col-md-3"><div class="service-box" onclick="openMasterService('পারিবারিক সনদ')"><div class="service-icon-circle"><i class="fa-solid fa-people-roof"></i></div><p class="service-title">পারিবারিক সনদ</p></div></div>
 
-          <!-- 🟢 ৪৪নং ছবির বাকী ২০টি সাধারণ সনদ (যা আলাদা ফাইলে যাবে) -->
+          <!-- সাধারণ ২০টি সনদ -->
           <div class="col-6 col-md-3"><div class="service-box" onclick="openGeneralServicePage('বিবিধ প্রত্যয়নপত্র')"><div class="service-icon-circle"><i class="fa-solid fa-file-signature"></i></div><p class="service-title">বিবিধ প্রত্যয়নপত্র</p></div></div>
           <div class="col-6 col-md-3"><div class="service-box" onclick="openGeneralServicePage('চারিত্রিক সনদ')"><div class="service-icon-circle"><i class="fa-solid fa-user-check"></i></div><p class="service-title">চারিত্রিক সনদ</p></div></div>
           <div class="col-6 col-md-3"><div class="service-box" onclick="openGeneralServicePage('ভূমিহীন সনদ')"><div class="service-icon-circle"><i class="fa-solid fa-house-chimney-crack"></i></div><p class="service-title">ভূমিহীন সনদ</p></div></div>
@@ -65,13 +65,13 @@
       <div class="section-header-green">ক্যাশলেস ইউনিয়ন পরিষদ সেবা</div>
       <div class="section-body-white mb-2">
         <p class="mb-0 text-justify" style="font-size: 13.5px; line-height: 1.8;">
-          ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ হলো পটুয়াখালী জেলার একটি ঐতিহ্যবাহী প্রশাসনিক একক। ডিজিটাল বাংলাদেশ গড়ার লক্ষ্যে নাগরিকদের সকল সেবা দ্রুত ও সহজ উপায়ে প্রদানের জন্য এই ক্যাশলেস অনলাইন সেবা পোর্টাল চালু করা হয়েছে।
+          ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ হলো পটুয়াখালী জেলার একটি ঐতিহ্যবাহী প্রশাসনিক একক। ডিজিটাল ও স্মার্ট বাংলাদেশ গড়ার লক্ষ্যে নাগরিকদের সকল সেবা দ্রুত ও সহজ উপায়ে প্রদানের জন্য এই ক্যাশলেস অনলাইন সেবা পোর্টাল চালু করা হয়েছে।
         </p>
       </div>
 
     </div>
 
-    <!-- RIGHT SIDEBAR -->
+    <!-- ডান পাশ: পরিচিতি ও জরুরি হটলাইন -->
     <div class="col-lg-3">
       <div class="section-header-green">পরিকল্পনা ও বাস্তবায়নে</div>
       <div class="section-body-white text-center mb-4">
@@ -103,7 +103,7 @@
   </div>
 </div>
 
-<!-- 2. TRACKING SECTION (আবেদন কপি ও অফিসিয়াল সনদ শতভাগ প্রিন্ট সহ) -->
+<!-- 2. TRACKING SECTION -->
 <div id="trackSection" class="view-section container my-5 d-none">
   <div class="row justify-content-center">
     <div class="col-md-7">
@@ -145,14 +145,14 @@
         <form onsubmit="event.preventDefault(); doAdminLogin();">
           <input type="text" id="admUser" class="form-control mb-3" placeholder="ইউজারনেম" required>
           <input type="password" id="admPass" class="form-control mb-3" placeholder="পাসওয়ার্ড" required>
-          <button type="submit" class="btn btn-success w-100 fw-bold">প্রবেশ করুন</button>
+          <button type="submit" class="btn btn-success w-100 fw-bold" id="admLoginBtn">প্রবেশ করুন</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SUCCESS MODAL -->
+<!-- 6. SUCCESS MODAL -->
 <div class="modal fade" id="successModal" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg rounded-4 text-center p-4">
@@ -161,7 +161,7 @@
       <p class="text-muted mb-3">আপনার আবেদনের ট্র্যাকিং নম্বরটি সংরক্ষণ করুন:</p>
       <div class="mb-3"><span class="tracking-code-badge" id="successAppId">AUL-000000</span></div>
       <div class="d-flex justify-content-center gap-2">
-        <button class="btn btn-outline-purple fw-bold px-3 btn-sm" onclick="copyTrackingCode()"><i class="fa fa-copy me-1"></i> আইডি কপি</button>
+        <button class="btn btn-outline-dark fw-bold px-3 btn-sm" onclick="copyTrackingCode()"><i class="fa fa-copy me-1"></i> আইডি কপি</button>
         <button class="btn btn-info text-white fw-bold px-3 btn-sm" id="successAppCopyBtn"><i class="fa fa-print me-1"></i> আবেদন কপি প্রিন্ট</button>
         <button class="btn btn-success fw-bold px-4 btn-sm" data-bs-dismiss="modal">ঠিক আছে</button>
       </div>
@@ -173,60 +173,96 @@
   function copyTrackingCode() {
     var code = document.getElementById('successAppId').innerText;
     navigator.clipboard.writeText(code);
-    alert('ট্র্যাকিং আইডি কপি হয়েছে: ' + code);
+    Swal.fire({
+      icon: 'success',
+      title: 'কপি হয়েছে!',
+      text: 'ট্র্যাকিং আইডি: ' + code,
+      timer: 1500,
+      showConfirmButton: false
+    });
   }
 
-  // 🟢 নির্ভুল ট্র্যাকিং ও প্রিন্ট লজিক
-  function executeTrack() {
+  // 🟢 নির্ভুল ট্র্যাকিং ও প্রিন্ট হ্যান্ডলার
+  async function executeTrack() {
     var appId = document.getElementById('trackInput').value.trim();
     var output = document.getElementById('trackOutput');
     if(!appId) return alert('আবেদন আইডি টাইপ করুন!');
+    
     output.innerHTML = '<p class="text-center text-success py-3"><i class="fa fa-spinner fa-spin"></i> অনুসন্ধান করা হচ্ছে...</p>';
 
-    google.script.run.withSuccessHandler(function(data) {
-      if(!data || !data.found) {
-        output.innerHTML = '<div class="alert alert-danger text-center shadow-sm">আবেদনটি পাওয়া যায়নি! সঠিক আইডি প্রদান করুন।</div>';
+    const data = await callBackendAPI('trackApplication', appId);
+
+    if(!data || !data.found) {
+      output.innerHTML = '<div class="alert alert-danger text-center shadow-sm mt-3">আবেদনটি পাওয়া যায়নি! সঠিক আইডি প্রদান করুন।</div>';
+    } else {
+      var statusBadge = (data.status === 'Approved') ? '<span class="badge bg-success fs-6">Approved (অনুমোদিত)</span>' : ((data.status === 'Rejected') ? '<span class="badge bg-danger fs-6">Rejected (বাতিল)</span>' : '<span class="badge bg-warning text-dark fs-6">Pending (অপেক্ষমাণ)</span>');
+
+      var appCopyBtn = '';
+      if(data.type === 'ওয়ারিশান সনদ' || (data.appId && data.appId.indexOf('WAR') > -1)) {
+        appCopyBtn = `<button class="btn btn-sm btn-outline-primary fw-bold" onclick="printWarishanApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
       } else {
-        var statusBadge = (data.status === 'Approved') ? '<span class="status-badge-approved">Approved</span>' : ((data.status === 'Rejected') ? '<span class="status-badge-rejected">Rejected</span>' : '<span class="status-badge-pending">Pending</span>');
-
-        // আবেদন কপি প্রিন্ট বাটন (সব সনদের জন্যই সঠিক ফাংশনে যাবে)
-        var appCopyBtn = '';
-        if(data.type === 'ওয়ারিশান সনদ' || (data.appId && data.appId.indexOf('WAR') > -1)) {
-          appCopyBtn = `<button class="btn btn-sm btn-outline-primary fw-bold" onclick="printWarishanApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
-        } else {
-          appCopyBtn = `<button class="btn btn-sm btn-outline-primary fw-bold" onclick="printGeneralAppCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
-        }
-
-        // অফিসিয়াল সনদ প্রিন্ট বাটন (যদি অনুমোদিত থাকে)
-        var officialCertBtn = '';
-        if(data.status === 'Approved') {
-          if(data.type === 'নাগরিকত্ব সনদ') {
-            officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showCitizenPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
-          } else if(data.type === 'পারিবারিক সনদ' || data.type === 'উত্তরাধিকারী সনদ') {
-            officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showFamilyPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
-          } else if(data.type === 'ওয়ারিশান সনদ') {
-            officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showFamilyWarishanPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
-          } else {
-            // সাধারণ ২০টি সনদের অফিসিয়াল প্রিন্ট
-            officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showGeneralCertPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
-          }
-        }
-
-        output.innerHTML = `
-          <div class="card p-3 border mt-3 bg-white shadow-sm rounded-3">
-            <h5 class="fw-bold text-success mb-2"><i class="fa fa-user-circle me-1"></i> আবেদনকারী: ${data.applicantName || data.name}</h5>
-            <p class="mb-1"><strong>সেবার নাম:</strong> ${data.type}</p>
-            <p class="mb-1"><strong>ট্র্যাকিং আইডি:</strong> <span class="fw-bold text-primary">${data.appId}</span></p>
-            <p class="mb-1"><strong>মোবাইল নম্বর:</strong> ${data.mobile || '-'}</p>
-            <p class="mb-1"><strong>আবেদনের তারিখ:</strong> ${data.date || data.applyDate || '-'}</p>
-            <p class="mb-0"><strong>বর্তমান অবস্থা:</strong> ${statusBadge}</p>
-            <div class="mt-3 d-flex gap-2">
-              ${appCopyBtn}
-              ${officialCertBtn}
-            </div>
-          </div>
-        `;
+        appCopyBtn = `<button class="btn btn-sm btn-outline-primary fw-bold" onclick="printGeneralAppCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
       }
-    }).trackApplication(appId);
+
+      var officialCertBtn = '';
+      if(data.status === 'Approved') {
+        if(data.type === 'নাগরিকত্ব সনদ') {
+          officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showCitizenPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
+        } else if(data.type === 'পারিবারিক সনদ' || data.type === 'উত্তরাধিকারী সনদ') {
+          officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showFamilyPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
+        } else if(data.type === 'ওয়ারিশান সনদ') {
+          officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showFamilyWarishanPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
+        } else if(data.type === 'ট্রেড লাইসেন্স') {
+          officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showTradeCertPreview('${data.appId}')"><i class="fa fa-print me-1"></i> লাইসেন্স প্রিন্ট</button>`;
+        } else {
+          officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showGeneralCertPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
+        }
+      }
+
+      output.innerHTML = `
+        <div class="card p-3 border mt-3 bg-white shadow-sm rounded-3">
+          <h5 class="fw-bold text-success mb-2"><i class="fa fa-user-circle me-1"></i> আবেদনকারী: ${data.applicantName || data.name}</h5>
+          <p class="mb-1"><strong>সেবার নাম:</strong> ${data.type}</p>
+          <p class="mb-1"><strong>ট্র্যাকিং আইডি:</strong> <span class="fw-bold text-primary">${data.appId}</span></p>
+          <p class="mb-1"><strong>মোবাইল নম্বর:</strong> ${data.mobile || '-'}</p>
+          <p class="mb-1"><strong>আবেদনের তারিখ:</strong> ${data.date || data.applyDate || '-'}</p>
+          <p class="mb-0"><strong>বর্তমান অবস্থা:</strong> ${statusBadge}</p>
+          <div class="mt-3 d-flex gap-2">
+            ${appCopyBtn}
+            ${officialCertBtn}
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  // 🟢 এডমিন লগইন হ্যান্ডলার
+  async function doAdminLogin() {
+    var u = document.getElementById('admUser').value.trim();
+    var p = document.getElementById('admPass').value.trim();
+    var btn = document.getElementById('admLoginBtn');
+
+    if(!u || !p) return alert('ইউজারনেম এবং পাসওয়ার্ড প্রদান করুন!');
+    btn.disabled = true; btn.innerText = 'যাচাই হচ্ছে...';
+
+    const res = await callBackendAPI('adminLogin', { username: u, password: p });
+    btn.disabled = false; btn.innerText = 'প্রবেশ করুন';
+
+    if(res && res.success) {
+      localStorage.setItem('upAdminSession', JSON.stringify(res));
+      document.getElementById('adminAuthBtn').innerHTML = '<i class="fa fa-tachometer-alt me-1"></i> এডমিন প্যানেল';
+      document.getElementById('adminAuthBtn').className = 'btn btn-sm btn-success fw-bold px-3';
+      
+      navToSection('adminPanel');
+      if (typeof applyAdminRolePermissions === 'function') applyAdminRolePermissions(res);
+      if (typeof switchAdminTab === 'function') switchAdminTab('dashTab');
+      if (typeof loadAdminDashboard === 'function') loadAdminDashboard();
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'লগইন ব্যর্থ',
+        text: res ? res.message : 'ইউজারনেম বা পাসওয়ার্ড সঠিক নয়!'
+      });
+    }
   }
 </script>

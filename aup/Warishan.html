@@ -27,7 +27,6 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.15);
   }
 
-  /* পেজের ভেতরের ওয়াটারমার্ক */
   .war-watermark-bg {
     position: absolute;
     top: 52%;
@@ -48,7 +47,7 @@
     justify-content: space-between;
   }
 
-  /* ৪১ ও ৪২ নং ছবির লাল বর্ডার ওয়ালা ফিতা (Ribbon) */
+  /* লাল বর্ডার ওয়ালা ফিতা (Ribbon) */
   .war-ribbon-wrapper {
     text-align: center;
     margin: 6px 0 10px 0;
@@ -76,7 +75,7 @@
   .war-ribbon-exact::before { left: -24px; border-left-color: transparent; }
   .war-ribbon-exact::after { right: -24px; border-right-color: transparent; }
 
-  /* ৪১ ও ৪২ নং ছবির মতো নিখুঁত টেবিল */
+  /* নিখুঁত টেবিল কাঠামো */
   .war-main-table {
     width: 100%;
     border-collapse: collapse;
@@ -107,7 +106,6 @@
     border: 1.2px solid #000000;
   }
 
-  /* স্বাক্ষরের দাগ */
   .war-sig-line {
     border-top: 1.5px solid #000000;
     display: block;
@@ -121,7 +119,7 @@
   <div class="card shadow-sm border-0 rounded-3">
     <div class="war-card-header d-flex justify-content-between align-items-center">
       <h5 class="fw-bold m-0"><i class="fa fa-sitemap me-2"></i> ওয়ারিশান সনদের অনলাইন আবেদন ফরম</h5>
-      <button class="btn btn-light btn-sm fw-bold text-success" onclick="navToSection('publicHome')"><i class="fa fa-arrow-left me-1"></i> ফিরে যান</button>
+      <button class="btn btn-light btn-sm fw-bold text-success" onclick="navToSection('publicHome')"><i class="fa fa-arrow-left me-1"></i> হোম পেজ</button>
     </div>
     
     <div class="card-body p-4 bg-light">
@@ -255,7 +253,6 @@
 <script>
   var warGroupCounter = 0;
 
-  // 🟢 "মৃত মৃত" সমস্যা রোধ করার স্মার্ট হেল্পার ফাংশন
   function formatMrito(name) {
     if (!name) return '';
     name = name.trim();
@@ -265,11 +262,13 @@
 
   function openWarishanPage() {
     navToSection('warishanView');
-    document.getElementById('warishanAppForm').reset();
+    var f = document.getElementById('warishanAppForm');
+    if (f) f.reset();
   }
 
   function addWarRow(groupIndex) {
     var tbody = document.getElementById('warTableBody_' + groupIndex);
+    if (!tbody) return;
     var count = tbody.getElementsByTagName('tr').length + 1;
     var bnCount = count.toString().replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
     var tr = document.createElement('tr');
@@ -345,16 +344,16 @@
     return tree;
   }
 
-  function submitWarishanForm() {
+  async function submitWarishanForm() {
     var btn = document.getElementById('warSubmitBtn');
     btn.disabled = true; btn.innerText = 'জমা হচ্ছে...';
 
     var warishanTree = collectWarishanTreeData();
     var formData = {
       applicantName: document.getElementById('warAppName').value.trim(),
-      fatherSpouseName: document.getElementById('warAppFather').value.trim(), // আবেদনকারীর পিতা
-      deceasedName: document.getElementById('warDeceasedName').value.trim(),   // মৃত ব্যক্তির নাম
-      deceasedFather: document.getElementById('warDeceasedFather').value.trim(), // মৃত ব্যক্তির পিতা/স্বামী
+      fatherSpouseName: document.getElementById('warAppFather').value.trim(),
+      deceasedName: document.getElementById('warDeceasedName').value.trim(),
+      deceasedFather: document.getElementById('warDeceasedFather').value.trim(),
       nid: document.getElementById('warAppNid').value.trim(),
       mobile: document.getElementById('warAppMobile').value.trim(),
       wardNo: document.getElementById('warAppWard').value,
@@ -363,45 +362,48 @@
       warishanTree: warishanTree
     };
 
-    google.script.run.withSuccessHandler(function(res) {
-      btn.disabled = false; btn.innerText = 'আবেদন সাবমিট করুন';
-      if(res.success) {
-        document.getElementById('warishanAppForm').reset();
-        document.getElementById('successAppId').innerText = res.appId;
-        var appCopyBtn = document.getElementById('successAppCopyBtn');
-        if(appCopyBtn) {
-          appCopyBtn.onclick = function() { printWarishanApplicationCopy(res.appId); };
-        }
-        bootstrap.Modal.getOrCreateInstance(document.getElementById('successModal')).show();
-      } else { alert('ত্রুটি: ' + res.error); }
-    }).submitWarishanApplication(formData);
-  }
+    const res = await callBackendAPI('submitWarishanApplication', formData);
+    btn.disabled = false; btn.innerText = 'আবেদন সাবমিট করুন';
 
-  // 🟢 প্রিন্ট প্রিভিউ জেনারেটর
-  function showFamilyWarishanPrintPreview(appId) {
-    google.script.run.withSuccessHandler(function(data) {
-      if(!data || !data.found) return alert('ওয়ারিশান তথ্য পাওয়া যায়নি!');
-
-      var printArea = document.getElementById('warPrintArea');
-      printArea.innerHTML = '';
-
-      var tree = data.warishanTree || [];
-      var totalRows = 0;
-      tree.forEach(g => { totalRows += (g.members ? g.members.length : 0); });
-
-      var isSinglePage = (totalRows <= 15 && tree.length <= 2);
-
-      if (isSinglePage) {
-        printArea.innerHTML = buildSinglePageHtml_41(data, tree);
-      } else {
-        printArea.innerHTML = buildMultiPageHtml_42(data, tree);
+    if(res && res.success) {
+      document.getElementById('warishanAppForm').reset();
+      document.getElementById('successAppId').innerText = res.appId;
+      var appCopyBtn = document.getElementById('successAppCopyBtn');
+      if(appCopyBtn) {
+        appCopyBtn.onclick = function() { printWarishanApplicationCopy(res.appId); };
       }
-
-      bootstrap.Modal.getOrCreateInstance(document.getElementById('warPrintModal')).show();
-    }).getWarishanDetails(appId);
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('successModal')).show();
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'আবেদন ব্যর্থ',
+        text: res ? res.error : 'আবেদন জমা দেওয়া যায়নি।'
+      });
+    }
   }
 
-  // 🟢 ছবি ৪১ এর হুবহু ১-পেইজ জেনারেটর (মৃত ব্যক্তির পিতা ও নাম ঠিক করা হয়েছে)
+  async function showFamilyWarishanPrintPreview(appId) {
+    const data = await callBackendAPI('getWarishanDetails', appId);
+    if(!data || !data.found) return alert('ওয়ারিশান তথ্য পাওয়া যায়নি!');
+
+    var printArea = document.getElementById('warPrintArea');
+    printArea.innerHTML = '';
+
+    var tree = data.warishanTree || [];
+    var totalRows = 0;
+    tree.forEach(g => { totalRows += (g.members ? g.members.length : 0); });
+
+    var isSinglePage = (totalRows <= 15 && tree.length <= 2);
+
+    if (isSinglePage) {
+      printArea.innerHTML = buildSinglePageHtml_41(data, tree);
+    } else {
+      printArea.innerHTML = buildMultiPageHtml_42(data, tree);
+    }
+
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('warPrintModal')).show();
+  }
+
   function buildSinglePageHtml_41(data, tree) {
     var tableRows = '';
     tree.forEach(function(grp, idx) {
@@ -423,7 +425,6 @@
 
     var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান') ? '(মোঃ আবদুস সালাম)<br>ইউ.পি সদস্য ৬নং ওয়ার্ড ও প্যানেল চেয়ারম্যান-১<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ' : '(অ্যাড. মোঃ হুমায়ুন কবির)<br>চেয়ারম্যান<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>পটুয়াখালী সদর, পটুয়াখালী।';
 
-    // 🟢 মৃত ব্যক্তির পিতার নাম ও মৃত ব্যক্তির নাম নিখুঁতভাবে বসানো
     var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর পুত্র ` : '';
     var decNameText = formatMrito(data.deceasedName);
 
@@ -445,15 +446,14 @@
             <div style="border-bottom: 1px solid #000; margin-top: 2px; margin-bottom: 6px;"></div>
 
             <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 13.5px; font-weight: bold;">
-              <div>স্মারক নং- ${data.smarakNo || 'আ/ইউ/পটুয়া/সদর/২০২৪/০৩'}</div>
-              <div>তারিখঃ ${data.date || '০৯/০১/২০২৪ইং'}</div>
+              <div>স্মারক নং- ${data.smarakNo || 'আ/ইউ/পটুয়া/সদর/২০২৬/০৩'}</div>
+              <div>তারিখঃ ${data.date || '০৯/০১/২০২৬ইং'}</div>
             </div>
 
             <div class="war-ribbon-wrapper">
               <div class="war-ribbon-exact">ওয়ারিশ সার্টিফিকেট</div>
             </div>
 
-            <!-- মূল বিবরণী: মৃত ব্যক্তির পিতার নাম ও নাম -->
             <div class="mb-2 text-justify" style="font-size: 13.5px; line-height: 1.6;">
               এই মর্মে ওয়ারিশ সার্টিফিকেট প্রদান করা যাইতেছে যে, পটুয়াখালী সদর উপজেলাধীন ১১নং আউলিয়াপুর ইউনিয়নের ${data.wardNo || '০৭'} নং ওয়ার্ডের ${data.village || 'উত্তর বাদুরা'} গ্রামের ${decFatherText}<strong style="font-size: 14.5px;">${decNameText}</strong> এর লোকান্তরে নিম্নলিখিত ব্যক্তিগণ তাহার স্থাবর-অস্থাবর সকল সম্পত্তির ওয়ারিশ বিদ্যমান থাকেন।
             </div>
@@ -503,7 +503,6 @@
     `;
   }
 
-  // 🟢 ছবি ৪২ এর হুবহু ২-পেইজ জেনারেটর
   function buildMultiPageHtml_42(data, tree) {
     var mid = Math.ceil(tree.length / 2);
     if(tree.length <= 2) mid = 1;
@@ -536,7 +535,6 @@
     var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর পুত্র ` : '';
     var decNameText = formatMrito(data.deceasedName);
 
-    // পাতা ০১
     var page1Html = `
       <div class="war-page-container">
         <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" class="war-watermark-bg" alt="Watermark">
@@ -554,8 +552,8 @@
             <div style="border-bottom: 1px solid #000; margin-top: 2px; margin-bottom: 5px;"></div>
 
             <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 13px; font-weight: bold;">
-              <div>স্মারক নং- ${data.smarakNo || 'আ/ইউ/পটুয়া/সদর/২০২৪/১১১'}</div>
-              <div>তারিখঃ ${data.date || '২৮/০৪/২০২৪ইং'}</div>
+              <div>স্মারক নং- ${data.smarakNo || 'আ/ইউ/পটুয়া/সদর/২০২৬/১১১'}</div>
+              <div>তারিখঃ ${data.date || '২৮/০৪/২০২৬ইং'}</div>
             </div>
 
             <div class="war-ribbon-wrapper">
@@ -601,7 +599,6 @@
       </div>
     `;
 
-    // পাতা ০২
     var page2Html = `
       <div class="war-page-container">
         <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" class="war-watermark-bg" alt="Watermark">
@@ -619,8 +616,8 @@
             <div style="border-bottom: 1px solid #000; margin-top: 2px; margin-bottom: 5px;"></div>
 
             <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 13px; font-weight: bold;">
-              <div>স্মারক নং- ${data.smarakNo || 'আ/ইউ/পটুয়া/সদর/২০২৪/১১১'}</div>
-              <div>তারিখঃ ${data.date || '২৮/০৪/২০২৪ইং'}</div>
+              <div>স্মারক নং- ${data.smarakNo || 'আ/ইউ/পটুয়া/সদর/২০২৬/১১১'}</div>
+              <div>তারিখঃ ${data.date || '২৮/০৪/২০২৬ইং'}</div>
             </div>
 
             <table class="war-main-table">
@@ -670,42 +667,41 @@
     return page1Html + page2Html;
   }
 
-  function printWarishanApplicationCopy(appId) {
-    google.script.run.withSuccessHandler(function(data) {
-      if(!data || !data.found) return alert('আবেদন পাওয়া যায়নি!');
+  async function printWarishanApplicationCopy(appId) {
+    const data = await callBackendAPI('getWarishanDetails', appId);
+    if(!data || !data.found) return alert('আবেদন পাওয়া যায়নি!');
 
-      document.getElementById('appCopyTrackingId').innerText = 'আইডি: ' + data.appId;
-      document.getElementById('appCopyDate').innerText = data.date || data.applyDate || '-';
-      document.getElementById('appCopySignName').innerText = data.applicantName || '-';
-      document.getElementById('appCopySignMobile').innerText = data.mobile || '-';
+    document.getElementById('appCopyTrackingId').innerText = 'আইডি: ' + data.appId;
+    document.getElementById('appCopyDate').innerText = data.date || data.applyDate || '-';
+    document.getElementById('appCopySignName').innerText = data.applicantName || '-';
+    document.getElementById('appCopySignMobile').innerText = data.mobile || '-';
 
-      var decFather = data.deceasedFather ? `${formatMrito(data.deceasedFather)}` : '';
-      var decName = formatMrito(data.deceasedName);
+    var decFather = data.deceasedFather ? `${formatMrito(data.deceasedFather)}` : '';
+    var decName = formatMrito(data.deceasedName);
 
-      document.getElementById('appCopyMainBodyText').innerHTML = `
-        বিনীত নিবেদন এই যে, আমি <strong>${data.applicantName}</strong>, পিতা/স্বামীঃ <span>${data.fatherSpouseName || '-'}</span>, গ্রামঃ <span>${data.village || '-'}</span>, ওয়ার্ড নং <span>${data.wardNo || '-'}</span>, উপজেলা- পটুয়াখালী সদর, জেলা- পটুয়াখালী। ${decFather ? 'পিতা/স্বামীঃ ' + decFather + ', ' : ''} <strong>${decName}</strong> - এর ওয়ারিশ সনদ পাওয়ার জন্য আবেদন করছি। ${decName} এর মৃত্যুর পর নিম্নরূপ ওয়ারিশ রাখিয়া যায়।
-      `;
+    document.getElementById('appCopyMainBodyText').innerHTML = `
+      বিনীত নিবেদন এই যে, আমি <strong>${data.applicantName}</strong>, পিতা/স্বামীঃ <span>${data.fatherSpouseName || '-'}</span>, গ্রামঃ <span>${data.village || '-'}</span>, ওয়ার্ড নং <span>${data.wardNo || '-'}</span>, উপজেলা- পটুয়াখালী সদর, জেলা- পটুয়াখালী। ${decFather ? 'পিতা/স্বামীঃ ' + decFather + ', ' : ''} <strong>${decName}</strong> - এর ওয়ারিশ সনদ পাওয়ার জন্য আবেদন করছি। ${decName} এর মৃত্যুর পর নিম্নরূপ ওয়ারিশ রাখিয়া যায়।
+    `;
 
-      var tablesHtml = '';
-      (data.warishanTree || []).forEach(function(grp, idx) {
-        var rowsHtml = '';
-        (grp.members || []).forEach(function(m) {
-          rowsHtml += `<tr><td>${m.sl}</td><td class="text-start ps-2">${m.name}</td><td>${m.relName}</td><td>${m.address}</td><td>${m.relation}</td></tr>`;
-        });
-        tablesHtml += `
-          <div class="mb-3">
-            ${idx > 0 ? `<h6 class="fw-bold text-dark mb-1" style="font-size: 13px;">${grp.groupTitle}</h6>` : ''}
-            <table class="table table-bordered table-sm text-center align-middle" style="font-size: 12.5px; border-color: #000;">
-              <thead class="table-light"><tr><th width="8%">ক্রমিক নং</th><th width="30%">ওয়ারিশগণের নাম</th><th width="28%">পিতা/স্বামী নাম</th><th width="20%">ঠিকানা</th><th width="14%">সম্পর্ক</th></tr></thead>
-              <tbody>${rowsHtml}</tbody>
-            </table>
-          </div>
-        `;
+    var tablesHtml = '';
+    (data.warishanTree || []).forEach(function(grp, idx) {
+      var rowsHtml = '';
+      (grp.members || []).forEach(function(m) {
+        rowsHtml += `<tr><td>${m.sl}</td><td class="text-start ps-2">${m.name}</td><td>${m.relName}</td><td>${m.address}</td><td>${m.relation}</td></tr>`;
       });
+      tablesHtml += `
+        <div class="mb-3">
+          ${idx > 0 ? `<h6 class="fw-bold text-dark mb-1" style="font-size: 13px;">${grp.groupTitle}</h6>` : ''}
+          <table class="table table-bordered table-sm text-center align-middle" style="font-size: 12.5px; border-color: #000;">
+            <thead class="table-light"><tr><th width="8%">ক্রমিক নং</th><th width="30%">ওয়ারিশগণের নাম</th><th width="28%">পিতা/স্বামী নাম</th><th width="20%">ঠিকানা</th><th width="14%">সম্পর্ক</th></tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      `;
+    });
 
-      document.getElementById('appCopyTablesContainer').innerHTML = tablesHtml;
-      bootstrap.Modal.getOrCreateInstance(document.getElementById('warAppCopyModal')).show();
-    }).getWarishanDetails(appId);
+    document.getElementById('appCopyTablesContainer').innerHTML = tablesHtml;
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('warAppCopyModal')).show();
   }
 
   function printExactWarishanDoc() {
@@ -774,10 +770,4 @@
       iframe.contentWindow.print();
     }, 400);
   }
-
-  // Warishan.html ফাইলের স্ক্রিপ্ট অংশের শুরুতে এটি যুক্ত আছে:
-function openWarishanPage() {
-  navToSection('warishanView');
-  document.getElementById('warishanAppForm').reset();
-}
 </script>

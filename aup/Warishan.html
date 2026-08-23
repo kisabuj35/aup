@@ -1,9 +1,9 @@
 <!-- ======================================================= -->
 <!-- 11NO AULIAPUR UNION PARISHAD - WARISHAN MODULE          -->
-<!-- File: Warishan.html (Green Ribbon & Perfect Print)      -->
+<!-- File: Warishan.html (Royal 3D Ribbon & Master Print)    -->
 <!-- ======================================================= -->
 
-<!-- Nikosh ও কালপুরুষ ফন্ট -->
+<!-- Google & Maateen Fonts -->
 <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
 
@@ -20,9 +20,9 @@
     height: 295mm;
     padding: 10mm 15mm 12mm 15mm;
     margin: 0 auto 25px auto;
-    background: #ffffff;
-    border: 3px double #006837;
-    outline: 1.5px solid #006837;
+    background: #ffffff !important;
+    border: 3.5px double #006837 !important;
+    outline: 1.5px solid #006837 !important;
     outline-offset: 3px;
     box-sizing: border-box;
     position: relative;
@@ -31,7 +31,8 @@
     justify-content: space-between;
     font-family: 'Nikosh', 'Kalpurush', 'Tiro Bangla', sans-serif;
     color: #000000;
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    overflow: hidden;
   }
 
   .war-watermark-bg {
@@ -40,6 +41,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 440px !important;
+    max-width: 440px !important;
     opacity: 0.12 !important;
     pointer-events: none;
     z-index: 1;
@@ -57,61 +59,105 @@
     justify-content: space-between;
   }
 
-  /* 🟢 ৪নং ছবির মতো হুবহু প্রিমিয়াম গ্রিন রিবন (Green Ribbon) */
-  .war-ribbon-wrap-green {
+  /* 🟢 প্রিমিয়াম ৩ডি রয়্যাল রিবন ব্যানার (World-Class 3D Ribbon) */
+  .royal-ribbon-wrapper {
     text-align: center;
-    margin: 6px 0 12px 0;
+    margin: 8px 0 14px 0;
+    position: relative;
   }
-  .war-ribbon-green {
+  .royal-ribbon-box {
     position: relative;
     display: inline-block;
+    padding: 0 35px;
   }
-  .war-ribbon-green-center {
-    position: relative;
-    background: #005a36 !important;
-    color: #ffffff !important;
-    font-size: 22px;
-    font-weight: bold;
-    padding: 5px 50px;
-    z-index: 2;
-    display: inline-block;
-    letter-spacing: 1px;
-    border-radius: 2px;
-    font-family: 'Nikosh', sans-serif;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.18);
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-  .war-ribbon-green-center::after {
-    content: "";
-    display: block;
-    width: 65%;
-    height: 2px;
-    background: #ffffff;
-    margin: 3px auto 0 auto;
-    opacity: 0.85;
-  }
-  .war-ribbon-green-wing-l {
+  /* বাম ও ডান পাশের কাটিং উইং */
+  .royal-ribbon-wing-left {
     position: absolute;
-    top: 5px;
-    left: -24px;
-    width: 32px;
-    height: 100%;
-    background-color: #003822 !important;
+    top: 6px;
+    left: 0;
+    width: 38px;
+    height: 38px;
+    background: #00381d !important;
     clip-path: polygon(100% 0, 0 50%, 100% 100%);
     z-index: 1;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-  .war-ribbon-green-wing-r {
+  .royal-ribbon-wing-right {
     position: absolute;
-    top: 5px;
-    right: -24px;
-    width: 32px;
-    height: 100%;
-    background-color: #003822 !important;
+    top: 6px;
+    right: 0;
+    width: 38px;
+    height: 38px;
+    background: #00381d !important;
     clip-path: polygon(0 0, 100% 50%, 0 100%);
     z-index: 1;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  /* ৩ডি ফোল্ডিং শ্যাডো ট্রায়াঙ্গেল */
+  .royal-ribbon-fold-left {
+    position: absolute;
+    top: 36px;
+    left: 28px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 0;
+    border-color: transparent #001f0f transparent transparent !important;
+    z-index: 2;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .royal-ribbon-fold-right {
+    position: absolute;
+    top: 36px;
+    right: 28px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 0 0;
+    border-color: #001f0f transparent transparent transparent !important;
+    z-index: 2;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  /* সেন্ট্রাল মূল ব্যানার বডি */
+  .royal-ribbon-center {
+    position: relative;
+    background: linear-gradient(180deg, #007a3d 0%, #005a2d 60%, #004622 100%) !important;
+    color: #ffffff !important;
+    font-size: 23px;
+    font-weight: 800;
+    padding: 6px 45px;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    font-family: 'Nikosh', sans-serif;
+    border-top: 1.5px solid #6ee7b7;
+    border-bottom: 2px solid #002e16;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.4);
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .royal-ribbon-center::after {
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    left: 15%;
+    width: 70%;
+    height: 1.5px;
+    background: #a7f3d0;
+    opacity: 0.8;
+  }
+  .royal-ribbon-star {
+    font-size: 14px;
+    color: #fbbf24 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -119,21 +165,21 @@
   /* নিখুঁত টেবিল কাঠামো */
   .war-main-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: collapse !important;
     margin-top: 5px;
-    font-size: 14px;
+    font-size: 14.5px;
     font-family: 'Nikosh', 'Kalpurush', sans-serif;
   }
   .war-main-table th, .war-main-table td {
-    border: 1.2px solid #000000;
-    padding: 3.5px 6px;
+    border: 1.2px solid #000000 !important;
+    padding: 4px 6px;
     text-align: center;
     vertical-align: middle;
     line-height: 1.25;
   }
   .war-main-table th {
     font-weight: bold;
-    background-color: #f8fafc;
+    background-color: #f1f5f9 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -142,12 +188,12 @@
     padding-left: 8px;
   }
   .war-subgroup-title-row {
-    background-color: #ffffff;
+    background-color: #ffffff !important;
     font-weight: bold;
     text-align: left !important;
     padding: 4px 8px !important;
-    font-size: 14px;
-    border: 1.2px solid #000000;
+    font-size: 14.5px;
+    border: 1.2px solid #000000 !important;
   }
 
   .war-sig-line {
@@ -184,7 +230,7 @@
         <div class="card p-3 mb-4 bg-white border">
           <p class="mb-1 fw-bold">বরাবর,</p>
           <p class="mb-1">চেয়ারম্যান মহোদয়,</p>
-          <p class="mb-1">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ ।</p>
+          <p class="mb-1">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কার্যালয় ।</p>
           <p class="mb-2">পটুয়াখালী সদর, পটুয়াখালী ।</p>
           <p class="fw-bold text-decoration-underline text-success">বিষয়ঃ ওয়ারিশ সার্টিফিকেট পাওয়ার জন্য আবেদন পত্র ।</p>
           <p class="small text-muted mb-0">জনাব, বিনীত নিবেদন এই যে, আমি আপনার ইউনিয়নের একজন স্থায়ী বাসিন্দা। আমাদের মৃত অভিভাবকের মৃত্যুর পর নিম্নরূপ ওয়ারিশান সনদ পাওয়ার জন্য আবেদন করছি।</p>
@@ -481,17 +527,16 @@
 
     var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান') ? '(মোঃ আবদুস সালাম)<br>ইউ.পি সদস্য ৬নং ওয়ার্ড ও প্যানেল চেয়ারম্যান-১<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ' : '(অ্যাড. মোঃ হুমায়ুন কবির)<br>চেয়ারম্যান<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>পটুয়াখালী সদর, পটুয়াখালী।';
 
-    // মৃত ব্যক্তির পিতা ও মৃত ব্যক্তির নাম ফরম্যাট
     var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর পুত্র ` : '';
     var decNameText = formatMrito(data.deceasedName);
 
     var upLogoUrl = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
-    var govtLogoUrl = "https://lh3.googleusercontent.com/d/1EIK74_Afcnqt2cOz0_1EtneeCVkENn_Q";
+    var govtLogoUrl = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
 
     return `
       <div class="war-page-container">
         <!-- ওয়াটারমার্ক -->
-        <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark">
+        <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark" crossorigin="anonymous" referrerpolicy="no-referrer">
         
         <div class="war-content-body">
           <div>
@@ -506,7 +551,7 @@
                 <p style="margin: 0; font-size: 13px; font-weight: bold; color: #006837;">web site: www.auliapur.com</p>
               </div>
               <div style="width: 75px; text-align: right;">
-                <img src="${upLogoUrl}" width="65" height="65" alt="UP Logo" style="display: block; object-fit: contain;">
+                <img src="${upLogoUrl}" width="65" height="65" alt="UP Logo" style="display: block; object-fit: contain;" crossorigin="anonymous" referrerpolicy="no-referrer">
               </div>
             </div>
             <div style="border-bottom: 1px solid #006837; margin-top: 2px; margin-bottom: 8px;"></div>
@@ -517,12 +562,18 @@
               <div>তারিখঃ ${data.date || '০৯/০১/২০২৬ইং'}</div>
             </div>
 
-            <!-- 🟢 ৪নং ছবির মতো গ্রিন রিবন টাইটেল -->
-            <div class="war-ribbon-wrap-green">
-              <div class="war-ribbon-green">
-                <div class="war-ribbon-green-wing-l"></div>
-                <div class="war-ribbon-green-center">ওয়ারিশ সার্টিফিকেট</div>
-                <div class="war-ribbon-green-wing-r"></div>
+            <!-- 🟢 ৩ডি রয়্যাল রিবন ব্যানার -->
+            <div class="royal-ribbon-wrapper">
+              <div class="royal-ribbon-box">
+                <div class="royal-ribbon-wing-left"></div>
+                <div class="royal-ribbon-fold-left"></div>
+                <div class="royal-ribbon-center">
+                  <span class="royal-ribbon-star">★</span>
+                  <span>ওয়ারিশ সার্টিফিকেট</span>
+                  <span class="royal-ribbon-star">★</span>
+                </div>
+                <div class="royal-ribbon-fold-right"></div>
+                <div class="royal-ribbon-wing-right"></div>
               </div>
             </div>
 
@@ -616,11 +667,11 @@
     var decNameText = formatMrito(data.deceasedName);
 
     var upLogoUrl = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
-    var govtLogoUrl = "https://lh3.googleusercontent.com/d/1EIK74_Afcnqt2cOz0_1EtneeCVkENn_Q";
+    var govtLogoUrl = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
 
     var page1Html = `
       <div class="war-page-container">
-        <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark">
+        <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark" crossorigin="anonymous" referrerpolicy="no-referrer">
         
         <div class="war-content-body">
           <div>
@@ -630,7 +681,7 @@
                 <h2 style="font-weight: 800; margin: 0; font-size: 23px; color: #000; font-family: 'Nikosh', sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কার্যালয়</h2>
                 <p style="margin: 2px 0 0 0; font-weight: bold; font-size: 14px; font-family: 'Nikosh', sans-serif;">ডাকঘরঃ আউলিয়াপুর ময়দান, উপজেলা ও জেলাঃ পটুয়াখালী ।</p>
               </div>
-              <div style="width: 75px; text-align: right;"><img src="${upLogoUrl}" width="60" height="60" alt="UP Logo" style="display: block;"></div>
+              <div style="width: 75px; text-align: right;"><img src="${upLogoUrl}" width="60" height="60" alt="UP Logo" style="display: block;" crossorigin="anonymous" referrerpolicy="no-referrer"></div>
             </div>
             <div style="border-bottom: 1px solid #006837; margin-top: 2px; margin-bottom: 6px;"></div>
 
@@ -639,11 +690,17 @@
               <div>তারিখঃ ${data.date || '২৮/০৪/২০২৬ইং'}</div>
             </div>
 
-            <div class="war-ribbon-wrap-green">
-              <div class="war-ribbon-green">
-                <div class="war-ribbon-green-wing-l"></div>
-                <div class="war-ribbon-green-center">ওয়ারিশ সার্টিফিকেট</div>
-                <div class="war-ribbon-green-wing-r"></div>
+            <div class="royal-ribbon-wrapper">
+              <div class="royal-ribbon-box">
+                <div class="royal-ribbon-wing-left"></div>
+                <div class="royal-ribbon-fold-left"></div>
+                <div class="royal-ribbon-center">
+                  <span class="royal-ribbon-star">★</span>
+                  <span>ওয়ারিশ সার্টিফিকেট</span>
+                  <span class="royal-ribbon-star">★</span>
+                </div>
+                <div class="royal-ribbon-fold-right"></div>
+                <div class="royal-ribbon-wing-right"></div>
               </div>
             </div>
 
@@ -688,7 +745,7 @@
 
     var page2Html = `
       <div class="war-page-container">
-        <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark">
+        <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark" crossorigin="anonymous" referrerpolicy="no-referrer">
         
         <div class="war-content-body">
           <div>
@@ -698,7 +755,7 @@
                 <h2 style="font-weight: 800; margin: 0; font-size: 23px; color: #000; font-family: 'Nikosh', sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কার্যালয়</h2>
                 <p style="margin: 2px 0 0 0; font-weight: bold; font-size: 14px; font-family: 'Nikosh', sans-serif;">ডাকঘরঃ আউলিয়াপুর ময়দান, উপজেলা ও জেলাঃ পটুয়াখালী ।</p>
               </div>
-              <div style="width: 75px; text-align: right;"><img src="${upLogoUrl}" width="60" height="60" alt="UP Logo" style="display: block;"></div>
+              <div style="width: 75px; text-align: right;"><img src="${upLogoUrl}" width="60" height="60" alt="UP Logo" style="display: block;" crossorigin="anonymous" referrerpolicy="no-referrer"></div>
             </div>
             <div style="border-bottom: 1px solid #006837; margin-top: 2px; margin-bottom: 6px;"></div>
 
@@ -821,6 +878,7 @@
       <html>
       <head>
         <title>Warishan Certificate</title>
+        <meta name="referrer" content="no-referrer">
         <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
         <style>
@@ -831,36 +889,49 @@
             width: 210mm !important; height: 295mm !important; max-height: 295mm !important;
             padding: 10mm 15mm 12mm 15mm !important; margin: 0 auto !important;
             background: #ffffff !important; box-sizing: border-box !important; position: relative !important;
-            border: 3px double #006837 !important; outline: 1.5px solid #006837 !important; outline-offset: 3px !important;
+            border: 3.5px double #006837 !important; outline: 1.5px solid #006837 !important; outline-offset: 3px !important;
             display: flex !important; flex-direction: column !important; justify-content: space-between !important;
             page-break-after: always !important; page-break-inside: avoid !important; overflow: hidden !important;
           }
-          .war-watermark-bg { position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 440px !important; opacity: 0.12 !important; z-index: 1 !important; display: block !important; }
+          .war-watermark-bg { position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 440px !important; max-width: 440px !important; opacity: 0.12 !important; z-index: 1 !important; display: block !important; }
           .war-content-body { position: relative !important; z-index: 2 !important; height: 100% !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; }
-          .war-ribbon-wrap-green { text-align: center !important; margin: 6px 0 12px 0 !important; }
-          .war-ribbon-green { position: relative !important; display: inline-block !important; }
-          .war-ribbon-green-center {
-            position: relative !important; background: #005a36 !important; color: #ffffff !important;
-            font-size: 22px !important; font-weight: bold !important; padding: 5px 50px !important;
-            z-index: 2 !important; display: inline-block !important; border-radius: 2px !important; font-family: 'Nikosh', sans-serif !important;
+          
+          /* ৩ডি রয়্যাল রিবন ব্যানার প্রিন্ট সিএসএস */
+          .royal-ribbon-wrapper { text-align: center !important; margin: 8px 0 14px 0 !important; position: relative !important; }
+          .royal-ribbon-box { position: relative !important; display: inline-block !important; padding: 0 35px !important; }
+          .royal-ribbon-wing-left {
+            position: absolute !important; top: 6px !important; left: 0 !important; width: 38px !important; height: 38px !important;
+            background: #00381d !important; clip-path: polygon(100% 0, 0 50%, 100% 100%) !important; z-index: 1 !important;
           }
-          .war-ribbon-green-center::after {
-            content: "" !important; display: block !important; width: 65% !important; height: 2px !important;
-            background: #ffffff !important; margin: 3px auto 0 auto !important; opacity: 0.85 !important;
+          .royal-ribbon-wing-right {
+            position: absolute !important; top: 6px !important; right: 0 !important; width: 38px !important; height: 38px !important;
+            background: #00381d !important; clip-path: polygon(0 0, 100% 50%, 0 100%) !important; z-index: 1 !important;
           }
-          .war-ribbon-green-wing-l {
-            position: absolute !important; top: 5px !important; left: -24px !important; width: 32px !important;
-            height: 100% !important; background-color: #003822 !important; clip-path: polygon(100% 0, 0 50%, 100% 100%) !important; z-index: 1 !important;
+          .royal-ribbon-fold-left {
+            position: absolute !important; top: 36px !important; left: 28px !important; width: 0 !important; height: 0 !important;
+            border-style: solid !important; border-width: 0 10px 10px 0 !important; border-color: transparent #001f0f transparent transparent !important; z-index: 2 !important;
           }
-          .war-ribbon-green-wing-r {
-            position: absolute !important; top: 5px !important; right: -24px !important; width: 32px !important;
-            height: 100% !important; background-color: #003822 !important; clip-path: polygon(0 0, 100% 50%, 0 100%) !important; z-index: 1 !important;
+          .royal-ribbon-fold-right {
+            position: absolute !important; top: 36px !important; right: 28px !important; width: 0 !important; height: 0 !important;
+            border-style: solid !important; border-width: 10px 10px 0 0 !important; border-color: #001f0f transparent transparent transparent !important; z-index: 2 !important;
           }
-          .war-main-table { width: 100% !important; border-collapse: collapse !important; margin-top: 5px !important; font-size: 14px !important; }
-          .war-main-table th, .war-main-table td { border: 1.2px solid #000000 !important; padding: 3.5px 6px !important; text-align: center !important; vertical-align: middle !important; line-height: 1.25 !important; }
-          .war-main-table th { font-weight: bold !important; background-color: #f8fafc !important; }
+          .royal-ribbon-center {
+            position: relative !important; background: linear-gradient(180deg, #007a3d 0%, #005a2d 60%, #004622 100%) !important;
+            color: #ffffff !important; font-size: 23px !important; font-weight: 800 !important; padding: 6px 45px !important;
+            z-index: 3 !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;
+            gap: 10px !important; letter-spacing: 1px !important; border-radius: 3px !important; font-family: 'Nikosh', sans-serif !important;
+            border-top: 1.5px solid #6ee7b7 !important; border-bottom: 2px solid #002e16 !important;
+          }
+          .royal-ribbon-center::after {
+            content: "" !important; position: absolute !important; bottom: 3px !important; left: 15% !important; width: 70% !important; height: 1.5px !important; background: #a7f3d0 !important;
+          }
+          .royal-ribbon-star { font-size: 14px !important; color: #fbbf24 !important; }
+
+          .war-main-table { width: 100% !important; border-collapse: collapse !important; margin-top: 5px !important; font-size: 14.5px !important; }
+          .war-main-table th, .war-main-table td { border: 1.2px solid #000000 !important; padding: 4px 6px !important; text-align: center !important; vertical-align: middle !important; line-height: 1.25 !important; }
+          .war-main-table th { font-weight: bold !important; background-color: #f1f5f9 !important; }
           .war-main-table td.text-start-custom { text-align: left !important; padding-left: 8px !important; }
-          .war-subgroup-title-row { font-weight: bold !important; text-align: left !important; padding: 4px 8px !important; font-size: 14px !important; border: 1.2px solid #000000 !important; }
+          .war-subgroup-title-row { font-weight: bold !important; text-align: left !important; padding: 4px 8px !important; font-size: 14.5px !important; border: 1.2px solid #000000 !important; }
           .war-sig-line { border-top: 1.5px solid #000000 !important; display: block !important; width: 80% !important; margin: 0 auto 4px auto !important; }
           .war-bottom-banner { border-top: 1.5px solid #006837 !important; padding-top: 4px !important; display: flex !important; justify-content: space-between !important; align-items: center !important; font-size: 13px !important; font-weight: bold !important; color: #006837 !important; }
         </style>
@@ -890,11 +961,11 @@
         images[i].onload = images[i].onerror = function() {
           loadedImgs++;
           if (loadedImgs >= totalImgs) {
-            setTimeout(triggerPrintNow, 200);
+            setTimeout(triggerPrintNow, 250);
           }
         };
       }
-      setTimeout(triggerPrintNow, 800);
+      setTimeout(triggerPrintNow, 900);
     }
   }
 </script>

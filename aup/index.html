@@ -9,14 +9,14 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+  <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
 
   <!-- Bootstrap 5 JS Bundle in Head -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- SweetAlert2 CSS & JS (প্রফেশনাল পপ-আপ অ্যালার্ট) -->
+  <!-- SweetAlert2 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- CSS Rules -->
   <style>
     body { font-family: 'Kalpurush', 'Tiro Bangla', sans-serif; background-color: #f8fafc; }
     .top-purple-bar { background-color: #7b1fa2; color: #fff; font-size: 13px; padding: 4px 0; }
@@ -34,26 +34,10 @@
     .footer-link-list a:hover { color: #006837; text-decoration: underline; }
     .hotline-badge { display: flex; align-items: center; justify-content: space-between; border-radius: 30px; padding: 5px 14px; color: white; font-weight: bold; font-size: 13px; margin-bottom: 7px; text-decoration: none; }
     
-    .admin-sidebar { background-color: #0f172a; min-height: calc(100vh - 70px); color: #cbd5e1; border-radius: 8px; }
-    .admin-menu-link { color: #cbd5e1; text-decoration: none; padding: 12px 16px; display: block; border-radius: 6px; margin-bottom: 4px; font-size: 15px; }
-    .admin-menu-link:hover, .admin-menu-link.active { background-color: #006837; color: #ffffff; font-weight: bold; }
-    
     .credit-box-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 12px; height: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 
-    .status-badge-rejected { background-color: #d32f2f; color: #ffffff; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 6px; display: inline-block; }
-    .status-badge-pending { background-color: #fbc02d; color: #000000; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 6px; display: inline-block; }
-    .status-badge-approved { background-color: #00897b; color: #ffffff; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 6px; display: inline-block; }
-
-    .btn-act-approve { background-color: #00897b; color: #ffffff; border: none; border-radius: 6px; width: 32px; height: 32px; font-size: 14px; margin-right: 4px; cursor: pointer; }
-    .btn-act-edit { background-color: #fbc02d; color: #000000; border: none; border-radius: 6px; width: 32px; height: 32px; font-size: 14px; margin-right: 4px; cursor: pointer; }
-    .btn-act-reject { background-color: #e53935; color: #ffffff; border: none; border-radius: 6px; width: 32px; height: 32px; font-size: 14px; margin-right: 4px; cursor: pointer; }
-    .btn-act-print { background-color: #d32f2f; color: #ffffff; border: none; border-radius: 6px; padding: 4px 10px; font-size: 13px; font-weight: bold; margin-left: 2px; cursor: pointer; }
-    
     @media print { .no-print { display: none !important; } }
-    .swal2-popup {
-      font-family: 'Kalpurush', 'Tiro Bangla', sans-serif !important;
-      border-radius: 12px !important;
-    }
+    .swal2-popup { font-family: 'Kalpurush', 'Tiro Bangla', sans-serif !important; border-radius: 12px !important; }
   </style>
 </head>
 <body>
@@ -96,7 +80,7 @@
         <div class="navbar-nav me-auto align-items-center">
           <a class="nav-link-custom active-nav-item" href="javascript:void(0)" onclick="navToSection('publicHome', this)"><i class="fa fa-home"></i> হোম</a>
           
-          <!-- 🟢 সনদের আবেদন ড্রপডাউন সাব-মেনু -->
+          <!-- সনদের আবেদন ড্রপডাউন -->
           <div class="nav-item dropdown">
             <a class="nav-link-custom dropdown-toggle text-warning fw-bold" href="#" role="button" data-bs-toggle="dropdown">
               <i class="fa fa-certificate me-1"></i> সনদের আবেদন
@@ -130,43 +114,18 @@
     </div>
   </div>
 
-  <!-- 🟢 MAIN DYNAMIC SECTIONS CONTAINER -->
-  <!-- নোট: আপনার অন্য HTML ফাইলগুলোর (Home, Citizen ইত্যাদি) ভিতরের কোডগুলো নিচের সংশ্লিষ্ট ডিভগুলোর ভেতরে পেস্ট করবেন -->
+  <!-- 🟢 ৫. ডায়নামিক মডিউল লোডার কন্টেইনার -->
   <div id="mainContent">
-    
-    <!-- Home সেকশন -->
-    <div id="publicHome" class="view-section container my-4">
-      <!-- আপনার Home.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
-    </div>
-
-    <!-- Citizen সেকশন -->
-    <div id="citizenView" class="view-section d-none container my-4">
-      <!-- আপনার Citizen.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
-    </div>
-
-    <!-- Trade License সেকশন -->
-    <div id="tradeView" class="view-section d-none container my-4">
-      <!-- আপনার TradeLicense.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
-    </div>
-
-    <!-- Family / Warishan সেকশন -->
-    <div id="familyWarishanView" class="view-section d-none container my-4">
-      <!-- আপনার Family_Warishan.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
-    </div>
-
-    <!-- Warishan সেকশন -->
-    <div id="warishanView" class="view-section d-none container my-4">
-      <!-- আপনার Warishan.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
-    </div>
-
-    <!-- Admin Panel সেকশন -->
-    <div id="adminPanel" class="view-section d-none container-fluid my-4">
-      <!-- আপনার Admin_Panel.html ফাইলের ভেতরের সম্পূর্ণ কোড এখানে পেস্ট করুন -->
-    </div>
-
+    <div id="module-Home"></div>
+    <div id="module-Citizen"></div>
+    <div id="module-TradeLicense"></div>
+    <div id="module-FamilyWarishan"></div>
+    <div id="module-Warishan"></div>
+    <div id="module-GeneralCertificate"></div>
+    <div id="module-AdminPanel"></div>
   </div>
 
-  <!-- সম্পূর্ণ ফুটার -->
+  <!-- ৬. ফুটার অংশ -->
   <div class="container my-4 no-print">
     <div class="row g-3 mb-4">
       <div class="col-md-4">
@@ -261,31 +220,81 @@
     </div>
   </div>
 
-  <!-- 🟢 GLOBAL MASTER NAVIGATION & GOOGLE APPS SCRIPT API ENGINE -->
+  <!-- 🟢 ৭. মাস্টার এপিআই ও মডিউল কানেকশন স্ক্রিপ্ট -->
   <script>
-    // আপনার Google Apps Script Web App URL
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOiYq6GGLaJaR5RSmniqhffWFXv_qvvundj_CrYlDVUcUQV4qAzV9tknPwfDIIT1kZxQ/exec";
 
-    // 🟢 ব্যাকএন্ডের সাথে ডাটা আদান-প্রদানের ইউনিভার্সাল ফাংশন
+    // 🟢 ব্যাকএন্ডের সাথে সার্বজনীন API ব্রিজ
     async function callBackendAPI(actionName, payload = {}) {
       try {
         const response = await fetch(SCRIPT_URL, {
           method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify({ action: actionName, data: payload })
         });
         return await response.json();
       } catch (error) {
-        console.error("API Error:", error);
-        Swal.fire({
-          icon: 'error',
-          title: 'সার্ভার সমস্যা',
-          text: 'সার্ভারের সাথে সংযোগ স্থাপন করা সম্ভব হয়নি।'
-        });
-        return null;
+        console.error("API Call Error:", error);
+        return { success: false, error: "সার্ভারে সংযোগ বিচ্ছিন্ন হয়েছে।" };
       }
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
+    // 🟢 গুগল স্ক্রিপ্ট রান কম্প্যাটিবিলিটি লেয়ার (পুরোনো ফাংশনগুলো সচল রাখার জন্য)
+    const google = {
+      script: {
+        run: {
+          _successCallback: null,
+          withSuccessHandler: function(callback) {
+            this._successCallback = callback;
+            return new Proxy(this, {
+              get: (target, prop) => {
+                return async (...args) => {
+                  const res = await callBackendAPI(prop, args[0]);
+                  if (target._successCallback) target._successCallback(res);
+                };
+              }
+            });
+          }
+        }
+      }
+    };
+
+    // 🟢 সমস্ত সাব-ফাইলগুলো এক ক্লিকে লোড করার ফাংশন
+    async function loadModule(containerId, filename) {
+      try {
+        const res = await fetch(filename);
+        if (res.ok) {
+          const content = await res.text();
+          const target = document.getElementById(containerId);
+          if (target) {
+            target.innerHTML = content;
+            // লোড হওয়া ফাইলের ভেতরের স্ক্রিপ্ট রান করানো
+            const scripts = target.querySelectorAll("script");
+            scripts.forEach(oldScript => {
+              const newScript = document.createElement("script");
+              Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+              newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+              oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+          }
+        }
+      } catch (e) {
+        console.warn("Module load error: " + filename, e);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", async function() {
+      // সব আলাদা ফাইলগুলো অটো-লোড হবে
+      await Promise.all([
+        loadModule('module-Home', 'Home.html'),
+        loadModule('module-Citizen', 'Citizen.html'),
+        loadModule('module-TradeLicense', 'TradeLicense.html'),
+        loadModule('module-FamilyWarishan', 'Family_Warishan.html'),
+        loadModule('module-Warishan', 'Warishan.html'),
+        loadModule('module-GeneralCertificate', 'General_Certificate.html'),
+        loadModule('module-AdminPanel', 'Admin_Panel.html')
+      ]);
+
       checkAdminSession();
     });
 
@@ -304,20 +313,14 @@
       var session = localStorage.getItem('upAdminSession');
       if (session) {
         navToSection('adminPanel');
-        switchAdminTab('dashTab');
+        if (typeof switchAdminTab === 'function') switchAdminTab('dashTab');
         if (typeof loadAdminDashboard === 'function') loadAdminDashboard();
-        if (typeof loadCitizenshipApps === 'function') loadCitizenshipApps();
-        if (typeof loadFamilyApps === 'function') loadFamilyApps();
-        if (typeof loadWarishanApps === 'function') loadWarishanApps();
-        if (typeof loadAdminApps === 'function') loadAdminApps();
-        if (typeof loadTaxPayers === 'function') loadTaxPayers();
-        if (typeof loadTradeLicenses === 'function') loadTradeLicenses();
       } else {
         navToSection('loginSection');
       }
     }
 
-    // 🟢 কেন্দ্রীয় পেজ ট্রানজিশন ফাংশন
+    // 🟢 কেন্দ্রীয় সেকশন রাউটিং
     function navToSection(secId, element) {
       document.querySelectorAll('.view-section').forEach(function(el) {
         el.classList.add('d-none');
@@ -343,81 +346,28 @@
         navToSection('citizenView');
         return;
       }
-      
-      if (serviceName === 'ট্রেড লাইসেন্স' || serviceName === 'নতুন ট্রেড লাইসেন্স') {
-        var tradePage = document.getElementById('tradeView');
-        if (tradePage) {
-          navToSection('tradeView');
-        } else {
-          var trModal = document.getElementById('tradeModal') || document.getElementById('tradeLicenseModal');
-          if (trModal) bootstrap.Modal.getOrCreateInstance(trModal).show();
-        }
+      if (serviceName === 'ট্রেড লাইসেন্স') {
+        navToSection('tradeView');
         return;
       }
-
       if (serviceName === 'ওয়ারিশান সনদ') {
         navToSection('warishanView');
-        var f = document.getElementById('warishanAppForm');
-        if (f) f.reset();
         return;
       }
-
       if (serviceName === 'পারিবারিক সনদ' || serviceName === 'উত্তরাধিকারী সনদ') {
-        navToSection('familyWarishanView');
-        var f = document.getElementById('familyWarishanForm');
-        if (f) f.reset();
-        
-        var tInput = document.getElementById('fwServiceType');
-        if (tInput) tInput.value = serviceName;
-
-        var isWar = (serviceName === 'উত্তরাধিকারী সনদ');
-        var head = document.getElementById('fwFormMainHeading');
-        if (head) {
-          head.innerHTML = isWar ? '<i class="fa fa-users me-2"></i> চেয়ারম্যান বরাবর উত্তরাধিকারী সনদের আবেদন' : '<i class="fa fa-people-roof me-2"></i> চেয়ারম্যান বরাবর পারিবারিক সনদের আবেদন';
-        }
-        var sub = document.getElementById('fwSubjectText');
-        if (sub) {
-          sub.innerText = isWar ? 'উত্তরাধিকারী সনদপত্র' : 'পারিবারিক সনদপত্র';
-        }
-        var tbody = document.getElementById('fwMembersTbody');
-        if (tbody) {
-          tbody.innerHTML = '';
-          for(var i=0; i<3; i++) {
-            if (typeof addFwMemberRow === 'function') addFwMemberRow();
-          }
+        if (typeof openFamilyCertPage === 'function') {
+          openFamilyCertPage(serviceName);
+        } else {
+          navToSection('familyWarishanView');
         }
         return;
       }
-
-      // সাধারণ প্রত্যয়ন মোডাল ওপেনিং
-      var gTitle = document.getElementById('generalModalTitle');
-      if (gTitle) gTitle.innerText = serviceName + ' এর অনলাইন আবেদন';
-      var gType = document.getElementById('genTypeHidden');
-      if (gType) gType.value = serviceName;
-      var gForm = document.getElementById('generalForm');
-      if (gForm) gForm.reset();
-      
-      var modalEl = document.getElementById('generalProtyayonModal');
-      if (modalEl) bootstrap.Modal.getOrCreateInstance(modalEl).show();
+      if (typeof openGeneralServicePage === 'function') {
+        openGeneralServicePage(serviceName);
+      }
     }
 
     function openFamilyWarishanPage(type) { openMasterService(type); }
-    function openServiceModal(type) { openMasterService(type); }
-
-    function switchAdminTab(tabId) {
-      document.querySelectorAll('.admin-tab').forEach(function(el) {
-        el.classList.add('d-none');
-      });
-      var target = document.getElementById(tabId);
-      if(target) target.classList.remove('d-none');
-
-      document.querySelectorAll('.admin-menu-link').forEach(function(el) {
-        el.classList.remove('active');
-      });
-      if(window.event && window.event.target) {
-        window.event.target.classList.add('active');
-      }
-    }
   </script>
 </body>
 </html>

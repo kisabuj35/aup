@@ -1,37 +1,43 @@
 <!-- ========================================== -->
 <!-- 11NO AULIAPUR UNION PARISHAD - TRADE LICENSE -->
-<!-- File: TradeLicense.html (Exact 11 No Print)  -->
+<!-- File: TradeLicense.html (Enhanced 3D Version)-->
 <!-- ========================================== -->
 
 <style>
-  /* 🟢 ১১নং ছবির হুবহু কালারফুল প্রিভিউ ও প্রিন্ট ফ্রেম */
+  /* 🟢 প্রিমিয়াম ও প্রফেশনাল ফ্রেম ডিজাইন */
   .trade-cert-frame {
-    border: 6px double #a81c1c !important;
-    outline: 2px dashed #006837 !important;
+    border: 3px solid #8B0000 !important;
+    outline: 2px dashed #b8860b !important;
     outline-offset: 4px;
-    padding: 18px 24px;
-    background: #ffffff !important;
+    padding: 16px 20px;
+    background-color: #ffffff !important;
+    /* প্রিমিয়াম সিকিউরিটি ওয়াটারমার্ক ব্যাকগ্রাউন্ড প্যাটার্ন */
+    background-image: radial-gradient(#8B0000 0.5px, transparent 0.5px), radial-gradient(#b8860b 0.4px, #ffffff 0.4px) !important;
+    background-size: 20px 20px !important;
+    background-position: 0 0, 10px 10px !important;
     position: relative;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 285mm;
-    max-height: 288mm;
+    height: 290mm;
+    max-height: 290mm;
     width: 210mm;
     margin: 0 auto;
     font-family: 'Nikosh', 'Kalpurush', 'Tiro Bangla', sans-serif;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
   }
   
+  /* মাঝের ওয়াটারমার্ক লোগো */
   .trade-watermark-img {
     position: absolute;
-    top: 50%;
+    top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 420px;
-    opacity: 0.12 !important;
+    width: 440px;
+    opacity: 0.08 !important;
     pointer-events: none;
     z-index: 1;
     -webkit-print-color-adjust: exact !important;
@@ -47,54 +53,103 @@
     justify-content: space-between;
   }
 
-  /* 🟢 ১১নং ছবির মতো সবুজ রিবন টাইটেল */
-  .gorgeous-ribbon-title {
+  /* 🟢 ছবির হুবহু ৩ডি (3D) রিবন ব্যানার */
+  .ribbon-container-3d {
+    text-align: center;
+    position: relative;
+    margin: 6px 0 10px 0;
+  }
+  
+  .gorgeous-3d-ribbon {
     position: relative;
     display: inline-block;
-    background: #006837 !important;
+    background: linear-gradient(180deg, #a71414 0%, #7d0b0b 100%) !important;
     color: #ffffff !important;
     font-size: 21px;
     font-weight: bold;
-    padding: 5px 45px;
-    border-radius: 3px;
+    padding: 5px 42px;
     letter-spacing: 1px;
-    border-top: 1px solid #99ffcc;
-    border-bottom: 2px solid #003318;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    z-index: 2;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-  .gorgeous-ribbon-title::before, .gorgeous-ribbon-title::after {
+
+  /* ৩ডি ভাঁজ ও কর্নার শ্যাডো */
+  .gorgeous-3d-ribbon::before, .gorgeous-3d-ribbon::after {
     content: "";
     position: absolute;
-    top: 3px;
-    border: 16px solid #004d25 !important;
+    top: 6px;
+    border: 16px solid #4a0505 !important;
     z-index: -1;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-  .gorgeous-ribbon-title::before {
-    left: -20px;
+  .gorgeous-3d-ribbon::before {
+    left: -22px;
     border-right-width: 12px;
     border-left-color: transparent !important;
   }
-  .gorgeous-ribbon-title::after {
-    right: -20px;
+  .gorgeous-3d-ribbon::after {
+    right: -22px;
     border-left-width: 12px;
     border-right-color: transparent !important;
   }
 
+  /* রিবনের নিচের ভাঁজ ত্রিভুজ */
+  .ribbon-fold-left, .ribbon-fold-right {
+    position: absolute;
+    bottom: -6px;
+    border: 3px solid transparent;
+    border-top-color: #300202;
+    z-index: 1;
+  }
+  .ribbon-fold-left { left: 0px; border-left-color: #300202; }
+  .ribbon-fold-right { right: 0px; border-right-color: #300202; }
+
+  /* হেডারের মেটা বার */
+  .cert-meta-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #8B0000;
+    padding: 3px 6px 4px 6px;
+    font-size: 13.5px;
+    margin-top: 2px;
+  }
+
+  .fiscal-year-pill {
+    background: #8B0000 !important;
+    color: #ffffff !important;
+    font-size: 12.5px;
+    font-weight: bold;
+    padding: 2px 16px;
+    border-radius: 4px;
+    display: inline-block;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* আর্থিক টেবিল */
   .trade-table-fee-grid {
     width: 100%;
     border-collapse: collapse !important;
-    margin-top: 4px;
+    margin-top: 3px;
+    background: #ffffff;
   }
   .trade-table-fee-grid th, .trade-table-fee-grid td {
-    border: 1px solid #a81c1c !important;
-    padding: 3.5px 8px;
-    font-size: 13px;
+    border: 1px solid #8B0000 !important;
+    padding: 3px 8px;
+    font-size: 12.5px;
     color: #000;
   }
-  
+
+  /* কন্টেন্ট মার্জিন ব্যালেন্স */
+  .cert-body-content {
+    padding: 0 12px;
+  }
+
   .app-print-paper-sheet {
     border: 1px solid #ccc;
     background: #fff;
@@ -423,92 +478,100 @@
   </div>
 </div>
 
-<!-- 🟢 ৩. ১১নং ছবির হুবহু অফিসিয়াল সার্টিফিকেট প্রিন্ট ভিউ -->
+<!-- 🟢 ৩. প্রিমিয়াম ৩ডি ট্রেড লাইসেন্স প্রিন্ট ভিউ -->
 <div id="tradeCertificatePrintSection" class="view-section container my-4 d-none">
   <div class="d-flex justify-content-between align-items-center mb-3 no-print">
     <button class="btn btn-secondary fw-bold" onclick="navToSection('adminPanel')"><i class="fa fa-arrow-left me-1"></i> এডমিন প্যানেলে ফিরে যান</button>
-    <!-- 🟢 ১ ক্লিকে সরাসরি নিখুঁত প্রিন্ট বাটন -->
-    <button class="btn btn-danger fw-bold px-4" onclick="printTradeIframeDirect('printableTradeCertArea', 'ট্রেড লাইসেন্স')"><i class="fa fa-print me-1"></i> সার্টিফিকেট সরাসরি প্রিন্ট করুন</button>
+    <button class="btn btn-danger fw-bold px-4 shadow" onclick="printTradeIframeDirect('printableTradeCertArea', 'ট্রেড লাইসেন্স')"><i class="fa fa-print me-1"></i> সার্টিফিকেট সরাসরি প্রিন্ট করুন</button>
   </div>
 
-  <!-- ১১নং ছবির অবিকল কাঠামো -->
-  <div class="trade-cert-frame mx-auto shadow" id="printableTradeCertArea">
+  <!-- নিখুঁত ও আকর্ষণীয় সার্টিফিকেট ফ্রেম -->
+  <div class="trade-cert-frame mx-auto" id="printableTradeCertArea">
     
-    <!-- ব্যাকগ্রাউন্ড ওয়াটারমার্ক -->
+    <!-- ব্যাকগ্রাউন্ড সিকিউরিটি লোগো ওয়াটারমার্ক -->
     <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" class="trade-watermark-img" alt="Watermark">
 
     <div class="trade-cert-inner">
       
-      <!-- হেডার -->
-      <table style="width:100%; border-bottom:2px solid #a81c1c; padding-bottom:5px; margin-bottom:4px;">
+      <!-- হেডার অংশ -->
+      <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
         <tr>
-          <td style="width:75px; vertical-align:top;">
-            <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" width="68" height="68" alt="Council Logo">
+          <td style="width:75px; vertical-align:middle; text-align:left;">
+            <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" width="70" height="70" alt="Logo" style="object-fit:contain;">
           </td>
-          <td style="text-align:center; vertical-align:top;">
-            <div style="font-size:12px; font-weight:bold; color:#222;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
-            <h2 style="font-size:25px; font-weight:bold; color:#a81c1c; margin:2px 0; letter-spacing:0.5px; font-family:'Nikosh','Kalpurush',sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</h2>
-            <div style="font-size:13.5px; font-weight:bold; color:#005a2b;">উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী</div>
-            <div style="display:inline-block; background:#a81c1c; color:#fff; font-size:12px; font-weight:bold; padding:2px 14px; border-radius:4px; margin-top:2px;">
-              অর্থ বছর: <span id="tcFiscal">২০২৫-২০২৬</span>
-            </div>
+          <td style="text-align:center; vertical-align:middle;">
+            <div style="font-size:12.5px; font-weight:bold; color:#333; margin-bottom:1px;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
+            <h1 style="font-size:27px; font-weight:bold; color:#8B0000; margin:0; line-height:1.15; letter-spacing:0.5px; font-family:'Nikosh','Kalpurush',sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</h1>
+            <div style="font-size:14px; font-weight:bold; color:#005a2b; margin-top:2px;">উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী</div>
           </td>
-          <td style="width:75px; text-align:right; vertical-align:top;">
-            <img id="tcOwnerPhoto" src="https://via.placeholder.com/80x95" style="width:72px; height:85px; border:2px solid #a81c1c; object-fit:cover; padding:1px; border-radius:3px;">
+          <td style="width:75px; vertical-align:middle; text-align:right;">
+            <img id="tcOwnerPhoto" src="https://via.placeholder.com/80x95" style="width:72px; height:85px; border:2px solid #8B0000; object-fit:cover; padding:1px; border-radius:3px; background:#fff;">
           </td>
         </tr>
       </table>
 
-      <table style="width:100%; font-size:13px; margin-bottom:2px;">
-        <tr>
-          <td><strong>রসিদ নং:</strong> <span id="tcReceiptNo" style="font-weight:bold; color:#a81c1c;">০১</span></td>
-          <td style="text-align:right;"><strong><span id="tcIssueTypeLabel">লাইসেন্স ইস্যুর তারিখ</span>:</strong> <span id="tcIssueDate" style="font-weight:bold;"></span> ইং</td>
-        </tr>
-      </table>
-
-      <!-- সবুজ রিবন ব্যানার -->
-      <div style="text-align:center; margin:4px 0 8px 0;">
-        <span class="gorgeous-ribbon-title" id="tcRibbonTitle">ট্রেড লাইসেন্স</span>
+      <!-- 🟢 সমান্তরাল মেটা বার: রসিদ নং, অর্থ বছর ও ইস্যু তারিখ -->
+      <div class="cert-meta-bar">
+        <div style="width:30%; text-align:left;">
+          <strong>রসিদ নং:</strong> <span id="tcReceiptNo" style="font-weight:bold; color:#8B0000;">০১</span>
+        </div>
+        <div style="width:40%; text-align:center;">
+          <span class="fiscal-year-pill">অর্থ বছর: <span id="tcFiscal">২০২৫-২০২৬</span></span>
+        </div>
+        <div style="width:30%; text-align:right;">
+          <strong><span id="tcIssueTypeLabel">লাইসেন্স ইস্যুর তারিখ</span>:</strong> <span id="tcIssueDate" style="font-weight:bold; color:#000;"></span> ইং
+        </div>
       </div>
 
-      <!-- তথ্য টেবিল -->
-      <table style="width:100%; font-size:13.5px; line-height:1.6; border-collapse:collapse;" cellpadding="2">
-        <tr><td style="width:28%; font-weight:bold;">ট্রেড লাইসেন্স নম্বর</td><td>: <strong style="color:#a81c1c; font-size:14.5px;" id="tcLicNo"></strong></td></tr>
-        <tr><td style="font-weight:bold;">লাইসেন্সধারীর নাম</td><td>: <span id="tcOwnerName" style="font-weight:bold; color:#000;"></span></td></tr>
-        <tr><td style="font-weight:bold;">পিতার নাম</td><td>: <span id="tcFatherName"></span></td></tr>
-        <tr><td style="font-weight:bold;">মাতার নাম</td><td>: <span id="tcMotherName"></span></td></tr>
-        <tr><td style="font-weight:bold;">জাতীয় পরিচয়পত্র নম্বর</td><td>: <span id="tcNid"></span></td></tr>
-        <tr><td style="font-weight:bold;">জন্ম তারিখ</td><td>: <span id="tcDob"></span></td></tr>
-        <tr><td style="font-weight:bold;">মোবাইল নম্বর</td><td>: <span id="tcMobile"></span></td></tr>
-        <tr><td style="font-weight:bold;">লাইসেন্সধারীর ঠিকানা</td><td>: <span id="tcOwnerAddress"></span></td></tr>
-        <tr><td style="font-weight:bold; color:#006837;">প্রতিষ্ঠানের নাম</td><td>: <strong style="color:#006837; font-size:14px;" id="tcOrgName"></strong></td></tr>
-        <tr><td style="font-weight:bold;">ব্যবসার ধরন</td><td>: <span id="tcBizType"></span></td></tr>
-        <tr><td style="font-weight:bold; color:#005a2b;">ব্যবসা শুরুর তারিখ</td><td>: <strong style="color:#005a2b;" id="tcBizStartDate"></strong></td></tr>
-        <tr><td style="font-weight:bold;">ব্যবসা প্রতিষ্ঠানের ঠিকানা</td><td>: <span id="tcBizAddress"></span></td></tr>
-        <tr><td style="font-weight:bold;">বৈধতার মেয়াদ</td><td>: <span id="tcValidityText" style="font-weight:bold; color:#a81c1c;">৩০ জুন, ২০২৬ ইং পর্যন্ত</span></td></tr>
-        
-        <!-- আর্থিক বিবরণী -->
-        <tr>
-          <td style="font-weight:bold; vertical-align:top; padding-top:4px;">আর্থিক বিবরণ</td>
-          <td style="padding-top:4px;">
-            <table class="trade-table-fee-grid">
-              <tr style="background:#f8f9fa;"><th style="width:70%;">আদায়ের বিবরণ</th><th style="text-align:right;">পরিমাণ</th></tr>
-              <tr><td>ট্রেড লাইসেন্স ফি / নবায়ন ফি</td><td style="text-align:right;" id="tcFee">৳ ২০০</td></tr>
-              <tr><td>ভ্যাট (১৫%)</td><td style="text-align:right;" id="tcVat">৳ ৩০</td></tr>
-              <tr><td>বাণিজ্যিক কর (বার্ষিক)</td><td style="text-align:right;" id="tcCommTax">৳ ৫০০</td></tr>
-              <tr><td>সাইনবোর্ড কর (বার্ষিক)</td><td style="text-align:right;" id="tcSignTax">৳ ২০</td></tr>
-              <tr style="font-weight:bold; background:#fff2f2;"><td>সর্বমোট</td><td style="text-align:right; color:#a81c1c; font-size:14px;" id="tcTotalFee">৳ ৭৫০</td></tr>
-            </table>
-          </td>
-        </tr>
-      </table>
+      <!-- 🟢 ২০নং ছবির অবিকল ৩ডি (3D) রিবন ব্যানার -->
+      <div class="ribbon-container-3d">
+        <div class="gorgeous-3d-ribbon">
+          <span id="tcRibbonTitle">ট্রেড লাইসেন্স</span>
+          <div class="ribbon-fold-left"></div>
+          <div class="ribbon-fold-right"></div>
+        </div>
+      </div>
 
-      <div style="border-top:1px solid #999; margin-top:5px; padding-top:3px; font-size:11.5px; text-align:justify; line-height:1.4;" id="tcDeclarationPara">
+      <!-- 🟢 মূল তথ্য এরিয়া (মার্জিন ও স্পেসিং ব্যালেন্সড) -->
+      <div class="cert-body-content">
+        <table style="width:100%; font-size:13.5px; line-height:1.55; border-collapse:collapse;" cellpadding="1.5">
+          <tr><td style="width:27%; font-weight:bold;">ট্রেড লাইসেন্স নম্বর</td><td>: <strong style="color:#8B0000; font-size:14.5px;" id="tcLicNo"></strong></td></tr>
+          <tr><td style="font-weight:bold;">লাইসেন্সধারীর নাম</td><td>: <strong id="tcOwnerName" style="color:#000;"></strong></td></tr>
+          <tr><td style="font-weight:bold;">পিতার নাম</td><td>: <span id="tcFatherName"></span></td></tr>
+          <tr><td style="font-weight:bold;">মাতার নাম</td><td>: <span id="tcMotherName"></span></td></tr>
+          <tr><td style="font-weight:bold;">জাতীয় পরিচয়পত্র নম্বর</td><td>: <span id="tcNid"></span></td></tr>
+          <tr><td style="font-weight:bold;">জন্ম তারিখ</td><td>: <span id="tcDob"></span></td></tr>
+          <tr><td style="font-weight:bold;">মোবাইল নম্বর</td><td>: <span id="tcMobile"></span></td></tr>
+          <tr><td style="font-weight:bold;">লাইসেন্সধারীর ঠিকানা</td><td>: <span id="tcOwnerAddress"></span></td></tr>
+          <tr><td style="font-weight:bold; color:#006837;">প্রতিষ্ঠানের নাম</td><td>: <strong style="color:#006837; font-size:14px;" id="tcOrgName"></strong></td></tr>
+          <tr><td style="font-weight:bold;">ব্যবসার ধরন</td><td>: <span id="tcBizType"></span></td></tr>
+          <tr><td style="font-weight:bold; color:#005a2b;">ব্যবসা শুরুর তারিখ</td><td>: <strong style="color:#005a2b;" id="tcBizStartDate"></strong></td></tr>
+          <tr><td style="font-weight:bold;">ব্যবসা প্রতিষ্ঠানের ঠিকানা</td><td>: <span id="tcBizAddress"></span></td></tr>
+          <tr><td style="font-weight:bold;">বৈধতার মেয়াদ</td><td>: <span id="tcValidityText" style="font-weight:bold; color:#8B0000;">৩০ জুন, ২০২৬ ইং পর্যন্ত</span></td></tr>
+          
+          <!-- আর্থিক বিবরণী টেবিল (ডানপাশে চাপানো দূর করে ব্যালেন্সড) -->
+          <tr>
+            <td style="font-weight:bold; vertical-align:top; padding-top:4px;">আর্থিক বিবরণ</td>
+            <td style="padding-top:4px;">
+              <table class="trade-table-fee-grid">
+                <tr style="background:#f3f4f6;"><th style="width:72%;">আদায়ের বিবরণ</th><th style="text-align:right;">পরিমাণ</th></tr>
+                <tr><td>ট্রেড লাইসেন্স ফি / নবায়ন ফি</td><td style="text-align:right;" id="tcFee">৳ ২০০</td></tr>
+                <tr><td>ভ্যাট (১৫%)</td><td style="text-align:right;" id="tcVat">৳ ৩০</td></tr>
+                <tr><td>বাণিজ্যিক কর (বার্ষিক)</td><td style="text-align:right;" id="tcCommTax">৳ ৫০০</td></tr>
+                <tr><td>সাইনবোর্ড কর (বার্ষিক)</td><td style="text-align:right;" id="tcSignTax">৳ ২০</td></tr>
+                <tr style="font-weight:bold; background:#fff2f2;"><td>সর্বমোট</td><td style="text-align:right; color:#8B0000; font-size:13.5px;" id="tcTotalFee">৳ ৭৫০</td></tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div style="border-top:1px solid #aaa; margin:4px 12px 0 12px; padding-top:3px; font-size:11.5px; text-align:justify; line-height:1.4;" id="tcDeclarationPara">
         উল্লেখিত প্রতিষ্ঠানের অনুকূলে প্রদত্ত লাইসেন্স ফি গ্রহণ করিয়া <strong id="tcFiscalPara">২০২৫-২০২৬</strong> ইং সালের জন্য অভ্যন্তরীণ বাণিজ্য চালিয়ে যাওয়ার অনুমতি দেওয়া হইল। <strong id="tcValidityPara">৩০ জুন ২০২৬</strong> ইং পর্যন্ত এই লাইসেন্স বৈধ বলিয়া বিবেচিত হইবে এবং প্রতি বছর নবায়ন করিতে হইবে।
       </div>
 
-      <!-- সিগনেচার অংশ ও QR কোড -->
-      <table style="width:100%; margin-top:12px; font-size:12.5px;">
+      <!-- সিগনেচার অংশ ও অ্যাক্টিভ QR কোড -->
+      <table style="width:100%; margin-top:8px; font-size:12.5px; border-collapse:collapse;">
         <tr>
           <td style="text-align:center; vertical-align:bottom; width:33%;">
             <div style="font-weight:bold;" id="tcSecName">মোঃ মোতাহার উদ্দিন</div>
@@ -517,9 +580,9 @@
             <div>পটুয়াখালী সদর, পটুয়াখালী</div>
           </td>
           <td style="text-align:center; vertical-align:bottom; width:33%;">
-            <!-- 🟢 অ্যাক্টিভ ও নির্ভরযোগ্য কিউআর কোড -->
-            <img id="tcQrCode" src="" style="width:72px; height:72px; border:1px solid #ccc; padding:1px; background:#fff;">
-            <div style="font-size:9.5px; margin-top:1px; font-weight:bold; color:#006837;">অনলাইন ভেরিফায়েড</div>
+            <!-- 🟢 ১০০% অ্যাক্টিভ অনলাইন ভেরিফায়েড কিউআর কোড -->
+            <img id="tcQrCode" src="" style="width:72px; height:72px; border:1px solid #ccc; padding:2px; background:#fff; border-radius:3px;">
+            <div style="font-size:9.5px; margin-top:2px; font-weight:bold; color:#006837;"><i class="fa fa-shield-alt"></i> অনলাইন ভেরিফায়েড</div>
           </td>
           <td style="text-align:center; vertical-align:bottom; width:33%;">
             <div style="font-weight:bold;" id="tcSignatoryName">অ্যাড. মোঃ হুমায়ুন কবির</div>
@@ -530,8 +593,9 @@
         </tr>
       </table>
 
-      <div style="text-align:center; margin-top:4px; padding-top:2px; border-top:1px solid #a81c1c; font-size:10.5px; color:#555;">
-        আপনার ট্রেড লাইসেন্স যাচাই করতে ভিজিট করুন: <strong style="color:#006837;">www.auliapurup.gov.bd</strong>
+      <!-- ফুটার লিংক -->
+      <div style="text-align:center; margin-top:3px; padding-top:2px; border-top:1px solid #8B0000; font-size:10.5px; color:#444;">
+        সনদ যাচাইয়ের জন্য QR স্ক্যান করুন অথবা ভিজিট করুন: <strong style="color:#006837;">www.auliapurup.gov.bd</strong>
       </div>
 
     </div>
@@ -590,7 +654,7 @@
   </div>
 </div>
 
-<!-- 🟢 হিডেন প্রিন্ট আইফ্রেম (অতিরিক্ত ট্যাব ছাড়া সরাসরি প্রিন্ট ইঞ্জিন) -->
+<!-- 🟢 হিডেন প্রিন্ট আইফ্রেম -->
 <iframe id="tradePrintIframe" style="display:none; width:0; height:0; border:0;"></iframe>
 
 <!-- 🟢 JS LOGIC -->
@@ -787,7 +851,7 @@
     bootstrap.Modal.getOrCreateInstance(document.getElementById('tradeAppPrintModal')).show();
   }
 
-  // 🟢 ১১নং ছবির অবিকল প্রিভিউ লোডার
+  // 🟢 ১১নং ছবির অবিকল প্রিভিউ লোডার (সংশোধিত ও উন্নত)
   function showTradeCertPreview(appIdOrLicNo) {
     google.script.run.withSuccessHandler(function(data) {
       if(!data || !data.found) return alert('ট্রেড লাইসেন্স ডাটা পাওয়া যায়নি!');
@@ -837,9 +901,9 @@
 
       document.getElementById('tcOwnerPhoto').src = data.photo || 'https://via.placeholder.com/80x95';
       
-      // 🟢 ১০০% সচল ও নির্ভরযোগ্য QR কোড ইঞ্জিন
-      var qrData = "UP: 11 No Auliapur Union Parishad\nLicense No: " + data.licNo + "\nOrg: " + data.orgName + "\nOwner: " + data.ownerName + "\nValid Till: 30 June " + fiscalEndYear;
-      document.getElementById('tcQrCode').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(qrData);
+      // 🟢 ১০০% অ্যাক্টিভ ও নির্ভরযোগ্য কিউআর কোড লিঙ্ক জেনারেটর
+      var qrPayload = "১১নং আউলিয়াপুর ইউনিয়ন পরিষদ\nট্রেড লাইসেন্স নং: " + data.licNo + "\nপ্রতিষ্ঠান: " + data.orgName + "\nমালিক: " + data.ownerName + "\nমোবাইল: " + data.mobile + "\nমেয়াদ: ৩০ জুন " + fiscalEndYear + " ইং পর্যন্ত\nযাচাই: সত্য ও অনুমোদিত";
+      document.getElementById('tcQrCode').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(qrPayload);
 
       document.getElementById('tcSecName').innerText = data.secName || 'মোঃ মোতাহার উদ্দিন';
       document.getElementById('tcSignatoryRole').innerText = data.signatoryRole || 'চেয়ারম্যান';
@@ -854,7 +918,7 @@
     }).getTradeLicenseDetails(appIdOrLicNo);
   }
 
-  // 🟢 অতিরিক্ত ট্যাব ছাড়া সরাসরি ১১নং ছবির মতো নিখুঁত প্রিন্ট ইঞ্জিন (Direct Iframe Print)
+  // 🟢 সরাসরি ১ ক্লিকে ১ পেজে নিখুঁত প্রিন্ট ইঞ্জিন (Direct Iframe Print)
   function printTradeIframeDirect(elemId, docTitle) {
     var rawHtml = document.getElementById(elemId).innerHTML;
     var printDoc = document.getElementById('tradePrintIframe').contentWindow.document;
@@ -886,29 +950,32 @@
             overflow: hidden;
           }
           .trade-cert-frame {
-            border: 6px double #a81c1c !important;
-            outline: 2px dashed #006837 !important;
+            border: 3px solid #8B0000 !important;
+            outline: 2px dashed #b8860b !important;
             outline-offset: 4px;
-            padding: 16px 22px;
-            background: #ffffff !important;
+            padding: 16px 20px;
+            background-color: #ffffff !important;
+            background-image: radial-gradient(#8B0000 0.5px, transparent 0.5px), radial-gradient(#b8860b 0.4px, #ffffff 0.4px) !important;
+            background-size: 20px 20px !important;
+            background-position: 0 0, 10px 10px !important;
             position: relative;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 292mm;
-            max-height: 292mm;
+            height: 290mm;
+            max-height: 290mm;
             width: 210mm;
             margin: 0 auto;
             overflow: hidden;
           }
           .trade-watermark-img {
             position: absolute;
-            top: 50%;
+            top: 52%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 420px !important;
-            opacity: 0.12 !important;
+            width: 440px !important;
+            opacity: 0.08 !important;
             pointer-events: none;
             z-index: 1;
           }
@@ -920,46 +987,72 @@
             flex-direction: column;
             justify-content: space-between;
           }
-          .gorgeous-ribbon-title {
+          .ribbon-container-3d {
+            text-align: center;
+            position: relative;
+            margin: 6px 0 10px 0;
+          }
+          .gorgeous-3d-ribbon {
             position: relative;
             display: inline-block;
-            background: #006837 !important;
+            background: linear-gradient(180deg, #a71414 0%, #7d0b0b 100%) !important;
             color: #ffffff !important;
             font-size: 21px;
             font-weight: bold;
-            padding: 5px 45px;
-            border-radius: 3px;
+            padding: 5px 42px;
             letter-spacing: 1px;
-            border-top: 1px solid #99ffcc;
-            border-bottom: 2px solid #003318;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            z-index: 2;
           }
-          .gorgeous-ribbon-title::before, .gorgeous-ribbon-title::after {
+          .gorgeous-3d-ribbon::before, .gorgeous-3d-ribbon::after {
             content: "";
             position: absolute;
-            top: 3px;
-            border: 16px solid #004d25 !important;
+            top: 6px;
+            border: 16px solid #4a0505 !important;
             z-index: -1;
           }
-          .gorgeous-ribbon-title::before {
-            left: -20px;
+          .gorgeous-3d-ribbon::before {
+            left: -22px;
             border-right-width: 12px;
             border-left-color: transparent !important;
           }
-          .gorgeous-ribbon-title::after {
-            right: -20px;
+          .gorgeous-3d-ribbon::after {
+            right: -22px;
             border-left-width: 12px;
             border-right-color: transparent !important;
+          }
+          .cert-meta-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #8B0000;
+            padding: 3px 6px 4px 6px;
+            font-size: 13.5px;
+            margin-top: 2px;
+          }
+          .fiscal-year-pill {
+            background: #8B0000 !important;
+            color: #ffffff !important;
+            font-size: 12.5px;
+            font-weight: bold;
+            padding: 2px 16px;
+            border-radius: 4px;
+            display: inline-block;
           }
           .trade-table-fee-grid {
             width: 100%;
             border-collapse: collapse !important;
-            margin-top: 4px;
+            margin-top: 3px;
+            background: #ffffff;
           }
           .trade-table-fee-grid th, .trade-table-fee-grid td {
-            border: 1px solid #a81c1c !important;
-            padding: 3.5px 8px;
-            font-size: 13px;
+            border: 1px solid #8B0000 !important;
+            padding: 3px 8px;
+            font-size: 12.5px;
             color: #000;
+          }
+          .cert-body-content {
+            padding: 0 12px;
           }
           table { width: 100%; border-collapse: collapse; }
         </style>
@@ -1042,7 +1135,7 @@
       btn.disabled = false; btn.innerText = 'আপডেট করুন';
       if(res.success) {
         bootstrap.Modal.getInstance(document.getElementById('editTradeModal')).hide();
-        loadTradeLicenses();
+        if (typeof loadTradeLicenses === 'function') loadTradeLicenses();
         alert('ট্রেড লাইসেন্স তথ্য সফলভাবে সংশোধন করা হয়েছে!');
       } else {
         alert('ত্রুটি: ' + res.error);

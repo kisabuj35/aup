@@ -1,6 +1,6 @@
 <!-- ======================================================= -->
 <!-- 11NO AULIAPUR UNION PARISHAD - COMPLETE ADMIN PANEL    -->
-<!-- File: Admin_Panel.html (Browse Photo & Auto-Session)   -->
+<!-- File: Admin_Panel.html (Browse Photo & Full API Engine) -->
 <!-- ======================================================= -->
 
 <style>
@@ -8,18 +8,19 @@
   .admin-sidebar { background-color: #0f172a; min-height: calc(100vh - 60px); color: #cbd5e1; border-radius: 8px; font-family: 'Kalpurush', 'Tiro Bangla', sans-serif; }
   .admin-profile-box { text-align: center; padding: 15px 10px; border-bottom: 1px solid #334155; margin-bottom: 12px; }
   .admin-avatar-img { width: 75px; height: 75px; border-radius: 50%; border: 3px solid #00897b; object-fit: cover; background: #fff; margin-bottom: 6px; }
-  .admin-menu-link { color: #cbd5e1; text-decoration: none; padding: 9px 14px; display: flex; align-items: center; border-radius: 6px; margin-bottom: 3px; font-size: 14px; font-weight: 500; transition: 0.2s; }
+  .admin-menu-link { color: #cbd5e1; text-decoration: none; padding: 9px 14px; display: flex; align-items: center; border-radius: 6px; margin-bottom: 3px; font-size: 14px; font-weight: 500; transition: 0.2s; cursor: pointer; }
   .admin-menu-link:hover, .admin-menu-link.active { background-color: #006837; color: #ffffff; font-weight: bold; }
   .admin-menu-link i { width: 22px; font-size: 15px; }
 
   /* স্ট্যাটাস ও অ্যাকশন বাটন */
-  .status-badge-approved { background-color: #00796b !important; color: #ffffff !important; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-  .status-badge-pending { background-color: #f59e0b !important; color: #1f2937 !important; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-  .status-badge-rejected { background-color: #dc2626 !important; color: #ffffff !important; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-  .btn-act-approve { background-color: #00796b; color: #fff; border: none; border-radius: 4px; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 3px; }
-  .btn-act-edit { background-color: #f59e0b; color: #1f2937; border: none; border-radius: 4px; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 3px; }
-  .btn-act-reject { background-color: #dc2626; color: #fff; border: none; border-radius: 4px; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 3px; }
-  .btn-act-print { background-color: #dc2626; color: #fff; border: none; border-radius: 4px; padding: 3px 8px; font-size: 12.5px; font-weight: bold; height: 30px; display: inline-flex; align-items: center; }
+  .status-badge-approved { background-color: #00796b !important; color: #ffffff !important; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; display: inline-block; }
+  .status-badge-pending { background-color: #f59e0b !important; color: #1f2937 !important; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; display: inline-block; }
+  .status-badge-rejected { background-color: #dc2626 !important; color: #ffffff !important; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; display: inline-block; }
+  
+  .btn-act-approve { background-color: #00796b; color: #fff; border: none; border-radius: 4px; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 3px; cursor: pointer; }
+  .btn-act-edit { background-color: #f59e0b; color: #1f2937; border: none; border-radius: 4px; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 3px; cursor: pointer; }
+  .btn-act-reject { background-color: #dc2626; color: #fff; border: none; border-radius: 4px; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 3px; cursor: pointer; }
+  .btn-act-print { background-color: #dc2626; color: #fff; border: none; border-radius: 4px; padding: 3px 8px; font-size: 12.5px; font-weight: bold; height: 30px; display: inline-flex; align-items: center; cursor: pointer; }
 
   /* পেজিনেশন স্টাইল */
   .custom-pagination-wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; margin-top: 8px; border-top: 1px solid #e2e8f0; font-family: 'Kalpurush', sans-serif; font-size: 13.5px; }
@@ -79,8 +80,8 @@
           <div class="col-md-4"><div class="card p-3 bg-primary text-white shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0">মোট সকল আবেদন</h6><span class="badge bg-light text-primary fs-6" id="dashTotalApps">০</span></div><div class="mt-2 pt-2 border-top border-white-50 d-flex justify-content-between"><span class="badge bg-success">অনুমোদিত: <strong id="dashTotalApproved">০</strong></span><span class="badge bg-warning text-dark">পেন্ডিং: <strong id="dashTotalPending">০</strong></span></div></div></div>
           <div class="col-md-4"><div class="card p-3 bg-danger text-white shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0">নাগরিকত্ব সনদ</h6><span class="badge bg-light text-danger fs-6" id="dashCitTotal">০</span></div><div class="mt-2 pt-2 border-top border-white-50 d-flex justify-content-between"><span class="badge bg-success">প্রদানকৃত: <strong id="dashCitApproved">০</strong></span><span class="badge bg-warning text-dark">পেন্ডিং: <strong id="dashCitPending">০</strong></span></div></div></div>
           <div class="col-md-4"><div class="card p-3 bg-info text-dark shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0">ট্রেড লাইসেন্স</h6><span class="badge bg-dark text-white fs-6" id="dashTradeTotal">০</span></div><div class="mt-2 pt-2 border-top border-dark-50 d-flex justify-content-between"><span class="badge bg-success text-white">অনুমোদিত: <strong id="dashTradeActive">০</strong></span><span class="badge bg-secondary text-white">পেন্ডিং: <strong id="dashTradePending">০</strong></span></div></div></div>
-          <div class="col-md-4"><div class="card p-3 bg-dark text-white shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0 text-info">পারিবারিক সনদ</h6><span class="badge bg-light text-dark fs-6" id="dashFamTotal">০</span></div><div class="mt-2 pt-2 border-top border-secondary d-flex justify-content-between"><span class="badge bg-success">অনুমোদিত: <strong id="dashFamApproved">০</strong></span><span class="badge bg-warning text-dark">পেন্ডিং: <strong id="dashFamPending">০</strong></span></div></div></div>
-          <div class="col-md-4"><div class="card p-3 bg-warning text-dark shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0">ওয়ারিশান সনদ</h6><span class="badge bg-dark text-white fs-6" id="dashWarTotal">০</span></div><div class="mt-2 pt-2 border-top border-dark-50 d-flex justify-content-between"><span class="badge bg-success text-white">অনুমোদিত: <strong id="dashWarApproved">০</strong></span><span class="badge bg-danger text-white">পেন্ডিং: <strong id="dashWarPending">০</strong></span></div></div></div>
+          <div class="col-md-4"><div class="card p-3 bg-dark text-white shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0 text-info">পারিবারিক সনদ</h6><span class="badge bg-light text-dark fs-6" id="dashFamTotal">০</span></div><div class="mt-2 pt-2 border-secondary d-flex justify-content-between"><span class="badge bg-success">অনুমোদিত: <strong id="dashFamApproved">০</strong></span><span class="badge bg-warning text-dark">পেন্ডিং: <strong id="dashFamPending">০</strong></span></div></div></div>
+          <div class="col-md-4"><div class="card p-3 bg-warning text-dark shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0">ওয়ারিশান সনদ</h6><span class="badge bg-dark text-white fs-6" id="dashWarTotal">০</span></div><div class="mt-2 pt-2 border-dark-50 d-flex justify-content-between"><span class="badge bg-success text-white">অনুমোদিত: <strong id="dashWarApproved">০</strong></span><span class="badge bg-danger text-white">পেন্ডিং: <strong id="dashWarPending">০</strong></span></div></div></div>
           <div class="col-md-4"><div class="card p-3 bg-secondary text-white shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0">সাধারণ প্রত্যয়ন</h6><span class="badge bg-light text-dark fs-6" id="dashGenTotal">০</span></div><div class="mt-2 pt-2 border-top border-white-50 d-flex justify-content-between"><span class="badge bg-success">অনুমোদিত: <strong id="dashGenApproved">০</strong></span><span class="badge bg-warning text-dark">পেন্ডিং: <strong id="dashGenPending">০</strong></span></div></div></div>
         </div>
       </div>
@@ -196,7 +197,7 @@
         </div>
         <div class="table-responsive bg-white p-3 shadow-sm rounded border">
           <table class="table table-bordered align-middle text-center">
-            <thead class="table-light"><tr><th>ব্যাংকের নাম</th><th>হিসাব নম্বর</th><th>হিসাবের ধরণ</th><th>শাখা</th><th>বর্তমান ব্যালেন্স</th></tr></thead>
+            <thead class="table-light"><tr><th>ব্যাংকের নাম</th><th>হিসাব নম্বর</th><th>হিসাবের ধরণ</th><th> শাখা</th><th>বর্তমান ব্যালেন্স</th></tr></thead>
             <tbody>
               <tr><td>সোনালী ব্যাংক পিএলসি</td><td>০১২৩৪৫৬৭৮৯১০</td><td>চলতি হিসাব</td><td>পটুয়াখালী সদর</td><td class="fw-bold text-success">৳ ৮,৫০,০০০/-</td></tr>
               <tr><td>জনতা ব্যাংক পিএলসি</td><td>৯৮৭৬৫৪৩২১০১২</td><td>উন্নয়ন হিসাব</td><td>পটুয়াখালী শাখা</td><td class="fw-bold text-primary">৳ ১২,৩০,০০০/-</td></tr>
@@ -287,7 +288,7 @@
   </div>
 </div>
 
-<!-- ➕ 🟢 ADD/EDIT ADMIN USER MODAL (ছবি আপলোড ব্রাউজার সহ) -->
+<!-- ➕ 🟢 ADD/EDIT ADMIN USER MODAL -->
 <div class="modal fade" id="addUserModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
@@ -302,7 +303,6 @@
             <div class="col-md-6"><label class="form-label fw-bold">পাসওয়ার্ড *</label><input type="password" id="newPassword" class="form-control" placeholder="পাসওয়ার্ড লিখুন" required></div>
             <div class="col-md-6"><label class="form-label fw-bold">নাম ও পদবী *</label><input type="text" id="newName" class="form-control" placeholder="যেমন: মোঃ মোতাহার উদ্দিন (সচিব)" required></div>
             
-            <!-- 🟢 ফাইল ব্রাউজ করে ছবি আপলোড -->
             <div class="col-md-6">
               <label class="form-label fw-bold"><i class="fa fa-camera me-1"></i> এডমিনের ছবি আপলোড করুন</label>
               <input type="file" id="newPhotoFile" class="form-control" accept="image/*" onchange="previewAdminPhoto(this)">
@@ -332,7 +332,6 @@
             </div>
           </div>
 
-          <!-- 🟢 মেনু এক্সেস পারমিশন চেকবক্স -->
           <div class="p-3 border rounded mb-3 bg-white">
             <label class="form-label fw-bold text-success mb-2"><i class="fa fa-list-check me-1"></i> কোন কোন মেনুতে এক্সেস থাকবে? (মেনু পারমিশন)</label>
             <div class="row g-2" style="font-size: 13.5px;">
@@ -410,27 +409,22 @@
   var PAGE_SIZE = 15;
 
   function toBnNumber(n) {
+    if (n === null || n === undefined || n === '') return '০';
     return (n + '').replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
   }
-
-  // 🟢 পেজ রিলোড হলেও সেশন চালু রাখা
-  document.addEventListener("DOMContentLoaded", function() {
-    restoreAdminSession();
-  });
 
   function restoreAdminSession() {
     var sessionStr = localStorage.getItem('upAdminSession');
     if (sessionStr) {
       try {
         var session = JSON.parse(sessionStr);
-        if (session && session.username) {
+        if (session && (session.username || session.name)) {
           applyAdminRolePermissions(session);
         }
       } catch(e) {}
     }
   }
 
-  // 🟢 ব্রাউজ করে সিলেক্ট করা ছবি লাইটওয়েট Base64-এ রূপান্তর
   function previewAdminPhoto(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
@@ -439,8 +433,7 @@
         img.onload = function() {
           var canvas = document.createElement('canvas');
           var ctx = canvas.getContext('2d');
-          canvas.width = 120;
-          canvas.height = 120;
+          canvas.width = 120; canvas.height = 120;
           ctx.drawImage(img, 0, 0, 120, 120);
           var base64 = canvas.toDataURL('image/jpeg', 0.85);
           document.getElementById('newPhotoBase64').value = base64;
@@ -452,74 +445,54 @@
     }
   }
 
-  function renderPagination(type, totalItems, onPageClick) {
+  function renderPagination(type, totalItems, onPageClickName) {
     var totalPages = Math.ceil(totalItems / PAGE_SIZE) || 1;
     var curPage = currentPageStore[type];
     var container = document.getElementById(type + 'Pagination');
     if (!container) return;
 
-    var startIdx = ((curPage - 1) * PAGE_SIZE) + 1;
+    var startIdx = totalItems === 0 ? 0 : ((curPage - 1) * PAGE_SIZE) + 1;
     var endIdx = Math.min(curPage * PAGE_SIZE, totalItems);
 
     var infoHtml = `<div>মোট <strong>${toBnNumber(totalItems)}</strong> টির মধ্যে <strong>${toBnNumber(startIdx)} - ${toBnNumber(endIdx)}</strong> দেখানো হচ্ছে</div>`;
     
     var btnsHtml = `<div>`;
     if (curPage > 1) {
-      btnsHtml += `<button class="page-link-btn" onclick="${onPageClick}(${curPage - 1})">পূর্ববর্তী</button>`;
+      btnsHtml += `<button class="page-link-btn" onclick="${onPageClickName}(${curPage - 1})">পূর্ববর্তী</button>`;
     }
     for (var i = 1; i <= totalPages; i++) {
       if (i === 1 || i === totalPages || (i >= curPage - 1 && i <= curPage + 1)) {
-        btnsHtml += `<button class="page-link-btn ${i === curPage ? 'active-page' : ''}" onclick="${onPageClick}(${i})">${toBnNumber(i)}</button>`;
+        btnsHtml += `<button class="page-link-btn ${i === curPage ? 'active-page' : ''}" onclick="${onPageClickName}(${i})">${toBnNumber(i)}</button>`;
       }
     }
     if (curPage < totalPages) {
-      btnsHtml += `<button class="page-link-btn" onclick="${onPageClick}(${curPage + 1})">পরবর্তী</button>`;
+      btnsHtml += `<button class="page-link-btn" onclick="${onPageClickName}(${curPage + 1})">পরবর্তী</button>`;
     }
     btnsHtml += `</div>`;
 
     container.innerHTML = infoHtml + btnsHtml;
   }
 
-  function doAdminLogin() {
-    var u = document.getElementById('admUser').value;
-    var p = document.getElementById('admPass').value;
-    if(!u || !p) return alert('ইউজারনেম এবং পাসওয়ার্ড প্রদান করুন!');
-
-    google.script.run.withSuccessHandler(function(res) {
-      if(res.success) {
-        localStorage.setItem('upAdminSession', JSON.stringify(res));
-        document.getElementById('adminAuthBtn').innerHTML = '<i class="fa fa-tachometer-alt me-1"></i> এডমিন প্যানেল';
-        document.getElementById('adminAuthBtn').className = 'btn btn-sm btn-success fw-bold px-3';
-        navToSection('adminPanel');
-        applyAdminRolePermissions(res);
-        switchAdminTab('dashTab');
-        loadAdminDashboard();
-        loadCitizenshipApps();
-        loadTradeLicenses();
-        loadFamilyApps();
-        loadWarishanApps();
-        loadAdminApps();
-        loadTaxPayers();
-        if(res.role === 'SuperAdmin') loadAllUsers();
-      } else { alert(res.message); }
-    }).adminLogin(u, p);
-  }
-
   function logoutAdmin() { 
     localStorage.removeItem('upAdminSession');
-    document.getElementById('adminAuthBtn').innerHTML = '<i class="fa fa-lock me-1"></i> এডমিন লগইন';
-    document.getElementById('adminAuthBtn').className = 'btn btn-sm btn-warning fw-bold px-3';
+    var authBtn = document.getElementById('adminAuthBtn');
+    if (authBtn) {
+      authBtn.innerHTML = '<i class="fa fa-lock me-1"></i> এডমিন লগইন';
+      authBtn.className = 'btn btn-sm btn-warning fw-bold px-3';
+    }
     navToSection('publicHome'); 
   }
 
-  // 🟢 সক্রিয় এডমিনের পারমিশন অনুযায়ী মেনু প্রদর্শন
   function applyAdminRolePermissions(session) {
     if (!session) return;
-    document.getElementById('adminActiveName').innerText = session.name || session.username;
-    document.getElementById('adminActiveRoleBadge').innerText = session.role;
-    
-    if (session.photoUrl && session.photoUrl.length > 20) {
-      document.getElementById('adminActivePhoto').src = session.photoUrl;
+    var nameEl = document.getElementById('adminActiveName');
+    var badgeEl = document.getElementById('adminActiveRoleBadge');
+    var photoEl = document.getElementById('adminActivePhoto');
+
+    if (nameEl) nameEl.innerText = session.name || session.username;
+    if (badgeEl) badgeEl.innerText = session.role || 'Admin';
+    if (photoEl && session.photoUrl && session.photoUrl.length > 20) {
+      photoEl.src = session.photoUrl;
     }
 
     var isSuper = (session.role === 'SuperAdmin');
@@ -539,12 +512,12 @@
     if (superBtn) superBtn.style.display = isSuper ? 'flex' : 'none';
   }
 
-  function renderActionButtons(appId, status, printCallback) {
+  function renderActionButtons(appId, status, printCallbackName) {
     var session = JSON.parse(localStorage.getItem('upAdminSession') || '{}');
     var canDel = session.role === 'SuperAdmin' || (session.permissions && session.permissions.canDelete);
 
     var stBadge = (status === 'Approved') ? '<span class="status-badge-approved">Approved</span>' : ((status === 'Rejected') ? '<span class="status-badge-rejected">Rejected</span>' : '<span class="status-badge-pending">Pending</span>');
-    var printBtn = (status === 'Approved') ? `<button class="btn-act-print" onclick="${printCallback}('${appId}')" title="প্রিন্ট"><i class="fa fa-print me-1"></i>প্রিন্ট</button>` : '';
+    var printBtn = (status === 'Approved') ? `<button class="btn-act-print" onclick="${printCallbackName}('${appId}')" title="প্রিন্ট"><i class="fa fa-print me-1"></i>প্রিন্ট</button>` : '';
     var deleteBtn = canDel ? `<button class="btn btn-sm btn-outline-danger ms-1" onclick="removeApp('${appId}')" title="ডিলিট"><i class="fa fa-trash"></i></button>` : '';
 
     return {
@@ -560,12 +533,34 @@
     };
   }
 
-  function loadCitizenshipApps(page = 1) {
+  async function loadAdminDashboard() {
+    const st = await callBackendAPI('getMasterDashboardStats');
+    if(!st) return;
+    document.getElementById('dashTotalApps').innerText = toBnNumber(st.totalApps || 0);
+    document.getElementById('dashTotalApproved').innerText = toBnNumber(st.totalApprovedApps || 0);
+    document.getElementById('dashTotalPending').innerText = toBnNumber(st.totalPendingApps || 0);
+    document.getElementById('dashCitTotal').innerText = toBnNumber(st.citTotal || 0);
+    document.getElementById('dashCitApproved').innerText = toBnNumber(st.citApproved || 0);
+    document.getElementById('dashCitPending').innerText = toBnNumber(st.citPending || 0);
+    document.getElementById('dashFamTotal').innerText = toBnNumber(st.famTotal || 0);
+    document.getElementById('dashFamApproved').innerText = toBnNumber(st.famApproved || 0);
+    document.getElementById('dashFamPending').innerText = toBnNumber(st.famPending || 0);
+    document.getElementById('dashWarTotal').innerText = toBnNumber(st.warTotal || 0);
+    document.getElementById('dashWarApproved').innerText = toBnNumber(st.warApproved || 0);
+    document.getElementById('dashWarPending').innerText = toBnNumber(st.warPending || 0);
+    document.getElementById('dashTradeTotal').innerText = toBnNumber(st.tradeTotal || 0);
+    document.getElementById('dashTradeActive').innerText = toBnNumber(st.tradeActive || 0);
+    document.getElementById('dashTradePending').innerText = toBnNumber(st.tradePending || 0);
+    document.getElementById('dashGenTotal').innerText = toBnNumber(st.genTotal || 0);
+    document.getElementById('dashGenApproved').innerText = toBnNumber(st.genApproved || 0);
+    document.getElementById('dashGenPending').innerText = toBnNumber(st.genPending || 0);
+  }
+
+  async function loadCitizenshipApps(page = 1) {
     currentPageStore.cit = page;
-    google.script.run.withSuccessHandler(function(apps) {
-      rawDataStore.cit = apps || [];
-      renderCitPage(page);
-    }).getCitizenshipApps();
+    const apps = await callBackendAPI('getCitizenshipApps');
+    rawDataStore.cit = apps || [];
+    renderCitPage(page);
   }
 
   function renderCitPage(page = 1) {
@@ -574,7 +569,7 @@
     tbody.innerHTML = '';
     var list = rawDataStore.cit;
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3">কোন আবেদন নেই</td></tr>'; return; }
+    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; return; }
     slice.forEach(function(a) {
       var act = renderActionButtons(a.appId, a.status, 'showCitizenPrintPreview');
       tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.certNo || '-'}</td><td>${a.name}</td><td>${a.fatherName}</td><td>${a.mobile}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
@@ -582,12 +577,11 @@
     renderPagination('cit', list.length, 'renderCitPage');
   }
 
-  function loadTradeLicenses(page = 1) {
+  async function loadTradeLicenses(page = 1) {
     currentPageStore.trade = page;
-    google.script.run.withSuccessHandler(function(list) {
-      rawDataStore.trade = list || [];
-      renderTradePage(page);
-    }).getTradeLicenses();
+    const list = await callBackendAPI('getTradeLicenses');
+    rawDataStore.trade = list || [];
+    renderTradePage(page);
   }
 
   function renderTradePage(page = 1) {
@@ -596,7 +590,7 @@
     tbody.innerHTML = '';
     var list = rawDataStore.trade;
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3">কোন লাইসেন্স নেই</td></tr>'; return; }
+    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন লাইসেন্স নেই</td></tr>'; return; }
     slice.forEach(function(t) {
       var act = renderActionButtons(t.appId, t.status, 'showTradeCertPreview');
       tbody.innerHTML += `<tr><td><strong>${t.appId}</strong></td><td>${t.orgName}</td><td>${t.ownerName}</td><td>${t.fatherName || '-'}</td><td>${t.mobile}</td><td>৳${t.totalFee}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
@@ -604,12 +598,11 @@
     renderPagination('trade', list.length, 'renderTradePage');
   }
 
-  function loadFamilyApps(page = 1) {
+  async function loadFamilyApps(page = 1) {
     currentPageStore.fam = page;
-    google.script.run.withSuccessHandler(function(apps) {
-      rawDataStore.fam = apps || [];
-      renderFamPage(page);
-    }).getFamilyApps();
+    const apps = await callBackendAPI('getFamilyApps');
+    rawDataStore.fam = apps || [];
+    renderFamPage(page);
   }
 
   function renderFamPage(page = 1) {
@@ -618,7 +611,7 @@
     tbody.innerHTML = '';
     var list = rawDataStore.fam;
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3">কোন আবেদন নেই</td></tr>'; return; }
+    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; return; }
     slice.forEach(function(a) {
       var act = renderActionButtons(a.appId, a.status, 'showFamilyPrintPreview');
       tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.name}</td><td>${a.nid || '-'}</td><td>${a.fatherName}</td><td>${a.mobile}</td><td>ওয়ার্ড-${a.wardNo}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
@@ -626,12 +619,11 @@
     renderPagination('fam', list.length, 'renderFamPage');
   }
 
-  function loadWarishanApps(page = 1) {
+  async function loadWarishanApps(page = 1) {
     currentPageStore.war = page;
-    google.script.run.withSuccessHandler(function(apps) {
-      rawDataStore.war = apps || [];
-      renderWarPage(page);
-    }).getWarishanApps();
+    const apps = await callBackendAPI('getWarishanApps');
+    rawDataStore.war = apps || [];
+    renderWarPage(page);
   }
 
   function renderWarPage(page = 1) {
@@ -640,7 +632,7 @@
     tbody.innerHTML = '';
     var list = rawDataStore.war;
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3">কোন আবেদন নেই</td></tr>'; return; }
+    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; return; }
     slice.forEach(function(a) {
       var act = renderActionButtons(a.appId, a.status, 'showFamilyWarishanPrintPreview');
       tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.applicantName}</td><td>${a.fatherSpouseName || '-'}</td><td>${a.mobile}</td><td>ওয়ার্ড-${a.wardNo}</td><td>${a.village}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
@@ -648,12 +640,11 @@
     renderPagination('war', list.length, 'renderWarPage');
   }
 
-  function loadAdminApps(page = 1) {
+  async function loadAdminApps(page = 1) {
     currentPageStore.gen = page;
-    google.script.run.withSuccessHandler(function(apps) {
-      rawDataStore.gen = apps || [];
-      renderGenPage(page);
-    }).getAllApplications();
+    const apps = await callBackendAPI('getAllApplications');
+    rawDataStore.gen = apps || [];
+    renderGenPage(page);
   }
 
   function renderGenPage(page = 1) {
@@ -662,7 +653,7 @@
     tbody.innerHTML = '';
     var list = rawDataStore.gen;
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3">কোন আবেদন নেই</td></tr>'; return; }
+    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; return; }
     slice.forEach(function(a) {
       var act = renderActionButtons(a.appId, a.status, 'showGeneralCertPrintPreview');
       tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.type}</td><td>${a.name}</td><td>${a.nid}</td><td>${a.mobile}</td><td>ওয়ার্ড-${a.wardNo}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
@@ -670,12 +661,11 @@
     renderPagination('gen', list.length, 'renderGenPage');
   }
 
-  function loadTaxPayers(page = 1) {
+  async function loadTaxPayers(page = 1) {
     currentPageStore.tax = page;
-    google.script.run.withSuccessHandler(function(list) {
-      rawDataStore.tax = list || [];
-      renderTaxPage(page);
-    }).getTaxPayers();
+    const list = await callBackendAPI('getTaxPayers');
+    rawDataStore.tax = list || [];
+    renderTaxPage(page);
   }
 
   function renderTaxPage(page = 1) {
@@ -684,38 +674,128 @@
     tbody.innerHTML = '';
     var list = rawDataStore.tax;
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3">কোন করদাতা নেই</td></tr>'; return; }
+    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">কোন করদাতা নেই</td></tr>'; return; }
     slice.forEach(function(t) {
       tbody.innerHTML += `<tr><td>${t.holdingNo}</td><td>${t.name}</td><td>${t.fatherName}</td><td>${t.wardNo}</td><td>${t.village}</td><td>${t.houseType}</td><td>৳${t.annualTax}</td></tr>`;
     });
     renderPagination('tax', list.length, 'renderTaxPage');
   }
 
-  function loadAdminDashboard() {
-    google.script.run.withSuccessHandler(function(st) {
-      if(!st) return;
-      document.getElementById('dashTotalApps').innerText = st.totalApps || '০';
-      document.getElementById('dashTotalApproved').innerText = st.totalApprovedApps || '০';
-      document.getElementById('dashTotalPending').innerText = st.totalPendingApps || '০';
-      document.getElementById('dashCitTotal').innerText = st.citTotal || '০';
-      document.getElementById('dashCitApproved').innerText = st.citApproved || '০';
-      document.getElementById('dashCitPending').innerText = st.citPending || '০';
-      document.getElementById('dashFamTotal').innerText = st.famTotal || '০';
-      document.getElementById('dashFamApproved').innerText = st.famApproved || '০';
-      document.getElementById('dashFamPending').innerText = st.famPending || '০';
-      document.getElementById('dashWarTotal').innerText = st.warTotal || '০';
-      document.getElementById('dashWarApproved').innerText = st.warApproved || '০';
-      document.getElementById('dashWarPending').innerText = st.warPending || '০';
-      document.getElementById('dashTradeTotal').innerText = st.tradeTotal || '০';
-      document.getElementById('dashTradeActive').innerText = st.tradeActive || '০';
-      document.getElementById('dashTradePending').innerText = st.tradePending || '০';
-      document.getElementById('dashGenTotal').innerText = st.genTotal || '০';
-      document.getElementById('dashGenApproved').innerText = st.genApproved || '০';
-      document.getElementById('dashGenPending').innerText = st.genPending || '০';
-    }).getMasterDashboardStats();
+  async function changeStatus(appId, status) {
+    const res = await callBackendAPI('updateAppStatus', { appId: appId, status: status });
+    if(res && res.success) {
+      loadCitizenshipApps(currentPageStore.cit);
+      loadTradeLicenses(currentPageStore.trade);
+      loadFamilyApps(currentPageStore.fam);
+      loadWarishanApps(currentPageStore.war);
+      loadAdminApps(currentPageStore.gen);
+      loadAdminDashboard();
+      Swal.fire({
+        icon: 'success',
+        title: 'স্ট্যাটাস আপডেট!',
+        text: `আবেদন নং ${appId} সফলভাবে ${status} করা হয়েছে।`,
+        timer: 1500,
+        showConfirmButton: false
+      });
+    }
   }
 
-  // 🟢 সেটিংস সেভের প্রিমিয়াম অ্যালার্ট
+  async function removeApp(appId) {
+    Swal.fire({
+      title: 'আপনি কি নিশ্চিত?',
+      text: "আবেদনটি ডাটাবেস থেকে চিরতরে ডিলিট হয়ে যাবে!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: '<i class="fa fa-trash me-1"></i> হ্যাঁ, ডিলিট করুন!',
+      cancelButtonText: 'বাতিল'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await callBackendAPI('deleteApplication', appId);
+        if(res && res.success) { 
+          Swal.fire({
+            icon: 'success',
+            title: 'ডিলিট সম্পন্ন!',
+            text: 'আবেদনটি সফলভাবে মুছে ফেলা হয়েছে।',
+            confirmButtonColor: '#006837',
+            timer: 1800,
+            showConfirmButton: false
+          });
+          loadCitizenshipApps(); loadTradeLicenses(); loadFamilyApps(); loadWarishanApps(); loadAdminApps(); loadAdminDashboard(); 
+        } else {
+          Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: 'ডিলিট করা সম্ভব হয়নি।' });
+        }
+      }
+    });
+  }
+
+  async function openEditModal(appId) {
+    const data = await callBackendAPI('trackApplication', appId);
+    if(!data || !data.found) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
+
+    document.getElementById('editAppId').value = data.appId;
+    document.getElementById('editServiceType').value = data.type || '';
+    document.getElementById('editName').value = data.applicantName || data.name || '';
+    document.getElementById('editFather').value = data.fatherName || data.fatherSpouseName || '';
+    document.getElementById('editNid').value = data.nid || '';
+    document.getElementById('editMobile').value = data.mobile || '';
+    document.getElementById('editWard').value = data.wardNo || '০১';
+    document.getElementById('editVillage').value = data.village || '';
+    document.getElementById('editPost').value = data.postOffice || 'আউলিয়াপুর ময়দান';
+
+    var decDiv = document.getElementById('editDeceasedDiv');
+    if(data.type === 'ওয়ারিশান সনদ' || data.deceasedName) {
+      decDiv.classList.remove('d-none');
+      document.getElementById('editDeceased').value = data.deceasedName || '';
+    } else {
+      decDiv.classList.add('d-none');
+    }
+
+    if(data.signatoryRole === 'প্যানেল চেয়ারম্যান') document.getElementById('sigPanel').checked = true;
+    else if(data.signatoryRole === 'ভারপ্রাপ্ত চেয়ারম্যান') document.getElementById('sigActing').checked = true;
+    else document.getElementById('sigChair').checked = true;
+
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('editAppModal')).show();
+  }
+
+  async function saveEditedApplication() {
+    var btn = document.getElementById('saveEditBtn');
+    btn.disabled = true; btn.innerText = 'সংরক্ষণ হচ্ছে...';
+
+    var sigVal = 'চেয়ারম্যান';
+    if(document.getElementById('sigPanel').checked) sigVal = 'প্যানেল চেয়ারম্যান';
+    if(document.getElementById('sigActing').checked) sigVal = 'ভারপ্রাপ্ত চেয়ারম্যান';
+
+    var payload = {
+      appId: document.getElementById('editAppId').value,
+      name: document.getElementById('editName').value.trim(),
+      deceasedName: document.getElementById('editDeceased').value.trim(),
+      fatherName: document.getElementById('editFather').value.trim(),
+      nid: document.getElementById('editNid').value.trim(),
+      mobile: document.getElementById('editMobile').value.trim(),
+      wardNo: document.getElementById('editWard').value,
+      village: document.getElementById('editVillage').value.trim(),
+      postOffice: document.getElementById('editPost').value.trim(),
+      signatoryRole: sigVal
+    };
+
+    const res = await callBackendAPI('saveEditedApplication', payload);
+    btn.disabled = false; btn.innerText = 'সংরক্ষণ করুন';
+
+    if(res && res.success) {
+      bootstrap.Modal.getInstance(document.getElementById('editAppModal')).hide();
+      loadCitizenshipApps(); loadFamilyApps(); loadWarishanApps(); loadAdminApps();
+      Swal.fire({
+        icon: 'success',
+        title: 'সংশোধিত হয়েছে!',
+        text: 'আবেদনের তথ্য সফলভাবে আপডেট হয়েছে।'
+      });
+    } else {
+      Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: 'তথ্য আপডেট করা যায়নি।' });
+    }
+  }
+
   function saveUPSettings() {
     Swal.fire({
       icon: 'success',
@@ -726,30 +806,28 @@
     });
   }
 
-  // 🟢 ইউজার তালিকা লোডার (ছবি সহ)
-  function loadAllUsers() {
-    google.script.run.withSuccessHandler(function(users) {
-      var tbody = document.getElementById('userTableBody');
-      tbody.innerHTML = '';
-      if(!users || users.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">কোন ইউজার পাওয়া যায়নি</td></tr>';
-        return;
-      }
-      users.forEach(function(u) {
-        var photoSrc = (u.photoUrl && u.photoUrl.length > 20) ? u.photoUrl : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
-        var menusCount = (u.permissions && u.permissions.allowedMenus) ? u.permissions.allowedMenus.length : 0;
-        tbody.innerHTML += `
-          <tr>
-            <td><img src="${photoSrc}" width="40" height="40" class="rounded-circle border" style="object-fit: cover;"></td>
-            <td><strong>${u.username}</strong></td>
-            <td>${u.name}</td>
-            <td><span class="badge ${u.role==='SuperAdmin'?'bg-danger':'bg-primary'}">${u.role}</span></td>
-            <td><small class="text-success fw-bold">${menusCount} টি মেনুতে এক্সেস</small></td>
-            <td><button class="btn btn-sm btn-outline-danger" onclick="removeUser('${u.username}')"><i class="fa fa-trash"></i></button></td>
-          </tr>
-        `;
-      });
-    }).getAllUsers();
+  async function loadAllUsers() {
+    const users = await callBackendAPI('getAllUsers');
+    var tbody = document.getElementById('userTableBody');
+    tbody.innerHTML = '';
+    if(!users || users.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">কোন ইউজার পাওয়া যায়নি</td></tr>';
+      return;
+    }
+    users.forEach(function(u) {
+      var photoSrc = (u.photoUrl && u.photoUrl.length > 20) ? u.photoUrl : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
+      var menusCount = (u.permissions && u.permissions.allowedMenus) ? u.permissions.allowedMenus.length : 0;
+      tbody.innerHTML += `
+        <tr>
+          <td><img src="${photoSrc}" width="40" height="40" class="rounded-circle border" style="object-fit: cover;"></td>
+          <td><strong>${u.username}</strong></td>
+          <td>${u.name}</td>
+          <td><span class="badge ${u.role==='SuperAdmin'?'bg-danger':'bg-primary'}">${u.role}</span></td>
+          <td><small class="text-success fw-bold">${menusCount} টি মেনুতে এক্সেস</small></td>
+          <td><button class="btn btn-sm btn-outline-danger" onclick="removeUser('${u.username}')"><i class="fa fa-trash"></i></button></td>
+        </tr>
+      `;
+    });
   }
 
   function openAddUserModal() {
@@ -759,7 +837,7 @@
     bootstrap.Modal.getOrCreateInstance(document.getElementById('addUserModal')).show();
   }
 
-  function saveUser() {
+  async function saveUser() {
     var btn = document.getElementById('saveUserBtn');
     btn.disabled = true; btn.innerText = 'তৈরি হচ্ছে...';
 
@@ -773,7 +851,7 @@
       password: document.getElementById('newPassword').value.trim(),
       name: document.getElementById('newName').value.trim(),
       role: document.getElementById('newRole').value,
-      photoUrl: document.getElementById('newPhotoBase64').value, // 🟢 আপলোড করা ছবির Base64
+      photoUrl: document.getElementById('newPhotoBase64').value,
       permissions: {
         canApprove: document.getElementById('permApprove').checked,
         canEdit: document.getElementById('permEdit').checked,
@@ -782,17 +860,22 @@
       }
     };
 
-    google.script.run.withSuccessHandler(function(res) {
-      btn.disabled = false; btn.innerText = 'ইউজার তৈরি করুন';
-      if(res.success) {
-        bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
-        loadAllUsers();
-        alert('নতুন এডমিন ইউজার সফলভাবে তৈরি ও সংরক্ষিত হয়েছে!');
-      } else { alert('ত্রুটি: ' + res.error); }
-    }).saveNewUser(uData);
+    const res = await callBackendAPI('saveNewUser', uData);
+    btn.disabled = false; btn.innerText = 'ইউজার তৈরি করুন';
+
+    if(res && res.success) {
+      bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+      loadAllUsers();
+      Swal.fire({
+        icon: 'success',
+        title: 'সফল!',
+        text: 'নতুন এডমিন ইউজার তৈরি হয়েছে।'
+      });
+    } else { 
+      Swal.fire({ icon: 'error', title: 'ত্রুটি!', text: res ? res.error : 'ইউজার তৈরি করা সম্ভব হয়নি।' });
+    }
   }
 
-// 🟢 ইউজার ডিলিট কনফার্মেশন
   function removeUser(uname) {
     Swal.fire({
       title: 'ইউজার ডিলিট করবেন?',
@@ -803,60 +886,43 @@
       cancelButtonColor: '#6c757d',
       confirmButtonText: 'হ্যাঁ, ডিলিট করুন',
       cancelButtonText: 'বাতিল'
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        google.script.run.withSuccessHandler(function(res) {
-          if(res.success) {
-            Swal.fire({
-              icon: 'success',
-              title: 'ইউজার ডিলিট হয়েছে!',
-              timer: 1800,
-              showConfirmButton: false
-            });
-            loadAllUsers();
-          }
-        }).deleteUser(uname);
+        const res = await callBackendAPI('deleteUser', uname);
+        if(res && res.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'ইউজার ডিলিট হয়েছে!',
+            timer: 1800,
+            showConfirmButton: false
+          });
+          loadAllUsers();
+        }
       }
     });
   }
 
-  function changeStatus(appId, status) {
-    google.script.run.withSuccessHandler(function(res) {
-      if(res.success) { 
-        loadCitizenshipApps(); loadTradeLicenses(); loadFamilyApps(); loadWarishanApps(); loadAdminApps(); loadAdminDashboard(); 
-      }
-    }).updateAppStatus(appId, status);
-  }
-
-  // 🟢 আবেদন ডিলিট করার আধুনিক ও প্রিমিয়াম কনফার্মেশন
-  function removeApp(appId) {
-    Swal.fire({
-      title: 'আপনি কি নিশ্চিত?',
-      text: "আবেদনটি ডাটাবেস থেকে চিরতরে ডিলিট হয়ে যাবে!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#6c757d',
-      confirmButtonText: '<i class="fa fa-trash me-1"></i> হ্যাঁ, ডিলিট করুন!',
-      cancelButtonText: 'বাতিল'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        google.script.run.withSuccessHandler(function(res) {
-          if(res.success) { 
-            Swal.fire({
-              icon: 'success',
-              title: 'ডিলিট সম্পন্ন!',
-              text: 'আবেদনটি সফলভাবে মুছে ফেলা হয়েছে।',
-              confirmButtonColor: '#006837',
-              timer: 2000,
-              showConfirmButton: false
-            });
-            loadCitizenshipApps(); loadTradeLicenses(); loadFamilyApps(); loadWarishanApps(); loadAdminApps(); loadAdminDashboard(); 
-          } else {
-            Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: 'ডিলিট করা সম্ভব হয়নি।' });
-          }
-        }).deleteApplication(appId);
-      }
+  function switchAdminTab(tabId) {
+    document.querySelectorAll('.admin-tab').forEach(function(el) {
+      el.classList.add('d-none');
     });
+    var target = document.getElementById(tabId);
+    if(target) target.classList.remove('d-none');
+
+    document.querySelectorAll('.admin-menu-link').forEach(function(el) {
+      el.classList.remove('active');
+    });
+
+    var activeBtn = document.querySelector(`[data-menu="${tabId}"]`);
+    if(activeBtn) activeBtn.classList.add('active');
+
+    if(tabId === 'citTab') loadCitizenshipApps();
+    else if(tabId === 'tradeTab') loadTradeLicenses();
+    else if(tabId === 'famTab') loadFamilyApps();
+    else if(tabId === 'warTab') loadWarishanApps();
+    else if(tabId === 'appsTab') loadAdminApps();
+    else if(tabId === 'taxTab') loadTaxPayers();
+    else if(tabId === 'settingsTab') loadAllUsers();
+    else if(tabId === 'dashTab') loadAdminDashboard();
   }
 </script>

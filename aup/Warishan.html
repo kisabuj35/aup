@@ -317,6 +317,8 @@
 </div>
 
 <!-- 🟢 JAVASCRIPT LOGIC -->
+
+<!-- 🟢 UPDATED JAVASCRIPT LOGIC (DIRECT 1-CLICK PRINT) -->
 <script>
   var warGroupCounter = 0;
 
@@ -449,26 +451,49 @@
     }
   }
 
-  async function showFamilyWarishanPrintPreview(appId) {
-    const data = await callBackendAPI('getWarishanDetails', appId);
-    if(!data || !data.found) return alert('ওয়ারিশান তথ্য পাওয়া যায়নি!');
-
-    var printArea = document.getElementById('warPrintArea');
-    printArea.innerHTML = '';
-
-    var tree = data.warishanTree || [];
-    var totalRows = 0;
-    tree.forEach(g => { totalRows += (g.members ? g.members.length : 0); });
-
-    var isSinglePage = (totalRows <= 15 && tree.length <= 2);
-
-    if (isSinglePage) {
-      printArea.innerHTML = buildSinglePageHtml_41(data, tree);
-    } else {
-      printArea.innerHTML = buildMultiPageHtml_42(data, tree);
+  // 🟢 সরাসরি ১-ক্লিকে প্রিন্ট করার ফাংশন (মোডাল ছাড়া সরাসরি প্রিন্ট ডায়ালগ ওপেন হবে)
+  async function directPrintWarishan(appId, btnElem) {
+    var origHtml = '';
+    if (btnElem) {
+      origHtml = btnElem.innerHTML;
+      btnElem.disabled = true;
+      btnElem.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
     }
 
-    bootstrap.Modal.getOrCreateInstance(document.getElementById('warPrintModal')).show();
+    try {
+      const data = await callBackendAPI('getWarishanDetails', appId);
+      if(!data || !data.found) {
+        alert('ওয়ারিশান তথ্য পাওয়া যায়নি!');
+        if (btnElem) { btnElem.disabled = false; btnElem.innerHTML = origHtml; }
+        return;
+      }
+
+      var tree = data.warishanTree || [];
+      var totalRows = 0;
+      tree.forEach(g => { totalRows += (g.members ? g.members.length : 0); });
+
+      var isSinglePage = (totalRows <= 15 && tree.length <= 2);
+      var finalHtml = isSinglePage ? buildSinglePageHtml_41(data, tree) : buildMultiPageHtml_42(data, tree);
+
+      // সরাসরি আইফ্রেম প্রিন্ট ফায়ারিং
+      executeIsolatedIframePrint(finalHtml);
+
+    } catch(err) {
+      console.error(err);
+      alert('প্রিন্ট করতে সমস্যা হয়েছে: ' + err.message);
+    } finally {
+      if (btnElem) {
+        setTimeout(function() {
+          btnElem.disabled = false;
+          btnElem.innerHTML = origHtml;
+        }, 1200);
+      }
+    }
+  }
+
+  // 🟢 পূর্বের ফাংশনটিকেও ডিরেক্ট প্রিন্ট ফাংশনে রিডাইরেক্ট করা হলো
+  function showFamilyWarishanPrintPreview(appId) {
+    directPrintWarishan(appId);
   }
 
   function buildSinglePageHtml_41(data, tree) {
@@ -495,7 +520,6 @@
     var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর পুত্র ` : '';
     var decNameText = formatMrito(data.deceasedName);
 
-    // 🟢 নিশ্চিত কার্যকরী লোগো পাথ (ক্রস-অরিজিন ফিক্স সহ)
     var upLogoUrl = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
     var govtLogoUrl = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
 
@@ -528,7 +552,7 @@
               <div>তারিখঃ ${data.date || '০৯/০১/২০২৬ইং'}</div>
             </div>
 
-            <!-- 🟢 ৩ডি রয়্যাল রিবন ব্যানার (ছবির হুবহু ডিজাইন - সবুজ থিম) -->
+            <!-- 🟢 ৩ডি রয়্যাল রিবন ব্যানার (সবুজ থিম) -->
             <div class="royal-ribbon-wrapper">
               <div class="royal-ribbon-3d">
                 <span>ওয়ারিশ সার্টিফিকেট</span>
@@ -766,43 +790,6 @@
     return page1Html + page2Html;
   }
 
-  async function printWarishanApplicationCopy(appId) {
-    const data = await callBackendAPI('getWarishanDetails', appId);
-    if(!data || !data.found) return alert('আবেদন পাওয়া যায়নি!');
-
-    document.getElementById('appCopyTrackingId').innerText = 'আইডি: ' + data.appId;
-    document.getElementById('appCopyDate').innerText = data.date || data.applyDate || '-';
-    document.getElementById('appCopySignName').innerText = data.applicantName || '-';
-    document.getElementById('appCopySignMobile').innerText = data.mobile || '-';
-
-    var decFather = data.deceasedFather ? `${formatMrito(data.deceasedFather)}` : '';
-    var decName = formatMrito(data.deceasedName);
-
-    document.getElementById('appCopyMainBodyText').innerHTML = `
-      বিনীত নিবেদন এই যে, আমি <strong>${data.applicantName}</strong>, পিতা/স্বামীঃ <span>${data.fatherSpouseName || '-'}</span>, গ্রামঃ <span>${data.village || '-'}</span>, ওয়ার্ড নং <span>${data.wardNo || '-'}</span>, উপজেলা- পটুয়াখালী সদর, জেলা- পটুয়াখালী। ${decFather ? 'পিতা/স্বামীঃ ' + decFather + ', ' : ''} <strong>${decName}</strong> - এর ওয়ারিশ সনদ পাওয়ার জন্য আবেদন করছি। ${decName} এর মৃত্যুর পর নিম্নরূপ ওয়ারিশ রাখিয়া যায়।
-    `;
-
-    var tablesHtml = '';
-    (data.warishanTree || []).forEach(function(grp, idx) {
-      var rowsHtml = '';
-      (grp.members || []).forEach(function(m) {
-        rowsHtml += `<tr><td>${m.sl}</td><td class="text-start ps-2"><strong>${m.name}</strong></td><td>${m.relName}</td><td>${m.address}</td><td>${m.relation}</td></tr>`;
-      });
-      tablesHtml += `
-        <div class="mb-3">
-          ${idx > 0 ? `<h6 class="fw-bold text-dark mb-1" style="font-size: 14px;">${grp.groupTitle}</h6>` : ''}
-          <table class="table table-bordered table-sm text-center align-middle" style="font-size: 13.5px; border-color: #000;">
-            <thead class="table-light"><tr><th width="8%">ক্রমিক নং</th><th width="30%">ওয়ারিশগণের নাম</th><th width="28%">পিতা/স্বামী নাম</th><th width="20%">ঠিকানা</th><th width="14%">সম্পর্ক</th></tr></thead>
-            <tbody>${rowsHtml}</tbody>
-          </table>
-        </div>
-      `;
-    });
-
-    document.getElementById('appCopyTablesContainer').innerHTML = tablesHtml;
-    bootstrap.Modal.getOrCreateInstance(document.getElementById('warAppCopyModal')).show();
-  }
-
   function printExactWarishanDoc() {
     var printContent = document.getElementById('warPrintArea').innerHTML;
     executeIsolatedIframePrint(printContent);
@@ -813,7 +800,7 @@
     executeIsolatedIframePrint(printContent);
   }
 
-  // 🟢 নির্ভুল ইমেজ প্রি-লোডার সম্পন্ন প্রিন্ট ইঞ্জিন (লোগো ও ওয়াটারমার্ক সহ)
+  // 🟢 নির্ভুল ও সরাসরি প্রিন্ট ইঞ্জিন (লোগো, ওয়াটারমার্ক ও ৩ডি রিবন সহ)
   function executeIsolatedIframePrint(htmlContent) {
     var oldFrame = document.getElementById('isolated_print_frame');
     if (oldFrame) oldFrame.remove();
@@ -919,7 +906,7 @@
           }
         };
       }
-      setTimeout(triggerPrintNow, 900);
+      setTimeout(triggerPrintNow, 850);
     }
   }
 </script>

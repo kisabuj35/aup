@@ -26,7 +26,7 @@
       <div class="card border-0 shadow-sm rounded-3">
         <div class="cit-card-header d-flex justify-content-between align-items-center">
           <h5 class="fw-bold m-0"><i class="fa fa-id-card me-2"></i> নাগরিকত্ব সনদের অনলাইন আবেদন ফরম</h5>
-          <span class="badge bg-light text-danger fw-bold">ইউপি সেবা</span>
+          <button class="btn btn-light btn-sm fw-bold text-danger" onclick="navToSection('publicHome')"><i class="fa fa-arrow-left me-1"></i> হোম পেজ</button>
         </div>
         <div class="card-body p-4">
           <form id="dedicatedCitizenForm" onsubmit="event.preventDefault(); submitDedicatedCitizen();">
@@ -125,14 +125,14 @@
         </div>
       </div>
       <div class="modal-footer bg-light no-print">
-        <!-- 🟢 সরাসরি প্রিন্ট বাটন (অপ্রয়োজনীয় পপআপ ছাড়া) -->
-        <button class="btn btn-danger fw-bold px-4 fs-6" onclick="printCitizenCertArea()"><i class="fa fa-print me-2"></i> এ৪ (A4) পেজে প্রিন্ট করুন</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">বন্ধ করুন</button>
+        <button class="btn btn-danger fw-bold px-4 fs-6" onclick="printCitizenCertArea()"><i class="fa fa-print me-2"></i> এ৪ (A4) পেজে সরাসরি প্রিন্ট করুন</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 🟢 হিডেন আইফ্রেম ইঞ্জিন (অতিরিক্ত পপআপ উইন্ডো ছাড়া সরাসরি প্রিন্ট) -->
+<!-- 🟢 হিডেন আইফ্রেম ইঞ্জিন -->
 <iframe id="citPrintIframe" style="display:none; width:0; height:0; border:0;"></iframe>
 
 <!-- 🟢 DEDICATED CITIZEN JS SCRIPT -->
@@ -147,7 +147,7 @@
     }
   }
 
-  function submitDedicatedCitizen() {
+  async function submitDedicatedCitizen() {
     var btn = document.getElementById('dCitSubmitBtn');
     btn.disabled = true; btn.innerText = 'জমা হচ্ছে...';
 
@@ -170,16 +170,22 @@
       division: 'বরিশাল'
     };
 
-    google.script.run.withSuccessHandler(function(res) {
-      btn.disabled = false; btn.innerText = 'আবেদন জমা দিন';
-      if(res.success) {
-        document.getElementById('dedicatedCitizenForm').reset();
-        toggleCitizenSpouse('অবিবাহিত');
-        document.getElementById('citSuccessAppId').innerText = res.appId;
-        document.getElementById('copyToast').style.display = 'none';
-        bootstrap.Modal.getOrCreateInstance(document.getElementById('citSuccessModal')).show();
-      } else { alert('ত্রুটি: ' + res.error); }
-    }).submitCitizenshipDirect(formData);
+    const res = await callBackendAPI('submitCitizenshipDirect', formData);
+    btn.disabled = false; btn.innerText = 'আবেদন জমা দিন';
+
+    if(res && res.success) {
+      document.getElementById('dedicatedCitizenForm').reset();
+      toggleCitizenSpouse('অবিবাহিত');
+      document.getElementById('citSuccessAppId').innerText = res.appId;
+      document.getElementById('copyToast').style.display = 'none';
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('citSuccessModal')).show();
+    } else { 
+      Swal.fire({
+        icon: 'error',
+        title: 'আবেদন ব্যর্থ',
+        text: res ? res.error : 'আবেদন জমা দেওয়া যায়নি।'
+      });
+    }
   }
 
   function copyCitTracking() {
@@ -190,187 +196,173 @@
     setTimeout(function() { toast.style.display = 'none'; }, 3000);
   }
 
-  function trackDedicatedCitizen() {
+  async function trackDedicatedCitizen() {
     var query = document.getElementById('citTrackInput').value.trim();
     var out = document.getElementById('citTrackOutput');
     if(!query) return alert('আবেদন আইডি টাইপ করুন!');
+    
     out.innerHTML = '<p class="text-center text-danger py-2"><i class="fa fa-spinner fa-spin"></i> অনুসন্ধান করা হচ্ছে...</p>';
 
-    google.script.run.withSuccessHandler(function(data) {
-      if(!data || !data.found) {
-        out.innerHTML = '<div class="alert alert-danger small p-2 text-center mt-2 shadow-sm rounded">কোন আবেদন খুঁজে পাওয়া যায়নি! সঠিক ট্র্যাকিং নম্বর লিখুন।</div>';
-      } else {
-        var isApproved = (data.status === 'Approved');
-        var statusBadge = isApproved ? '<span class="badge bg-success">অনুমোদিত (Approved)</span>' : '<span class="badge bg-warning text-dark">অপেক্ষমাণ (Pending)</span>';
-        var actionBtn = isApproved 
-          ? `<button class="btn btn-danger btn-sm w-100 fw-bold shadow-sm" onclick="showCitizenPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> ডিজিটাল সনদপত্র প্রিন্ট করুন</button>`
-          : `<div class="text-center text-muted small py-1"><i class="fa fa-clock me-1"></i> সনদটি এখনো অনুমোদিত হয়নি। অনুগ্রহ করে অপেক্ষা করুন।</div>`;
+    const data = await callBackendAPI('trackApplication', query);
 
-        out.innerHTML = `
-          <div class="track-result-card mt-3">
-            <div class="track-result-header d-flex justify-content-between align-items-center">
-              <span><i class="fa fa-file-invoice me-1"></i> আবেদনের বিবরণ</span>
-              <span class="badge bg-light text-dark">${data.appId}</span>
-            </div>
-            <div class="p-3">
-              <table class="table table-sm table-borderless track-table mb-2">
-                <tr><td class="text-muted" width="40%">আবেদনকারীর নাম</td><td>: <strong>${data.name}</strong></td></tr>
-                <tr><td class="text-muted">পিতার নাম</td><td>: ${data.fatherName}</td></tr>
-                <tr><td class="text-muted">মোবাইল</td><td>: ${data.mobile}</td></tr>
-                <tr><td class="text-muted">বর্তমান অবস্থা</td><td>: ${statusBadge}</td></tr>
-              </table>
-              <div class="pt-2 border-top">
-                ${actionBtn}
-              </div>
-            </div>
+    if(!data || !data.found) {
+      out.innerHTML = '<div class="alert alert-danger small p-2 text-center mt-2 shadow-sm rounded">কোন আবেদন খুঁজে পাওয়া যায়নি! সঠিক ট্র্যাকিং নম্বর লিখুন।</div>';
+    } else {
+      var isApproved = (data.status === 'Approved');
+      var statusBadge = isApproved ? '<span class="badge bg-success">অনুমোদিত (Approved)</span>' : '<span class="badge bg-warning text-dark">অপেক্ষমাণ (Pending)</span>';
+      var actionBtn = isApproved 
+        ? `<button class="btn btn-danger btn-sm w-100 fw-bold shadow-sm" onclick="showCitizenPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> ডিজিটাল সনদপত্র প্রিন্ট করুন</button>`
+        : `<div class="text-center text-muted small py-1"><i class="fa fa-clock me-1"></i> সনদটি এখনো অনুমোদিত হয়নি। অনুগ্রহ করে অপেক্ষা করুন।</div>`;
+
+      out.innerHTML = `
+        <div class="track-result-card mt-3">
+          <div class="track-result-header d-flex justify-content-between align-items-center">
+            <span><i class="fa fa-file-invoice me-1"></i> আবেদনের বিবরণ</span>
+            <span class="badge bg-light text-dark">${data.appId}</span>
           </div>
-        `;
-      }
-    }).trackApplication(query);
-  }
-
-  // 🟢 নিকশ ও কালপুরুষ ফন্টে পারফেক্ট A4 প্রিন্ট প্রিভিউ
-  function showCitizenPrintPreview(appId) {
-    google.script.run.withSuccessHandler(function(app) {
-      if(!app || !app.found) return alert('ডাটা লোড করা যায়নি!');
-      var area = document.getElementById('citPrintableArea');
-      var today = new Date().toLocaleDateString('bn-BD');
-
-      var certNumber = app.certNo ? app.certNo : '';
-      var sigRole = app.signatoryRole || 'চেয়ারম্যান';
-      var sigNameHtml = (sigRole === 'চেয়ারম্যান') ? '<p style="margin:0 0 2px 0; font-weight:bold; font-size:16px; color:#111;">অ্যাড. মোঃ হুমায়ুন কবির</p>' : '';
-      var sigTitle = (sigRole === 'প্যানেল চেয়ারম্যান') ? 'প্যানেল চেয়ারম্যানের স্বাক্ষর' : ((sigRole === 'ভারপ্রাপ্ত চেয়ারম্যান') ? 'ভারপ্রাপ্ত চেয়ারম্যানের স্বাক্ষর' : 'চেয়ারম্যানের স্বাক্ষর ও সিল');
-
-      var spouseRow = (app.maritalStatus === 'বিবাহিত' && app.spouseName) ? `<tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;" width="32%">স্বামী/স্ত্রীর নাম</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.spouseName}</td></tr>` : '';
-
-      // রিবন ব্যানার
-      var ribbonBannerHtml = `
-        <div style="text-align: center; margin: 8px 0;">
-          <div style="position: relative; display: inline-block; padding: 0 42px;">
-            <div style="position: absolute; left: 0; top: 5px; width: 0; height: 0; border-top: 17px solid #004d40; border-bottom: 17px solid #004d40; border-left: 20px solid transparent;"></div>
-            <div style="position: absolute; left: 19px; top: 5px; width: 24px; height: 34px; background: #004d40; z-index: 1;"></div>
-            
-            <div style="position: relative; z-index: 2; background: linear-gradient(180deg, #00695c 0%, #004d40 100%); color: #ffffff; font-weight: bold; font-size: 22px; padding: 4px 38px; border-radius: 4px; box-shadow: 0 3px 8px rgba(0,0,0,0.22); border: 1.2px solid #80cbc4; letter-spacing: 1px;">
-              নাগরিকত্ব সনদ
-              <div style="height: 2px; background: #80cbc4; width: 75%; margin: 2px auto 0 auto;"></div>
+          <div class="p-3">
+            <table class="table table-sm table-borderless track-table mb-2">
+              <tr><td class="text-muted" width="40%">আবেদনকারীর নাম</td><td>: <strong>${data.name}</strong></td></tr>
+              <tr><td class="text-muted">পিতার নাম</td><td>: ${data.fatherName}</td></tr>
+              <tr><td class="text-muted">মোবাইল</td><td>: ${data.mobile}</td></tr>
+              <tr><td class="text-muted">বর্তমান অবস্থা</td><td>: ${statusBadge}</td></tr>
+            </table>
+            <div class="pt-2 border-top">
+              ${actionBtn}
             </div>
-            
-            <div style="position: absolute; right: 19px; top: 5px; width: 24px; height: 34px; background: #004d40; z-index: 1;"></div>
-            <div style="position: absolute; right: 0; top: 5px; width: 0; height: 0; border-top: 17px solid #004d40; border-bottom: 17px solid #004d40; border-right: 20px solid transparent;"></div>
           </div>
         </div>
       `;
-
-      var qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=0&data=" + encodeURIComponent(app.appId);
-
-      var bgGuillocheSvg = `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23006837' stroke-width='0.45' stroke-opacity='0.12'%3E%3Ccircle cx='40' cy='40' r='38'/%3E%3Ccircle cx='40' cy='40' r='28'/%3E%3Ccircle cx='40' cy='40' r='18'/%3E%3Cpath d='M0 40 Q40 0 80 40 Q40 80 0 40 Z'/%3E%3Cpath d='M40 0 Q80 40 40 80 Q0 40 40 0 Z'/%3E%3C/g%3E%3C/svg%3E")`;
-
-      area.innerHTML = `
-        <div id="citCertMainBox" style="border: 5px double #d32f2f; outline: 2px solid #d32f2f; outline-offset: 3px; padding: 18px 24px; height: 275mm !important; max-height: 275mm !important; box-sizing: border-box; position: relative; background-color: #ffffff; background-image: ${bgGuillocheSvg}; background-size: 65px 65px; display: flex; flex-direction: column; justify-content: space-between; font-family: 'Nikosh', 'Kalpurush', 'Tiro Bangla', sans-serif; overflow: hidden; page-break-inside: avoid; page-break-after: avoid; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;">
-          
-          <!-- ওয়াটারমার্ক -->
-          <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 440px !important; max-width: 440px !important; height: auto !important; opacity: 0.09; pointer-events: none; z-index: 1;" alt="Watermark">
-          
-          <div style="position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
-            
-            <!-- টপ হেডার ও তথ্য অংশ -->
-            <div>
-              <table style="width: 100%; border-collapse: collapse; margin-bottom: 2px;">
-                <tr>
-                  <td style="width: 75px; vertical-align: middle; text-align: left;">
-                    <img src="https://lh3.googleusercontent.com/d/1EIK74_Afcnqt2cOz0_1EtneeCVkENn_Q" style="width: 64px !important; height: 64px !important; object-fit: contain !important;" alt="Govt Logo">
-                  </td>
-                  <td style="text-align: center; vertical-align: middle;">
-                    <div style="font-size: 13.5px; font-weight: bold; color: #444; letter-spacing: 0.3px;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
-                    <h2 style="margin: 2px 0; font-size: 26px; font-weight: bold; color: #0d6efd; letter-spacing: 0.5px; font-family: 'Nikosh', 'Kalpurush', sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</h2>
-                    <div style="font-size: 13.5px; font-weight: bold; color: #222;">উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী</div>
-                  </td>
-                  <td style="width: 75px; vertical-align: middle; text-align: right;">
-                    <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" style="width: 64px !important; height: 64px !important; object-fit: contain !important;" alt="UP Logo">
-                  </td>
-                </tr>
-              </table>
-              
-              <!-- ট্র্যাকিং আইডি ও তারিখ বার -->
-              <table style="width: 100%; border-bottom: 2px solid #d32f2f; padding-bottom: 2px; margin-bottom: 6px; font-size: 14px; font-weight: bold; color: #111;">
-                <tr>
-                  <td style="text-align: left;">ক্রমিক নং: ${app.appId}</td>
-                  <td style="text-align: right;">তারিখঃ ${app.applyDate || today} ইং</td>
-                </tr>
-              </table>
-
-              <!-- রিবন ব্যানার -->
-              ${ribbonBannerHtml}
-
-              <!-- তথ্য টেবিল (নিকশ ফন্টে স্পষ্ট ১৬ পিক্সেল) -->
-              <table style="width: 100%; border-collapse: collapse; margin: 6px 0; line-height: 1.5;">
-                <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;" width="32%">নাগরিকত্ব সনদ নং</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: <strong>${certNumber}</strong></td></tr>
-                <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">সনদধারীর নাম</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.name}</td></tr>
-                <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">পিতার নাম</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.fatherName}</td></tr>
-                <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">মাতার নাম</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.motherName}</td></tr>
-                <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">জন্ম তারিখ</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.dob}</td></tr>
-                <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">জাতীয় পরিচয় নম্বর</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.nid}</td></tr>
-                <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">বৈবাহিক অবস্থা</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.maritalStatus}</td></tr>
-                ${spouseRow}
-                <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">মোবাইল নম্বর</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.mobile}</td></tr>
-                <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">ঠিকানা</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ওয়ার্ড নং: ${app.wardNo||'০১'}, গ্রাম: ${app.village||''}, ডাকঘর: ${app.postOffice || 'বাদুরা হাট'}, উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী, বিভাগ: বরিশাল।</td></tr>
-              </table>
-
-              <!-- প্রশংসাপত্র বক্তব্য (নিকশ ফন্ট ও মার্জিত লাইন হাইট) -->
-              <p style="text-align: justify; font-size: 15.5px; line-height: 2; text-indent: 30px; margin: 12px 0 8px 0; color: #1e293b;">
-                এই মর্মে নাগরিকত্ব সনদ প্রদান করা যাচ্ছে যে, উপরে উল্লেখিত ব্যক্তি অত্র ইউনিয়নের স্থায়ী বাসিন্দা ও জন্মসূত্রে বাংলাদেশের নাগরিক। আমি তাকে ব্যক্তিগতভাবে চিনি ও জানি। আমার জানা মতে, তার নৈতিক চরিত্র ভাল। তিনি রাষ্ট্রবিরোধী বা সমাজবিরোধী কোনো কর্মকাণ্ডের সাথে সম্পৃক্ত নহে।
-              </p>
-
-              <p style="text-align: center; font-weight: bold; font-size: 16px; margin: 8px 0 12px 0; color: #004d40;">আমি তাহার সার্বিক সাফল্য এবং উজ্জ্বল ভবিষ্যৎ কামনা করছি।</p>
-            </div>
-
-            <!-- ফুটার অংশ -->
-            <div style="margin-top: auto; padding-top: 10px;">
-              <table style="width: 100%; border-collapse: collapse;">
-                <tr>
-                  <!-- বামে ইউপি সদস্যের স্বাক্ষর -->
-                  <td style="width: 32%; text-align: center; vertical-align: bottom;">
-                    <div style="height: 40px;"></div>
-                    <div style="border-top: 1.5px solid #111; font-weight: bold; font-size: 13.5px; padding-top: 3px;">ইউপি সদস্যের স্বাক্ষর</div>
-                    <div style="font-size: 11.5px; color: #444;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</div>
-                    <div style="font-size: 11.5px; color: #444;">পটুয়াখালী সদর, পটুয়াখালী</div>
-                  </td>
-                  
-                  <!-- মাঝে QR কোড -->
-                  <td style="width: 36%; text-align: center; vertical-align: bottom;">
-                    <img src="${qrCodeUrl}" style="width: 80px !important; height: 80px !important; border: 1px solid #ccc; padding: 2px; background: #fff; display: inline-block;" alt="QR Code">
-                  </td>
-                  
-                  <!-- ডানে চেয়ারম্যানের স্বাক্ষর -->
-                  <td style="width: 32%; text-align: center; vertical-align: bottom;">
-                    <div style="height: 20px;"></div>
-                    ${sigNameHtml}
-                    <div style="border-top: 1.5px solid #111; font-weight: bold; font-size: 13.5px; padding-top: 3px;">${sigTitle}</div>
-                    <div style="font-size: 11.5px; color: #444;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</div>
-                    <div style="font-size: 11.5px; color: #444;">পটুয়াখালী সদর, পটুয়াখালী</div>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- ফুটার স্লোগান বার -->
-              <table style="width: 100%; border-top: 1.5px solid #d32f2f; margin-top: 8px; font-size: 12px; font-weight: bold; color: #198754;">
-                <tr>
-                  <td style="text-align: left;">আপনার সন্তানকে স্কুলে পাঠান</td>
-                  <td style="text-align: center;">যাচাই করতে ভিজিট করুন: www.auliapur.com</td>
-                  <td style="text-align: right;">বাল্য বিবাহ প্রতিরোধ করুন</td>
-                </tr>
-              </table>
-            </div>
-
-          </div>
-        </div>
-      `;
-
-      bootstrap.Modal.getOrCreateInstance(document.getElementById('citCertPrintModal')).show();
-    }).trackApplication(appId);
+    }
   }
 
-  // 🟢 কোনো অতিরিক্ত পপআপ উইন্ডো ছাড়া সরাসরি প্রিন্ট ইঞ্জিন (Iframe Direct Print)
+  async function showCitizenPrintPreview(appId) {
+    const app = await callBackendAPI('trackApplication', appId);
+    if(!app || !app.found) return alert('ডাটা লোড করা যায়নি!');
+
+    var area = document.getElementById('citPrintableArea');
+    var today = new Date().toLocaleDateString('bn-BD');
+
+    var certNumber = app.certNo ? app.certNo : '';
+    var sigRole = app.signatoryRole || 'চেয়ারম্যান';
+    var sigNameHtml = (sigRole === 'চেয়ারম্যান') ? '<p style="margin:0 0 2px 0; font-weight:bold; font-size:16px; color:#111;">অ্যাড. মোঃ হুমায়ুন কবির</p>' : '';
+    var sigTitle = (sigRole === 'প্যানেল চেয়ারম্যান') ? 'প্যানেল চেয়ারম্যানের স্বাক্ষর' : ((sigRole === 'ভারপ্রাপ্ত চেয়ারম্যান') ? 'ভারপ্রাপ্ত চেয়ারম্যানের স্বাক্ষর' : 'চেয়ারম্যানের স্বাক্ষর ও সিল');
+
+    var spouseRow = (app.maritalStatus === 'বিবাহিত' && app.spouseName) ? `<tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;" width="32%">স্বামী/স্ত্রীর নাম</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.spouseName}</td></tr>` : '';
+
+    var ribbonBannerHtml = `
+      <div style="text-align: center; margin: 8px 0;">
+        <div style="position: relative; display: inline-block; padding: 0 42px;">
+          <div style="position: absolute; left: 0; top: 5px; width: 0; height: 0; border-top: 17px solid #004d40; border-bottom: 17px solid #004d40; border-left: 20px solid transparent;"></div>
+          <div style="position: absolute; left: 19px; top: 5px; width: 24px; height: 34px; background: #004d40; z-index: 1;"></div>
+          
+          <div style="position: relative; z-index: 2; background: linear-gradient(180deg, #00695c 0%, #004d40 100%); color: #ffffff; font-weight: bold; font-size: 22px; padding: 4px 38px; border-radius: 4px; box-shadow: 0 3px 8px rgba(0,0,0,0.22); border: 1.2px solid #80cbc4; letter-spacing: 1px;">
+            নাগরিকত্ব সনদ
+            <div style="height: 2px; background: #80cbc4; width: 75%; margin: 2px auto 0 auto;"></div>
+          </div>
+          
+          <div style="position: absolute; right: 19px; top: 5px; width: 24px; height: 34px; background: #004d40; z-index: 1;"></div>
+          <div style="position: absolute; right: 0; top: 5px; width: 0; height: 0; border-top: 17px solid #004d40; border-bottom: 17px solid #004d40; border-right: 20px solid transparent;"></div>
+        </div>
+      </div>
+    `;
+
+    var qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=110x110&margin=0&data=" + encodeURIComponent(app.appId);
+    var bgGuillocheSvg = `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23006837' stroke-width='0.45' stroke-opacity='0.12'%3E%3Ccircle cx='40' cy='40' r='38'/%3E%3Ccircle cx='40' cy='40' r='28'/%3E%3Ccircle cx='40' cy='40' r='18'/%3E%3Cpath d='M0 40 Q40 0 80 40 Q40 80 0 40 Z'/%3E%3Cpath d='M40 0 Q80 40 40 80 Q0 40 40 0 Z'/%3E%3C/g%3E%3C/svg%3E")`;
+
+    area.innerHTML = `
+      <div id="citCertMainBox" style="border: 5px double #d32f2f; outline: 2px solid #d32f2f; outline-offset: 3px; padding: 18px 24px; height: 275mm !important; max-height: 275mm !important; box-sizing: border-box; position: relative; background-color: #ffffff; background-image: ${bgGuillocheSvg}; background-size: 65px 65px; display: flex; flex-direction: column; justify-content: space-between; font-family: 'Nikosh', 'Kalpurush', 'Tiro Bangla', sans-serif; overflow: hidden; page-break-inside: avoid; page-break-after: avoid; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;">
+        
+        <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 440px !important; max-width: 440px !important; height: auto !important; opacity: 0.09; pointer-events: none; z-index: 1;" alt="Watermark">
+        
+        <div style="position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+          
+          <div>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 2px;">
+              <tr>
+                <td style="width: 75px; vertical-align: middle; text-align: left;">
+                  <img src="https://lh3.googleusercontent.com/d/1EIK74_Afcnqt2cOz0_1EtneeCVkENn_Q" style="width: 64px !important; height: 64px !important; object-fit: contain !important;" alt="Govt Logo">
+                </td>
+                <td style="text-align: center; vertical-align: middle;">
+                  <div style="font-size: 13.5px; font-weight: bold; color: #444; letter-spacing: 0.3px;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
+                  <h2 style="margin: 2px 0; font-size: 26px; font-weight: bold; color: #0d6efd; letter-spacing: 0.5px; font-family: 'Nikosh', 'Kalpurush', sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</h2>
+                  <div style="font-size: 13.5px; font-weight: bold; color: #222;">উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী</div>
+                </td>
+                <td style="width: 75px; vertical-align: middle; text-align: right;">
+                  <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" style="width: 64px !important; height: 64px !important; object-fit: contain !important;" alt="UP Logo">
+                </td>
+              </tr>
+            </table>
+            
+            <table style="width: 100%; border-bottom: 2px solid #d32f2f; padding-bottom: 2px; margin-bottom: 6px; font-size: 14px; font-weight: bold; color: #111;">
+              <tr>
+                <td style="text-align: left;">ক্রমিক নং: ${app.appId}</td>
+                <td style="text-align: right;">তারিখঃ ${app.applyDate || today} ইং</td>
+              </tr>
+            </table>
+
+            ${ribbonBannerHtml}
+
+            <table style="width: 100%; border-collapse: collapse; margin: 6px 0; line-height: 1.5;">
+              <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;" width="32%">নাগরিকত্ব সনদ নং</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: <strong>${certNumber}</strong></td></tr>
+              <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">সনদধারীর নাম</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.name}</td></tr>
+              <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">পিতার নাম</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.fatherName}</td></tr>
+              <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">মাতার নাম</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.motherName}</td></tr>
+              <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">জন্ম তারিখ</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.dob}</td></tr>
+              <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">জাতীয় পরিচয় নম্বর</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.nid}</td></tr>
+              <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">বৈবাহিক অবস্থা</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.maritalStatus}</td></tr>
+              ${spouseRow}
+              <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">মোবাইল নম্বর</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ${app.mobile}</td></tr>
+              <tr><td style="padding:4.5px 8px; font-size:16px; font-weight:bold; color:#1e293b;">ঠিকানা</td><td style="padding:4.5px 8px; font-size:16px; font-weight:600; color:#0f172a;">: ওয়ার্ড নং: ${app.wardNo||'০১'}, গ্রাম: ${app.village||''}, ডাকঘর: ${app.postOffice || 'বাদুরা হাট'}, উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী, বিভাগ: বরিশাল।</td></tr>
+            </table>
+
+            <p style="text-align: justify; font-size: 15.5px; line-height: 2; text-indent: 30px; margin: 12px 0 8px 0; color: #1e293b;">
+              এই মর্মে নাগরিকত্ব সনদ প্রদান করা যাচ্ছে যে, উপরে উল্লেখিত ব্যক্তি অত্র ইউনিয়নের স্থায়ী বাসিন্দা ও জন্মসূত্রে বাংলাদেশের নাগরিক। আমি তাকে ব্যক্তিগতভাবে চিনি ও জানি। আমার জানা মতে, তার নৈতিক চরিত্র ভাল। তিনি রাষ্ট্রবিরোধী বা সমাজবিরোধী কোনো কর্মকাণ্ডের সাথে সম্পৃক্ত নহে।
+            </p>
+
+            <p style="text-align: center; font-weight: bold; font-size: 16px; margin: 8px 0 12px 0; color: #004d40;">আমি তাহার সার্বিক সাফল্য এবং উজ্জ্বল ভবিষ্যৎ কামনা করছি।</p>
+          </div>
+
+          <div style="margin-top: auto; padding-top: 10px;">
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="width: 32%; text-align: center; vertical-align: bottom;">
+                  <div style="height: 40px;"></div>
+                  <div style="border-top: 1.5px solid #111; font-weight: bold; font-size: 13.5px; padding-top: 3px;">ইউপি সদস্যের স্বাক্ষর</div>
+                  <div style="font-size: 11.5px; color: #444;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</div>
+                  <div style="font-size: 11.5px; color: #444;">পটুয়াখালী সদর, পটুয়াখালী</div>
+                </td>
+                
+                <td style="width: 36%; text-align: center; vertical-align: bottom;">
+                  <img src="${qrCodeUrl}" style="width: 80px !important; height: 80px !important; border: 1px solid #ccc; padding: 2px; background: #fff; display: inline-block;" alt="QR Code">
+                </td>
+                
+                <td style="width: 32%; text-align: center; vertical-align: bottom;">
+                  <div style="height: 20px;"></div>
+                  ${sigNameHtml}
+                  <div style="border-top: 1.5px solid #111; font-weight: bold; font-size: 13.5px; padding-top: 3px;">${sigTitle}</div>
+                  <div style="font-size: 11.5px; color: #444;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</div>
+                  <div style="font-size: 11.5px; color: #444;">পটুয়াখালী সদর, পটুয়াখালী</div>
+                </td>
+              </tr>
+            </table>
+
+            <table style="width: 100%; border-top: 1.5px solid #d32f2f; margin-top: 8px; font-size: 12px; font-weight: bold; color: #198754;">
+              <tr>
+                <td style="text-align: left;">আপনার সন্তানকে স্কুলে পাঠান</td>
+                <td style="text-align: center;">যাচাই করতে ভিজিট করুন: www.auliapur.com</td>
+                <td style="text-align: right;">বাল্য বিবাহ প্রতিরোধ করুন</td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    `;
+
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('citCertPrintModal')).show();
+  }
+
   function printCitizenCertArea() {
     var rawHtml = document.getElementById('citPrintableArea').innerHTML;
     var printDoc = document.getElementById('citPrintIframe').contentWindow.document;
@@ -381,32 +373,13 @@
       <html>
       <head>
         <title>নাগরিকত্ব সনদপত্র</title>
-        <link href="https://fonts.googleapis.com/css2?family=Nikosh&family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+        <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
         <style>
-          @page {
-            size: A4 portrait;
-            margin: 4mm 6mm;
-          }
-          * {
-            box-sizing: border-box;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
-          html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: #ffffff;
-            font-family: 'Nikosh', 'Kalpurush', 'Tiro Bangla', sans-serif;
-            overflow: hidden !important;
-          }
-          #citCertMainBox {
-            height: 275mm !important;
-            max-height: 275mm !important;
-            page-break-inside: avoid !important;
-            page-break-after: avoid !important;
-          }
+          @page { size: A4 portrait; margin: 4mm 6mm; }
+          * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          html, body { width: 100%; height: 100%; margin: 0 !important; padding: 0 !important; background: #ffffff; font-family: 'Nikosh', 'Kalpurush', 'Tiro Bangla', sans-serif; overflow: hidden !important; }
+          #citCertMainBox { height: 275mm !important; max-height: 275mm !important; page-break-inside: avoid !important; page-break-after: avoid !important; }
         </style>
       </head>
       <body>

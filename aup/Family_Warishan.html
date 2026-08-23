@@ -219,15 +219,15 @@
 
 <script>
   function toBnDigit(n) {
-    if(!n) return '';
+    if(n === null || n === undefined || n === '') return '';
     var bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
     return (n + '').replace(/\d/g, function(d){ return bn[d]; });
   }
 
-  // 🟢 নিশ্চিতভাবে পারিবারিক বা উত্তরাধিকারী সনদ ওপেন করার ফাংশন
   function openFamilyCertPage(type) {
-    navToSection('familyCertView');
-    document.getElementById('familyWarishanForm').reset();
+    navToSection('familyWarishanView');
+    var form = document.getElementById('familyWarishanForm');
+    if (form) form.reset();
     document.getElementById('fwServiceType').value = type;
     
     var isSuccession = (type === 'উত্তরাধিকারী সনদ');
@@ -235,12 +235,15 @@
     document.getElementById('fwSubjectText').innerText = isSuccession ? 'উত্তরাধিকারী সনদপত্র' : 'পারিবারিক সনদপত্র';
 
     var tbody = document.getElementById('fwMembersTbody');
-    tbody.innerHTML = '';
-    for(var i=0; i<3; i++) { addFwMemberRow(); }
+    if (tbody) {
+      tbody.innerHTML = '';
+      for(var i=0; i<3; i++) { addFwMemberRow(); }
+    }
   }
 
   function addFwMemberRow() {
     var tbody = document.getElementById('fwMembersTbody');
+    if(!tbody) return;
     var tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="fw-bold">${toBnDigit(tbody.rows.length + 1)}</td>
@@ -275,7 +278,7 @@
     }
   }
 
-  function submitFamilyForm() {
+  async function submitFamilyForm() {
     var btn = document.getElementById('fwSubmitBtn');
     btn.disabled = true; btn.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i> জমা হচ্ছে...';
 
@@ -303,66 +306,71 @@
       members: members
     };
 
-    google.script.run.withSuccessHandler(function(res) {
-      btn.disabled = false; btn.innerHTML = '<i class="fa fa-paper-plane me-1"></i> আবেদন দাখিল করুন';
-      if(res.success) {
-        document.getElementById('familyWarishanForm').reset();
-        document.getElementById('successAppId').innerText = res.appId;
-        bootstrap.Modal.getOrCreateInstance(document.getElementById('successModal')).show();
-      } else { alert('ত্রুটি: ' + res.error); }
-    }).submitFamilyDirect(payload);
+    const res = await callBackendAPI('submitFamilyDirect', payload);
+    btn.disabled = false; btn.innerHTML = '<i class="fa fa-paper-plane me-1"></i> আবেদন দাখিল করুন';
+
+    if(res && res.success) {
+      document.getElementById('familyWarishanForm').reset();
+      document.getElementById('successAppId').innerText = res.appId;
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('successModal')).show();
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'আবেদন ব্যর্থ',
+        text: res ? res.error : 'আবেদন জমা দেওয়া যায়নি।'
+      });
+    }
   }
 
-  function showFamilyPrintPreview(appId) {
-    google.script.run.withSuccessHandler(function(d) {
-      if(!d || !d.found) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
-      
-      document.getElementById('prAppIdShort').innerText = d.appId.replace('AUL-FAM-', '');
-      document.getElementById('prIssueDate').innerText = d.applyDate || '';
-      
-      var isSuccession = (d.type === 'উত্তরাধিকারী সনদ');
-      document.getElementById('prCertTitle').innerText = isSuccession ? 'উত্তরাধিকারী সনদপত্র' : 'পারিবারিক সনদপত্র';
-      document.getElementById('prCertTypeTitle').innerText = isSuccession ? 'উত্তরাধিকারী সনদ পত্র' : 'পারিবারিক সনদ পত্র';
+  async function showFamilyPrintPreview(appId) {
+    const d = await callBackendAPI('getFamilyDetails', appId);
+    if(!d || !d.found) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
+    
+    document.getElementById('prAppIdShort').innerText = d.appId.replace('AUL-FAM-', '');
+    document.getElementById('prIssueDate').innerText = d.applyDate || '';
+    
+    var isSuccession = (d.type === 'উত্তরাধিকারী সনদ');
+    document.getElementById('prCertTitle').innerText = isSuccession ? 'উত্তরাধিকারী সনদপত্র' : 'পারিবারিক সনদপত্র';
+    document.getElementById('prCertTypeTitle').innerText = isSuccession ? 'উত্তরাধিকারী সনদ পত্র' : 'পারিবারিক সনদ পত্র';
 
-      document.getElementById('prName').innerText = d.name;
-      document.getElementById('prFather').innerText = d.fatherName;
-      document.getElementById('prMother').innerText = d.motherName || '';
-      document.getElementById('prVillage').innerText = d.village;
-      document.getElementById('prPost').innerText = d.postOffice;
-      document.getElementById('prApplicantFooterName').innerText = d.name;
+    document.getElementById('prName').innerText = d.name;
+    document.getElementById('prFather').innerText = d.fatherName;
+    document.getElementById('prMother').innerText = d.motherName || '';
+    document.getElementById('prVillage').innerText = d.village;
+    document.getElementById('prPost').innerText = d.postOffice;
+    document.getElementById('prApplicantFooterName').innerText = d.name;
 
-      var sig = d.signatoryRole || 'চেয়ারম্যান';
-      document.getElementById('prSignRole').innerText = sig;
-      if(sig === 'প্যানেল চেয়ারম্যান') {
-        document.getElementById('prChairName').innerText = '(মোঃ আবদুস সালাম মৃধা)';
-      } else if(sig === 'ভারপ্রাপ্ত চেয়ারম্যান') {
-        document.getElementById('prChairName').innerText = '(ভারপ্রাপ্ত চেয়ারম্যান)';
-      } else {
-        document.getElementById('prChairName').innerText = '(অ্যাড. মোঃ হুমায়ুন কবির)';
-      }
+    var sig = d.signatoryRole || 'চেয়ারম্যান';
+    document.getElementById('prSignRole').innerText = sig;
+    if(sig === 'প্যানেল চেয়ারম্যান') {
+      document.getElementById('prChairName').innerText = '(মোঃ আবদুস সালাম মৃধা)';
+    } else if(sig === 'ভারপ্রাপ্ত চেয়ারম্যান') {
+      document.getElementById('prChairName').innerText = '(ভারপ্রাপ্ত চেয়ারম্যান)';
+    } else {
+      document.getElementById('prChairName').innerText = '(অ্যাড. মোঃ হুমায়ুন কবির)';
+    }
 
-      var tbody = document.getElementById('prMembersTbody');
-      tbody.innerHTML = '';
-      var members = d.members || [];
-      if(members.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-muted py-2">কোন সদস্য তালিকা নেই</td></tr>';
-      } else {
-        members.forEach(function(m, idx) {
-          tbody.innerHTML += `
-            <tr>
-              <td>${toBnDigit(idx + 1)}</td>
-              <td class="text-start ps-2"><strong>${m.name}</strong></td>
-              <td>${toBnDigit(m.nid || '-')}</td>
-              <td>${toBnDigit(m.dob || '-')}</td>
-              <td>${m.relation || '-'}</td>
-              <td></td>
-            </tr>
-          `;
-        });
-      }
+    var tbody = document.getElementById('prMembersTbody');
+    tbody.innerHTML = '';
+    var members = d.members || [];
+    if(members.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-muted py-2">কোন সদস্য তালিকা নেই</td></tr>';
+    } else {
+      members.forEach(function(m, idx) {
+        tbody.innerHTML += `
+          <tr>
+            <td>${toBnDigit(idx + 1)}</td>
+            <td class="text-start ps-2"><strong>${m.name}</strong></td>
+            <td>${toBnDigit(m.nid || '-')}</td>
+            <td>${toBnDigit(m.dob || '-')}</td>
+            <td>${m.relation || '-'}</td>
+            <td></td>
+          </tr>
+        `;
+      });
+    }
 
-      bootstrap.Modal.getOrCreateInstance(document.getElementById('familyCertPrintModal')).show();
-    }).getFamilyDetails(appId);
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('familyCertPrintModal')).show();
   }
 
   function printExactCertificate() {
@@ -375,7 +383,8 @@
       <html>
       <head>
         <title>পারিবারিক সনদপত্র</title>
-        <link href="https://fonts.googleapis.com/css2?family=Nikosh&family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+        <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
         <style>
           @page { size: A4 portrait; margin: 0mm; }
           * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }

@@ -259,7 +259,7 @@
     return (n + '').replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
   }
 
-  // 🟢 যে তারিখে প্রিন্ট হবে সেই দিনের লাইভ কারেন্ট বাংলা তারিখ
+  // 🟢 প্রিন্ট করার দিনের লাইভ বর্তমান বাংলা তারিখ
   function getCurrentBanglaDate() {
     const months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
     const now = new Date();
@@ -362,10 +362,12 @@
         break;
       case 'ভূমিহীন সনদ':
       case 'ভূমিহীন সনদপত্র':
+      case 'ভূমিহীন প্রত্যয়ন':
         specificText = 'আমার জানামতে তাঁহার কিংবা তাঁহার পরিবারের কোনো নিজস্ব স্থাবর সম্পত্তি, বসতভিটা বা চাষযোগ্য কোনো জমিজমা নাই । তিনি প্রকৃত অর্থেই একজন ভূমিহীন ব্যক্তি ।';
         break;
       case 'অবিবাহিত সনদ':
       case 'অবিবাহিত সনদপত্র':
+      case 'অবিবাহিত প্রত্যয়ন':
         specificText = 'আমার জানামতে অদ্যাবধি তিনি কোনো বিবাহ বন্ধনে আবদ্ধ হন নাই । তিনি বর্তমানে সম্পূর্ণ অবিবাহিত অবস্থায় আছেন ।';
         break;
       case 'বিবাহিত সনদ':
@@ -416,33 +418,57 @@
     };
   }
 
-  // 🟢 ১-ক্লিকে সরাসরি সাধারণ প্রত্যয়ন প্রিন্ট ইঞ্জিন (No Preview Modal)
+  // 🟢 ১-ক্লিকে সরাসরি সাধারণ প্রত্যয়ন প্রিন্ট ইঞ্জিন (এডমিন ও ইউজার ভিউয়ের জন্য)
   async function showGeneralCertPrintPreview(appId) {
     let data = null;
-    try {
-      if (typeof callBackendAPI === 'function') {
-        data = await callBackendAPI('trackApplication', appId);
-      }
-    } catch(e) { console.warn("API Error:", e); }
-
-    if ((!data || data.found === false) && typeof rawDataStore !== 'undefined' && rawDataStore.gen) {
+    
+    // ১. এডমিন মেমোরি ক্যাশ চেক
+    if (typeof rawDataStore !== 'undefined' && rawDataStore.gen) {
       data = rawDataStore.gen.find(x => String(x.appId).trim() === String(appId).trim());
     }
 
+    // ২. এপিআই কল ব্যাকআপ
+    if (!data) {
+      try {
+        if (typeof callBackendAPI === 'function') {
+          data = await callBackendAPI('trackApplication', appId);
+        }
+      } catch(e) { console.warn("API Error:", e); }
+    }
+
     if(!data) return alert('সনদের তথ্য পাওয়া যায়নি!');
+
+    // ডেটা নরমালাইজেশন
+    let certType = data.type || data.serviceType || 'প্রত্যয়নপত্র';
+    let nameVal = data.name || data.applicantName || '';
+    let fatherVal = data.fatherName || data.fatherSpouseName || '';
+    let motherVal = data.motherName || '';
+    let villageVal = data.village || '';
+    let wardVal = data.wardNo || '০১';
+    let postVal = data.postOffice || 'আউলিয়াপুর ময়দান';
+    let nidVal = data.nid || '';
+    let mobileVal = data.mobile || '';
+    let spouseVal = data.spouseName || '';
+
+    let normData = {
+      name: nameVal, fatherName: fatherVal, motherName: motherVal,
+      village: villageVal, wardNo: wardVal, postOffice: postVal,
+      nid: nidVal, mobile: mobileVal, spouseName: spouseVal,
+      type: certType
+    };
 
     // প্রিন্টের দিনের লাইভ বর্তমান বাংলা তারিখ
     var livePrintDateBn = getCurrentBanglaDate();
 
     var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান') ? '(মোঃ আবদুস সালাম মৃধা)<br>প্যানেল চেয়ারম্যান-১' : '(অ্যাড. মোঃ হুমায়ুন কবির)<br>চেয়ারম্যান';
     
-    var contentData = getDynamicCertBodyText(data.type || 'প্রত্যয়নপত্র', data);
-    var titleText = (data.type || 'প্রত্যয়নপত্র').endsWith('সনদ') || (data.type || 'প্রত্যয়নপত্র').endsWith('পত্র') ? data.type : (data.type + ' পত্র');
+    var contentData = getDynamicCertBodyText(certType, normData);
+    var titleText = certType.endsWith('সনদ') || certType.endsWith('পত্র') ? certType : (certType + ' পত্র');
 
     var smarakFormatted = generateDynamicGeneralSmarak(data.appId);
 
     // কিউআর কোড
-    var qrPayload = `গণপ্রজাতন্ত্রী বাংলাদেশ সরকার\n১১নং আউলিয়াপুর ইউনিয়ন পরিষদ\nসনদ: ${titleText}\nস্মারক: ${smarakFormatted}\nনাম: ${data.name}\nএনআইডি: ${data.nid || '-'}\nতারিখ: ${livePrintDateBn} ইং\nঅনলাইন ভেরিফায়েড`;
+    var qrPayload = `গণপ্রজাতন্ত্রী বাংলাদেশ সরকার\n১১নং আউলিয়াপুর ইউনিয়ন পরিষদ\nসনদ: ${titleText}\nস্মারক: ${smarakFormatted}\nনাম: ${nameVal}\nএনআইডি: ${nidVal || '-'}\nতারিখ: ${livePrintDateBn} ইং\nঅনলাইন ভেরিফায়েড`;
     var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=0&data=" + encodeURIComponent(qrPayload);
 
     var certHtml = `
@@ -487,11 +513,11 @@
             </div>
 
             <!-- মূল বিবরণী (বড় ফন্ট ১৮.৫px ও ব্যালেন্সড লাইন হাইট) -->
-            <div style="margin-top: 30px; text-align: justify; font-size: 18px; line-height: 2.2; text-indent: 45px; font-weight: 500; font-family: 'Nikosh', sans-serif; color: #000;">
+            <div style="margin-top: 30px; text-align: justify; font-size: 18.5px; line-height: 2.2; text-indent: 45px; font-weight: 500; font-family: 'Nikosh', sans-serif; color: #000;">
               ${contentData.body}
             </div>
 
-            <div style="margin-top: 25px; text-align: center; font-size: 18px; font-weight: bold; font-family: 'Nikosh', sans-serif; color: #000;">
+            <div style="margin-top: 25px; text-align: center; font-size: 18.5px; font-weight: bold; font-family: 'Nikosh', sans-serif; color: #000;">
               ${contentData.closing}
             </div>
           </div>
@@ -539,7 +565,7 @@
     executeIsolatedPrintDirect(certHtml);
   }
 
-  // 🟢 সরাসরি A4 প্রিন্ট ইঞ্জিন (আইফ্রেম ক্লিনআপ সহ)
+  // 🟢 সরাসরি A4 প্রিন্ট ইঞ্জিন
   function executeIsolatedPrintDirect(htmlContent) {
     var oldFrame = document.getElementById('gen_print_frame');
     if (oldFrame) oldFrame.remove();

@@ -1,6 +1,6 @@
 <!-- ======================================================= -->
 <!-- 11NO AULIAPUR UNION PARISHAD - MODULAR ADMIN PANEL     -->
-<!-- File: Admin_Panel.html (Lightweight & Modular Bridge)   -->
+<!-- File: Admin_Panel.html (Lightweight & 1-Click Bridge)  -->
 <!-- ======================================================= -->
 
 <!-- Google & Bangla Fonts -->
@@ -41,7 +41,7 @@
     <div class="col-md-3 col-lg-2 no-print">
       <div class="admin-sidebar p-2 shadow-sm">
         
-        <!-- লগইনকৃত এডমিন প্রোফাইল -->
+        <!-- প্রোফাইল -->
         <div class="admin-profile-box">
           <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="adminActivePhoto" class="admin-avatar-img" alt="Admin Avatar">
           <h6 class="fw-bold m-0 text-white" id="adminActiveName" style="font-size: 14px;">ইউজার</h6>
@@ -53,7 +53,7 @@
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="citTab" onclick="switchAdminTab('citTab')"><i class="fa fa-id-card"></i> নাগরিকত্ব সনদ</a>
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="tradeTab" onclick="switchAdminTab('tradeTab')"><i class="fa fa-briefcase"></i> ট্রেড লাইসেন্স</a>
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="famTab" onclick="switchAdminTab('famTab')"><i class="fa fa-people-roof"></i> পারিবারিক সনদ</a>
-          <a href="javascript:void(0)" class="admin-menu-link" data-menu="warTab" onclick="switchAdminTab('warTab')"><i class="fa fa-sitemap"></i> ওয়ারিশান সনদ</a>
+          <a href="javascript:void(0)" class="admin-menu-link" data-menu="warTab" onclick="switchAdminTab('warTab')"><i class="fa fa-sitemap"></i> WARISHAN সনদ</a>
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="appsTab" onclick="switchAdminTab('appsTab')"><i class="fa fa-file-invoice"></i> সাধারণ প্রত্যয়নপত্র</a>
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="taxTab" onclick="switchAdminTab('taxTab')"><i class="fa fa-hand-holding-dollar"></i> কর আদায় ও সদস্য</a>
           
@@ -139,7 +139,7 @@
       <!-- Tab 5: Warishan Certificate Table -->
       <div id="warTab" class="admin-tab d-none">
         <div class="card p-3 shadow-sm border-0 mb-3 bg-warning text-dark d-flex flex-row justify-content-between align-items-center">
-          <h5 class="fw-bold m-0"><i class="fa fa-sitemap me-2"></i> ওয়ারিশান সনদের আবেদন তালিকা</h5>
+          <h5 class="fw-bold m-0"><i class="fa fa-sitemap me-2"></i> WARISHAN সনদের আবেদন তালিকা</h5>
           <button class="btn btn-dark btn-sm fw-bold" onclick="loadWarishanApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
         </div>
         <div class="table-responsive bg-white p-3 shadow-sm rounded border">
@@ -343,7 +343,7 @@
               <div class="col-md-4"><div class="form-check"><input class="form-check-input menu-perm-cb" type="checkbox" value="citTab" checked><label class="form-check-label">নাগরিকত্ব সনদ</label></div></div>
               <div class="col-md-4"><div class="form-check"><input class="form-check-input menu-perm-cb" type="checkbox" value="tradeTab" checked><label class="form-check-label">ট্রেড লাইসেন্স</label></div></div>
               <div class="col-md-4"><div class="form-check"><input class="form-check-input menu-perm-cb" type="checkbox" value="famTab" checked><label class="form-check-label">পারিবারিক সনদ</label></div></div>
-              <div class="col-md-4"><div class="form-check"><input class="form-check-input menu-perm-cb" type="checkbox" value="warTab" checked><label class="form-check-label">ওয়ারিশান সনদ</label></div></div>
+              <div class="col-md-4"><div class="form-check"><input class="form-check-input menu-perm-cb" type="checkbox" value="warTab" checked><label class="form-check-label">WARISHAN সনদ</label></div></div>
               <div class="col-md-4"><div class="form-check"><input class="form-check-input menu-perm-cb" type="checkbox" value="appsTab" checked><label class="form-check-label">সাধারণ প্রত্যয়ন</label></div></div>
               <div class="col-md-4"><div class="form-check"><input class="form-check-input menu-perm-cb" type="checkbox" value="taxTab" checked><label class="form-check-label">কর আদায় ও সদস্য</label></div></div>
               <div class="col-md-4"><div class="form-check"><input class="form-check-input menu-perm-cb" type="checkbox" value="accountsTab"><label class="form-check-label">আয়-ব্যয়ের হিসাব</label></div></div>
@@ -469,7 +469,7 @@
     if (superBtn) superBtn.style.display = isSuper ? 'flex' : 'none';
   }
 
-  // 🟢 অ্যাকশন বাটন রেন্ডারার (সরাসরি রিলেটেড ফাইলের সাথে কানেক্টেড)
+  // 🟢 অ্যাকশন বাটন রেন্ডারার
   function renderActionButtons(appId, status, printCallbackName, editCallbackName) {
     var session = JSON.parse(localStorage.getItem('upAdminSession') || '{}');
     var canDel = session.role === 'SuperAdmin' || (session.permissions && session.permissions.canDelete);
@@ -517,11 +517,11 @@
     document.getElementById('dashGenPending').innerText = toBnNumber(st.genPending || 0);
   }
 
-  /* 🟢 ১. নাগরিকত্ব সনদ তালিকা (Citizen.html এর ফাংশনের সাথে কানেক্টেড) */
+  /* 🟢 ১. নাগরিকত্ব সনদ তালিকা */
   async function loadCitizenshipApps(page = 1) {
     currentPageStore.cit = page;
     const apps = await callBackendAPI('getCitizenshipApps');
-    rawDataStore.cit = apps || [];
+    rawDataStore.cit = (apps || []).reverse();
     renderCitPage(page);
   }
 
@@ -533,18 +533,17 @@
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; return; }
     slice.forEach(function(a) {
-      // প্রিন্ট বাটন Citizen.html এর showCitizenPrintPreview কে ডাকবে এবং এডিট বাটন openEditCitizenModal কে ডাকবে
       var act = renderActionButtons(a.appId, a.status, 'showCitizenPrintPreview', 'openEditCitizenModal');
       tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.certNo || '-'}</td><td>${a.name || a.applicantName}</td><td>${a.fatherName || a.fatherSpouseName || '-'}</td><td>${a.mobile}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
     });
     renderPagination('cit', list.length, 'renderCitPage');
   }
 
-  /* 🟢 ২. ট্রেড লাইসেন্স তালিকা (TradeLicense.html এর সাথে কানেক্টেড) */
+  /* 🟢 ২. ট্রেড লাইসেন্স তালিকা */
   async function loadTradeLicenses(page = 1) {
     currentPageStore.trade = page;
     const list = await callBackendAPI('getTradeLicenses');
-    rawDataStore.trade = list || [];
+    rawDataStore.trade = (list || []).reverse();
     renderTradePage(page);
   }
 
@@ -566,7 +565,7 @@
   async function loadFamilyApps(page = 1) {
     currentPageStore.fam = page;
     const apps = await callBackendAPI('getFamilyApps');
-    rawDataStore.fam = apps || [];
+    rawDataStore.fam = (apps || []).reverse();
     renderFamPage(page);
   }
 
@@ -584,11 +583,11 @@
     renderPagination('fam', list.length, 'renderFamPage');
   }
 
-  /* 🟢 ৪. ওয়ারিশান সনদ তালিকা (Warishan.html এর সাথে কানেক্টেড) */
+  /* 🟢 ৪. ওয়ারিশান সনদ তালিকা */
   async function loadWarishanApps(page = 1) {
     currentPageStore.war = page;
     const apps = await callBackendAPI('getWarishanApps');
-    rawDataStore.war = apps || [];
+    rawDataStore.war = (apps || []).reverse();
     renderWarPage(page);
   }
 
@@ -606,11 +605,11 @@
     renderPagination('war', list.length, 'renderWarPage');
   }
 
-  /* 🟢 ৫. সাধারণ প্রত্যয়নপত্র তালিকা */
+  /* 🟢 ৫. সাধারণ প্রত্যয়নপত্র তালিকা (সর্বশেষ আবেদন উপরে ও ডিরেক্ট প্রিন্ট কানেক্টেড) */
   async function loadAdminApps(page = 1) {
     currentPageStore.gen = page;
     const apps = await callBackendAPI('getAllApplications');
-    rawDataStore.gen = apps || [];
+    rawDataStore.gen = (apps || []).reverse();
     renderGenPage(page);
   }
 
@@ -620,10 +619,23 @@
     tbody.innerHTML = '';
     var list = rawDataStore.gen;
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; return; }
+    if(slice.length === 0) { 
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; 
+      return; 
+    }
     slice.forEach(function(a) {
       var act = renderActionButtons(a.appId, a.status, 'showGeneralCertPrintPreview', 'openEditGeneralModal');
-      tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.type}</td><td>${a.name || a.applicantName}</td><td>${a.nid}</td><td>${a.mobile}</td><td>ওয়ার্ড-${a.wardNo}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
+      tbody.innerHTML += `
+        <tr>
+          <td><strong>${a.appId}</strong></td>
+          <td><span class="badge bg-success">${a.type || 'প্রত্যয়নপত্র'}</span></td>
+          <td>${a.name || a.applicantName}</td>
+          <td>${toBnNumber(a.nid) || '-'}</td>
+          <td>${toBnNumber(a.mobile) || '-'}</td>
+          <td>ওয়ার্ড-${toBnNumber(a.wardNo) || '০১'}</td>
+          <td>${act.badge}</td>
+          <td>${act.actions}</td>
+        </tr>`;
     });
     renderPagination('gen', list.length, 'renderGenPage');
   }
@@ -632,7 +644,7 @@
   async function loadTaxPayers(page = 1) {
     currentPageStore.tax = page;
     const list = await callBackendAPI('getTaxPayers');
-    rawDataStore.tax = list || [];
+    rawDataStore.tax = (list || []).reverse();
     renderTaxPage(page);
   }
 
@@ -797,41 +809,5 @@
     else if(tabId === 'taxTab') loadTaxPayers();
     else if(tabId === 'settingsTab') loadAllUsers();
     else if(tabId === 'dashTab') loadAdminDashboard();
-  }
-  /* 🟢 ৫. সাধারণ প্রত্যয়নপত্র তালিকা (সরাসরি General_Certificate.html এর সাথে কানেক্টেড) */
-  async function loadAdminApps(page = 1) {
-    currentPageStore.gen = page;
-    const apps = await callBackendAPI('getAllApplications');
-    // সর্বশেষ আবেদন সবার উপরে থাকবে (Newest on Top)
-    rawDataStore.gen = (apps || []).reverse();
-    renderGenPage(page);
-  }
-
-  function renderGenPage(page = 1) {
-    currentPageStore.gen = page;
-    var tbody = document.getElementById('adminAppTable');
-    tbody.innerHTML = '';
-    var list = rawDataStore.gen;
-    var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    if(slice.length === 0) { 
-      tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; 
-      return; 
-    }
-    slice.forEach(function(a) {
-      // 🟢 এখানে showGeneralCertPrintPreview কে সরাসরি কল করা হয়েছে
-      var act = renderActionButtons(a.appId, a.status, 'showGeneralCertPrintPreview', 'openEditGeneralModal');
-      tbody.innerHTML += `
-        <tr>
-          <td><strong>${a.appId}</strong></td>
-          <td><span class="badge bg-success">${a.type || 'প্রত্যয়নপত্র'}</span></td>
-          <td>${a.name || a.applicantName}</td>
-          <td>${toBnNumber(a.nid) || '-'}</td>
-          <td>${toBnNumber(a.mobile) || '-'}</td>
-          <td>ওয়ার্ড-${toBnNumber(a.wardNo) || '০১'}</td>
-          <td>${act.badge}</td>
-          <td>${act.actions}</td>
-        </tr>`;
-    });
-    renderPagination('gen', list.length, 'renderGenPage');
   }
 </script>

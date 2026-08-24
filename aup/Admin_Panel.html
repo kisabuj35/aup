@@ -798,4 +798,40 @@
     else if(tabId === 'settingsTab') loadAllUsers();
     else if(tabId === 'dashTab') loadAdminDashboard();
   }
+  /* 🟢 ৫. সাধারণ প্রত্যয়নপত্র তালিকা (সরাসরি General_Certificate.html এর সাথে কানেক্টেড) */
+  async function loadAdminApps(page = 1) {
+    currentPageStore.gen = page;
+    const apps = await callBackendAPI('getAllApplications');
+    // সর্বশেষ আবেদন সবার উপরে থাকবে (Newest on Top)
+    rawDataStore.gen = (apps || []).reverse();
+    renderGenPage(page);
+  }
+
+  function renderGenPage(page = 1) {
+    currentPageStore.gen = page;
+    var tbody = document.getElementById('adminAppTable');
+    tbody.innerHTML = '';
+    var list = rawDataStore.gen;
+    var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    if(slice.length === 0) { 
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; 
+      return; 
+    }
+    slice.forEach(function(a) {
+      // 🟢 এখানে showGeneralCertPrintPreview কে সরাসরি কল করা হয়েছে
+      var act = renderActionButtons(a.appId, a.status, 'showGeneralCertPrintPreview', 'openEditGeneralModal');
+      tbody.innerHTML += `
+        <tr>
+          <td><strong>${a.appId}</strong></td>
+          <td><span class="badge bg-success">${a.type || 'প্রত্যয়নপত্র'}</span></td>
+          <td>${a.name || a.applicantName}</td>
+          <td>${toBnNumber(a.nid) || '-'}</td>
+          <td>${toBnNumber(a.mobile) || '-'}</td>
+          <td>ওয়ার্ড-${toBnNumber(a.wardNo) || '০১'}</td>
+          <td>${act.badge}</td>
+          <td>${act.actions}</td>
+        </tr>`;
+    });
+    renderPagination('gen', list.length, 'renderGenPage');
+  }
 </script>

@@ -1,11 +1,13 @@
 <!-- ======================================================= -->
 <!-- 11NO AULIAPUR UNION PARISHAD - MODULAR ADMIN PANEL     -->
-<!-- File: Admin_Panel.html (Complete Working Master Panel) -->
+<!-- File: Admin_Panel.html (Complete Optimized Version)    -->
 <!-- ======================================================= -->
 
 <!-- Google & Bangla Fonts -->
 <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
   /* এডমিন সাইডবার ও প্রোফাইল */
@@ -41,10 +43,10 @@
     <div class="col-md-3 col-lg-2 no-print">
       <div class="admin-sidebar p-2 shadow-sm">
         
-        <!-- প্রোফাইল -->
+        <!-- প্রোফাইল (ডাটাবেস অনুযায়ী অটো-আপডেট) -->
         <div class="admin-profile-box">
           <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="adminActivePhoto" class="admin-avatar-img" alt="Admin Avatar">
-          <h6 class="fw-bold m-0 text-white" id="adminActiveName" style="font-size: 14px;">ইউজার</h6>
+          <h6 class="fw-bold m-0 text-white" id="adminActiveName" style="font-size: 14px;">এডমিন লোড হচ্ছে...</h6>
           <span class="badge bg-success mt-1" id="adminActiveRoleBadge">Admin</span>
         </div>
 
@@ -53,7 +55,7 @@
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="citTab" onclick="switchAdminTab('citTab')"><i class="fa fa-id-card"></i> নাগরিকত্ব সনদ</a>
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="tradeTab" onclick="switchAdminTab('tradeTab')"><i class="fa fa-briefcase"></i> ট্রেড লাইসেন্স</a>
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="famTab" onclick="switchAdminTab('famTab')"><i class="fa fa-people-roof"></i> পারিবারিক সনদ</a>
-          <a href="javascript:void(0)" class="admin-menu-link" data-menu="warTab" onclick="switchAdminTab('warTab')"><i class="fa fa-sitemap"></i> WARISHAN সনদ</a>
+          <a href="javascript:void(0)" class="admin-menu-link" data-menu="warTab" onclick="switchAdminTab('warTab')"><i class="fa fa-sitemap"></i> ওয়ারিশ সার্টিফিকেট</a>
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="appsTab" onclick="switchAdminTab('appsTab')"><i class="fa fa-file-invoice"></i> সাধারণ প্রত্যয়নপত্র</a>
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="taxTab" onclick="switchAdminTab('taxTab')"><i class="fa fa-hand-holding-dollar"></i> কর আদায় ও সদস্য</a>
           
@@ -86,7 +88,7 @@
           <div class="col-md-4"><div class="card p-3 bg-danger text-white shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0">নাগরিকত্ব সনদ</h6><span class="badge bg-light text-danger fs-6" id="dashCitTotal">০</span></div><div class="mt-2 pt-2 border-top border-white-50 d-flex justify-content-between"><span class="badge bg-success">প্রদানকৃত: <strong id="dashCitApproved">০</strong></span><span class="badge bg-warning text-dark">পেন্ডিং: <strong id="dashCitPending">০</strong></span></div></div></div>
           <div class="col-md-4"><div class="card p-3 bg-info text-dark shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0">ট্রেড লাইসেন্স</h6><span class="badge bg-dark text-white fs-6" id="dashTradeTotal">০</span></div><div class="mt-2 pt-2 border-dark-50 d-flex justify-content-between"><span class="badge bg-success text-white">অনুমোদিত: <strong id="dashTradeActive">০</strong></span><span class="badge bg-secondary text-white">পেন্ডিং: <strong id="dashTradePending">০</strong></span></div></div></div>
           <div class="col-md-4"><div class="card p-3 bg-dark text-white shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0 text-info">পারিবারিক সনদ</h6><span class="badge bg-light text-dark fs-6" id="dashFamTotal">০</span></div><div class="mt-2 pt-2 border-secondary d-flex justify-content-between"><span class="badge bg-success">অনুমোদিত: <strong id="dashFamApproved">০</strong></span><span class="badge bg-warning text-dark">পেন্ডিং: <strong id="dashFamPending">০</strong></span></div></div></div>
-          <div class="col-md-4"><div class="card p-3 bg-warning text-dark shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0">WARISHAN সনদ</h6><span class="badge bg-dark text-white fs-6" id="dashWarTotal">০</span></div><div class="mt-2 pt-2 border-dark-50 d-flex justify-content-between"><span class="badge bg-success text-white">অনুমোদিত: <strong id="dashWarApproved">০</strong></span><span class="badge bg-danger text-white">পেন্ডিং: <strong id="dashWarPending">০</strong></span></div></div></div>
+          <div class="col-md-4"><div class="card p-3 bg-warning text-dark shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0">ওয়ারিশ সার্টিফিকেট</h6><span class="badge bg-dark text-white fs-6" id="dashWarTotal">০</span></div><div class="mt-2 pt-2 border-dark-50 d-flex justify-content-between"><span class="badge bg-success text-white">অনুমোদিত: <strong id="dashWarApproved">০</strong></span><span class="badge bg-danger text-white">পেন্ডিং: <strong id="dashWarPending">০</strong></span></div></div></div>
           <div class="col-md-4"><div class="card p-3 bg-secondary text-white shadow-sm border-0 h-100 rounded-3"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold m-0">সাধারণ প্রত্যয়ন</h6><span class="badge bg-light text-dark fs-6" id="dashGenTotal">০</span></div><div class="mt-2 pt-2 border-top border-white-50 d-flex justify-content-between"><span class="badge bg-success">অনুমোদিত: <strong id="dashGenApproved">০</strong></span><span class="badge bg-warning text-dark">পেন্ডিং: <strong id="dashGenPending">০</strong></span></div></div></div>
         </div>
       </div>
@@ -139,7 +141,7 @@
       <!-- Tab 5: Warishan -->
       <div id="warTab" class="admin-tab d-none">
         <div class="card p-3 shadow-sm border-0 mb-3 bg-warning text-dark d-flex flex-row justify-content-between align-items-center">
-          <h5 class="fw-bold m-0"><i class="fa fa-sitemap me-2"></i> WARISHAN সনদের আবেদন তালিকা</h5>
+          <h5 class="fw-bold m-0"><i class="fa fa-sitemap me-2"></i> ওয়ারিশ সনদের আবেদন তালিকা</h5>
           <button class="btn btn-dark btn-sm fw-bold" onclick="loadWarishanApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
         </div>
         <div class="table-responsive bg-white p-3 shadow-sm rounded border">
@@ -151,7 +153,7 @@
         </div>
       </div>
 
-      <!-- 🟢 Tab 6: সাধারণ প্রত্যয়নপত্র তালিকা -->
+      <!-- Tab 6: সাধারণ প্রত্যয়নপত্র তালিকা -->
       <div id="appsTab" class="admin-tab d-none">
         <div class="card p-3 shadow-sm border-0 mb-3 bg-success text-white d-flex flex-row justify-content-between align-items-center">
           <h5 class="fw-bold m-0"><i class="fa fa-file-invoice me-2"></i> সাধারণ প্রত্যয়নপত্র তালিকা ও অনুমোদন</h5>
@@ -245,7 +247,7 @@
         </div>
         <div class="p-4 bg-white border rounded text-center">
           <h5 class="fw-bold text-success">চলতি মাসের সেবা প্রদান সামারি রিপোর্ট</h5>
-          <p class="text-muted">নাগরিকত্ব সনদ: ৪২টি | ট্রেড লাইসেন্স: ১৮টি | WARISHAN সনদ: ১২টি | সাধারণ প্রত্যয়ন: ৫৫টি</p>
+          <p class="text-muted">নাগরিকত্ব সনদ: ৪২টি | ট্রেড লাইসেন্স: ১৮টি | ওয়ারিশ সনদ: ১২টি | সাধারণ প্রত্যয়ন: ৫৫টি</p>
         </div>
       </div>
 
@@ -260,21 +262,35 @@
               <div class="col-md-6"><label class="form-label fw-bold">ইউপি সচিবের নাম *</label><input type="text" id="setSecName" class="form-control" value="মোঃ মোতাহার উদ্দিন" required></div>
               <div class="col-md-6"><label class="form-label fw-bold">হেল্পলাইন নম্বর</label><input type="text" id="setPhone" class="form-control" value="০১XXXXXXXXX"></div>
             </div>
-            <div class="text-end mt-4"><button type="submit" class="btn btn-success fw-bold px-4"><i class="fa fa-save me-1"></i> সংরক্ষণ করুন</button></div>
+            <div class="text-end mt-4"><button type="submit" class="btn btn-success fw-bold px-4" id="saveUpSettingsBtn"><i class="fa fa-save me-1"></i> সংরক্ষণ করুন</button></div>
           </form>
         </div>
       </div>
 
-      <!-- Tab 14: Permissions -->
+      <!-- Tab 14: Permissions (Google Sheet Users List) -->
       <div id="settingsTab" class="admin-tab d-none">
         <div class="card p-3 shadow-sm border-0 mb-3 bg-dark text-white d-flex flex-row justify-content-between align-items-center">
-          <h5 class="fw-bold m-0 text-warning"><i class="fa fa-user-gear me-2"></i> এডমিন পারমিশন</h5>
-          <button class="btn btn-warning btn-sm fw-bold" onclick="openAddUserModal()"><i class="fa fa-plus me-1"></i> নতুন এডমিন</button>
+          <h5 class="fw-bold m-0 text-warning"><i class="fa fa-user-gear me-2"></i> এডমিন ইউজার ও মেনু এক্সেস পারমিশন</h5>
+          <div>
+            <button class="btn btn-light btn-sm fw-bold me-1" onclick="loadAdminUsers()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
+            <button class="btn btn-warning btn-sm fw-bold" onclick="openAddUserModal()"><i class="fa fa-plus me-1"></i> নতুন এডমিন যোগ করুন</button>
+          </div>
         </div>
         <div class="table-responsive bg-white p-3 shadow-sm rounded border">
-          <table class="table table-striped align-middle">
-            <thead class="table-dark"><tr><th>ছবি</th><th>ইউজারনেম</th><th>নাম</th><th>রোল</th><th>মেনু পারমিশন</th><th>অ্যাকশন</th></tr></thead>
-            <tbody id="userTableBody"></tbody>
+          <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th style="width: 70px;">ছবি</th>
+                <th>ইউজারনেম</th>
+                <th>নাম</th>
+                <th>রোল</th>
+                <th>অনুমোদিত পারমিশন</th>
+                <th style="width: 100px;">অ্যাকশন</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody">
+              <tr><td colspan="6" class="text-center py-3 text-muted"><i class="fa fa-spinner fa-spin me-2"></i>এডমিন তালিকা লোড হচ্ছে...</td></tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -283,7 +299,7 @@
   </div>
 </div>
 
-<!-- ✏️ 🟢 সাধারণ প্রত্যয়নপত্র সংশোধন এডিট মোডাল -->
+<!-- ✏️ সাধারণ প্রত্যয়নপত্র সংশোধন এডিট মোডাল -->
 <div class="modal fade" id="editGeneralModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
@@ -334,33 +350,120 @@
 <div class="modal fade" id="addUserModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header bg-dark text-warning"><h5 class="modal-title fw-bold">নতুন এডমিন তৈরি</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+      <div class="modal-header bg-dark text-warning">
+        <h5 class="modal-title fw-bold" id="userModalTitle"><i class="fa fa-user-plus me-2"></i> নতুন এডমিন তৈরি</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
       <div class="modal-body p-4">
         <form id="addUserForm" onsubmit="event.preventDefault(); saveUser();">
+          <input type="hidden" id="editUserMode" value="create">
           <div class="row g-3">
-            <div class="col-md-6"><label class="form-label fw-bold">ইউজারনেম *</label><input type="text" id="newUsername" class="form-control" required></div>
-            <div class="col-md-6"><label class="form-label fw-bold">পাসওয়ার্ড *</label><input type="password" id="newPassword" class="form-control" required></div>
-            <div class="col-md-6"><label class="form-label fw-bold">নাম ও পদবী *</label><input type="text" id="newName" class="form-control" required></div>
-            <div class="col-md-6"><label class="form-label fw-bold">এডমিনের ছবি</label><input type="file" id="newPhotoFile" class="form-control" accept="image/*" onchange="previewAdminPhoto(this)"><input type="hidden" id="newPhotoBase64"></div>
-            <div class="col-12 text-center my-1"><img id="photoPreviewImg" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" width="60" height="60" class="rounded-circle border"></div>
-            <div class="col-md-12"><label class="form-label fw-bold">রোল</label><select id="newRole" class="form-select"><option value="Admin">Admin</option><option value="SuperAdmin">Super Admin</option></select></div>
+            <div class="col-md-6"><label class="form-label fw-bold">ইউজারনেম *</label><input type="text" id="newUsername" class="form-control" required placeholder="उदा: sabuj"></div>
+            <div class="col-md-6"><label class="form-label fw-bold">পাসওয়ার্ড *</label><input type="password" id="newPassword" class="form-control" required placeholder="গোপন পাসওয়ার্ড"></div>
+            <div class="col-md-6"><label class="form-label fw-bold">নাম ও পদবী *</label><input type="text" id="newName" class="form-control" required placeholder="Sabuj (Admin)"></div>
+            <div class="col-md-6"><label class="form-label fw-bold">রোল *</label>
+              <select id="newRole" class="form-select">
+                <option value="Admin">Admin</option>
+                <option value="SuperAdmin">SuperAdmin</option>
+              </select>
+            </div>
+            <div class="col-md-8"><label class="form-label fw-bold">এডমিনের ছবি</label><input type="file" id="newPhotoFile" class="form-control" accept="image/*" onchange="previewAdminPhoto(this)"><input type="hidden" id="newPhotoBase64"></div>
+            <div class="col-md-4 text-center my-1">
+              <label class="form-label d-block fw-bold">ছবি প্রিভিউ</label>
+              <img id="photoPreviewImg" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" width="60" height="60" class="rounded-circle border" style="object-fit: cover;">
+            </div>
           </div>
-          <div class="text-end mt-4"><button type="submit" class="btn btn-warning fw-bold px-4" id="saveUserBtn">ইউজার সংরক্ষণ</button></div>
+          <div class="text-end mt-4">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">বাতিল</button>
+            <button type="submit" class="btn btn-warning fw-bold px-4" id="saveUserBtn">ইউজার সংরক্ষণ</button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 🟢 ADMIN ISOLATED PRINT ENGINE & LOGIC -->
+<!-- ========================================================== -->
+<!-- 🟢 COMPLETE JAVASCRIPT ENGINE WITH SESSION & PERSISTENCE   -->
+<!-- ========================================================== -->
 <script>
-  var rawDataStore = { cit: [], trade: [], fam: [], war: [], gen: [], tax: [] };
+  var rawDataStore = { cit: [], trade: [], fam: [], war: [], gen: [], tax: [], users: [] };
   var currentPageStore = { cit: 1, trade: 1, fam: 1, war: 1, gen: 1, tax: 1 };
   var PAGE_SIZE = 15;
 
   const STATIC_GOVT_LOGO = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
   const STATIC_UP_LOGO = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
 
+  /* ==========================================================
+     🔒 সেশন ম্যানেজমেন্ট ও রিলোড সিকিউরিটি
+  ========================================================== */
+  function getActiveSession() {
+    try {
+      var s = sessionStorage.getItem('upAdminSession');
+      return s ? JSON.parse(s) : null;
+    } catch(e) { return null; }
+  }
+
+  function setAdminSession(userData) {
+    sessionStorage.setItem('upAdminSession', JSON.stringify(userData));
+    updateSidebarProfile(userData);
+  }
+
+  function updateSidebarProfile(userData) {
+    if (!userData) return;
+    document.getElementById('adminActiveName').innerText = userData.name || userData.username || 'ইউজার';
+    document.getElementById('adminActiveRoleBadge').innerText = userData.role || 'Admin';
+    
+    if (userData.photo && userData.photo.startsWith('http') || (userData.photo && userData.photo.startsWith('data:image'))) {
+      document.getElementById('adminActivePhoto').src = userData.photo;
+    } else {
+      document.getElementById('adminActivePhoto').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+    }
+
+    var superBtn = document.getElementById('superAdminSettingsBtn');
+    if(superBtn) {
+      if(userData.role === 'SuperAdmin') superBtn.classList.remove('d-none');
+      else superBtn.classList.add('d-none');
+    }
+  }
+
+  function logoutAdmin() {
+    Swal.fire({
+      title: 'লগআউট করতে চান?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#dc2626',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'হ্যাঁ, লগআউট',
+      cancelButtonText: 'না'
+    }).then((res) => {
+      if (res.isConfirmed) {
+        sessionStorage.removeItem('upAdminSession');
+        sessionStorage.removeItem('adminActiveTab');
+        location.reload(); // পেজ রিলোড হয়ে লগইন বা হোমভিউতে ফিরবে
+      }
+    });
+  }
+
+  // 🚀 পেজ রিলোড দিলে স্বয়ংক্রিয়ভাবে এডমিন স্টেট ফিরিয়ে আনা
+  window.addEventListener('DOMContentLoaded', async function() {
+    var session = getActiveSession();
+    if (session && (session.username || session.role)) {
+      // ইউজার লগইন রয়েছে, তাই এডমিন প্যানেল দৃশ্যমান করা
+      document.querySelectorAll('.view-section').forEach(function(el) { el.classList.add('d-none'); });
+      var panel = document.getElementById('adminPanel');
+      if (panel) panel.classList.remove('d-none');
+      
+      updateSidebarProfile(session);
+
+      var savedTab = sessionStorage.getItem('adminActiveTab') || 'dashTab';
+      switchAdminTab(savedTab);
+    }
+  });
+
+  /* ==========================================================
+     🛠️ হেল্পার ও ইউটিলিটি ফাংশন
+  ========================================================== */
   function toBnNumber(n) {
     if (n === null || n === undefined || n === '') return '';
     return (n + '').replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
@@ -379,6 +482,18 @@
     if (isNaN(serial) || serial === 0) serial = 1;
     var paddedSerialBn = toBnNumber(("000" + serial).slice(-3));
     return `আ/ইউ/পটুয়া/সদর/${currentYearBn}/${paddedSerialBn}`;
+  }
+
+  // Safe API Wrapper
+  async function callBackend(actionName, payload) {
+    if (typeof callBackendAPI === 'function') {
+      try {
+        return await callBackendAPI(actionName, payload);
+      } catch (err) {
+        console.error('API Call error:', err);
+      }
+    }
+    return null;
   }
 
   function renderPagination(type, totalItems, onPageClickName) {
@@ -405,7 +520,7 @@
   }
 
   function renderActionButtons(appId, status, printCallbackName, editCallbackName) {
-    var session = JSON.parse(localStorage.getItem('upAdminSession') || '{}');
+    var session = getActiveSession() || {};
     var canDel = session.role === 'SuperAdmin' || (session.permissions && session.permissions.canDelete);
 
     var stBadge = (status === 'Approved') ? '<span class="status-badge-approved">Approved</span>' : ((status === 'Rejected') ? '<span class="status-badge-rejected">Rejected</span>' : '<span class="status-badge-pending">Pending</span>');
@@ -426,12 +541,127 @@
   }
 
   /* ==========================================================
-     🟢 ৫. সাধারণ প্রত্যয়নপত্র লোডার ও এডিটর
+     👥 ট্যাব ১৪: এডমিন ইউজার তালিকা ও পারমিশন কন্ট্রোল (শিট সিঙ্ক)
+  ========================================================== */
+  async function loadAdminUsers() {
+    var tbody = document.getElementById('userTableBody');
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted"><i class="fa fa-spinner fa-spin me-2"></i>ডাটাবেস থেকে ইউজার লোড হচ্ছে...</td></tr>';
+    
+    var users = await callBackend('getAdminUsers');
+    if (!users || !Array.isArray(users)) {
+      users = [];
+    }
+    rawDataStore.users = users;
+    renderUserTable();
+  }
+
+  function renderUserTable() {
+    var tbody = document.getElementById('userTableBody');
+    tbody.innerHTML = '';
+    var list = rawDataStore.users;
+
+    if (!list || list.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-danger fw-bold">কোন এডমিন পাওয়া যায়নি!</td></tr>';
+      return;
+    }
+
+    list.forEach(function(u) {
+      var photoUrl = (u.photo && u.photo.length > 10) ? u.photo : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+      var roleBadge = (u.role === 'SuperAdmin') ? '<span class="badge bg-warning text-dark fw-bold">SuperAdmin</span>' : '<span class="badge bg-primary">Admin</span>';
+      var permBadge = (u.role === 'SuperAdmin') ? '<span class="badge bg-success">সকল মেনু এক্সেস</span>' : '<span class="badge bg-secondary">আবেদন অনুমোদন ও পরিদর্শন</span>';
+      
+      tbody.innerHTML += `
+        <tr>
+          <td><img src="${photoUrl}" width="40" height="40" class="rounded-circle border" style="object-fit:cover;"></td>
+          <td><strong>${u.username}</strong></td>
+          <td>${u.name || u.displayName || u.username}</td>
+          <td>${roleBadge}</td>
+          <td>${permBadge}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-danger" onclick="deleteUser('${u.username}')" title="মুছে ফেলুন"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+
+  function openAddUserModal() {
+    document.getElementById('addUserForm').reset();
+    document.getElementById('photoPreviewImg').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+    document.getElementById('newPhotoBase64').value = "";
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('addUserModal')).show();
+  }
+
+  function previewAdminPhoto(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('photoPreviewImg').src = e.target.result;
+        document.getElementById('newPhotoBase64').value = e.target.result;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  async function saveUser() {
+    var btn = document.getElementById('saveUserBtn');
+    btn.disabled = true; btn.innerText = 'সংরক্ষণ হচ্ছে...';
+
+    var payload = {
+      username: document.getElementById('newUsername').value.trim(),
+      password: document.getElementById('newPassword').value.trim(),
+      name: document.getElementById('newName').value.trim(),
+      role: document.getElementById('newRole').value,
+      photo: document.getElementById('newPhotoBase64').value || ""
+    };
+
+    var res = await callBackend('saveAdminUser', payload);
+    btn.disabled = false; btn.innerText = 'ইউজার সংরক্ষণ';
+
+    if (res && res.success) {
+      bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+      loadAdminUsers();
+      Swal.fire({ icon: 'success', title: 'সফল!', text: 'নতুন এডমিন সফলভাবে যোগ করা হয়েছে।', timer: 1800, showConfirmButton: false });
+    } else {
+      Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: (res && res.message) ? res.message : 'ইউজার সংরক্ষণ করা যায়নি।' });
+    }
+  }
+
+  async function deleteUser(username) {
+    var session = getActiveSession() || {};
+    if (session.username === username) {
+      return Swal.fire({ icon: 'error', title: 'অসম্ভব!', text: 'আপনি বর্তমানে লগইন থাকা এডমিনকে ডিলিট করতে পারবেন না!' });
+    }
+
+    Swal.fire({
+      title: 'আপনি কি নিশ্চিত?',
+      text: `এডমিন (${username}) কে ডাটাবেস থেকে ডিলিট করতে চান?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'হ্যাঁ, ডিলিট করুন'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        var res = await callBackend('deleteAdminUser', username);
+        if (res && res.success) {
+          Swal.fire({ icon: 'success', title: 'মুছে ফেলা হয়েছে!', timer: 1500, showConfirmButton: false });
+          loadAdminUsers();
+        } else {
+          Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: 'ইউজার ডিলিট করা যায়নি।' });
+        }
+      }
+    });
+  }
+
+  /* ==========================================================
+     🟢 ৫. সাধারণ প্রত্যয়নপত্র লোডার ও এডিটর (নতুন আবেদন সবার উপরে)
   ========================================================== */
   async function loadAdminApps(page = 1) {
     currentPageStore.gen = page;
-    const apps = await callBackendAPI('getAllApplications');
-    rawDataStore.gen = (apps || []).reverse(); // সর্বশেষ আবেদন সবার উপরে
+    const apps = await callBackend('getAllApplications');
+    // Descending Order (সর্বশেষ আবেদন ১ নম্বরে)
+    rawDataStore.gen = (Array.isArray(apps) ? apps : []).slice().reverse();
     renderGenPage(page);
   }
 
@@ -462,15 +692,9 @@
     renderPagination('gen', list.length, 'renderGenPage');
   }
 
-  // 🟢 সাধারণ প্রত্যয়ন এডিট মোডাল ওপেন
   async function openEditGeneralModal(appId) {
-    let data = null;
-    if (rawDataStore.gen && rawDataStore.gen.length > 0) {
-      data = rawDataStore.gen.find(x => String(x.appId).trim() === String(appId).trim());
-    }
-    if (!data && typeof callBackendAPI === 'function') {
-      data = await callBackendAPI('trackApplication', appId);
-    }
+    let data = rawDataStore.gen.find(x => String(x.appId).trim() === String(appId).trim());
+    if (!data) data = await callBackend('trackApplication', appId);
     if(!data) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
 
     document.getElementById('edGenAppId').value = data.appId || appId;
@@ -491,7 +715,6 @@
     bootstrap.Modal.getOrCreateInstance(document.getElementById('editGeneralModal')).show();
   }
 
-  // 🟢 সাধারণ প্রত্যয়ন সংশোধিত তথ্য সংরক্ষণ
   async function saveEditedGeneralData() {
     var btn = document.getElementById('saveEditGenBtn');
     btn.disabled = true; btn.innerText = 'সংরক্ষণ হচ্ছে...';
@@ -513,20 +736,20 @@
       signatoryRole: sigVal
     };
 
-    const res = await callBackendAPI('saveEditedApplication', payload);
+    const res = await callBackend('saveEditedApplication', payload);
     btn.disabled = false; btn.innerText = 'সংরক্ষণ করুন';
 
     if(res && res.success) {
       bootstrap.Modal.getInstance(document.getElementById('editGeneralModal')).hide();
       loadAdminApps(currentPageStore.gen);
-      Swal.fire({ icon: 'success', title: 'সংশোধিত হয়েছে!', text: 'প্রত্যয়নপত্রের তথ্য সফলভাবে আপডেট হয়েছে।', timer: 1800, showConfirmButton: false });
+      Swal.fire({ icon: 'success', title: 'সংশোধিত হয়েছে!', text: 'তথ্য সফলভাবে আপডেট হয়েছে।', timer: 1800, showConfirmButton: false });
     } else {
       Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: 'তথ্য আপডেট করা যায়নি।' });
     }
   }
 
   /* ==========================================================
-     🟢 সাধারণ প্রত্যয়নপত্র ১-ক্লিক ডিরেক্ট প্রিন্ট ইঞ্জিন
+     🖨️ সাধারণ প্রত্যয়নপত্র ১-ক্লিক ডিরেক্ট প্রিন্ট ইঞ্জিন
   ========================================================== */
   function getDynamicCertBodyText(type, d) {
     let nidVal = d.nid ? toBnNumber(d.nid) : '-';
@@ -575,13 +798,8 @@
   }
 
   async function showGeneralCertPrintPreview(appId) {
-    let data = null;
-    if (rawDataStore.gen && rawDataStore.gen.length > 0) {
-      data = rawDataStore.gen.find(x => String(x.appId).trim() === String(appId).trim());
-    }
-    if (!data && typeof callBackendAPI === 'function') {
-      data = await callBackendAPI('trackApplication', appId);
-    }
+    let data = rawDataStore.gen.find(x => String(x.appId).trim() === String(appId).trim());
+    if (!data) data = await callBackend('trackApplication', appId);
     if(!data) return alert('সনদের তথ্য পাওয়া যায়নি!');
 
     let certType = data.type || data.serviceType || 'প্রত্যয়নপত্র';
@@ -704,7 +922,7 @@
       <!DOCTYPE html>
       <html>
       <head>
-        <title>General Certificate</title>
+        <title>Print Certificate</title>
         <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
         <style>
@@ -725,12 +943,12 @@
   }
 
   /* ==========================================================
-     🟢 অন্যান্য সনদের ট্যাব হ্যান্ডলার
+     🟢 অন্যান্য সনদের ট্যাব হ্যান্ডলার (Descending Order সহ)
   ========================================================== */
   async function loadCitizenshipApps(page = 1) {
     currentPageStore.cit = page;
-    const apps = await callBackendAPI('getCitizenshipApps');
-    rawDataStore.cit = (apps || []).reverse();
+    const apps = await callBackend('getCitizenshipApps');
+    rawDataStore.cit = (Array.isArray(apps) ? apps : []).slice().reverse();
     renderCitPage(page);
   }
   function renderCitPage(page = 1) {
@@ -749,8 +967,8 @@
 
   async function loadTradeLicenses(page = 1) {
     currentPageStore.trade = page;
-    const list = await callBackendAPI('getTradeLicenses');
-    rawDataStore.trade = (list || []).reverse();
+    const list = await callBackend('getTradeLicenses');
+    rawDataStore.trade = (Array.isArray(list) ? list : []).slice().reverse();
     renderTradePage(page);
   }
   function renderTradePage(page = 1) {
@@ -769,8 +987,8 @@
 
   async function loadFamilyApps(page = 1) {
     currentPageStore.fam = page;
-    const apps = await callBackendAPI('getFamilyApps');
-    rawDataStore.fam = (apps || []).reverse();
+    const apps = await callBackend('getFamilyApps');
+    rawDataStore.fam = (Array.isArray(apps) ? apps : []).slice().reverse();
     renderFamPage(page);
   }
   function renderFamPage(page = 1) {
@@ -789,8 +1007,8 @@
 
   async function loadWarishanApps(page = 1) {
     currentPageStore.war = page;
-    const apps = await callBackendAPI('getWarishanApps');
-    rawDataStore.war = (apps || []).reverse();
+    const apps = await callBackend('getWarishanApps');
+    rawDataStore.war = (Array.isArray(apps) ? apps : []).slice().reverse();
     renderWarPage(page);
   }
   function renderWarPage(page = 1) {
@@ -809,8 +1027,8 @@
 
   async function loadTaxPayers(page = 1) {
     currentPageStore.tax = page;
-    const list = await callBackendAPI('getTaxPayers');
-    rawDataStore.tax = (list || []).reverse();
+    const list = await callBackend('getTaxPayers');
+    rawDataStore.tax = (Array.isArray(list) ? list : []).slice().reverse();
     renderTaxPage(page);
   }
   function renderTaxPage(page = 1) {
@@ -827,7 +1045,7 @@
   }
 
   async function loadAdminDashboard() {
-    const st = await callBackendAPI('getMasterDashboardStats');
+    const st = await callBackend('getMasterDashboardStats');
     if(!st) return;
     document.getElementById('dashTotalApps').innerText = toBnNumber(st.totalApps || 0);
     document.getElementById('dashTotalApproved').innerText = toBnNumber(st.totalApprovedApps || 0);
@@ -850,7 +1068,7 @@
   }
 
   async function changeStatus(appId, status) {
-    const res = await callBackendAPI('updateAppStatus', { appId: appId, status: status });
+    const res = await callBackend('updateAppStatus', { appId: appId, status: status });
     if(res && res.success) {
       loadCitizenshipApps(currentPageStore.cit);
       loadTradeLicenses(currentPageStore.trade);
@@ -874,7 +1092,7 @@
       cancelButtonText: 'বাতিল'
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await callBackendAPI('deleteApplication', appId);
+        const res = await callBackend('deleteApplication', appId);
         if(res && res.success) { 
           Swal.fire({ icon: 'success', title: 'ডিলিট সম্পন্ন!', text: 'আবেদনটি মুছে ফেলা হয়েছে।', timer: 1800, showConfirmButton: false });
           loadCitizenshipApps(); loadTradeLicenses(); loadFamilyApps(); loadWarishanApps(); loadAdminApps(); loadAdminDashboard(); 
@@ -884,6 +1102,8 @@
   }
 
   function switchAdminTab(tabId) {
+    sessionStorage.setItem('adminActiveTab', tabId); // রিলোডের পর যাতে এই ট্যাবেই থাকে
+
     document.querySelectorAll('.admin-tab').forEach(el => el.classList.add('d-none'));
     var target = document.getElementById(tabId);
     if(target) target.classList.remove('d-none');
@@ -899,5 +1119,6 @@
     else if(tabId === 'appsTab') loadAdminApps();
     else if(tabId === 'taxTab') loadTaxPayers();
     else if(tabId === 'dashTab') loadAdminDashboard();
+    else if(tabId === 'settingsTab') loadAdminUsers();
   }
 </script>

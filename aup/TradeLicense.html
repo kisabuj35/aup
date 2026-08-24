@@ -1,7 +1,11 @@
-<!-- ========================================== -->
-<!-- 11NO AULIAPUR UNION PARISHAD - TRADE LICENSE -->
-<!-- File: TradeLicense.html (Enhanced 3D Version)-->
-<!-- ========================================== -->
+<!-- ======================================================= -->
+<!-- 11NO AULIAPUR UNION PARISHAD - TRADE LICENSE MODULE     -->
+<!-- File: TradeLicense.html (Exact 3D + 15px Body + Compact)-->
+<!-- ======================================================= -->
+
+<!-- Google & Bangla Fonts -->
+<link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
 
 <style>
   /* 🟢 প্রিমিয়াম ও প্রফেশনাল ফ্রেম ডিজাইন */
@@ -9,9 +13,8 @@
     border: 3px solid #8B0000 !important;
     outline: 2px dashed #b8860b !important;
     outline-offset: 4px;
-    padding: 16px 20px;
+    padding: 14mm 16mm 12mm 16mm;
     background-color: #ffffff !important;
-    /* প্রিমিয়াম সিকিউরিটি ওয়াটারমার্ক ব্যাকগ্রাউন্ড প্যাটার্ন */
     background-image: radial-gradient(#8B0000 0.5px, transparent 0.5px), radial-gradient(#b8860b 0.4px, #ffffff 0.4px) !important;
     background-size: 20px 20px !important;
     background-position: 0 0, 10px 10px !important;
@@ -20,8 +23,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 290mm;
-    max-height: 290mm;
+    height: 295mm;
+    max-height: 295mm;
     width: 210mm;
     margin: 0 auto;
     font-family: 'Nikosh', 'Kalpurush', 'Tiro Bangla', sans-serif;
@@ -36,12 +39,10 @@
     top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 440px;
+    width: 440px !important;
     opacity: 0.08 !important;
     pointer-events: none;
     z-index: 1;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
   }
   
   .trade-cert-inner {
@@ -53,7 +54,7 @@
     justify-content: space-between;
   }
 
-  /* 🟢 ছবির হুবহু ৩ডি (3D) রিবন ব্যানার */
+  /* 🟢 ছবির হুবহু ৩ডি (3D) রিবন ব্যানার (ফন্ট সাইজ ২৩px) */
   .ribbon-container-3d {
     text-align: center;
     position: relative;
@@ -65,12 +66,14 @@
     display: inline-block;
     background: linear-gradient(180deg, #a71414 0%, #7d0b0b 100%) !important;
     color: #ffffff !important;
-    font-size: 21px;
+    font-size: 23px !important; /* +2px বাড়িয়ে ২৩px করা হয়েছে */
     font-weight: bold;
-    padding: 5px 42px;
+    padding: 5px 46px;
     letter-spacing: 1px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     z-index: 2;
+    border-radius: 2px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -101,11 +104,10 @@
     position: absolute;
     bottom: -6px;
     border: 3px solid transparent;
-    border-top-color: #300202;
     z-index: 1;
   }
-  .ribbon-fold-left { left: 0px; border-left-color: #300202; }
-  .ribbon-fold-right { right: 0px; border-right-color: #300202; }
+  .ribbon-fold-left { left: 0px; border-top-color: #300202; border-left-color: #300202; }
+  .ribbon-fold-right { right: 0px; border-top-color: #300202; border-right-color: #300202; }
 
   /* হেডারের মেটা বার */
   .cert-meta-bar {
@@ -113,27 +115,38 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 2px solid #8B0000;
-    padding: 3px 6px 4px 6px;
-    font-size: 13.5px;
+    padding: 3px 6px;
+    font-size: 14px;
     margin-top: 2px;
   }
 
   .fiscal-year-pill {
     background: #8B0000 !important;
     color: #ffffff !important;
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: bold;
     padding: 2px 16px;
     border-radius: 4px;
     display: inline-block;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* আর্থিক টেবিল */
-  .trade-table-fee-grid {
+  /* 🟢 বডি টেবিল ফন্ট সাইজ ১৫px */
+  .trade-body-table {
     width: 100%;
+    font-size: 15px !important; /* ১৫px বডি ফন্ট */
+    line-height: 1.6;
+    border-collapse: collapse;
+  }
+  .trade-body-table td {
+    padding: 2.5px 2px;
+    vertical-align: top;
+  }
+
+  /* 🟢 কমপ্যাক্ট আদায়ের বিবরণী টেবিল (ডান দিক থেকে কমানো) */
+  .trade-table-fee-grid {
+    width: 72% !important; /* টেবিলের সাইজ ডান দিক থেকে কমানো হয়েছে */
     border-collapse: collapse !important;
     margin-top: 3px;
     background: #ffffff;
@@ -141,13 +154,8 @@
   .trade-table-fee-grid th, .trade-table-fee-grid td {
     border: 1px solid #8B0000 !important;
     padding: 3px 8px;
-    font-size: 12.5px;
+    font-size: 13.5px;
     color: #000;
-  }
-
-  /* কন্টেন্ট মার্জিন ব্যালেন্স */
-  .cert-body-content {
-    padding: 0 12px;
   }
 
   .app-print-paper-sheet {
@@ -500,9 +508,9 @@
             <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" width="70" height="70" alt="Logo" style="object-fit:contain;">
           </td>
           <td style="text-align:center; vertical-align:middle;">
-            <div style="font-size:12.5px; font-weight:bold; color:#333; margin-bottom:1px;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
+            <div style="font-size:13px; font-weight:bold; color:#333; margin-bottom:1px;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
             <h1 style="font-size:27px; font-weight:bold; color:#8B0000; margin:0; line-height:1.15; letter-spacing:0.5px; font-family:'Nikosh','Kalpurush',sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</h1>
-            <div style="font-size:14px; font-weight:bold; color:#005a2b; margin-top:2px;">উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী</div>
+            <div style="font-size:14.5px; font-weight:bold; color:#005a2b; margin-top:2px;">উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী</div>
           </td>
           <td style="width:75px; vertical-align:middle; text-align:right;">
             <img id="tcOwnerPhoto" src="https://via.placeholder.com/80x95" style="width:72px; height:85px; border:2px solid #8B0000; object-fit:cover; padding:1px; border-radius:3px; background:#fff;">
@@ -510,7 +518,7 @@
         </tr>
       </table>
 
-      <!-- 🟢 সমান্তরাল মেটা বার: রসিদ নং, অর্থ বছর ও ইস্যু তারিখ -->
+      <!-- সমান্তরাল মেটা বার: রসিদ নং, অর্থ বছর ও ইস্যু তারিখ -->
       <div class="cert-meta-bar">
         <div style="width:30%; text-align:left;">
           <strong>রসিদ নং:</strong> <span id="tcReceiptNo" style="font-weight:bold; color:#8B0000;">০১</span>
@@ -523,7 +531,7 @@
         </div>
       </div>
 
-      <!-- 🟢 ২০নং ছবির অবিকল ৩ডি (3D) রিবন ব্যানার -->
+      <!-- 🟢 ২০নং ছবির অবিকল ৩ডি (3D) রিবন ব্যানার (ফন্ট সাইজ ২৩px) -->
       <div class="ribbon-container-3d">
         <div class="gorgeous-3d-ribbon">
           <span id="tcRibbonTitle">ট্রেড লাইসেন্স</span>
@@ -532,46 +540,47 @@
         </div>
       </div>
 
-      <!-- 🟢 মূল তথ্য এরিয়া (মার্জিন ও স্পেসিং ব্যালেন্সড) -->
-      <div class="cert-body-content">
-        <table style="width:100%; font-size:13.5px; line-height:1.55; border-collapse:collapse;" cellpadding="1.5">
-          <tr><td style="width:27%; font-weight:bold;">ট্রেড লাইসেন্স নম্বর</td><td>: <strong style="color:#8B0000; font-size:14.5px;" id="tcLicNo"></strong></td></tr>
-          <tr><td style="font-weight:bold;">লাইসেন্সধারীর নাম</td><td>: <strong id="tcOwnerName" style="color:#000;"></strong></td></tr>
-          <tr><td style="font-weight:bold;">পিতার নাম</td><td>: <span id="tcFatherName"></span></td></tr>
-          <tr><td style="font-weight:bold;">মাতার নাম</td><td>: <span id="tcMotherName"></span></td></tr>
-          <tr><td style="font-weight:bold;">জাতীয় পরিচয়পত্র নম্বর</td><td>: <span id="tcNid"></span></td></tr>
-          <tr><td style="font-weight:bold;">জন্ম তারিখ</td><td>: <span id="tcDob"></span></td></tr>
-          <tr><td style="font-weight:bold;">মোবাইল নম্বর</td><td>: <span id="tcMobile"></span></td></tr>
-          <tr><td style="font-weight:bold;">লাইসেন্সধারীর ঠিকানা</td><td>: <span id="tcOwnerAddress"></span></td></tr>
-          <tr><td style="font-weight:bold; color:#006837;">প্রতিষ্ঠানের নাম</td><td>: <strong style="color:#006837; font-size:14px;" id="tcOrgName"></strong></td></tr>
-          <tr><td style="font-weight:bold;">ব্যবসার ধরন</td><td>: <span id="tcBizType"></span></td></tr>
-          <tr><td style="font-weight:bold; color:#005a2b;">ব্যবসা শুরুর তারিখ</td><td>: <strong style="color:#005a2b;" id="tcBizStartDate"></strong></td></tr>
-          <tr><td style="font-weight:bold;">ব্যবসা প্রতিষ্ঠানের ঠিকানা</td><td>: <span id="tcBizAddress"></span></td></tr>
-          <tr><td style="font-weight:bold;">বৈধতার মেয়াদ</td><td>: <span id="tcValidityText" style="font-weight:bold; color:#8B0000;">৩০ জুন, ২০২৬ ইং পর্যন্ত</span></td></tr>
+      <!-- 🟢 মূল তথ্য এরিয়া (বডির টেক্সট ফন্ট সাইজ ১৫px) -->
+      <div style="padding: 0 12px;">
+        <table class="trade-body-table">
+          <tr><td style="width:26%; font-weight:bold;">ট্রেড লাইসেন্স নম্বর</td><td style="width:2%;">:</td><td style="width:72%;"><strong style="color:#8B0000; font-size:15.5px;" id="tcLicNo"></strong></td></tr>
+          <tr><td style="font-weight:bold;">লাইসেন্সধারীর নাম</td><td>:</td><td><strong id="tcOwnerName" style="color:#000;"></strong></td></tr>
+          <tr><td style="font-weight:bold;">পিতার নাম</td><td>:</td><td><span id="tcFatherName"></span></td></tr>
+          <tr><td style="font-weight:bold;">মাতার নাম</td><td>:</td><td><span id="tcMotherName"></span></td></tr>
+          <tr><td style="font-weight:bold;">জাতীয় পরিচয়পত্র নম্বর</td><td>:</td><td><span id="tcNid"></span></td></tr>
+          <tr><td style="font-weight:bold;">জন্ম তারিখ</td><td>:</td><td><span id="tcDob"></span></td></tr>
+          <tr><td style="font-weight:bold;">মোবাইল নম্বর</td><td>:</td><td><span id="tcMobile"></span></td></tr>
+          <tr><td style="font-weight:bold;">লাইসেন্সধারীর ঠিকানা</td><td>:</td><td><span id="tcOwnerAddress"></span></td></tr>
+          <tr><td style="font-weight:bold; color:#006837;">প্রতিষ্ঠানের নাম</td><td>:</td><td><strong style="color:#006837; font-size:15.5px;" id="tcOrgName"></strong></td></tr>
+          <tr><td style="font-weight:bold;">ব্যবসার ধরন</td><td>:</td><td><span id="tcBizType"></span></td></tr>
+          <tr><td style="font-weight:bold; color:#005a2b;">ব্যবসা শুরুর তারিখ</td><td>:</td><td><strong style="color:#005a2b;" id="tcBizStartDate"></strong></td></tr>
+          <tr><td style="font-weight:bold;">ব্যবসা প্রতিষ্ঠানের ঠিকানা</td><td>:</td><td><span id="tcBizAddress"></span></td></tr>
+          <tr><td style="font-weight:bold;">বৈধতার মেয়াদ</td><td>:</td><td><span id="tcValidityText" style="font-weight:bold; color:#8B0000;">৩০ জুন, ২০২৬ ইং পর্যন্ত</span></td></tr>
           
-          <!-- আর্থিক বিবরণী টেবিল (ডানপাশে চাপানো দূর করে ব্যালেন্সড) -->
+          <!-- 🟢 আর্থিক বিবরণী টেবিল (ডান দিক থেকে কমানো ও ছোট সাইজ) -->
           <tr>
             <td style="font-weight:bold; vertical-align:top; padding-top:4px;">আর্থিক বিবরণ</td>
+            <td style="vertical-align:top; padding-top:4px;">:</td>
             <td style="padding-top:4px;">
               <table class="trade-table-fee-grid">
-                <tr style="background:#f3f4f6;"><th style="width:72%;">আদায়ের বিবরণ</th><th style="text-align:right;">পরিমাণ</th></tr>
+                <tr style="background:#f3f4f6;"><th style="width:65%;">আদায়ের বিবরণ</th><th style="text-align:right; width:35%;">পরিমাণ</th></tr>
                 <tr><td>ট্রেড লাইসেন্স ফি / নবায়ন ফি</td><td style="text-align:right;" id="tcFee">৳ ২০০</td></tr>
                 <tr><td>ভ্যাট (১৫%)</td><td style="text-align:right;" id="tcVat">৳ ৩০</td></tr>
                 <tr><td>বাণিজ্যিক কর (বার্ষিক)</td><td style="text-align:right;" id="tcCommTax">৳ ৫০০</td></tr>
                 <tr><td>সাইনবোর্ড কর (বার্ষিক)</td><td style="text-align:right;" id="tcSignTax">৳ ২০</td></tr>
-                <tr style="font-weight:bold; background:#fff2f2;"><td>সর্বমোট</td><td style="text-align:right; color:#8B0000; font-size:13.5px;" id="tcTotalFee">৳ ৭৫০</td></tr>
+                <tr style="font-weight:bold; background:#fff2f2;"><td>সর্বমোট</td><td style="text-align:right; color:#8B0000; font-size:14px;" id="tcTotalFee">৳ ৭৫০</td></tr>
               </table>
             </td>
           </tr>
         </table>
       </div>
 
-      <div style="border-top:1px solid #aaa; margin:4px 12px 0 12px; padding-top:3px; font-size:11.5px; text-align:justify; line-height:1.4;" id="tcDeclarationPara">
+      <div style="border-top:1px solid #aaa; margin:4px 12px 0 12px; padding-top:3px; font-size:12px; text-align:justify; line-height:1.4;" id="tcDeclarationPara">
         উল্লেখিত প্রতিষ্ঠানের অনুকূলে প্রদত্ত লাইসেন্স ফি গ্রহণ করিয়া <strong id="tcFiscalPara">২০২৫-২০২৬</strong> ইং সালের জন্য অভ্যন্তরীণ বাণিজ্য চালিয়ে যাওয়ার অনুমতি দেওয়া হইল। <strong id="tcValidityPara">৩০ জুন ২০২৬</strong> ইং পর্যন্ত এই লাইসেন্স বৈধ বলিয়া বিবেচিত হইবে এবং প্রতি বছর নবায়ন করিতে হইবে।
       </div>
 
       <!-- সিগনেচার অংশ ও অ্যাক্টিভ QR কোড -->
-      <table style="width:100%; margin-top:8px; font-size:12.5px; border-collapse:collapse;">
+      <table style="width:100%; margin-top:8px; font-size:13px; border-collapse:collapse;">
         <tr>
           <td style="text-align:center; vertical-align:bottom; width:33%;">
             <div style="font-weight:bold;" id="tcSecName">মোঃ মোতাহার উদ্দিন</div>
@@ -581,8 +590,8 @@
           </td>
           <td style="text-align:center; vertical-align:bottom; width:33%;">
             <!-- 🟢 ১০০% অ্যাক্টিভ অনলাইন ভেরিফায়েড কিউআর কোড -->
-            <img id="tcQrCode" src="" style="width:72px; height:72px; border:1px solid #ccc; padding:2px; background:#fff; border-radius:3px;">
-            <div style="font-size:9.5px; margin-top:2px; font-weight:bold; color:#006837;"><i class="fa fa-shield-alt"></i> অনলাইন ভেরিফায়েড</div>
+            <img id="tcQrCode" src="" style="width:75px; height:75px; border:1px solid #ccc; padding:2px; background:#fff; border-radius:3px;">
+            <div style="font-size:10px; margin-top:2px; font-weight:bold; color:#006837;"><i class="fa fa-shield-alt"></i> অনলাইন ভেরিফায়েড</div>
           </td>
           <td style="text-align:center; vertical-align:bottom; width:33%;">
             <div style="font-weight:bold;" id="tcSignatoryName">অ্যাড. মোঃ হুমায়ুন কবির</div>
@@ -594,7 +603,7 @@
       </table>
 
       <!-- ফুটার লিংক -->
-      <div style="text-align:center; margin-top:3px; padding-top:2px; border-top:1px solid #8B0000; font-size:10.5px; color:#444;">
+      <div style="text-align:center; margin-top:3px; padding-top:2px; border-top:1px solid #8B0000; font-size:11px; color:#444;">
         সনদ যাচাইয়ের জন্য QR স্ক্যান করুন অথবা ভিজিট করুন: <strong style="color:#006837;">www.auliapurup.gov.bd</strong>
       </div>
 
@@ -851,9 +860,11 @@
     bootstrap.Modal.getOrCreateInstance(document.getElementById('tradeAppPrintModal')).show();
   }
 
-  // 🟢 ১১নং ছবির অবিকল প্রিভিউ লোডার (সংশোধিত ও উন্নত)
+  // 🟢 ১-ক্লিকে সরাসরি প্রিন্ট লোডার
   function showTradeCertPreview(appIdOrLicNo) {
-    google.script.run.withSuccessHandler(function(data) {
+    let fetchHandler = (typeof callBackendAPI === 'function') ? callBackendAPI('getTradeLicenseDetails', appIdOrLicNo) : null;
+    
+    let applyDataToDom = function(data) {
       if(!data || !data.found) return alert('ট্রেড লাইসেন্স ডাটা পাওয়া যায়নি!');
 
       document.getElementById('tcReceiptNo').innerText = data.receiptNo || '০১';
@@ -880,18 +891,18 @@
         document.getElementById('tcDeclarationPara').innerHTML = 'উল্লেখিত প্রতিষ্ঠানের অনুকূলে প্রদত্ত লাইসেন্স ফি গ্রহণ করিয়া <strong>' + data.fiscalYear + '</strong> ইং সালের জন্য অভ্যন্তরীণ বাণিজ্য চালিয়ে যাওয়ার অনুমতি দেওয়া হইল। <strong>৩০ জুন ' + fiscalEndYear + '</strong> ইং পর্যন্ত এই লাইসেন্স বৈধ বলিয়া বিবেচিত হইবে এবং প্রতি বছর নবায়ন করিতে হইবে।';
       }
 
-      document.getElementById('tcLicNo').innerText = data.licNo;
+      document.getElementById('tcLicNo').innerText = data.licNo || data.appId;
       document.getElementById('tcOwnerName').innerText = data.ownerName;
-      document.getElementById('tcFatherName').innerText = data.fatherName;
-      document.getElementById('tcMotherName').innerText = data.motherName;
-      document.getElementById('tcNid').innerText = data.nid;
-      document.getElementById('tcDob').innerText = data.dob;
-      document.getElementById('tcMobile').innerText = data.mobile;
-      document.getElementById('tcOwnerAddress').innerText = data.ownerAddress;
+      document.getElementById('tcFatherName').innerText = data.fatherName || '-';
+      document.getElementById('tcMotherName').innerText = data.motherName || '-';
+      document.getElementById('tcNid').innerText = data.nid || '-';
+      document.getElementById('tcDob').innerText = data.dob || '-';
+      document.getElementById('tcMobile').innerText = data.mobile || '-';
+      document.getElementById('tcOwnerAddress').innerText = data.ownerAddress || '-';
       document.getElementById('tcOrgName').innerText = '“' + data.orgName + '”';
-      document.getElementById('tcBizType').innerText = data.bizDetails || data.category;
+      document.getElementById('tcBizType').innerText = data.bizDetails || data.category || '-';
       document.getElementById('tcBizStartDate').innerText = data.bizStartDate || '০১/০১/২০২০';
-      document.getElementById('tcBizAddress').innerText = data.bizAddress;
+      document.getElementById('tcBizAddress').innerText = data.bizAddress || '-';
 
       document.getElementById('tcFee').innerText = '৳ ২০০';
       document.getElementById('tcVat').innerText = '৳ ৩০';
@@ -901,21 +912,28 @@
 
       document.getElementById('tcOwnerPhoto').src = data.photo || 'https://via.placeholder.com/80x95';
       
-      // 🟢 ১০০% অ্যাক্টিভ ও নির্ভরযোগ্য কিউআর কোড লিঙ্ক জেনারেটর
-      var qrPayload = "১১নং আউলিয়াপুর ইউনিয়ন পরিষদ\nট্রেড লাইসেন্স নং: " + data.licNo + "\nপ্রতিষ্ঠান: " + data.orgName + "\nমালিক: " + data.ownerName + "\nমোবাইল: " + data.mobile + "\nমেয়াদ: ৩০ জুন " + fiscalEndYear + " ইং পর্যন্ত\nযাচাই: সত্য ও অনুমোদিত";
+      // 🟢 কিউআর কোড
+      var qrPayload = "১১নং আউলিয়াপুর ইউনিয়ন পরিষদ\nট্রেড লাইসেন্স নং: " + (data.licNo || data.appId) + "\nপ্রতিষ্ঠান: " + data.orgName + "\nমালিক: " + data.ownerName + "\nমোবাইল: " + data.mobile + "\nমেয়াদ: ৩০ জুন " + fiscalEndYear + " ইং পর্যন্ত\nযাচাই: সত্য ও অনুমোদিত";
       document.getElementById('tcQrCode').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(qrPayload);
 
       document.getElementById('tcSecName').innerText = data.secName || 'মোঃ মোতাহার উদ্দিন';
       document.getElementById('tcSignatoryRole').innerText = data.signatoryRole || 'চেয়ারম্যান';
       
-      if(data.signatoryRole === 'প্যানেল চেয়ারম্যান-১') {
+      if(data.signatoryRole === 'প্যানেল চেয়ারম্যান-১' || data.signatoryRole === 'প্যানেল চেয়ারম্যান') {
         document.getElementById('tcSignatoryName').innerText = data.panelName || 'মোঃ আবদুস সালাম মৃধা';
       } else {
         document.getElementById('tcSignatoryName').innerText = data.chairName || 'অ্যাড. মোঃ হুমায়ুন কবির';
       }
 
-      navToSection('tradeCertificatePrintSection');
-    }).getTradeLicenseDetails(appIdOrLicNo);
+      // 🟢 সরাসরি ১-ক্লিকে প্রিন্ট ট্রিগার
+      printTradeIframeDirect('printableTradeCertArea', 'ট্রেড লাইসেন্স');
+    };
+
+    if (fetchHandler) {
+      fetchHandler.then(applyDataToDom);
+    } else {
+      google.script.run.withSuccessHandler(applyDataToDom).getTradeLicenseDetails(appIdOrLicNo);
+    }
   }
 
   // 🟢 সরাসরি ১ ক্লিকে ১ পেজে নিখুঁত প্রিন্ট ইঞ্জিন (Direct Iframe Print)
@@ -929,11 +947,12 @@
       <html>
       <head>
         <title>${docTitle || 'Certificate'}</title>
-        <link href="https://fonts.googleapis.com/css2?family=Nikosh&family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+        <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
         <style>
           @page {
             size: A4 portrait;
-            margin: 0mm;
+            margin: 0mm !important;
           }
           * {
             box-sizing: border-box;
@@ -943,37 +962,39 @@
           html, body {
             width: 210mm;
             height: 297mm;
-            margin: 0;
-            padding: 0;
+            margin: 0 !important;
+            padding: 0 !important;
             background: #ffffff;
             font-family: 'Nikosh', 'Kalpurush', 'Tiro Bangla', sans-serif;
-            overflow: hidden;
+            overflow: hidden !important;
           }
           .trade-cert-frame {
             border: 3px solid #8B0000 !important;
             outline: 2px dashed #b8860b !important;
             outline-offset: 4px;
-            padding: 16px 20px;
+            padding: 14mm 16mm 12mm 16mm !important;
             background-color: #ffffff !important;
             background-image: radial-gradient(#8B0000 0.5px, transparent 0.5px), radial-gradient(#b8860b 0.4px, #ffffff 0.4px) !important;
             background-size: 20px 20px !important;
             background-position: 0 0, 10px 10px !important;
-            position: relative;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 290mm;
-            max-height: 290mm;
-            width: 210mm;
-            margin: 0 auto;
-            overflow: hidden;
+            position: relative !important;
+            box-sizing: border-box !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            height: 295mm !important;
+            max-height: 295mm !important;
+            width: 210mm !important;
+            margin: 0 auto !important;
+            overflow: hidden !important;
+            page-break-after: avoid !important;
+            page-break-inside: avoid !important;
           }
           .trade-watermark-img {
-            position: absolute;
-            top: 52%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: absolute !important;
+            top: 52% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
             width: 440px !important;
             opacity: 0.08 !important;
             pointer-events: none;
@@ -988,73 +1009,79 @@
             justify-content: space-between;
           }
           .ribbon-container-3d {
-            text-align: center;
-            position: relative;
-            margin: 6px 0 10px 0;
+            text-align: center !important;
+            position: relative !important;
+            margin: 6px 0 10px 0 !important;
           }
           .gorgeous-3d-ribbon {
-            position: relative;
-            display: inline-block;
+            position: relative !important;
+            display: inline-block !important;
             background: linear-gradient(180deg, #a71414 0%, #7d0b0b 100%) !important;
             color: #ffffff !important;
-            font-size: 21px;
-            font-weight: bold;
-            padding: 5px 42px;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            z-index: 2;
+            font-size: 23px !important; /* +2px বাড়িয়ে ২৩px */
+            font-weight: bold !important;
+            padding: 5px 46px !important;
+            letter-spacing: 1px !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3) !important;
+            z-index: 2 !important;
+            border-radius: 2px !important;
           }
           .gorgeous-3d-ribbon::before, .gorgeous-3d-ribbon::after {
-            content: "";
-            position: absolute;
-            top: 6px;
+            content: "" !important;
+            position: absolute !important;
+            top: 6px !important;
             border: 16px solid #4a0505 !important;
-            z-index: -1;
+            z-index: -1 !important;
           }
           .gorgeous-3d-ribbon::before {
-            left: -22px;
-            border-right-width: 12px;
+            left: -22px !important;
+            border-right-width: 12px !important;
             border-left-color: transparent !important;
           }
           .gorgeous-3d-ribbon::after {
-            right: -22px;
-            border-left-width: 12px;
+            right: -22px !important;
+            border-left-width: 12px !important;
             border-right-color: transparent !important;
           }
           .cert-meta-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #8B0000;
-            padding: 3px 6px 4px 6px;
-            font-size: 13.5px;
-            margin-top: 2px;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            border-bottom: 2px solid #8B0000 !important;
+            padding: 3px 6px !important;
+            font-size: 14px !important;
+            margin-top: 2px !important;
           }
           .fiscal-year-pill {
             background: #8B0000 !important;
             color: #ffffff !important;
-            font-size: 12.5px;
-            font-weight: bold;
-            padding: 2px 16px;
-            border-radius: 4px;
-            display: inline-block;
+            font-size: 13px !important;
+            font-weight: bold !important;
+            padding: 2px 16px !important;
+            border-radius: 4px !important;
+            display: inline-block !important;
+          }
+          .trade-body-table {
+            width: 100% !important;
+            font-size: 15px !important; /* ১৫px বডি ফন্ট */
+            line-height: 1.6 !important;
+            border-collapse: collapse !important;
+          }
+          .trade-body-table td {
+            padding: 2.5px 2px !important;
           }
           .trade-table-fee-grid {
-            width: 100%;
+            width: 72% !important; /* কমপ্যাক্ট সাইজ */
             border-collapse: collapse !important;
-            margin-top: 3px;
-            background: #ffffff;
+            margin-top: 3px !important;
+            background: #ffffff !important;
           }
           .trade-table-fee-grid th, .trade-table-fee-grid td {
             border: 1px solid #8B0000 !important;
-            padding: 3px 8px;
-            font-size: 12.5px;
-            color: #000;
+            padding: 3px 8px !important;
+            font-size: 13.5px !important;
+            color: #000 !important;
           }
-          .cert-body-content {
-            padding: 0 12px;
-          }
-          table { width: 100%; border-collapse: collapse; }
         </style>
       </head>
       <body>
@@ -1066,15 +1093,32 @@
     `);
     printDoc.close();
 
-    setTimeout(function() {
-      document.getElementById('tradePrintIframe').contentWindow.focus();
-      document.getElementById('tradePrintIframe').contentWindow.print();
-    }, 450);
+    var images = printDoc.getElementsByTagName('img');
+    var total = images.length, loaded = 0, printed = false;
+    function triggerPrint() {
+      if (!printed) {
+        printed = true;
+        document.getElementById('tradePrintIframe').contentWindow.focus();
+        document.getElementById('tradePrintIframe').contentWindow.print();
+      }
+    }
+
+    if (total === 0) { setTimeout(triggerPrint, 150); }
+    else {
+      for (var i = 0; i < total; i++) {
+        images[i].onload = images[i].onerror = function() {
+          loaded++;
+          if (loaded >= total) setTimeout(triggerPrint, 100);
+        };
+      }
+      setTimeout(triggerPrint, 500);
+    }
   }
 
   // এডিট মোডাল
   function openEditTradeModal(appId) {
-    google.script.run.withSuccessHandler(function(data) {
+    let fetchHandler = (typeof callBackendAPI === 'function') ? callBackendAPI('getTradeLicenseDetails', appId) : null;
+    let applyEditData = function(data) {
       if(!data || !data.found) return alert('ডাটা পাওয়া যায়নি!');
       document.getElementById('edTrAppId').value = data.appId;
       document.getElementById('edTrOrgName').value = data.orgName;
@@ -1091,12 +1135,18 @@
       document.getElementById('edTrSignTax').value = data.signTaxNum || 20;
       calcEditTotalFee();
 
-      if(data.signatoryRole === 'প্যানেল চেয়ারম্যান-১') document.getElementById('trSigPanel').checked = true;
+      if(data.signatoryRole === 'প্যানেল চেয়ারম্যান-১' || data.signatoryRole === 'প্যানেল চেয়ারম্যান') document.getElementById('trSigPanel').checked = true;
       else if(data.signatoryRole === 'ভারপ্রাপ্ত চেয়ারম্যান') document.getElementById('trSigActing').checked = true;
       else document.getElementById('trSigChair').checked = true;
 
       bootstrap.Modal.getOrCreateInstance(document.getElementById('editTradeModal')).show();
-    }).getTradeLicenseDetails(appId);
+    };
+
+    if (fetchHandler) {
+      fetchHandler.then(applyEditData);
+    } else {
+      google.script.run.withSuccessHandler(applyEditData).getTradeLicenseDetails(appId);
+    }
   }
 
   function calcEditTotalFee() {
@@ -1131,15 +1181,22 @@
       signatoryRole: sigVal
     };
 
-    google.script.run.withSuccessHandler(function(res) {
+    let saveHandler = (typeof callBackendAPI === 'function') ? callBackendAPI('updateTradeLicenseData', editData) : null;
+    let onSaveSuccess = function(res) {
       btn.disabled = false; btn.innerText = 'আপডেট করুন';
-      if(res.success) {
+      if(res && res.success) {
         bootstrap.Modal.getInstance(document.getElementById('editTradeModal')).hide();
         if (typeof loadTradeLicenses === 'function') loadTradeLicenses();
-        alert('ট্রেড লাইসেন্স তথ্য সফলভাবে সংশোধন করা হয়েছে!');
+        Swal.fire({ icon: 'success', title: 'সংশোধিত হয়েছে!', text: 'ট্রেড লাইসেন্স তথ্য সফলভাবে সংশোধন করা হয়েছে।', timer: 1800, showConfirmButton: false });
       } else {
-        alert('ত্রুটি: ' + res.error);
+        alert('ত্রুটি: ' + (res ? res.error : 'আপডেট ব্যর্থ'));
       }
-    }).updateTradeLicenseData(editData);
+    };
+
+    if (saveHandler) {
+      saveHandler.then(onSaveSuccess);
+    } else {
+      google.script.run.withSuccessHandler(onSaveSuccess).updateTradeLicenseData(editData);
+    }
   }
 </script>

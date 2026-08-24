@@ -46,7 +46,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 440px !important;
+    width: 500px !important;
     opacity: 0.10 !important;
     pointer-events: none;
     z-index: 1;
@@ -157,8 +157,8 @@
               </div>
               <div class="col-md-4"><label class="form-label fw-bold">মোবাইল নম্বর *</label><input type="tel" id="dCitMobile" class="form-control" placeholder="০১XXXXXXXXX" required></div>
               <div class="col-md-4"><label class="form-label fw-bold">ওয়ার্ড নম্বর *</label><select id="dCitWard" class="form-select" required><option value="০১">০১</option><option value="০২">০২</option><option value="০৩">০৩</option><option value="০৪">০৪</option><option value="০৫">০৫</option><option value="০৬">০৬</option><option value="০৭">০৭</option><option value="০৮">০৮</option><option value="০৯">০৯</option></select></div>
-              <div class="col-md-4"><label class="form-label fw-bold">গ্রাম/মহল্লা *</label><input type="text" id="dCitVillage" class="form-control" placeholder="যেমন: পাটকোয়াপাড়া" required></div>
-              <div class="col-md-4"><label class="form-label fw-bold">ডাকঘর *</label><input type="text" id="dCitPost" class="form-control" value="ইসলামাবাদ-৮৬০০" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">গ্রাম/মহল্লা *</label><input type="text" id="dCitVillage" class="form-control" placeholder="যেমন: উত্তর বাদুরা" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">ডাকঘর *</label><input type="text" id="dCitPost" class="form-control" placeholder="বাদুরা হাট-৮৬০০" required></div>
             </div>
             <div class="text-end mt-4">
               <button type="reset" class="btn btn-secondary me-2">রিসেট</button>
@@ -435,7 +435,7 @@
 
     var sigRole = getVal('signatoryRole') || 'চেয়ারম্যান';
     var sigName = (sigRole === 'প্যানেল চেয়ারম্যান') ? 'মোঃ আবদুস সালাম মৃধা' : 'অ্যাড. মোঃ হুমায়ুন কবির';
-    var sigDesignation = (sigRole === 'প্যানেল চেয়ারম্যান') ? 'প্যানেল চেয়ারম্যান-১' : 'চেয়ারম্যান স্বাক্ষর';
+    var sigDesignation = (sigRole === 'প্যানেল চেয়ারম্যান') ? 'প্যানেল চেয়ারম্যান-১' : 'চেয়ারম্যান';
 
     var spouseRow = (maritalStatus === 'বিবাহিত' && spouseName) ? `
       <tr>
@@ -461,8 +461,8 @@
                 </td>
                 <td style="text-align: center; vertical-align: middle;">
                   <div style="font-size: 13px; font-weight: bold; color: #222;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
-                  <h1 style="margin: 2px 0; font-size: 27px; font-weight: bold; color: #0d47a1; letter-spacing: 0.5px; font-family: 'Nikosh', sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</h1>
-                  <div style="font-size: 14.5px; font-weight: bold; color: #000;">উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী</div>
+                  <h1 style="margin: 2px 0; font-size: 30px; font-weight: bold; color: #0d47a1; letter-spacing: 0.5px; font-family: 'Nikosh', sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</h1>
+                  <div style="font-size: 15px; font-weight: bold; color: #000;">উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী</div>
                 </td>
                 <td style="width: 75px; vertical-align: middle; text-align: right;">
                   <img src="${STATIC_UP_LOGO}" style="width: 65px; height: 65px; object-fit: contain;">
@@ -551,9 +551,9 @@
               <tr>
                 <td style="width: 32%; text-align: center; vertical-align: bottom;">
                   <div style="border-top: 1.5px dashed #444; width: 85%; margin: 0 auto 3px auto;"></div>
-                  <div style="font-weight: bold; font-size: 14.5px;">ইউপি সদস্যের স্বাক্ষর</div>
+                  <div style="font-weight: bold; font-size: 14.5px;">ইউপি সদস্যের স্বাক্ষর ও সিলমোহর</div>
                   <div style="font-size: 12.5px; color: #444;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</div>
-                  <div style="font-size: 11.5px; color: #555;">(কার্যালয়ের সিলমোহর)</div>
+                  <div style="font-size: 11.5px; color: #555;">পটুয়াখালী সদর, পটুয়াখাল</div>
                 </td>
                 
                 <td style="width: 36%; text-align: center; vertical-align: bottom;">
@@ -574,7 +574,7 @@
             <!-- নিচের সবুজ স্লোগান বার -->
             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #d32f2f; padding-top: 4px; font-size: 12.5px; font-weight: bold; color: #006837;">
               <div>আপনার সন্তানকে স্কুলে পাঠান</div>
-              <div>আপনার নাগরিকত্ব সনদ যাচাই করতে ভিজিট করুন: www.auliapurup.gov.bd</div>
+              <div>আপনার নাগরিকত্ব সনদ যাচাই করতে ভিজিট করুন: www.aup.auliapur.com</div>
               <div>বাল্য বিবাহ প্রতিরোধ করুন</div>
             </div>
           </div>
@@ -670,7 +670,7 @@
     document.getElementById('edCitMobile').value = data.mobile || '';
     document.getElementById('edCitWard').value = data.wardNo || '০১';
     document.getElementById('edCitVillage').value = data.village || '';
-    document.getElementById('edCitPost').value = data.postOffice || 'ইসলামাবাদ-৮৬০০';
+    document.getElementById('edCitPost').value = data.postOffice || 'আউলিয়াপুর ময়দান-৮৬০০';
     document.getElementById('edCitCertNo').value = data.certNo || '';
 
     var mStatus = data.maritalStatus || 'অবিবাহিত';

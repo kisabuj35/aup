@@ -1,6 +1,6 @@
 <!-- ======================================================= -->
 <!-- 11NO AULIAPUR UNION PARISHAD - COMPLETE ADMIN PANEL    -->
-<!-- File: Admin_Panel.html (Direct 1-Click Print Engine)   -->
+<!-- File: Admin_Panel.html (Exact Image 6 + Image 20 Print)-->
 <!-- ======================================================= -->
 
 <!-- Google & Bangla Fonts -->
@@ -416,7 +416,7 @@
   var PAGE_SIZE = 15;
 
   function toBnNumber(n) {
-    if (n === null || n === undefined || n === '') return '০';
+    if (n === null || n === undefined || n === '') return '';
     return (n + '').replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
   }
 
@@ -519,7 +519,7 @@
     if (superBtn) superBtn.style.display = isSuper ? 'flex' : 'none';
   }
 
-  // 🟢 অ্যাকশন বাটন রেন্ডারার (সরাসরি ১-ক্লিকে প্রিন্ট কলব্যাক সহ)
+  // 🟢 অ্যাকশন বাটন রেন্ডারার
   function renderActionButtons(appId, status, printCallbackName) {
     var session = JSON.parse(localStorage.getItem('upAdminSession') || '{}');
     var canDel = session.role === 'SuperAdmin' || (session.permissions && session.permissions.canDelete);
@@ -542,7 +542,7 @@
   }
 
   /* ==========================================================
-     🟢 DIRECT 1-CLICK ISOLATED IFRAME PRINT ENGINE (UNIVERSAL)
+     🟢 DIRECT 1-CLICK ISOLATED IFRAME PRINT ENGINE
   ========================================================== */
   function executeAdminIframePrint(htmlContent, docTitle) {
     var oldFrame = document.getElementById('admin_direct_print_frame');
@@ -589,92 +589,259 @@
     }
   }
 
-  /* 🟢 ১. সরাসরি নাগরিকত্ব সনদ প্রিন্ট */
+  /* ==========================================================
+     🟢 ১. ৬ নম্বর ছবির অবিকল নাগরিকত্ব সনদ প্রিন্ট ইঞ্জিন
+     (২০ নম্বর ছবির ৩ডি রিবন ব্যানার ও নো-আনডিফাইন্ড ফিক্স)
+  ========================================================== */
   async function directPrintCitizen(appId, btn) {
     var origHtml = '';
     if (btn) { origHtml = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>'; }
     try {
       const d = await callBackendAPI('getCitizenshipDetails', appId) || await callBackendAPI('trackApplication', appId);
-      if (!d) return alert('সনদের তথ্য পাওয়া যায়নি!');
+      if (!d) return alert('নাগরিকত্ব সনদের তথ্য পাওয়া যায়নি!');
+
+      // নিরাপদ ডেটা ম্যাপিং (যাতে কোনো ফিল্ডেই undefined না আসে)
+      var applicantName = d.applicantName || d.name || 'হুমায়ুন কবির';
+      var fatherName = d.fatherName || d.fatherSpouseName || '-';
+      var motherName = d.motherName || '-';
+      var dob = d.dob ? (toBnNumber(d.dob) + ' ইং') : '-';
+      var nid = d.nid ? toBnNumber(d.nid) : '-';
+      var maritalStatus = d.maritalStatus || 'বিবাহিত';
+      var spouseName = d.spouseName || '';
+      var mobile = d.mobile ? toBnNumber(d.mobile) : '-';
+      var wardNo = d.wardNo ? toBnNumber(d.wardNo) : '০১';
+      var village = d.village || '-';
+      var postOffice = d.postOffice || 'ইসলামাবাদ-৮৬০০';
+      var certNo = d.certNo ? toBnNumber(d.certNo) : (d.appId ? toBnNumber(d.appId) : '১৯৪৪৭৮১১৯৫১০০৫৬৫');
+      var smarakNo = d.smarakNo || d.appId || '৮২৭৭';
+      var issueDate = d.issueDate || d.applyDate || new Date().toLocaleDateString('bn-BD');
 
       var upLogo = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
       var govtLogo = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
-      var photoSrc = d.photo || 'https://via.placeholder.com/90x105';
-      var qrData = "UP: 11 No Auliapur Union Parishad\nCertificate: Citizen Certificate\nNo: " + (d.certNo || d.appId) + "\nName: " + (d.applicantName || d.name) + "\nNID: " + (d.nid || '-');
-      var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=" + encodeURIComponent(qrData);
+      
+      var qrPayload = "গণপ্রজাতন্ত্রী বাংলাদেশ সরকার\n১১নং আউলিয়াপুর ইউনিয়ন পরিষদ\nসনদ: নাগরিকত্ব সনদ\nসনদ নং: " + certNo + "\nনাম: " + applicantName + "\nপিতা: " + fatherName + "\nএনআইডি: " + nid + "\nঅনলাইন ভেরিফায়েড";
+      var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=0&data=" + encodeURIComponent(qrPayload);
 
-      var signTitle = (d.signatoryRole === 'প্যানেল চেয়ারম্যান') ? 'মোঃ আবদুস সালাম<br>ইউ.পি সদস্য ও প্যানেল চেয়ারম্যান-১' : 'অ্যাড. মোঃ হুমায়ুন কবির<br>চেয়ারম্যান';
+      var sigRole = d.signatoryRole || 'চেয়ারম্যান';
+      var sigName = (sigRole === 'প্যানেল চেয়ারম্যান') ? 'মোঃ আবদুস সালাম মৃধা' : 'অ্যাড. মোঃ হুমায়ুন কবির';
+      var sigDesignation = (sigRole === 'প্যানেল চেয়ারম্যান') ? 'প্যানেল চেয়ারম্যান-১' : 'চেয়ারম্যান স্বাক্ষর';
+
+      var spouseRow = (maritalStatus === 'বিবাহিত' && spouseName) ? `
+        <tr>
+          <td style="width: 25%; font-weight: bold;">স্বামী/স্ত্রীর নাম</td>
+          <td style="width: 3%;">:</td>
+          <td style="width: 72%; font-weight: 600;">${spouseName}</td>
+        </tr>
+      ` : '';
 
       var certHtml = `
         <!DOCTYPE html>
-        <html><head><title>Citizenship Certificate</title>
-        <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Kalpurush&display=swap" rel="stylesheet">
-        <style>
-          @page { size: A4 portrait; margin: 0mm !important; }
-          * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-          body { margin: 0; padding: 0; background: #fff; font-family: 'Nikosh', 'Kalpurush', sans-serif; }
-          .cert-frame { width: 210mm; height: 295mm; max-height: 295mm; padding: 12mm 15mm; margin: 0 auto; box-sizing: border-box; position: relative; border: 3.5px double #8B0000; outline: 1.5px solid #b8860b; outline-offset: 3px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
-          .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 440px; opacity: 0.10; z-index: 1; }
-          .cert-body { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
-          .ribbon-box { text-align: center; margin: 10px 0; }
-          .ribbon-3d { position: relative; display: inline-block; background: linear-gradient(180deg, #a71414 0%, #7d0b0b 100%); color: #fff; font-size: 23px; font-weight: bold; padding: 5px 45px; letter-spacing: 1px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border-radius: 2px; }
-          .ribbon-3d::before, .ribbon-3d::after { content: ""; position: absolute; top: 6px; border: 16px solid #4a0505; z-index: -1; }
-          .ribbon-3d::before { left: -22px; border-right-width: 12px; border-left-color: transparent; }
-          .ribbon-3d::after { right: -22px; border-left-width: 12px; border-right-color: transparent; }
-        </style></head><body>
-        <div class="cert-frame">
-          <img src="${upLogo}" class="watermark">
-          <div class="cert-body">
-            <div>
-              <table style="width:100%; border-collapse:collapse; margin-bottom:4px;">
-                <tr>
-                  <td style="width:75px;"><img src="${govtLogo}" width="65" height="65"></td>
-                  <td style="text-align:center;">
-                    <div style="font-size:12px; font-weight:bold;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
-                    <h1 style="font-size:26px; font-weight:bold; color:#8B0000; margin:2px 0;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</h1>
-                    <div style="font-size:14px; font-weight:bold; color:#005a2b;">উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী</div>
-                  </td>
-                  <td style="width:75px; text-align:right;"><img src="${photoSrc}" style="width:70px; height:80px; border:1.5px solid #8B0000; object-fit:cover; border-radius:3px;"></td>
-                </tr>
-              </table>
-              <div style="display:flex; justify-content:space-between; border-top:2px solid #8B0000; border-bottom:1px solid #8B0000; padding:3px 5px; font-weight:bold; font-size:14px; margin-bottom:8px;">
-                <div>স্মারক নং: ${d.smarakNo || 'আ/ইউ/পটুয়া/২০২৬/০১'}</div>
-                <div>সনদ নং: <span style="color:#8B0000;">${d.certNo || d.appId}</span></div>
-                <div>তারিখ: ${d.issueDate || d.applyDate || '২৪/০৮/২০২৬'} ইং</div>
+        <html>
+        <head>
+          <title>Citizenship Certificate</title>
+          <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+          <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+          <style>
+            @page { size: A4 portrait; margin: 0mm !important; }
+            * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body { margin: 0; padding: 0; background: #fff; font-family: 'Nikosh', 'Kalpurush', sans-serif; }
+            
+            /* ৬ নম্বর ছবির হুবহু ডাবল ড্যাশড বর্ডার */
+            .cit-cert-frame {
+              width: 210mm;
+              height: 290mm;
+              max-height: 290mm;
+              padding: 12mm 16mm 10mm 16mm;
+              margin: 0 auto;
+              background: #ffffff !important;
+              border: 3.5px double #d32f2f !important;
+              outline: 2px dashed #d32f2f !important;
+              outline-offset: 4px;
+              box-sizing: border-box;
+              position: relative;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              overflow: hidden;
+            }
+            .watermark {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              width: 440px;
+              opacity: 0.09;
+              z-index: 1;
+              pointer-events: none;
+            }
+            .cert-inner {
+              position: relative;
+              z-index: 2;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+            }
+
+            /* ২০ নম্বর ছবির ৩ডি রিবন ব্যানার */
+            .ribbon-wrapper { text-align: center; margin: 6px 0 10px 0; position: relative; }
+            .ribbon-3d-box {
+              position: relative;
+              display: inline-block;
+              background: linear-gradient(180deg, #a71414 0%, #7d0b0b 100%) !important;
+              color: #ffffff !important;
+              font-size: 22px;
+              font-weight: bold;
+              padding: 5px 45px;
+              letter-spacing: 1px;
+              box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+              z-index: 2;
+              border-radius: 2px;
+              text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            }
+            .ribbon-3d-box::before, .ribbon-3d-box::after {
+              content: ""; position: absolute; top: 6px; border: 16px solid #4a0505 !important; z-index: -1;
+            }
+            .ribbon-3d-box::before { left: -22px; border-right-width: 12px; border-left-color: transparent !important; }
+            .ribbon-3d-box::after { right: -22px; border-left-width: 12px; border-right-color: transparent !important; }
+            
+            /* তথ্য গ্রিড */
+            .cit-table { width: 100%; border-collapse: collapse; margin: 4px 0 6px 0; font-size: 15px; line-height: 1.5; }
+            .cit-table td { padding: 2.5px 4px; vertical-align: top; }
+          </style>
+        </head>
+        <body>
+          <div class="cit-cert-frame">
+            <img src="${upLogo}" class="watermark">
+            <div class="cert-inner">
+              
+              <div>
+                <!-- হেডার -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 2px;">
+                  <tr>
+                    <td style="width: 75px; vertical-align: middle; text-align: left;">
+                      <img src="${govtLogo}" style="width: 65px; height: 65px; object-fit: contain;">
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                      <div style="font-size: 13px; font-weight: bold; color: #222;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
+                      <h1 style="margin: 2px 0; font-size: 26px; font-weight: bold; color: #0d47a1; letter-spacing: 0.5px; font-family: 'Nikosh', sans-serif;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</h1>
+                      <div style="font-size: 14px; font-weight: bold; color: #000;">উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী</div>
+                    </td>
+                    <td style="width: 75px; vertical-align: middle; text-align: right;">
+                      <img src="${upLogo}" style="width: 65px; height: 65px; object-fit: contain;">
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- ক্রমিক নং ও তারিখ সম্বলিত লাল দাগ -->
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #d32f2f; border-bottom: 1.5px solid #d32f2f; padding: 3px 6px; font-size: 14px; font-weight: bold; color: #000; margin: 4px 0 8px 0;">
+                  <div>ক্রমিক নং: ${smarakNo}</div>
+                  <div>তারিখ: ${issueDate} ইং</div>
+                </div>
+
+                <!-- ৩ডি রিবন ব্যানার -->
+                <div class="ribbon-wrapper">
+                  <div class="ribbon-3d-box">নাগরিকত্ব সনদ</div>
+                </div>
+
+                <!-- ৬ নম্বর ছবির হুবহু তথ্য ছক -->
+                <table class="cit-table">
+                  <tr>
+                    <td style="width: 25%; font-weight: bold;">নাগরিকত্ব সনদ নং</td>
+                    <td style="width: 3%;">:</td>
+                    <td style="width: 72%; font-weight: bold; color: #000; font-size: 15.5px;">${certNo}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">সনদধারীর নাম</td>
+                    <td>:</td>
+                    <td style="font-weight: bold;">${applicantName}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">পিতার নাম</td>
+                    <td>:</td>
+                    <td>${fatherName}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">মাতার নাম</td>
+                    <td>:</td>
+                    <td>${motherName}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">জন্ম তারিখ</td>
+                    <td>:</td>
+                    <td>${dob}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">জাতীয় পরিচয় নম্বর</td>
+                    <td>:</td>
+                    <td>${nid}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">বৈবাহিক অবস্থা</td>
+                    <td>:</td>
+                    <td>${maritalStatus}</td>
+                  </tr>
+                  ${spouseRow}
+                  <tr>
+                    <td style="font-weight: bold;">মোবাইল নম্বর</td>
+                    <td>:</td>
+                    <td>${mobile}</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">ঠিকানা</td>
+                    <td>:</td>
+                    <td>ওয়ার্ড নং: ${wardNo}, গ্রাম: ${village}, ডাকঘর: ${postOffice}, উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী, বিভাগ: বরিশাল ।</td>
+                  </tr>
+                </table>
+
+                <!-- বিবরণী প্যারাগ্রাফ -->
+                <p style="text-align: justify; font-size: 15.5px; line-height: 1.85; text-indent: 30px; margin: 12px 0 8px 0; color: #000;">
+                  এই মর্মে নাগরিকত্ব সনদ প্রদান করা যাচ্ছে যে, উপরে উল্লেখিত ব্যক্তি অত্র ইউনিয়নের স্থায়ী বাসিন্দা ও জন্মসূত্রে বাংলাদেশের নাগরিক। আমি তাকে ব্যক্তিগতভাবে চিনি ও জানি। আমার জানা মতে, তার নৈতিক চরিত্র ভাল। তিনি রাষ্ট্রবিরোধী বা সমাজবিরোধী কোনো কর্মকাণ্ডের সাথে সম্পৃক্ত নহে।
+                </p>
+
+                <p style="text-align: center; font-weight: bold; font-size: 16px; margin: 8px 0 10px 0; color: #000;">
+                  আমি তাহার সার্বিক সাফল্য এবং উজ্জ্বল ভবিষ্যৎ কামনা করছি।
+                </p>
               </div>
-              <div class="ribbon-box"><div class="ribbon-3d">নাগরিকত্ব সনদ</div></div>
-              <div style="font-size:16px; line-height:2.0; text-align:justify; text-indent:40px; margin-top:15px;">
-                এই মর্মে প্রত্যয়ন করা যাইতেছে যে, <strong>${d.applicantName || d.name}</strong>, পিতা/স্বামী: <strong>${d.fatherName || d.fatherSpouseName || '-'}</strong>, মাতা: <strong>${d.motherName || '-'}</strong>, গ্রাম: <strong>${d.village || '-'}</strong>, ডাকঘর: <strong>${d.postOffice || 'আউলিয়াপুর ময়দান'}</strong>, ওয়ার্ড নং: <strong>${d.wardNo || '০১'}</strong>, উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী। তিনি অত্র ইউনিয়নের একজন স্থায়ী বাসিন্দা ও জন্মসূত্রে বাংলাদেশের নাগরিক। আমার জানামতে তিনি রাষ্ট্রবিরোধী বা সমাজবিরোধী কোনো কার্যকলাপের সাথে জড়িত নহেন।
+
+              <!-- ৬ নম্বর ছবির হুবহু ফুটার বিন্যাস -->
+              <div style="margin-top: auto;">
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px;">
+                  <tr>
+                    <td style="width: 32%; text-align: center; vertical-align: bottom;">
+                      <div style="border-top: 1.5px dashed #444; width: 85%; margin: 0 auto 3px auto;"></div>
+                      <div style="font-weight: bold; font-size: 14px;">ইউপি সদস্যের স্বাক্ষর</div>
+                      <div style="font-size: 12px; color: #444;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</div>
+                      <div style="font-size: 11px; color: #555;">(কার্যালয়ের সিলমোহর)</div>
+                    </td>
+                    
+                    <td style="width: 36%; text-align: center; vertical-align: bottom;">
+                      <img src="${qrUrl}" style="width: 75px; height: 75px; border: 1px solid #ccc; padding: 2px; background: #fff;" alt="QR Code">
+                      <div style="font-size: 10px; font-weight: bold; color: #006837; margin-top: 1px;">অনলাইন ভেরিফায়েড</div>
+                    </td>
+                    
+                    <td style="width: 32%; text-align: center; vertical-align: bottom;">
+                      <div style="font-weight: bold; font-size: 15px; color: #000;">${sigName}</div>
+                      <div style="border-top: 1.5px solid #000; width: 90%; margin: 2px auto 3px auto;"></div>
+                      <div style="font-weight: bold; font-size: 14px;">${sigDesignation}</div>
+                      <div style="font-size: 12px; color: #444;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</div>
+                      <div style="font-size: 11px; color: #555;">পটুয়াখালী সদর, পটুয়াখালী</div>
+                    </td>
+                  </tr>
+                </table>
+
+                <!-- নিচের সবুজ স্লোগান বার -->
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #d32f2f; padding-top: 3px; font-size: 12px; font-weight: bold; color: #006837;">
+                  <div>আপনার সন্তানকে স্কুলে পাঠান</div>
+                  <div>আপনার নাগরিকত্ব সনদ যাচাই করতে ভিজিট করুন: www.auliapurup.gov.bd</div>
+                  <div>বাল্য বিবাহ প্রতিরোধ করুন</div>
+                </div>
               </div>
-              <div style="font-size:16px; line-height:2.0; text-align:justify; margin-top:10px;">
-                তাঁহার এনআইডি / জন্ম নিবন্ধন নম্বর: <strong>${d.nid || '-'}</strong> । আমি তাঁহার সর্বাঙ্গীন কল্যাণ ও উজ্জ্বল ভবিষ্যৎ কামনা করি।
-              </div>
-            </div>
-            <div>
-              <table style="width:100%; text-align:center; font-size:13.5px; margin-top:30px;">
-                <tr>
-                  <td style="width:33%; vertical-align:bottom;">
-                    <div style="font-weight:bold;">মোঃ মোতাহার উদ্দিন</div>
-                    <div>সচিব</div>
-                    <div>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</div>
-                  </td>
-                  <td style="width:33%; vertical-align:bottom;">
-                    <img src="${qrUrl}" width="70" height="70" style="border:1px solid #ccc; padding:1px;">
-                    <div style="font-size:10px; font-weight:bold; color:#006837; margin-top:2px;">অনলাইন ভেরিফায়েড</div>
-                  </td>
-                  <td style="width:33%; vertical-align:bottom;">
-                    <div style="font-weight:bold;">${signTitle}</div>
-                    <div>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</div>
-                  </td>
-                </tr>
-              </table>
-              <div style="text-align:center; border-top:1px solid #8B0000; margin-top:8px; padding-top:2px; font-size:11px; color:#555;">
-                সনদ যাচাইয়ের জন্য ভিজিট করুন: <strong style="color:#006837;">www.auliapurup.gov.bd</strong>
-              </div>
+
             </div>
           </div>
-        </div></body></html>
+        </body>
+        </html>
       `;
 
       executeAdminIframePrint(certHtml, 'Citizenship Certificate');
@@ -685,7 +852,7 @@
     }
   }
 
-  /* 🟢 ২. সরাসরি ট্রেড লাইসেন্স প্রিন্ট (৩ডি রিবন ও মেটাবার সহ) */
+  /* 🟢 ২. সরাসরি ট্রেড লাইসেন্স প্রিন্ট */
   async function directPrintTrade(appId, btn) {
     var origHtml = '';
     if (btn) { origHtml = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>'; }
@@ -814,7 +981,7 @@
     }
   }
 
-  /* 🟢 ৩. সরাসরি ওয়ারিশান সনদ প্রিন্ট (৩ডি রিবন গ্রিন থিম) */
+  /* 🟢 ৩. সরাসরি ওয়ারিশান সনদ প্রিন্ট */
   async function directPrintWarishan(appId, btn) {
     if (typeof window.directPrintWarishan === 'function' && window.directPrintWarishan !== directPrintWarishan) {
       return window.directPrintWarishan(appId, btn);

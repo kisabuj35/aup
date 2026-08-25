@@ -644,7 +644,7 @@
       return; 
     }
     slice.forEach(function(a) {
-      var act = renderStatusActionButtons(a.appId, a.status);
+      var act = renderActionButtons(a.appId, a.status, 'showGeneralCertPrintPreview', 'openEditGeneralModal');
       tbody.innerHTML += `
         <tr>
           <td><strong>${a.appId}</strong></td>

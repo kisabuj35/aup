@@ -939,8 +939,15 @@
 
   // 🟢 সরাসরি ১ ক্লিকে ১ পেজে নিখুঁত প্রিন্ট ইঞ্জিন (Direct Iframe Print)
   function printTradeIframeDirect(elemId, docTitle) {
-    var rawHtml = document.getElementById(elemId).innerHTML;
-    var printDoc = document.getElementById('tradePrintIframe').contentWindow.document;
+    var source = document.getElementById(elemId);
+    var iframe = document.getElementById('tradePrintIframe');
+    if (!source || !iframe) return;
+
+    var rawHtml = source.innerHTML;
+    var printWindow = iframe.contentWindow;
+    var printDoc = printWindow.document;
+    iframe.onload = null;
+    printWindow.onafterprint = null;
 
     printDoc.open();
     printDoc.write(`
@@ -1096,11 +1103,20 @@
 
     var images = printDoc.getElementsByTagName('img');
     var total = images.length, loaded = 0, printed = false;
+    function cleanupPrintFrame() {
+      printWindow.onafterprint = null;
+      printDoc.open();
+      printDoc.write('<!DOCTYPE html><html><head><title></title></head><body></body></html>');
+      printDoc.close();
+    }
+
     function triggerPrint() {
       if (!printed) {
         printed = true;
-        document.getElementById('tradePrintIframe').contentWindow.focus();
-        document.getElementById('tradePrintIframe').contentWindow.print();
+        printWindow.onafterprint = cleanupPrintFrame;
+        printWindow.focus();
+        printWindow.print();
+        setTimeout(cleanupPrintFrame, 1500);
       }
     }
 

@@ -283,6 +283,21 @@
     return (n + '').replace(/\d/g, d => "০১২৩৪৫৬৭৮৯"[d]);
   }
 
+  function toEn(n) {
+    if (n === null || n === undefined || n === '') return '';
+    return String(n).replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d));
+  }
+
+  function formatEnglishDate(value) {
+    var normalized = toEn(value).replace(/\s*(ইং|English)\s*$/i, '').trim();
+    if (!normalized) return '-';
+    var date = new Date(normalized);
+    if (!Number.isNaN(date.getTime())) {
+      return date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+    return normalized.replace(/[-.]/g, '/');
+  }
+
   function formatSerial3Digits(val) {
     if (!val) return '০০১';
     let numOnly = String(val).replace(/[^0-9]/g, '');
@@ -354,6 +369,15 @@
   async function submitDedicatedCitizen() {
     var btn = document.getElementById('dCitSubmitBtn');
     var selectedLanguage = document.querySelector('input[name="citLanguage"]:checked').value;
+    if (selectedLanguage === 'en') {
+      var englishTextFields = ['dCitName', 'dCitFather', 'dCitMother', 'dCitSpouse', 'dCitVillage', 'dCitPost'];
+      var hasBanglaText = englishTextFields.some(function(id) {
+        return /[\u0980-\u09FF]/.test(document.getElementById(id).value);
+      });
+      if (hasBanglaText) {
+        return Swal.fire({ icon: 'warning', title: 'English input required', text: 'Please enter names and address information in English for the English certificate.' });
+      }
+    }
     btn.disabled = true; btn.innerText = selectedLanguage === 'en' ? 'Submitting...' : 'জমা হচ্ছে...';
 
     var mStatus = document.getElementById('dCitMarital').value;
@@ -634,18 +658,18 @@
     var applicantName = getVal('name', 'applicantName');
     var fatherName = getVal('fatherName', 'fatherSpouseName', 'father');
     var motherName = getVal('motherName', 'mother');
-    var dob = getVal('dob', 'birthDate', 'dateOfBirth');
-    var nid = getVal('nid', 'nidNo', 'nationalId');
-    var maritalStatus = getVal('maritalStatus', 'marital');
-    maritalStatus = maritalStatus === 'বিবাহিত' ? 'Married' : (maritalStatus === 'অবিবাহিত' ? 'Unmarried' : maritalStatus);
+    var dob = formatEnglishDate(getVal('dob', 'birthDate', 'dateOfBirth'));
+    var nid = toEn(getVal('nid', 'nidNo', 'nationalId'));
+    var maritalStatus = getVal('maritalStatus', 'marital').toLowerCase();
+    maritalStatus = (maritalStatus === 'বিবাহিত' || maritalStatus === 'married') ? 'Married' : (maritalStatus === 'অবিবাহিত' || maritalStatus === 'unmarried' ? 'Unmarried' : maritalStatus);
     var spouseName = getVal('spouseName', 'spouse');
-    var mobile = getVal('mobile', 'phone', 'mobileNo');
-    var wardNo = getVal('wardNo', 'ward');
+    var mobile = toEn(getVal('mobile', 'phone', 'mobileNo'));
+    var wardNo = toEn(getVal('wardNo', 'ward'));
     var village = getVal('village', 'gram');
     var postOffice = getVal('postOffice', 'post');
-    var certNo = getVal('certNo', 'certificateNo', 'appId');
-    var smarakNo = formatSerial3Digits(getVal('smarakNo', 'serialNo', 'appId'));
-    var issueDate = getVal('issueDate', 'date', 'applyDate');
+    var certNo = toEn(getVal('certNo', 'certificateNo', 'appId'));
+    var smarakNo = toEn(formatSerial3Digits(toEn(getVal('smarakNo', 'serialNo', 'appId'))));
+    var issueDate = formatEnglishDate(getVal('issueDate', 'date', 'applyDate'));
     var spouseRow = spouseName !== '-' ? `<tr><td class="label">Spouse name</td><td>:</td><td>${spouseName}</td></tr>` : '';
     var sigRole = d.signatoryRole || 'Chairman';
     if (sigRole === 'প্যানেল চেয়ারম্যান' || sigRole === 'প্যানেল চেয়ারম্যান-১') sigRole = 'Panel Chairman';

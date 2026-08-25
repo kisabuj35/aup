@@ -12,6 +12,8 @@
   .war-group-box { background: #fdfdfd; border: 1.5px solid #006837; border-radius: 8px; padding: 16px; margin-bottom: 20px; position: relative; }
   .btn-war-add { background-color: #006837; color: #ffffff; font-weight: bold; border-radius: 6px; font-size: 13px; }
   .btn-war-add:hover { background-color: #004d26; color: #ffffff; }
+  .war-row-tools { white-space: nowrap; }
+  .war-row-tools button { padding: 1px 4px; margin: 1px; }
 
   /* 🟢 নিখুঁত অফিশিয়াল A4 ফ্রেম */
   .war-page-container {
@@ -236,13 +238,13 @@
             <div class="war-group-box" id="warGroup_0" data-group-index="0">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <input type="text" class="form-control form-control-sm fw-bold text-success border-success war-group-title" value="মূল মৃত ব্যক্তির ওয়ারিশগণ" style="max-width: 450px;">
-                <button type="button" class="btn btn-sm btn-war-add" onclick="addWarRow(0)"><i class="fa fa-plus me-1"></i> সদস্য যোগ করুন</button>
+                <div><button type="button" class="btn btn-sm btn-war-add" onclick="duplicateWarGroup(0)" title="পুরো টেবিল কপি"><i class="fa fa-copy"></i></button> <button type="button" class="btn btn-sm btn-war-add" onclick="addWarRow(0)"><i class="fa fa-plus me-1"></i> সদস্য যোগ করুন</button></div>
               </div>
               <div class="table-responsive">
                 <table class="table table-bordered table-sm align-middle mb-0 bg-white">
                   <thead class="table-light"><tr><th width="8%">ক্র.নং</th><th width="28%">ওয়ারিশের নাম</th><th width="28%">পিতা/স্বামীর নাম</th><th width="20%">ঠিকানা</th><th width="12%">সম্পর্ক</th><th width="4%">মুছুন</th></tr></thead>
                   <tbody id="warTableBody_0">
-                    <tr><td><input type="text" class="form-control form-control-sm text-center war-sl" value="১"></td><td><input type="text" class="form-control form-control-sm war-name" placeholder="নাম" required></td><td><input type="text" class="form-control form-control-sm war-rel-name" placeholder="পিতা/স্বামী"></td><td><input type="text" class="form-control form-control-sm war-addr" placeholder="গ্রাম"></td><td><input type="text" class="form-control form-control-sm war-rel" placeholder="সম্পর্ক"></td><td class="text-center"><button type="button" class="btn btn-sm text-danger p-0" onclick="removeWarRow(this)"><i class="fa fa-trash"></i></button></td></tr>
+                    <tr><td><input type="text" class="form-control form-control-sm text-center war-sl" value="১"></td><td><input type="text" class="form-control form-control-sm war-name" placeholder="নাম" required></td><td><input type="text" class="form-control form-control-sm war-rel-name" placeholder="পিতা/স্বামী"></td><td><input type="text" class="form-control form-control-sm war-addr" placeholder="গ্রাম"></td><td><input type="text" class="form-control form-control-sm war-rel" placeholder="সম্পর্ক"></td><td class="text-center war-row-tools"><button type="button" class="btn btn-sm btn-outline-secondary" onclick="copyWarRow(this)" title="কপি"><i class="fa fa-copy"></i></button><button type="button" class="btn btn-sm btn-outline-secondary" onclick="pasteWarRow(this)" title="পেস্ট"><i class="fa fa-paste"></i></button><button type="button" class="btn btn-sm btn-outline-primary" onclick="duplicateWarRow(this)" title="ডুপ্লিকেট"><i class="fa fa-clone"></i></button><button type="button" class="btn btn-sm btn-outline-dark" onclick="moveWarRow(this,-1)" title="উপরে"><i class="fa fa-arrow-up"></i></button><button type="button" class="btn btn-sm btn-outline-dark" onclick="moveWarRow(this,1)" title="নিচে"><i class="fa fa-arrow-down"></i></button><button type="button" class="btn btn-sm text-danger p-0" onclick="removeWarRow(this)"><i class="fa fa-trash"></i></button></td></tr>
                   </tbody>
                 </table>
               </div>
@@ -348,9 +350,26 @@
       <td><input type="text" class="form-control form-control-sm war-rel-name" placeholder="পিতা/স্বামী"></td>
       <td><input type="text" class="form-control form-control-sm war-addr" placeholder="গ্রাম"></td>
       <td><input type="text" class="form-control form-control-sm war-rel" placeholder="সম্পর্ক"></td>
-      <td class="text-center"><button type="button" class="btn btn-sm text-danger p-0" onclick="removeWarRow(this)"><i class="fa fa-trash"></i></button></td>
+      <td class="text-center war-row-tools"><button type="button" class="btn btn-sm btn-outline-secondary" onclick="copyWarRow(this)" title="কপি"><i class="fa fa-copy"></i></button><button type="button" class="btn btn-sm btn-outline-secondary" onclick="pasteWarRow(this)" title="পেস্ট"><i class="fa fa-paste"></i></button><button type="button" class="btn btn-sm btn-outline-primary" onclick="duplicateWarRow(this)" title="ডুপ্লিকেট"><i class="fa fa-clone"></i></button><button type="button" class="btn btn-sm btn-outline-dark" onclick="moveWarRow(this,-1)" title="উপরে"><i class="fa fa-arrow-up"></i></button><button type="button" class="btn btn-sm btn-outline-dark" onclick="moveWarRow(this,1)" title="নিচে"><i class="fa fa-arrow-down"></i></button><button type="button" class="btn btn-sm text-danger p-0" onclick="removeWarRow(this)"><i class="fa fa-trash"></i></button></td>
     `;
     tbody.appendChild(tr);
+  }
+
+  function readWarRow(row) { return Array.from(row.querySelectorAll('input')).map(function(input) { return input.value; }); }
+  function writeWarRow(row, values) { Array.from(row.querySelectorAll('input')).forEach(function(input, index) { input.value = values[index] || ''; }); }
+  function copyWarRow(button) { window._copiedWarRow = readWarRow(button.closest('tr')); }
+  function pasteWarRow(button) { if (window._copiedWarRow) writeWarRow(button.closest('tr'), window._copiedWarRow); }
+  function duplicateWarRow(button) { var row = button.closest('tr'), clone = row.cloneNode(true); row.parentNode.insertBefore(clone, row.nextSibling); writeWarRow(clone, readWarRow(row)); }
+  function moveWarRow(button, direction) { var row = button.closest('tr'), sibling = direction < 0 ? row.previousElementSibling : row.nextElementSibling; if (!sibling) return; if (direction < 0) row.parentNode.insertBefore(row, sibling); else row.parentNode.insertBefore(sibling, row); }
+  function duplicateWarGroup(groupIndex) {
+    var source = document.getElementById('warGroup_' + groupIndex);
+    if (!source) return;
+    addNewWarishanGroup();
+    var target = document.getElementById('warGroup_' + warGroupCounter);
+    target.querySelector('.war-group-title').value = source.querySelector('.war-group-title').value;
+    var targetBody = target.querySelector('tbody');
+    targetBody.innerHTML = '';
+    source.querySelectorAll('tbody tr').forEach(function(sourceRow, index) { if (index > 0) addWarRow(warGroupCounter); var targetRow = targetBody.lastElementChild; targetRow && writeWarRow(targetRow, readWarRow(sourceRow)); });
   }
 
   function removeWarRow(btn) {
@@ -372,7 +391,7 @@
       <div class="d-flex justify-content-between align-items-center mb-2">
         <input type="text" class="form-control form-control-sm fw-bold text-danger border-danger war-group-title" placeholder="যেমন: ১নং কলামের ৯নং ওয়ারিশ ... এর মৃত্যুতে তাহার ওয়ারিশের নাম নিম্নে দেওয়া হলো-" style="max-width: 550px;" required>
         <div>
-          <button type="button" class="btn btn-sm btn-war-add me-1" onclick="addWarRow(${warGroupCounter})"><i class="fa fa-plus me-1"></i> সদস্য যোগ</button>
+          <button type="button" class="btn btn-sm btn-war-add me-1" onclick="duplicateWarGroup(${warGroupCounter})" title="পুরো টেবিল কপি"><i class="fa fa-copy"></i></button><button type="button" class="btn btn-sm btn-war-add me-1" onclick="addWarRow(${warGroupCounter})"><i class="fa fa-plus me-1"></i> সদস্য যোগ</button>
           <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeWarGroup(${warGroupCounter})"><i class="fa fa-times"></i> উপ-গ্রুপ মুছুন</button>
         </div>
       </div>
@@ -380,7 +399,7 @@
         <table class="table table-bordered table-sm align-middle mb-0 bg-white">
           <thead class="table-light"><tr><th width="8%">ক্র.নং</th><th width="28%">ওয়ারিশের নাম</th><th width="28%">পিতা/স্বামীর নাম</th><th width="20%">ঠিকানা</th><th width="12%">সম্পর্ক</th><th width="4%">মুছুন</th></tr></thead>
           <tbody id="warTableBody_${warGroupCounter}">
-            <tr><td><input type="text" class="form-control form-control-sm text-center war-sl" value="১"></td><td><input type="text" class="form-control form-control-sm war-name" placeholder="নাম" required></td><td><input type="text" class="form-control form-control-sm war-rel-name" placeholder="পিতা/স্বামী"></td><td><input type="text" class="form-control form-control-sm war-addr" placeholder="গ্রাম"></td><td><input type="text" class="form-control form-control-sm war-rel" placeholder="সম্পর্ক"></td><td class="text-center"><button type="button" class="btn btn-sm text-danger p-0" onclick="removeWarRow(this)"><i class="fa fa-trash"></i></button></td></tr>
+            <tr><td><input type="text" class="form-control form-control-sm text-center war-sl" value="১"></td><td><input type="text" class="form-control form-control-sm war-name" placeholder="নাম" required></td><td><input type="text" class="form-control form-control-sm war-rel-name" placeholder="পিতা/স্বামী"></td><td><input type="text" class="form-control form-control-sm war-addr" placeholder="গ্রাম"></td><td><input type="text" class="form-control form-control-sm war-rel" placeholder="সম্পর্ক"></td><td class="text-center war-row-tools"><button type="button" class="btn btn-sm btn-outline-secondary" onclick="copyWarRow(this)" title="কপি"><i class="fa fa-copy"></i></button><button type="button" class="btn btn-sm btn-outline-secondary" onclick="pasteWarRow(this)" title="পেস্ট"><i class="fa fa-paste"></i></button><button type="button" class="btn btn-sm btn-outline-primary" onclick="duplicateWarRow(this)" title="ডুপ্লিকেট"><i class="fa fa-clone"></i></button><button type="button" class="btn btn-sm btn-outline-dark" onclick="moveWarRow(this,-1)" title="উপরে"><i class="fa fa-arrow-up"></i></button><button type="button" class="btn btn-sm btn-outline-dark" onclick="moveWarRow(this,1)" title="নিচে"><i class="fa fa-arrow-down"></i></button><button type="button" class="btn btn-sm text-danger p-0" onclick="removeWarRow(this)"><i class="fa fa-trash"></i></button></td></tr>
           </tbody>
         </table>
       </div>
@@ -798,6 +817,23 @@
   function printExactWarishanDoc() {
     var printContent = document.getElementById('warPrintArea').innerHTML;
     executeIsolatedIframePrint(printContent);
+  }
+
+  async function printWarishanApplicationCopy(appId) {
+    var data = await callBackendAPI('getWarishanDetails', appId);
+    if (!data || !data.found) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
+    document.getElementById('appCopyDate').innerText = new Date().toLocaleDateString('bn-BD');
+    document.getElementById('appCopyTrackingId').innerText = data.appId || appId;
+    document.getElementById('appCopySignName').innerText = data.applicantName || data.name || '';
+    document.getElementById('appCopySignMobile').innerText = data.mobile || '';
+    document.getElementById('appCopyMainBodyText').innerText = 'আমি ' + (data.applicantName || data.name || '') + ', পিতা/স্বামী: ' + (data.fatherSpouseName || '') + ', গ্রাম: ' + (data.village || '') + ', ওয়ার্ড নং: ' + (data.wardNo || '') + ', ডাকঘর: ' + (data.postOffice || '') + '। মৃত ' + (data.deceasedName || '') + ' এর ওয়ারিশান সনদ প্রদানের জন্য আবেদন করছি।';
+    var tables = document.getElementById('appCopyTablesContainer');
+    tables.innerHTML = '';
+    (data.warishanTree || []).forEach(function(group) {
+      var rows = (group.members || []).map(function(member, index) { return '<tr><td>' + (member.sl || toBnDigit(index + 1)) + '</td><td>' + (member.name || '') + '</td><td>' + (member.relName || '') + '</td><td>' + (member.address || '') + '</td><td>' + (member.relation || '') + '</td></tr>'; }).join('');
+      tables.innerHTML += '<p class="fw-bold mb-1">' + (group.groupTitle || '') + '</p><table class="table table-bordered table-sm text-center"><thead><tr><th>ক্রমিক</th><th>ওয়ারিশের নাম</th><th>পিতা/স্বামী</th><th>ঠিকানা</th><th>সম্পর্ক</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    });
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('warAppCopyModal')).show();
   }
 
   function printExactApplicationCopy() {

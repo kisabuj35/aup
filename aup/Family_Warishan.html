@@ -18,6 +18,9 @@
   .family-cert-container img[alt="UP Logo"] { width: 82px !important; height: 82px !important; }
   .family-cert-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 8mm; padding: 3mm 2mm 0; border-top: 1.5px solid #7c3aed; color: #4c1d95; font-size: 13px; font-weight: bold; text-align: center; }
   .family-cert-footer > * { flex: 1; }
+  .family-cert-container .ribbon-center-box { background: linear-gradient(180deg, #2563eb 0%, #1e3a8a 100%) !important; background-color: #2563eb !important; color: #ffffff !important; border: 2px solid #ffffff !important; outline: 2px solid #1d4ed8 !important; box-shadow: 0 3px 0 #991b1b !important; }
+  .family-cert-container .ribbon-wing-left, .family-cert-container .ribbon-wing-right { background: #991b1b !important; }
+  .family-cert-container .family-cert-footer { justify-content: center; border-top-color: #b91c1c !important; color: #1e3a8a !important; white-space: nowrap; }
   .family-cert-container { border-color: #b91c1c !important; outline-color: #dc2626 !important; }
   .family-cert-container .ribbon-center-box { background: linear-gradient(180deg, #2563eb, #1e3a8a) !important; outline-color: #1d4ed8 !important; }
   .family-cert-container .ribbon-wing-left, .family-cert-container .ribbon-wing-right { background-color: #991b1b !important; }
@@ -256,8 +259,8 @@
   }
 
   function getBanglaMemoNumber(appId) {
-    var digits = String(appId || '').replace(/[^0-9০-৯]/g, '');
-    return toBnDigit(digits);
+    var matches = String(appId || '').match(/[0-9০-৯]+/g) || [];
+    return toBnDigit(matches.length ? matches[matches.length - 1] : '');
   }
 
   function openFamilyCertPage(type) {
@@ -447,8 +450,8 @@
           .m-0 { margin: 0; }
           .fw-bold { font-weight: bold; }
           .ribbon-wrapper-12 { position: relative; display: inline-block; margin: 8px 0 12px 0; }
-          .ribbon-center-box { background: linear-gradient(180deg, #2563eb, #1e3a8a) !important; color: #ffffff !important; font-size: 23px; font-weight: bold; padding: 7px 42px; border: 2px solid #fef3c7 !important; outline: 2px solid #1d4ed8 !important; }
-          .ribbon-wing-left, .ribbon-wing-right { background-color: #991b1b !important; }
+          .ribbon-center-box { background: linear-gradient(180deg, #2563eb 0%, #1e3a8a 100%) !important; background-color: #2563eb !important; color: #ffffff !important; font-size: 23px; font-weight: bold; padding: 7px 42px; border: 2px solid #ffffff !important; outline: 2px solid #1d4ed8 !important; box-shadow: 0 3px 0 #991b1b !important; }
+          .ribbon-wing-left, .ribbon-wing-right { background: #991b1b !important; }
           .cert-table-exact { width: 100%; border-collapse: collapse !important; margin: 10px 0; }
           .cert-table-exact th, .cert-table-exact td { border: 1.5px solid #000000 !important; padding: 5px; }
           .border-top { border-top: 1px solid #000 !important; padding-top: 4px; }

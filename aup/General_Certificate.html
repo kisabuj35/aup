@@ -25,3 +25,36 @@ function printGeneralAppCopy(id){callBackendAPI('trackApplication',id).then(func
 function openEditGeneralModal(id){callBackendAPI('trackApplication',id).then(function(d){if(!d||!d.found)return alert('আবেদনের তথ্য পাওয়া যায়নি।');[['editGenAppId','appId'],['editGenType','type'],['editGenName','name'],['editGenFather','fatherName'],['editGenNid','nid'],['editGenMobile','mobile'],['editGenWard','wardNo'],['editGenVillage','village'],['editGenPost','postOffice']].forEach(function(x){document.getElementById(x[0]).value=d[x[1]]||''});bootstrap.Modal.getOrCreateInstance(document.getElementById('generalEditModal')).show()})}
 function saveEditedGeneralData(){var b=document.getElementById('saveEditGenBtn'),d={appId:document.getElementById('editGenAppId').value,type:document.getElementById('editGenType').value,name:document.getElementById('editGenName').value.trim(),fatherName:document.getElementById('editGenFather').value.trim(),nid:document.getElementById('editGenNid').value.trim(),mobile:document.getElementById('editGenMobile').value.trim(),wardNo:document.getElementById('editGenWard').value,village:document.getElementById('editGenVillage').value.trim(),postOffice:document.getElementById('editGenPost').value.trim()};b.disabled=true;callBackendAPI('saveEditedApplication',d).then(function(r){b.disabled=false;if(r&&r.success){bootstrap.Modal.getInstance(document.getElementById('generalEditModal')).hide();loadAdminApps();Swal.fire({icon:'success',title:'তথ্য আপডেট হয়েছে',timer:1400,showConfirmButton:false})}else alert('তথ্য আপডেট করা যায়নি।')})}
 </script>
+<script>
+(function(){
+	function addMotherField(formId, anchorId, fieldId){
+		var form=document.getElementById(formId),anchor=document.getElementById(anchorId);
+		if(!form||!anchor||document.getElementById(fieldId))return;
+		var wrap=document.createElement('div');wrap.className='col-md-6';wrap.innerHTML='<label class="form-label fw-bold">মাতার নাম *</label><input id="'+fieldId+'" class="form-control" required>';
+		anchor.parentNode.insertBefore(wrap,anchor.nextSibling);
+	}
+	function ensureGeneralMotherFields(){
+		addMotherField('generalAppPageForm','genFather','genMother');
+		addMotherField('generalEditModal','editGenFather','editGenMother');
+	}
+	var originalOpenGeneralServicePage=window.openGeneralServicePage;
+	window.openGeneralServicePage=function(type){originalOpenGeneralServicePage(type);ensureGeneralMotherFields()};
+	var originalSubmitGeneralAppForm=window.submitGeneralAppForm;
+	window.submitGeneralAppForm=function(){
+		ensureGeneralMotherFields();var button=document.getElementById('genSubmitBtn');button.disabled=true;
+		var data={type:document.getElementById('genTypeHidden').value,name:document.getElementById('genName').value.trim(),fatherName:document.getElementById('genFather').value.trim(),motherName:document.getElementById('genMother').value.trim(),nid:document.getElementById('genNid').value.trim(),mobile:document.getElementById('genMobile').value.trim(),wardNo:document.getElementById('genWard').value,village:document.getElementById('genVillage').value.trim(),postOffice:document.getElementById('genPost').value.trim()};
+		callBackendAPI('submitApplication',data).then(function(result){button.disabled=false;if(result&&result.success){document.getElementById('successAppId').innerText=result.appId;document.getElementById('successAppCopyBtn').onclick=function(){printGeneralAppCopy(result.appId)};bootstrap.Modal.getOrCreateInstance(document.getElementById('successModal')).show();document.getElementById('generalAppPageForm').reset()}else alert((result&&(result.error||result.message))||'আবেদন জমা দেওয়া যায়নি।')});
+	};
+	var originalOpenEditGeneralModal=window.openEditGeneralModal;
+	window.openEditGeneralModal=function(id){
+		ensureGeneralMotherFields();originalOpenEditGeneralModal(id);
+		setTimeout(function(){ensureGeneralMotherFields();callBackendAPI('trackApplication',id).then(function(data){if(data&&data.found&&document.getElementById('editGenMother'))document.getElementById('editGenMother').value=data.motherName||''})},100);
+	};
+	var originalSaveEditedGeneralData=window.saveEditedGeneralData;
+	window.saveEditedGeneralData=function(){
+		ensureGeneralMotherFields();var button=document.getElementById('saveEditGenBtn'),data={appId:document.getElementById('editGenAppId').value,type:document.getElementById('editGenType').value,name:document.getElementById('editGenName').value.trim(),fatherName:document.getElementById('editGenFather').value.trim(),motherName:document.getElementById('editGenMother').value.trim(),nid:document.getElementById('editGenNid').value.trim(),mobile:document.getElementById('editGenMobile').value.trim(),wardNo:document.getElementById('editGenWard').value,village:document.getElementById('editGenVillage').value.trim(),postOffice:document.getElementById('editGenPost').value.trim()};button.disabled=true;callBackendAPI('saveEditedApplication',data).then(function(result){button.disabled=false;if(result&&result.success){bootstrap.Modal.getInstance(document.getElementById('generalEditModal')).hide();loadAdminApps();Swal.fire({icon:'success',title:'তথ্য আপডেট হয়েছে',timer:1400,showConfirmButton:false})}else alert('তথ্য আপডেট করা যায়নি।')});
+	};
+	var originalGeneralBody=window.generalBody;
+	window.generalBody=function(data){return originalGeneralBody(data).replace('জন্ম নিবন্ধন/ভোটার আইডি নম্বর:','মাতা: <strong>'+escapeGeneral(data.motherName||'')+'</strong>, জন্ম নিবন্ধন/ভোটার আইডি নম্বর:')};
+})();
+</script>

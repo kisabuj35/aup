@@ -221,7 +221,8 @@
           <h6 class="fw-bold text-danger border-bottom pb-2 mb-3"><i class="fa fa-book-skull me-2"></i> ২. মূল মৃত ব্যক্তির তথ্য (যিনি প্রথমে মারা গেছেন)</h6>
           <div class="row g-3">
             <div class="col-md-6"><label class="form-label fw-bold text-danger">মূল মৃত ব্যক্তির নাম *</label><input type="text" id="warDeceasedName" class="form-control border-danger" placeholder="যেমন: আকুল আলী জমাদ্দার" required></div>
-            <div class="col-md-6"><label class="form-label fw-bold text-danger">মৃত ব্যক্তির পিতা/স্বামীর নাম *</label><input type="text" id="warDeceasedFather" class="form-control border-danger" placeholder="যেমন: মুজাফ্ফর জমাদ্দার" required></div>
+            <div class="col-md-4"><label class="form-label fw-bold text-danger">মৃত ব্যক্তির পিতা/স্বামীর নাম *</label><input type="text" id="warDeceasedFather" class="form-control border-danger" placeholder="যেমন: মুজাফ্ফর জমাদ্দার" required></div>
+            <div class="col-md-2"><label class="form-label fw-bold text-danger">সম্পর্ক *</label><select id="warDeceasedRelation" class="form-select border-danger" required><option value="পুত্র">পুত্র</option><option value="কন্যা">কন্যা</option><option value="স্ত্রী">স্ত্রী</option><option value="স্বামী">স্বামী</option></select></div>
           </div>
         </div>
 
@@ -423,6 +424,8 @@
       fatherSpouseName: document.getElementById('warAppFather').value.trim(),
       deceasedName: document.getElementById('warDeceasedName').value.trim(),
       deceasedFather: document.getElementById('warDeceasedFather').value.trim(),
+      deceasedFatherRelation: document.getElementById('warDeceasedRelation').value,
+      deceasedRelation: document.getElementById('warDeceasedRelation').value,
       nid: document.getElementById('warAppNid').value.trim(),
       mobile: document.getElementById('warAppMobile').value.trim(),
       wardNo: document.getElementById('warAppWard').value,
@@ -517,7 +520,8 @@
 
     var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান') ? '(মোঃ আবদুস সালাম)<br>ইউ.পি সদস্য ৬নং ওয়ার্ড ও প্যানেল চেয়ারম্যান-১<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ' : '(অ্যাড. মোঃ হুমায়ুন কবির)<br>চেয়ারম্যান<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>পটুয়াখালী সদর, পটুয়াখালী।';
 
-    var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর পুত্র ` : '';
+    var deceasedRelation = data.deceasedFatherRelation || data.deceasedRelation || data.deceasedFatherRelationType || 'পুত্র';
+    var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর ${deceasedRelation} ` : '';
     var decNameText = formatMrito(data.deceasedName);
 
     var upLogoUrl = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
@@ -647,7 +651,8 @@
 
     var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান') ? '(মোঃ আবদুস সালাম)<br>ইউ.পি সদস্য ৬নং ওয়ার্ড ও প্যানেল চেয়ারম্যান-১<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ' : '(অ্যাড. মোঃ হুমায়ুন কবির)<br>চেয়ারম্যান<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>পটুয়াখালী সদর, পটুয়াখালী।';
 
-    var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর পুত্র ` : '';
+    var deceasedRelation = data.deceasedFatherRelation || data.deceasedRelation || data.deceasedFatherRelationType || 'পুত্র';
+    var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর ${deceasedRelation} ` : '';
     var decNameText = formatMrito(data.deceasedName);
 
     var upLogoUrl = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";

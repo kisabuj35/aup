@@ -33,6 +33,7 @@
   .custom-pagination-wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; margin-top: 8px; border-top: 1px solid #e2e8f0; font-family: 'Kalpurush', sans-serif; font-size: 13.5px; }
   .page-link-btn { padding: 4px 10px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 4px; cursor: pointer; text-decoration: none; font-weight: bold; margin: 0 2px; }
   .page-link-btn:hover, .page-link-btn.active-page { background: #006837; color: #fff; border-color: #006837; }
+  .trade-filter-tabs .btn.active { background: #006837; color: #fff; border-color: #006837; }
 </style>
 
 <!-- ADMIN PANEL VIEW -->
@@ -112,7 +113,14 @@
       <div id="tradeTab" class="admin-tab d-none">
         <div class="card p-3 shadow-sm border-0 mb-3 bg-info text-dark d-flex flex-row justify-content-between align-items-center">
           <h5 class="fw-bold m-0"><i class="fa fa-briefcase me-2"></i> ট্রেড লাইসেন্স তালিকা ও ব্যবস্থাপনা</h5>
-          <button class="btn btn-dark btn-sm fw-bold" onclick="loadTradeLicenses()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
+          <div class="input-group input-group-sm" style="max-width:360px;">
+            <input type="search" id="tradeSearchInput" class="form-control" placeholder="নাম / মোবাইল / আবেদন নং" oninput="searchTradeLicenses()">
+            <button class="btn btn-dark fw-bold" type="button" onclick="searchTradeLicenses()"><i class="fa fa-search me-1"></i> সার্চ</button>
+          </div>
+        </div>
+        <div class="trade-filter-tabs btn-group mb-3" role="tablist">
+          <button type="button" class="btn btn-outline-success active" id="tradeNewTabBtn" onclick="setTradeListMode('new')"><i class="fa fa-plus-circle me-1"></i> নতুন ট্রেড লাইসেন্স</button>
+          <button type="button" class="btn btn-outline-warning" id="tradeRenewTabBtn" onclick="setTradeListMode('renew')"><i class="fa fa-sync-alt me-1"></i> নবায়নের ট্রেড লাইসেন্স</button>
         </div>
         <div class="table-responsive bg-white p-3 shadow-sm rounded border">
           <table class="table table-hover align-middle">
@@ -342,6 +350,8 @@
   var rawDataStore = { cit: [], trade: [], fam: [], war: [], gen: [], tax: [], users: [] };
   var currentPageStore = { cit: 1, trade: 1, fam: 1, war: 1, gen: 1, tax: 1 };
   var loadRequestStore = { cit: 0, trade: 0, fam: 0, war: 0, gen: 0, tax: 0, users: 0 };
+  var tradeListMode = 'new';
+  var tradeSearchTerm = '';
   var PAGE_SIZE = 15;
 
   /* ==========================================================
@@ -728,11 +738,37 @@
     rawDataStore.trade = sortNewestFirst(getApiList(list, ['licenses', 'applications', 'data', 'results']));
     renderTradePage(page);
   }
+  function isRenewalTradeLicense(trade) {
+    if (!trade) return false;
+    var renewalFlag = trade.isRenewal === true || String(trade.isRenewal || '').toLowerCase() === 'true';
+    var requestType = String(trade.serviceType || trade.type || trade.applicationType || trade.requestType || '').toLocaleLowerCase();
+    return renewalFlag || Boolean(trade.renewDate || trade.renewalDate) || requestType.indexOf('নবায়ন') !== -1 || requestType.indexOf('renew') !== -1;
+  }
+  function getFilteredTradeLicenses() {
+    var query = tradeSearchTerm.trim().toLocaleLowerCase();
+    return rawDataStore.trade.filter(function(trade) {
+      if ((tradeListMode === 'renew') !== isRenewalTradeLicense(trade)) return false;
+      if (!query) return true;
+      return [trade.appId, trade.licNo, trade.ownerName, trade.orgName, trade.mobile, trade.applicationName]
+        .some(function(value) { return String(value || '').toLocaleLowerCase().indexOf(query) !== -1; });
+    });
+  }
+  function setTradeListMode(mode) {
+    tradeListMode = mode === 'renew' ? 'renew' : 'new';
+    document.getElementById('tradeNewTabBtn').classList.toggle('active', tradeListMode === 'new');
+    document.getElementById('tradeRenewTabBtn').classList.toggle('active', tradeListMode === 'renew');
+    renderTradePage(1);
+  }
+  function searchTradeLicenses() {
+    var input = document.getElementById('tradeSearchInput');
+    tradeSearchTerm = input ? input.value : '';
+    renderTradePage(1);
+  }
   function renderTradePage(page = 1) {
     currentPageStore.trade = page;
     var tbody = document.getElementById('tradeTableBody');
     tbody.innerHTML = '';
-    var list = rawDataStore.trade;
+    var list = getFilteredTradeLicenses();
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন লাইসেন্স নেই</td></tr>'; return; }
     slice.forEach(function(t) {

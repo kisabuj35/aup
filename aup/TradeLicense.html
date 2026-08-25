@@ -32,6 +32,15 @@
     print-color-adjust: exact !important;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
   }
+
+  .trade-cert-frame::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(139, 0, 0, 0.45);
+    pointer-events: none;
+    z-index: 3;
+  }
   
   /* মাঝের ওয়াটারমার্ক লোগো */
   .trade-watermark-img {
@@ -39,7 +48,8 @@
     top: 52%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 440px !important;
+    width: 500px !important;
+    max-width: 88%;
     opacity: 0.08 !important;
     pointer-events: none;
     z-index: 1;
@@ -167,6 +177,9 @@
     color: #000;
     font-family: 'Nikosh', 'Kalpurush', sans-serif;
   }
+
+  #tcOwnerPhoto { width: 96px !important; height: 112px !important; }
+  #tcQrCode { width: 88px !important; height: 88px !important; }
 </style>
 
 <!-- 🟢 ১. ট্রেড লাইসেন্স পাবলিক আবেদন ও নবায়ন সেকশন -->
@@ -505,7 +518,7 @@
       <table style="width:100%; border-collapse:collapse; margin-bottom:2px;">
         <tr>
           <td style="width:75px; vertical-align:middle; text-align:left;">
-            <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" width="80" height="80" alt="Logo" style="object-fit:contain;">
+            <img src="https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs" width="94" height="94" alt="Logo" style="object-fit:contain;">
           </td>
           <td style="text-align:center; vertical-align:middle;">
             <div style="font-size:13px; font-weight:bold; color:#333; margin-bottom:1px;">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
@@ -513,7 +526,7 @@
             <div style="font-size:15.5px; font-weight:bold; color:#005a2b; margin-top:2px;">উপজেলা: পটুয়াখালী সদর, জেলা: পটুয়াখালী</div>
           </td>
           <td style="width:75px; vertical-align:middle; text-align:right;">
-            <img id="tcOwnerPhoto" src="https://via.placeholder.com/80x95" style="width:82px; height:96px; border:2px solid #8B0000; object-fit:cover; padding:1px; border-radius:3px; background:#fff;">
+            <img id="tcOwnerPhoto" src="https://via.placeholder.com/96x112" style="width:96px; height:112px; border:2px solid #8B0000; object-fit:cover; padding:1px; border-radius:3px; background:#fff;">
           </td>
         </tr>
       </table>
@@ -591,7 +604,7 @@
           </td>
           <td style="text-align:center; vertical-align:bottom; width:33%;">
             <!-- 🟢 ১০০% অ্যাক্টিভ অনলাইন ভেরিফায়েড কিউআর কোড -->
-            <img id="tcQrCode" src="" style="width:75px; height:75px; border:1px solid #ccc; padding:2px; background:#fff; border-radius:3px;">
+            <img id="tcQrCode" src="" style="width:88px; height:88px; border:1px solid #ccc; padding:2px; background:#fff; border-radius:3px;">
             <div style="font-size:10px; margin-top:2px; font-weight:bold; color:#006837;"><i class="fa fa-shield-alt"></i> অনলাইন ভেরিফায়েড</div>
           </td>
           <td style="text-align:center; vertical-align:bottom; width:33%;">
@@ -1003,7 +1016,8 @@
             top: 52% !important;
             left: 50% !important;
             transform: translate(-50%, -50%) !important;
-            width: 440px !important;
+            width: 500px !important;
+            max-width: 88% !important;
             opacity: 0.08 !important;
             pointer-events: none;
             z-index: 1;
@@ -1102,34 +1116,27 @@
     printDoc.close();
 
     var images = printDoc.getElementsByTagName('img');
-    var total = images.length, loaded = 0, printed = false;
-    function cleanupPrintFrame() {
-      printWindow.onafterprint = null;
-      printDoc.open();
-      printDoc.write('<!DOCTYPE html><html><head><title></title></head><body></body></html>');
-      printDoc.close();
-    }
-
+    var printed = false;
     function triggerPrint() {
       if (!printed) {
         printed = true;
-        printWindow.onafterprint = cleanupPrintFrame;
         printWindow.focus();
         printWindow.print();
-        setTimeout(cleanupPrintFrame, 1500);
       }
     }
 
-    if (total === 0) { setTimeout(triggerPrint, 150); }
-    else {
-      for (var i = 0; i < total; i++) {
-        images[i].onload = images[i].onerror = function() {
-          loaded++;
-          if (loaded >= total) setTimeout(triggerPrint, 100);
-        };
-      }
-      setTimeout(triggerPrint, 500);
+    function waitForImage(image) {
+      if (image.complete && image.naturalWidth > 0) return Promise.resolve();
+      return new Promise(function(resolve) {
+        image.onload = image.onerror = function() { resolve(); };
+      });
     }
+
+    var imageReady = Array.prototype.map.call(images, waitForImage);
+    var fontsReady = printDoc.fonts && printDoc.fonts.ready ? printDoc.fonts.ready : Promise.resolve();
+    Promise.all([fontsReady].concat(imageReady)).then(function() {
+      setTimeout(triggerPrint, 80);
+    });
   }
 
   // এডিট মোডাল

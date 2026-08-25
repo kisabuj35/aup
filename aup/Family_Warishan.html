@@ -4,6 +4,22 @@
 <!-- ======================================================= -->
 
 <style>
+  .family-cert-container {
+    border: 3px double #7c3aed !important;
+    outline: 1px solid #f59e0b;
+    outline-offset: -7px;
+    min-height: 295mm;
+    padding: 12mm 15mm 10mm;
+    font-family: 'Nikosh', sans-serif !important;
+  }
+  .family-cert-container::before { content: ""; position: absolute; inset: 4mm; border: 1px solid rgba(124,58,237,.35); pointer-events: none; z-index: 3; }
+  .cert-watermark-bg { width: 500px !important; max-width: 88%; opacity: .09 !important; }
+  .family-cert-container .cert-main-content, .family-cert-container .cert-main-content * { font-family: 'Nikosh', sans-serif !important; }
+  .family-cert-container img[alt="UP Logo"] { width: 82px !important; height: 82px !important; }
+  .family-cert-container .ribbon-center-box { background: linear-gradient(180deg, #7c3aed, #4c1d95) !important; font-size: 23px; padding: 7px 42px; border-color: #fef3c7 !important; outline-color: #7c3aed !important; }
+  .family-cert-container .ribbon-wing-left, .family-cert-container .ribbon-wing-right { background-color: #4c1d95 !important; }
+  .family-cert-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 8mm; padding: 3mm 2mm 0; border-top: 1.5px solid #7c3aed; color: #4c1d95; font-size: 13px; font-weight: bold; text-align: center; }
+  .family-cert-footer > * { flex: 1; }
   .ribbon-wrapper-12 { position: relative; display: inline-block; margin: 8px 0 12px 0; }
   .ribbon-center-box {
     position: relative;
@@ -53,6 +69,14 @@
   }
   .cert-table-exact td { border: 1.5px solid #000000 !important; padding: 6px 4px; font-size: 13.5px; color: #000000; }
   .table-input-clean { border: 1px solid #ced4da; padding: 4px 8px; border-radius: 4px; width: 100%; font-size: 14px; }
+  .family-cert-container { border: 3px double #7c3aed !important; outline: 1px solid #f59e0b !important; outline-offset: -7px !important; min-height: 295mm !important; padding: 12mm 15mm 10mm !important; font-family: 'Nikosh', sans-serif !important; }
+  .family-cert-container .cert-watermark-bg { width: 500px !important; max-width: 88% !important; opacity: .09 !important; }
+  .family-cert-container img[alt="UP Logo"] { width: 82px !important; height: 82px !important; }
+  .family-cert-container .ribbon-center-box { background: linear-gradient(180deg, #7c3aed, #4c1d95) !important; font-size: 23px !important; padding: 7px 42px !important; border-color: #fef3c7 !important; outline-color: #7c3aed !important; }
+  .family-cert-container .ribbon-wing-left, .family-cert-container .ribbon-wing-right { background-color: #4c1d95 !important; }
+  .family-cert-container, .family-cert-container * { font-family: 'Nikosh', sans-serif !important; }
+  .family-cert-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 8mm; padding: 3mm 2mm 0; border-top: 1.5px solid #7c3aed; color: #4c1d95; font-size: 13px; font-weight: bold; text-align: center; }
+  .family-cert-footer > * { flex: 1; }
 </style>
 
 <!-- ১. পারিবারিক ও উত্তরাধিকারী সনদের মূল আবেদন ফর্ম -->
@@ -160,7 +184,7 @@
             <div style="border-top: 2px solid #000; border-bottom: 1px solid #000; height: 4px; margin: 6px 0 8px 0;"></div>
 
             <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 15px; font-weight: bold; color: #000;">
-              <div>স্মারক নং- আ/ইউ/পটুয়া/সদর/২০২৬/<span id="prAppIdShort"></span></div>
+              <div><span id="prAppIdShort"></span></div>
               <div>তারিখঃ <span id="prIssueDate"></span>ইং</div>
             </div>
 
@@ -207,6 +231,7 @@
               <div><div style="height: 40px;"></div><div class="border-top border-dark pt-1 px-2">ইউপি সদস্য<br><small class="fw-normal">আউলিয়াপুর ইউনিয়ন পরিষদ</small></div></div>
               <div><div style="height: 40px;"></div><div class="border-top border-dark pt-1 px-2"><span id="prChairName">(অ্যাড. মোঃ হুমায়ুন কবির)</span><br><span id="prSignRole">চেয়ারম্যান</span><br><small class="fw-normal">আউলিয়াপুর ইউনিয়ন পরিষদ</small></div></div>
             </div>
+            <div class="family-cert-footer"><span>সততাই সর্বোৎকৃষ্ট নীতি</span><span>তথ্য যাচাই করতে ভিজিট করুন: www.auliapur.com</span><span>সুশাসনই উন্নয়নের চাবিকাঠি</span></div>
           </div>
 
         </div>
@@ -327,7 +352,7 @@
     if(!d || !d.found) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
     
     document.getElementById('prAppIdShort').innerText = d.appId.replace('AUL-FAM-', '');
-    document.getElementById('prIssueDate').innerText = d.applyDate || '';
+    document.getElementById('prIssueDate').innerText = new Date().toLocaleDateString('bn-BD');
     
     var isSuccession = (d.type === 'উত্তরাধিকারী সনদ');
     document.getElementById('prCertTitle').innerText = isSuccession ? 'উত্তরাধিকারী সনদপত্র' : 'পারিবারিক সনদপত্র';
@@ -389,8 +414,13 @@
           @page { size: A4 portrait; margin: 0mm; }
           * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
           body { margin: 0; padding: 0; background: #ffffff; font-family: 'Nikosh', 'Kalpurush', sans-serif; }
-          .family-cert-container { width: 210mm; height: 295mm; padding: 12mm 15mm; margin: 0 auto; border: 1.5px solid #222; display: flex; flex-direction: column; justify-content: space-between; }
-          .cert-watermark-bg { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 330px; opacity: 0.12; z-index: 1; }
+          .family-cert-container { width: 210mm; height: 295mm; padding: 12mm 15mm 10mm; margin: 0 auto; border: 3px double #7c3aed; outline: 1px solid #f59e0b; outline-offset: -7px; display: flex; flex-direction: column; justify-content: space-between; position: relative; font-family: 'Nikosh', sans-serif !important; }
+          .family-cert-container::before { content: ""; position: absolute; inset: 4mm; border: 1px solid rgba(124,58,237,.35); pointer-events: none; z-index: 3; }
+          .cert-watermark-bg { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 500px; max-width: 88%; opacity: 0.09; z-index: 1; }
+          .family-cert-container img[alt="UP Logo"] { width: 82px !important; height: 82px !important; }
+          .family-cert-container, .family-cert-container * { font-family: 'Nikosh', sans-serif !important; }
+          .family-cert-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 8mm; padding: 3mm 2mm 0; border-top: 1.5px solid #7c3aed; color: #4c1d95; font-size: 13px; font-weight: bold; text-align: center; }
+          .family-cert-footer > * { flex: 1; }
           .cert-main-content { position: relative; z-index: 2; }
           .d-flex { display: flex; }
           .justify-content-between { justify-content: space-between; }
@@ -403,9 +433,8 @@
           .m-0 { margin: 0; }
           .fw-bold { font-weight: bold; }
           .ribbon-wrapper-12 { position: relative; display: inline-block; margin: 8px 0 12px 0; }
-          .ribbon-center-box { background-color: #3b71ca !important; color: #ffffff !important; font-size: 20px; font-weight: bold; padding: 6px 36px; border: 2px solid #ffffff !important; outline: 2px solid #3b71ca !important; }
-          .ribbon-wing-left { position: absolute; top: 6px; left: -22px; width: 32px; height: 100%; background-color: #2a5298 !important; clip-path: polygon(100% 0, 0 50%, 100% 100%); }
-          .ribbon-wing-right { position: absolute; top: 6px; right: -22px; width: 32px; height: 100%; background-color: #2a5298 !important; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+          .ribbon-center-box { background: linear-gradient(180deg, #7c3aed, #4c1d95) !important; color: #ffffff !important; font-size: 23px; font-weight: bold; padding: 7px 42px; border: 2px solid #fef3c7 !important; outline: 2px solid #7c3aed !important; }
+          .ribbon-wing-left, .ribbon-wing-right { background-color: #4c1d95 !important; }
           .cert-table-exact { width: 100%; border-collapse: collapse !important; margin: 10px 0; }
           .cert-table-exact th, .cert-table-exact td { border: 1.5px solid #000000 !important; padding: 5px; }
           .border-top { border-top: 1px solid #000 !important; padding-top: 4px; }

@@ -133,36 +133,41 @@
     <div class="col-lg-8">
       <div class="card border-0 shadow-sm rounded-3">
         <div class="cit-card-header d-flex justify-content-between align-items-center">
-          <h5 class="fw-bold m-0"><i class="fa fa-id-card me-2"></i> নাগরিকত্ব সনদের অনলাইন আবেদন ফরম</h5>
-          <button class="btn btn-light btn-sm fw-bold text-danger" onclick="navToSection('publicHome')"><i class="fa fa-arrow-left me-1"></i> হোম পেজ</button>
+          <h5 class="fw-bold m-0" id="citFormTitle"><i class="fa fa-id-card me-2"></i> নাগরিকত্ব সনদের অনলাইন আবেদন ফরম</h5>
+          <button class="btn btn-light btn-sm fw-bold text-danger" onclick="navToSection('publicHome')"><i class="fa fa-arrow-left me-1"></i> <span id="citHomeText">হোম পেজ</span></button>
         </div>
         <div class="card-body p-4">
-          <form id="dedicatedCitizenForm" onsubmit="event.preventDefault(); submitDedicatedCitizen();">
+          <form id="dedicatedCitizenForm" onsubmit="event.preventDefault(); submitDedicatedCitizen();" onreset="setTimeout(function() { setCitizenFormLanguage('bn'); }, 0);">
+            <div class="mb-3 border rounded p-3 bg-light">
+              <label class="form-label fw-bold d-block">সনদের ভাষা / Certificate language *</label>
+              <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="citLanguage" id="citLanguageBn" value="bn" checked onchange="setCitizenFormLanguage('bn')"><label class="form-check-label fw-bold" for="citLanguageBn">বাংলা</label></div>
+              <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="citLanguage" id="citLanguageEn" value="en" onchange="setCitizenFormLanguage('en')"><label class="form-check-label fw-bold" for="citLanguageEn">English</label></div>
+            </div>
             <div class="row g-3">
-              <div class="col-md-6"><label class="form-label fw-bold">সনদধারীর নাম *</label><input type="text" id="dCitName" class="form-control" placeholder="আবেদনকারীর পূর্ণ নাম" required></div>
-              <div class="col-md-6"><label class="form-label fw-bold">জাতীয় পরিচয়পত্র (NID) নম্বর *</label><input type="text" id="dCitNid" class="form-control" placeholder="১০/১৩/১৭ ডিজিটের NID" required></div>
-              <div class="col-md-6"><label class="form-label fw-bold">পিতার নাম *</label><input type="text" id="dCitFather" class="form-control" required></div>
-              <div class="col-md-6"><label class="form-label fw-bold">মাতার নাম *</label><input type="text" id="dCitMother" class="form-control" required></div>
-              <div class="col-md-4"><label class="form-label fw-bold">জন্ম তারিখ *</label><input type="date" id="dCitDob" class="form-control" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold" id="dCitNameLabel">সনদধারীর নাম *</label><input type="text" id="dCitName" class="form-control" placeholder="আবেদনকারীর পূর্ণ নাম" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold" id="dCitNidLabel">জাতীয় পরিচয়পত্র (NID) নম্বর *</label><input type="text" id="dCitNid" class="form-control" placeholder="১০/১৩/১৭ ডিজিটের NID" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold" id="dCitFatherLabel">পিতার নাম *</label><input type="text" id="dCitFather" class="form-control" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold" id="dCitMotherLabel">মাতার নাম *</label><input type="text" id="dCitMother" class="form-control" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold" id="dCitDobLabel">জন্ম তারিখ *</label><input type="date" id="dCitDob" class="form-control" required></div>
               <div class="col-md-4">
-                <label class="form-label fw-bold">বৈবাহিক অবস্থা *</label>
+                <label class="form-label fw-bold" id="dCitMaritalLabel">বৈবাহিক অবস্থা *</label>
                 <select id="dCitMarital" class="form-select" onchange="toggleCitizenSpouse(this.value)" required>
                   <option value="অবিবাহিত" selected>অবিবাহিত</option>
                   <option value="বিবাহিত">বিবাহিত</option>
                 </select>
               </div>
               <div class="col-md-4 d-none" id="dCitSpouseDiv">
-                <label class="form-label fw-bold text-danger">স্বামী/স্ত্রীর নাম *</label>
+                <label class="form-label fw-bold text-danger" id="dCitSpouseLabel">স্বামী/স্ত্রীর নাম *</label>
                 <input type="text" id="dCitSpouse" class="form-control" placeholder="স্বামী অথবা স্ত্রীর নাম">
               </div>
-              <div class="col-md-4"><label class="form-label fw-bold">মোবাইল নম্বর *</label><input type="tel" id="dCitMobile" class="form-control" placeholder="০১XXXXXXXXX" required></div>
-              <div class="col-md-4"><label class="form-label fw-bold">ওয়ার্ড নম্বর *</label><select id="dCitWard" class="form-select" required><option value="০১">০১</option><option value="০২">০২</option><option value="০৩">০৩</option><option value="০৪">০৪</option><option value="০৫">০৫</option><option value="০৬">০৬</option><option value="০৭">০৭</option><option value="০৮">০৮</option><option value="০৯">০৯</option></select></div>
-              <div class="col-md-4"><label class="form-label fw-bold">গ্রাম/মহল্লা *</label><input type="text" id="dCitVillage" class="form-control" placeholder="যেমন: উত্তর বাদুরা" required></div>
-              <div class="col-md-4"><label class="form-label fw-bold">ডাকঘর *</label><input type="text" id="dCitPost" class="form-control" placeholder="বাদুরা হাট-৮৬০০" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold" id="dCitMobileLabel">মোবাইল নম্বর *</label><input type="tel" id="dCitMobile" class="form-control" placeholder="০১XXXXXXXXX" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold" id="dCitWardLabel">ওয়ার্ড নম্বর *</label><select id="dCitWard" class="form-select" required><option value="০১">০১</option><option value="০২">০২</option><option value="০৩">০৩</option><option value="০৪">০৪</option><option value="০৫">০৫</option><option value="০৬">০৬</option><option value="০৭">০৭</option><option value="০৮">০৮</option><option value="০৯">০৯</option></select></div>
+              <div class="col-md-4"><label class="form-label fw-bold" id="dCitVillageLabel">গ্রাম/মহল্লা *</label><input type="text" id="dCitVillage" class="form-control" placeholder="যেমন: উত্তর বাদুরা" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold" id="dCitPostLabel">ডাকঘর *</label><input type="text" id="dCitPost" class="form-control" placeholder="বাদুরা হাট-৮৬০০" required></div>
             </div>
             <div class="text-end mt-4">
-              <button type="reset" class="btn btn-secondary me-2">রিসেট</button>
-              <button type="submit" class="btn btn-danger px-4 fw-bold" id="dCitSubmitBtn"><i class="fa fa-paper-plane me-1"></i> আবেদন জমা দিন</button>
+              <button type="reset" class="btn btn-secondary me-2" id="dCitResetBtn">রিসেট</button>
+              <button type="submit" class="btn btn-danger px-4 fw-bold" id="dCitSubmitBtn"><i class="fa fa-paper-plane me-1"></i> <span id="dCitSubmitText">আবেদন জমা দিন</span></button>
             </div>
           </form>
         </div>
@@ -219,6 +224,7 @@
       <div class="modal-body p-4">
         <form id="editCitizenForm" onsubmit="event.preventDefault(); saveEditedCitizenData();">
           <input type="hidden" id="edCitAppId">
+          <input type="hidden" id="edCitLanguage" value="bn">
           
           <div class="row g-3">
             <div class="col-md-6"><label class="form-label fw-bold">সনদধারীর নাম *</label><input type="text" id="edCitName" class="form-control" required></div>
@@ -285,9 +291,31 @@
     return toBn(padded);
   }
 
+  function setCitizenFormLanguage(language) {
+    var english = language === 'en';
+    var labels = english ? ['Applicant name *', 'National ID (NID) number *', 'Father\'s name *', 'Mother\'s name *', 'Date of birth *', 'Marital status *', 'Spouse name *', 'Mobile number *', 'Ward number *', 'Village / locality *', 'Post office *'] : ['সনদধারীর নাম *', 'জাতীয় পরিচয়পত্র (NID) নম্বর *', 'পিতার নাম *', 'মাতার নাম *', 'জন্ম তারিখ *', 'বৈবাহিক অবস্থা *', 'স্বামী/স্ত্রীর নাম *', 'মোবাইল নম্বর *', 'ওয়ার্ড নম্বর *', 'গ্রাম/মহল্লা *', 'ডাকঘর *'];
+    ['dCitNameLabel', 'dCitNidLabel', 'dCitFatherLabel', 'dCitMotherLabel', 'dCitDobLabel', 'dCitMaritalLabel', 'dCitSpouseLabel', 'dCitMobileLabel', 'dCitWardLabel', 'dCitVillageLabel', 'dCitPostLabel'].forEach(function(id, index) {
+      document.getElementById(id).textContent = labels[index];
+    });
+    var marital = document.getElementById('dCitMarital');
+    marital.innerHTML = english ? '<option value="unmarried" selected>Unmarried</option><option value="married">Married</option>' : '<option value="অবিবাহিত" selected>অবিবাহিত</option><option value="বিবাহিত">বিবাহিত</option>';
+    document.getElementById('dCitSpouse').placeholder = english ? 'Spouse full name' : 'স্বামী অথবা স্ত্রীর নাম';
+    document.getElementById('dCitName').placeholder = english ? 'Applicant full name' : 'আবেদনকারীর পূর্ণ নাম';
+    document.getElementById('dCitNid').placeholder = english ? '10/13/17 digit NID' : '১০/১৩/১৭ ডিজিটের NID';
+    document.getElementById('dCitMobile').placeholder = english ? '01XXXXXXXXX' : '০১XXXXXXXXX';
+    document.getElementById('dCitVillage').placeholder = english ? 'Example: North Badura' : 'যেমন: উত্তর বাদুরা';
+    document.getElementById('dCitPost').placeholder = english ? 'Badura Hat-8600' : 'বাদুরা হাট-৮৬০০';
+    document.getElementById('dCitWard').innerHTML = english ? '<option value="01" selected>01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option>' : '<option value="০১" selected>০১</option><option value="০২">০২</option><option value="০৩">০৩</option><option value="০৪">০৪</option><option value="০৫">০৫</option><option value="০৬">০৬</option><option value="০৭">০৭</option><option value="০৮">০৮</option><option value="০৯">০৯</option>';
+    document.getElementById('citFormTitle').lastChild.textContent = english ? ' Online Citizenship Certificate Application Form' : ' নাগরিকত্ব সনদের অনলাইন আবেদন ফরম';
+    document.getElementById('citHomeText').textContent = english ? 'Home' : 'হোম পেজ';
+    document.getElementById('dCitResetBtn').textContent = english ? 'Reset' : 'রিসেট';
+    document.getElementById('dCitSubmitText').textContent = english ? 'Submit application' : 'আবেদন জমা দিন';
+    toggleCitizenSpouse(marital.value);
+  }
+
   function toggleCitizenSpouse(val) {
     var div = document.getElementById('dCitSpouseDiv');
-    if(val === 'বিবাহিত') div.classList.remove('d-none');
+    if(val === 'বিবাহিত' || val === 'married') div.classList.remove('d-none');
     else { div.classList.add('d-none'); document.getElementById('dCitSpouse').value = ''; }
   }
 
@@ -320,13 +348,15 @@
 
   async function submitDedicatedCitizen() {
     var btn = document.getElementById('dCitSubmitBtn');
-    btn.disabled = true; btn.innerText = 'জমা হচ্ছে...';
+    var selectedLanguage = document.querySelector('input[name="citLanguage"]:checked').value;
+    btn.disabled = true; btn.innerText = selectedLanguage === 'en' ? 'Submitting...' : 'জমা হচ্ছে...';
 
     var mStatus = document.getElementById('dCitMarital').value;
     var spouseVal = mStatus === 'বিবাহিত' ? document.getElementById('dCitSpouse').value.trim() : '';
 
     var formData = {
       type: 'নাগরিকত্ব সনদ',
+      language: selectedLanguage,
       name: document.getElementById('dCitName').value.trim(),
       nid: document.getElementById('dCitNid').value.trim(),
       fatherName: document.getElementById('dCitFather').value.trim(),
@@ -338,7 +368,8 @@
       wardNo: document.getElementById('dCitWard').value,
       village: document.getElementById('dCitVillage').value.trim(),
       postOffice: document.getElementById('dCitPost').value.trim(),
-      division: 'বরিশাল'
+      division: 'বরিশাল',
+      certificateLanguage: selectedLanguage
     };
 
     const res = await callBackendAPI('submitCitizenshipDirect', formData);
@@ -402,6 +433,8 @@
 
   // 🟢 ৬ নম্বর ছবির অবিকল কাঠামো তৈরি (২০ নম্বর ছবির ৩ডি রিবন ব্যানার সহ)
   function buildCitizenCertHtml_Image6(d) {
+    if (d.language === 'en' || d.certificateLanguage === 'en') return buildEnglishCitizenCertificate(d);
+
     let getVal = (...keys) => {
       for (let k of keys) {
         if (d[k] !== undefined && d[k] !== null && String(d[k]).trim() !== '' && String(d[k]).trim() !== '-') {
@@ -584,6 +617,58 @@
     `;
   }
 
+  function buildEnglishCitizenCertificate(d) {
+    var getVal = function() {
+      for (var i = 0; i < arguments.length; i++) {
+        var value = d[arguments[i]];
+        if (value !== undefined && value !== null && String(value).trim() !== '' && String(value).trim() !== '-') return String(value).trim();
+      }
+      return '-';
+    };
+    var applicantName = getVal('name', 'applicantName');
+    var fatherName = getVal('fatherName', 'fatherSpouseName', 'father');
+    var motherName = getVal('motherName', 'mother');
+    var dob = getVal('dob', 'birthDate', 'dateOfBirth');
+    var nid = getVal('nid', 'nidNo', 'nationalId');
+    var maritalStatus = getVal('maritalStatus', 'marital');
+    maritalStatus = maritalStatus === 'বিবাহিত' ? 'Married' : (maritalStatus === 'অবিবাহিত' ? 'Unmarried' : maritalStatus);
+    var spouseName = getVal('spouseName', 'spouse');
+    var mobile = getVal('mobile', 'phone', 'mobileNo');
+    var wardNo = getVal('wardNo', 'ward');
+    var village = getVal('village', 'gram');
+    var postOffice = getVal('postOffice', 'post');
+    var certNo = getVal('certNo', 'certificateNo', 'appId');
+    var smarakNo = formatSerial3Digits(getVal('smarakNo', 'serialNo', 'appId'));
+    var issueDate = getVal('issueDate', 'date', 'applyDate');
+    var spouseRow = spouseName !== '-' ? `<tr><td class="label">Spouse name</td><td>:</td><td>${spouseName}</td></tr>` : '';
+    var sigRole = d.signatoryRole || 'Chairman';
+    if (sigRole === 'প্যানেল চেয়ারম্যান' || sigRole === 'প্যানেল চেয়ারম্যান-১') sigRole = 'Panel Chairman';
+    else if (sigRole === 'ভারপ্রাপ্ত চেয়ারম্যান') sigRole = 'Acting Chairman';
+    else if (sigRole === 'চেয়ারম্যান') sigRole = 'Chairman';
+    var sigName = sigRole === 'Panel Chairman' ? 'Md. Abdus Salam Mridha' : 'Adv. Md. Humayun Kabir';
+    var qrPayload = encodeURIComponent('Government of the People\'s Republic of Bangladesh\nAuliapur Union Parishad\nCitizenship Certificate\nCertificate No: ' + certNo + '\nName: ' + applicantName);
+    var qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=0&data=' + qrPayload;
+
+    return `<div class="cit-cert-frame">
+      <img src="${STATIC_UP_LOGO}" class="cit-watermark-bg" alt="Watermark">
+      <div class="cit-content-body">
+        <div>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 2px;"><tr>
+            <td style="width: 90px; vertical-align: middle; text-align: left;"><img src="${STATIC_GOVT_LOGO}" style="width: 80px; height: 80px; object-fit: contain;"></td>
+            <td style="text-align: center; vertical-align: middle;"><div style="font-size: 15px; font-weight: bold; color: #222;">Government of the People's Republic of Bangladesh</div><h1 style="margin: 2px 0; font-size: 32px; font-weight: bold; color: #0d47a1; font-family: 'Nikosh', sans-serif;">11 No. Auliapur Union Parishad</h1><div style="font-size: 17px; font-weight: bold; color: #000;">Upazila: Patuakhali Sadar, District: Patuakhali</div></td>
+            <td style="width: 90px; vertical-align: middle; text-align: right;"><img src="${STATIC_UP_LOGO}" style="width: 80px; height: 80px; object-fit: contain;"></td>
+          </tr></table>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #d32f2f; border-bottom: 1.5px solid #d32f2f; padding: 3px 6px; font-size: 16.5px; font-weight: bold; color: #000; margin: 4px 0 10px 0;"><div>Serial No: ${smarakNo}</div><div>Date: ${issueDate}</div></div>
+          <div class="cit-3d-ribbon-wrapper"><div class="cit-3d-ribbon-box">CITIZENSHIP CERTIFICATE</div></div>
+          <table class="cit-info-grid"><tr><td class="label" style="font-weight: bold;">Certificate No.</td><td>:</td><td style="font-weight: bold;">${certNo}</td></tr><tr><td class="label" style="font-weight: bold;">Name</td><td>:</td><td style="font-weight: bold;">${applicantName}</td></tr><tr><td class="label" style="font-weight: bold;">Father's name</td><td>:</td><td>${fatherName}</td></tr><tr><td class="label" style="font-weight: bold;">Mother's name</td><td>:</td><td>${motherName}</td></tr><tr><td class="label" style="font-weight: bold;">Date of birth</td><td>:</td><td>${dob}</td></tr><tr><td class="label" style="font-weight: bold;">National ID number</td><td>:</td><td>${nid}</td></tr><tr><td class="label" style="font-weight: bold;">Marital status</td><td>:</td><td>${maritalStatus}</td></tr>${spouseRow}<tr><td class="label" style="font-weight: bold;">Mobile number</td><td>:</td><td>${mobile}</td></tr><tr><td class="label" style="font-weight: bold;">Address</td><td>:</td><td>Ward No: ${wardNo}, Village: ${village}, Post Office: ${postOffice}, Upazila: Patuakhali Sadar, District: Patuakhali, Division: Barishal.</td></tr></table>
+          <p style="text-align: justify; font-size: 18px; line-height: 2.0; text-indent: 35px; margin: 16px 0 10px 0; color: #000;">This is to certify that the person mentioned above is a permanent resident of this Union and a citizen of Bangladesh by birth. I know him/her personally. To the best of my knowledge, his/her moral character is good and he/she is not involved in any anti-state or anti-social activities.</p>
+          <p style="text-align: center; font-weight: bold; font-size: 18.5px; margin: 12px 0 16px 0; color: #000;">I wish him/her every success and a bright future.</p>
+        </div>
+        <div style="margin-top: auto;"><table style="width: 100%; border-collapse: collapse; margin-bottom: 12px;"><tr><td style="width: 32%; text-align: center; vertical-align: bottom;"><div style="border-top: 1.5px dashed #444; width: 85%; margin: 0 auto 3px auto;"></div><div style="font-weight: bold; font-size: 16.5px;">UP Member's signature and seal</div><div style="font-size: 14.5px; color: #444;">11 No. Auliapur Union Parishad</div><div style="font-size: 13.5px; color: #555;">Patuakhali Sadar, Patuakhali</div></td><td style="width: 36%; text-align: center; vertical-align: bottom;"><img src="${qrCodeUrl}" style="width: 80px; height: 80px; border: 1px solid #ccc; padding: 2px; background: #fff;" alt="QR Code"><div style="font-size: 12px; font-weight: bold; color: #006837; margin-top: 2px;">ONLINE VERIFIED</div></td><td style="width: 32%; text-align: center; vertical-align: bottom;"><div style="font-weight: bold; font-size: 17.5px; color: #000;">${sigName}</div><div style="border-top: 1.5px solid #000; width: 90%; margin: 2px auto 3px auto;"></div><div style="font-weight: bold; font-size: 16.5px;">${sigRole}</div><div style="font-size: 14.5px; color: #444;">11 No. Auliapur Union Parishad</div><div style="font-size: 13.5px; color: #555;">Patuakhali Sadar, Patuakhali</div></td></tr></table><div style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #d32f2f; padding-top: 4px; font-size: 11.5px; font-weight: bold; color: #006837; white-space: nowrap;"><div>Send your child to school</div><div>Verify this certificate: www.aup.auliapur.com</div><div>Prevent child marriage</div></div></div>
+      </div>
+    </div>`;
+  }
+
   // 🟢 ১-ক্লিকে সরাসরি প্রিন্ট ইঞ্জিন (প্রিভিউ মোডাল ছাড়া সরাসরি প্রিন্ট ডায়ালগ ওপেন হবে)
   async function showCitizenPrintPreview(appId) {
     const data = await getCitizenRecord(appId);
@@ -688,6 +773,7 @@
     if(!data) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
 
     document.getElementById('edCitAppId').value = data.appId || appId;
+    document.getElementById('edCitLanguage').value = data.language || data.certificateLanguage || 'bn';
     document.getElementById('edCitName').value = data.name || data.applicantName || '';
     document.getElementById('edCitNid').value = data.nid || '';
     document.getElementById('edCitFather').value = data.fatherName || data.fatherSpouseName || '';
@@ -730,6 +816,8 @@
 
     var payload = {
       appId: document.getElementById('edCitAppId').value,
+      language: document.getElementById('edCitLanguage').value,
+      certificateLanguage: document.getElementById('edCitLanguage').value,
       name: document.getElementById('edCitName').value.trim(),
       nid: document.getElementById('edCitNid').value.trim(),
       fatherName: document.getElementById('edCitFather').value.trim(),

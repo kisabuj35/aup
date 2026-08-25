@@ -655,7 +655,14 @@
     const apps = await callBackend('getAllApplications');
     if (requestId !== loadRequestStore.gen) return;
     if (!apps) return showLoadError('adminAppTable', 8, 'ডাটাবেস থেকে আবেদন লোড করা যায়নি। আবার রিফ্রেশ করুন।');
-    rawDataStore.gen = sortNewestFirst(getApiList(apps, ['applications', 'data', 'results']));
+    var generalServices = (typeof GENERAL_TEMPLATES === 'object')
+      ? Object.keys(GENERAL_TEMPLATES)
+      : [];
+    rawDataStore.gen = sortNewestFirst(
+      getApiList(apps, ['applications', 'data', 'results']).filter(function(app) {
+        return generalServices.indexOf(app.type || app.serviceType) !== -1;
+      })
+    );
     renderGenPage(page);
   }
 

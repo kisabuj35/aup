@@ -404,7 +404,9 @@
       });
     }
 
-    bootstrap.Modal.getOrCreateInstance(document.getElementById('familyCertPrintModal')).show();
+    setTimeout(function() {
+      printExactCertificate();
+    }, 100);
   }
 
   function printExactCertificate() {

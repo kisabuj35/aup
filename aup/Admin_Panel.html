@@ -735,14 +735,27 @@
     const list = await callBackend('getTradeLicenses');
     if (requestId !== loadRequestStore.trade) return;
     if (!list) return showLoadError('tradeTableBody', 8, 'ডাটাবেস থেকে ট্রেড লাইসেন্স লোড করা যায়নি। আবার রিফ্রেশ করুন।');
-    rawDataStore.trade = sortNewestFirst(getApiList(list, ['licenses', 'applications', 'data', 'results']));
+    var tradeLists = Array.isArray(list) ? [list] : ['licenses', 'renewals', 'renewalApplications', 'applications', 'data', 'results']
+      .map(function(key) { return Array.isArray(list[key]) ? list[key] : []; });
+    var seenTradeIds = {};
+    var allTrades = [];
+    tradeLists.forEach(function(items) {
+      items.forEach(function(trade) {
+        var tradeId = String(trade.appId || trade.id || trade.licNo || '');
+        if (!tradeId || !seenTradeIds[tradeId]) {
+          if (tradeId) seenTradeIds[tradeId] = true;
+          allTrades.push(trade);
+        }
+      });
+    });
+    rawDataStore.trade = sortNewestFirst(allTrades);
     renderTradePage(page);
   }
   function isRenewalTradeLicense(trade) {
     if (!trade) return false;
     var renewalFlag = trade.isRenewal === true || String(trade.isRenewal || '').toLowerCase() === 'true';
     var requestType = String(trade.serviceType || trade.type || trade.applicationType || trade.requestType || '').toLocaleLowerCase();
-    return renewalFlag || Boolean(trade.renewDate || trade.renewalDate) || requestType.indexOf('নবায়ন') !== -1 || requestType.indexOf('renew') !== -1;
+    return renewalFlag || Boolean(trade.renewDate || trade.renewalDate || trade.originalLicNo || trade.originalAppId) || requestType.indexOf('নবায়ন') !== -1 || requestType.indexOf('renew') !== -1;
   }
   function getFilteredTradeLicenses() {
     var query = tradeSearchTerm.trim().toLocaleLowerCase();

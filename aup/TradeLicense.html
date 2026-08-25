@@ -744,6 +744,9 @@
 
     var formData = {
       isRenewal: false,
+      serviceType: 'ট্রেড লাইসেন্স',
+      applicationType: 'new',
+      requestType: 'new',
       ownerName: document.getElementById('trOwnerName').value.trim(),
       fatherName: document.getElementById('trFatherName').value.trim(),
       motherName: document.getElementById('trMotherName').value.trim(),
@@ -820,6 +823,10 @@
     var cur = window._currentRenewData;
     var renewFormData = {
       isRenewal: true,
+      serviceType: 'ট্রেড লাইসেন্স নবায়ন',
+      applicationType: 'renewal',
+      requestType: 'renewal',
+      renewalDate: new Date().toISOString(),
       originalLicNo: document.getElementById('rnLicNo').value,
       originalAppId: document.getElementById('rnOriginalAppId').value,
       orgName: cur.orgName,
@@ -953,14 +960,17 @@
   // 🟢 সরাসরি ১ ক্লিকে ১ পেজে নিখুঁত প্রিন্ট ইঞ্জিন (Direct Iframe Print)
   function printTradeIframeDirect(elemId, docTitle) {
     var source = document.getElementById(elemId);
-    var iframe = document.getElementById('tradePrintIframe');
-    if (!source || !iframe) return;
+    if (!source) return;
+
+    var iframe = document.createElement('iframe');
+    iframe.className = 'trade-print-frame';
+    iframe.setAttribute('title', docTitle || 'Certificate');
+    iframe.style.cssText = 'position:fixed; right:0; bottom:0; width:1px; height:1px; border:0; opacity:0; pointer-events:none;';
+    document.body.appendChild(iframe);
 
     var rawHtml = source.innerHTML;
     var printWindow = iframe.contentWindow;
     var printDoc = printWindow.document;
-    iframe.onload = null;
-    printWindow.onafterprint = null;
 
     printDoc.open();
     printDoc.write(`
@@ -1117,11 +1127,20 @@
 
     var images = printDoc.getElementsByTagName('img');
     var printed = false;
+    var cleaned = false;
+    function cleanupPrintFrame() {
+      if (cleaned) return;
+      cleaned = true;
+      printWindow.onafterprint = null;
+      if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+    }
     function triggerPrint() {
       if (!printed) {
         printed = true;
+        printWindow.onafterprint = cleanupPrintFrame;
         printWindow.focus();
         printWindow.print();
+        setTimeout(cleanupPrintFrame, 60000);
       }
     }
 

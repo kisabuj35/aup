@@ -634,25 +634,51 @@
     `);
     printDoc.close();
 
-    var images = printDoc.getElementsByTagName('img');
-    var total = images.length, loaded = 0, printed = false;
-    function triggerPrint() {
-      if (!printed) {
-        printed = true;
-        document.getElementById('citPrintIframe').contentWindow.focus();
-        document.getElementById('citPrintIframe').contentWindow.print();
-      }
+    var images = Array.from(printDoc.getElementsByTagName('img'));
+    var printWindow = document.getElementById('citPrintIframe').contentWindow;
+
+    function waitForImage(image) {
+      return new Promise(function(resolve, reject) {
+        var attempts = 0;
+        function loadImage() {
+          attempts++;
+          if (image.complete && image.naturalWidth > 0) {
+            if (image.decode) {
+              image.decode().then(resolve).catch(resolve);
+            } else {
+              resolve();
+            }
+            return;
+          }
+          image.onload = function() {
+            if (image.decode) {
+              image.decode().then(resolve).catch(resolve);
+            } else {
+              resolve();
+            }
+          };
+          image.onerror = function() {
+            if (attempts < 3) {
+              image.src = image.src.split('?')[0] + '?print-retry=' + attempts;
+              loadImage();
+            } else {
+              reject(new Error('Certificate image could not be loaded'));
+            }
+          };
+          image.src = image.src;
+        }
+        loadImage();
+      });
     }
 
-    if (total === 0) { setTimeout(triggerPrint, 150); }
-    else {
-      for (var i = 0; i < total; i++) {
-        images[i].onload = images[i].onerror = function() {
-          loaded++;
-          if (loaded >= total) setTimeout(triggerPrint, 100);
-        };
-      }
-      setTimeout(triggerPrint, 500);
+    try {
+      await Promise.all(images.map(waitForImage));
+      if (printDoc.fonts && printDoc.fonts.ready) await printDoc.fonts.ready;
+      await new Promise(function(resolve) { printWindow.requestAnimationFrame(resolve); });
+      printWindow.focus();
+      printWindow.print();
+    } catch (error) {
+      alert('সনদের লোগো লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার প্রিন্ট করুন।');
     }
   }
 

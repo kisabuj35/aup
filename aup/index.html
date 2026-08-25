@@ -313,7 +313,8 @@
       var session = localStorage.getItem('upAdminSession');
       if (session) {
         navToSection('adminPanel');
-        if (typeof switchAdminTab === 'function') switchAdminTab('dashTab');
+        var savedTab = localStorage.getItem('adminActiveTab') || 'dashTab';
+        if (typeof switchAdminTab === 'function') switchAdminTab(savedTab);
         if (typeof loadAdminDashboard === 'function') loadAdminDashboard();
       } else {
         navToSection('loginSection');

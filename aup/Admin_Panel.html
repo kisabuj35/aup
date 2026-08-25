@@ -348,14 +348,14 @@
   ========================================================== */
   function getActiveSession() {
     try {
-      var s = sessionStorage.getItem('upAdminSession');
+      var s = localStorage.getItem('upAdminSession');
       return s ? JSON.parse(s) : null;
     } catch(e) { return null; }
   }
 
   function setAdminSession(userData) {
     if (!userData) return;
-    sessionStorage.setItem('upAdminSession', JSON.stringify(userData));
+    localStorage.setItem('upAdminSession', JSON.stringify(userData));
     updateSidebarProfile(userData);
   }
 
@@ -388,15 +388,15 @@
       cancelButtonText: 'না'
     }).then((res) => {
       if (res.isConfirmed) {
-        sessionStorage.removeItem('upAdminSession');
-        sessionStorage.removeItem('adminActiveTab');
+        localStorage.removeItem('upAdminSession');
+        localStorage.removeItem('adminActiveTab');
         location.reload();
       }
     });
   }
 
-  // পেজ রিলোড দিলে স্বয়ংক্রিয়ভাবে এডমিন স্টেট ফিরিয়ে আনা
-  window.addEventListener('DOMContentLoaded', async function() {
+  // Dynamic module হিসেবে লোড হলেও session ও tab restore নিশ্চিত করা হয়।
+  function initializeAdminPanel() {
     var session = getActiveSession();
     if (session && (session.username || session.role)) {
       document.querySelectorAll('.view-section').forEach(function(el) { el.classList.add('d-none'); });
@@ -405,10 +405,13 @@
       
       updateSidebarProfile(session);
 
-      var savedTab = sessionStorage.getItem('adminActiveTab') || 'dashTab';
+      var savedTab = localStorage.getItem('adminActiveTab') || 'dashTab';
       switchAdminTab(savedTab);
     }
-  });
+  }
+
+  if (document.readyState === 'loading') window.addEventListener('DOMContentLoaded', initializeAdminPanel);
+  else initializeAdminPanel();
 
   /* ==========================================================
      🛠️ হেল্পার ও গ্লোবাল API কল ব্রিজ
@@ -473,6 +476,24 @@
     };
   }
 
+  function renderStatusActionButtons(appId, status) {
+    var session = getActiveSession() || {};
+    var canDel = session.role === 'SuperAdmin' || (session.permissions && session.permissions.canDelete);
+    var stBadge = (status === 'Approved') ? '<span class="status-badge-approved">Approved</span>' : ((status === 'Rejected') ? '<span class="status-badge-rejected">Rejected</span>' : '<span class="status-badge-pending">Pending</span>');
+    var deleteBtn = canDel ? `<button class="btn btn-sm btn-outline-danger ms-1" onclick="removeApp('${appId}')" title="ডিলিট"><i class="fa fa-trash"></i></button>` : '';
+
+    return {
+      badge: stBadge,
+      actions: `
+        <div class="d-flex align-items-center">
+          <button class="btn-act-approve" onclick="changeStatus('${appId}', 'Approved')" title="অনুমোদন"><i class="fa fa-check"></i></button>
+          <button class="btn-act-reject" onclick="changeStatus('${appId}', 'Rejected')" title="বাতিল"><i class="fa fa-times"></i></button>
+          ${deleteBtn}
+        </div>
+      `
+    };
+  }
+
   /* ==========================================================
      👥 ট্যাব ১৪: এডমিন ইউজার ও পারমিশন কন্ট্রোল (গুগল শিট)
   ========================================================== */
@@ -481,7 +502,7 @@
     tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted"><i class="fa fa-spinner fa-spin me-2"></i>ডাটাবেস থেকে ইউজার লোড হচ্ছে...</td></tr>';
     
     var users = await callBackend('getAdminUsers');
-    rawDataStore.users = Array.isArray(users) ? users : [];
+    rawDataStore.users = Array.isArray(users) ? users : (users && Array.isArray(users.users) ? users.users : []);
     renderUserTable();
   }
 
@@ -584,13 +605,31 @@
     });
   }
 
+  function sortNewestFirst(items) {
+    var list = Array.isArray(items) ? items.slice() : [];
+    var dateFields = ['createdAt', 'timestamp', 'submittedAt', 'applyDate', 'date'];
+    var datedItems = list.map(function(item, index) {
+      var rawDate = dateFields.map(function(field) { return item[field]; }).find(function(value) { return value; });
+      var time = rawDate ? Date.parse(rawDate) : NaN;
+      return { item: item, index: index, time: time };
+    });
+    var hasDates = datedItems.filter(function(entry) { return !Number.isNaN(entry.time); }).length > 1;
+    if (!hasDates) return list.reverse();
+    return datedItems.sort(function(a, b) {
+      if (a.time === b.time) return b.index - a.index;
+      if (Number.isNaN(a.time)) return 1;
+      if (Number.isNaN(b.time)) return -1;
+      return b.time - a.time;
+    }).map(function(entry) { return entry.item; });
+  }
+
   /* ==========================================================
-     🟢 ট্যাব ৬: সাধারণ প্রত্যয়নপত্র তালিকা লোডার (Descending Order)
+     🟢 ট্যাব ৬: সাধারণ প্রত্যয়নপত্র তালিকা লোডার (Newest First)
   ========================================================== */
   async function loadAdminApps(page = 1) {
     currentPageStore.gen = page;
     const apps = await callBackend('getAllApplications');
-    rawDataStore.gen = (Array.isArray(apps) ? apps : []).slice().reverse();
+    rawDataStore.gen = sortNewestFirst(apps);
     renderGenPage(page);
   }
 
@@ -605,8 +644,7 @@
       return; 
     }
     slice.forEach(function(a) {
-      // এই showGeneralCertPrintPreview ও openEditGeneralModal কলগুলো General_Certificate.html ফাইল থেকে সরাসরি এক্সিকিউট হবে
-      var act = renderActionButtons(a.appId, a.status, 'showGeneralCertPrintPreview', 'openEditGeneralModal');
+      var act = renderStatusActionButtons(a.appId, a.status);
       tbody.innerHTML += `
         <tr>
           <td><strong>${a.appId}</strong></td>
@@ -628,7 +666,7 @@
   async function loadCitizenshipApps(page = 1) {
     currentPageStore.cit = page;
     const apps = await callBackend('getCitizenshipApps');
-    rawDataStore.cit = (Array.isArray(apps) ? apps : []).slice().reverse();
+    rawDataStore.cit = sortNewestFirst(apps);
     renderCitPage(page);
   }
   function renderCitPage(page = 1) {
@@ -648,7 +686,7 @@
   async function loadTradeLicenses(page = 1) {
     currentPageStore.trade = page;
     const list = await callBackend('getTradeLicenses');
-    rawDataStore.trade = (Array.isArray(list) ? list : []).slice().reverse();
+    rawDataStore.trade = sortNewestFirst(list);
     renderTradePage(page);
   }
   function renderTradePage(page = 1) {
@@ -668,7 +706,7 @@
   async function loadFamilyApps(page = 1) {
     currentPageStore.fam = page;
     const apps = await callBackend('getFamilyApps');
-    rawDataStore.fam = (Array.isArray(apps) ? apps : []).slice().reverse();
+    rawDataStore.fam = sortNewestFirst(apps);
     renderFamPage(page);
   }
   function renderFamPage(page = 1) {
@@ -688,7 +726,7 @@
   async function loadWarishanApps(page = 1) {
     currentPageStore.war = page;
     const apps = await callBackend('getWarishanApps');
-    rawDataStore.war = (Array.isArray(apps) ? apps : []).slice().reverse();
+    rawDataStore.war = sortNewestFirst(apps);
     renderWarPage(page);
   }
   function renderWarPage(page = 1) {
@@ -708,7 +746,7 @@
   async function loadTaxPayers(page = 1) {
     currentPageStore.tax = page;
     const list = await callBackend('getTaxPayers');
-    rawDataStore.tax = (Array.isArray(list) ? list : []).slice().reverse();
+    rawDataStore.tax = sortNewestFirst(list);
     renderTaxPage(page);
   }
   function renderTaxPage(page = 1) {
@@ -782,7 +820,7 @@
   }
 
   function switchAdminTab(tabId) {
-    sessionStorage.setItem('adminActiveTab', tabId);
+    localStorage.setItem('adminActiveTab', tabId);
 
     document.querySelectorAll('.admin-tab').forEach(el => el.classList.add('d-none'));
     var target = document.getElementById(tabId);

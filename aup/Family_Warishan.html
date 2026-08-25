@@ -16,8 +16,6 @@
   .cert-watermark-bg { width: 500px !important; max-width: 88%; opacity: .09 !important; }
   .family-cert-container .cert-main-content, .family-cert-container .cert-main-content * { font-family: 'Nikosh', sans-serif !important; }
   .family-cert-container img[alt="UP Logo"] { width: 82px !important; height: 82px !important; }
-  .family-cert-container .ribbon-center-box { background: linear-gradient(180deg, #7c3aed, #4c1d95) !important; font-size: 23px; padding: 7px 42px; border-color: #fef3c7 !important; outline-color: #7c3aed !important; }
-  .family-cert-container .ribbon-wing-left, .family-cert-container .ribbon-wing-right { background-color: #4c1d95 !important; }
   .family-cert-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 8mm; padding: 3mm 2mm 0; border-top: 1.5px solid #7c3aed; color: #4c1d95; font-size: 13px; font-weight: bold; text-align: center; }
   .family-cert-footer > * { flex: 1; }
   .family-cert-container { border-color: #b91c1c !important; outline-color: #dc2626 !important; }
@@ -73,11 +71,11 @@
   }
   .cert-table-exact td { border: 1.5px solid #000000 !important; padding: 6px 4px; font-size: 13.5px; color: #000000; }
   .table-input-clean { border: 1px solid #ced4da; padding: 4px 8px; border-radius: 4px; width: 100%; font-size: 14px; }
-  .family-cert-container { border: 3px double #7c3aed !important; outline: 1px solid #f59e0b !important; outline-offset: -7px !important; min-height: 295mm !important; padding: 12mm 15mm 10mm !important; font-family: 'Nikosh', sans-serif !important; }
+  .family-cert-container { border: 3px double #b91c1c !important; outline: 1px solid #dc2626 !important; outline-offset: -7px !important; min-height: 295mm !important; padding: 12mm 15mm 10mm !important; font-family: 'Nikosh', sans-serif !important; }
   .family-cert-container .cert-watermark-bg { width: 500px !important; max-width: 88% !important; opacity: .09 !important; }
   .family-cert-container img[alt="UP Logo"] { width: 82px !important; height: 82px !important; }
-  .family-cert-container .ribbon-center-box { background: linear-gradient(180deg, #7c3aed, #4c1d95) !important; font-size: 23px !important; padding: 7px 42px !important; border-color: #fef3c7 !important; outline-color: #7c3aed !important; }
-  .family-cert-container .ribbon-wing-left, .family-cert-container .ribbon-wing-right { background-color: #4c1d95 !important; }
+  .family-cert-container .ribbon-center-box { background: linear-gradient(180deg, #2563eb, #1e3a8a) !important; font-size: 23px !important; padding: 7px 42px !important; border-color: #fef3c7 !important; outline: 2px solid #1d4ed8 !important; box-shadow: 0 3px 0 #991b1b !important; }
+  .family-cert-container .ribbon-wing-left, .family-cert-container .ribbon-wing-right { background-color: #991b1b !important; }
   .family-cert-container, .family-cert-container * { font-family: 'Nikosh', sans-serif !important; }
   .family-cert-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 8mm; padding: 3mm 2mm 0; border-top: 1.5px solid #7c3aed; color: #4c1d95; font-size: 13px; font-weight: bold; text-align: center; }
   .family-cert-footer > * { flex: 1; }
@@ -257,6 +255,11 @@
     return toBnDigit(new Date().getFullYear());
   }
 
+  function getBanglaMemoNumber(appId) {
+    var digits = String(appId || '').replace(/[^0-9০-৯]/g, '');
+    return toBnDigit(digits);
+  }
+
   function openFamilyCertPage(type) {
     navToSection('familyWarishanView');
     var form = document.getElementById('familyWarishanForm');
@@ -359,7 +362,7 @@
     const d = await callBackendAPI('getFamilyDetails', appId);
     if(!d || !d.found) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
     
-    document.getElementById('prAppIdShort').innerText = d.appId.replace('AUL-FAM-', '');
+    document.getElementById('prAppIdShort').innerText = getBanglaMemoNumber(d.appId);
     document.getElementById('prSmarakYear').innerText = getCurrentBanglaYear();
     document.getElementById('prIssueDate').innerText = new Date().toLocaleDateString('bn-BD');
     

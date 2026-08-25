@@ -343,7 +343,12 @@
       if (foundInCache) data = foundInCache;
     }
 
-    return (data && data.data) ? data.data : data;
+    data = (data && data.data) ? data.data : data;
+    if (data && appId) {
+      var savedLanguage = localStorage.getItem('citizenLanguage_' + appId);
+      if (savedLanguage && !data.language && !data.certificateLanguage) data.language = savedLanguage;
+    }
+    return data;
   }
 
   async function submitDedicatedCitizen() {
@@ -352,7 +357,7 @@
     btn.disabled = true; btn.innerText = selectedLanguage === 'en' ? 'Submitting...' : 'জমা হচ্ছে...';
 
     var mStatus = document.getElementById('dCitMarital').value;
-    var spouseVal = mStatus === 'বিবাহিত' ? document.getElementById('dCitSpouse').value.trim() : '';
+    var spouseVal = (mStatus === 'বিবাহিত' || mStatus === 'married') ? document.getElementById('dCitSpouse').value.trim() : '';
 
     var formData = {
       type: 'নাগরিকত্ব সনদ',
@@ -376,6 +381,7 @@
     btn.disabled = false; btn.innerText = 'আবেদন জমা দিন';
 
     if(res && res.success) {
+      localStorage.setItem('citizenLanguage_' + res.appId, selectedLanguage);
       document.getElementById('dedicatedCitizenForm').reset();
       toggleCitizenSpouse('অবিবাহিত');
       document.getElementById('citSuccessAppId').innerText = res.appId;
@@ -433,7 +439,7 @@
 
   // 🟢 ৬ নম্বর ছবির অবিকল কাঠামো তৈরি (২০ নম্বর ছবির ৩ডি রিবন ব্যানার সহ)
   function buildCitizenCertHtml_Image6(d) {
-    if (d.language === 'en' || d.certificateLanguage === 'en') return buildEnglishCitizenCertificate(d);
+    if (d.language === 'en' || d.certificateLanguage === 'en' || d.maritalStatus === 'married' || d.maritalStatus === 'unmarried') return buildEnglishCitizenCertificate(d);
 
     let getVal = (...keys) => {
       for (let k of keys) {

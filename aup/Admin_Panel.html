@@ -472,6 +472,19 @@
     }, []);
   }
 
+  function collectTradeRecords(value, sourceKey) {
+    if (Array.isArray(value)) {
+      return value.map(function(trade) {
+        if (sourceKey && /renew/i.test(sourceKey)) trade.__renewalSource = true;
+        return trade;
+      });
+    }
+    if (!value || typeof value !== 'object') return [];
+    return Object.keys(value).reduce(function(records, key) {
+      return records.concat(collectTradeRecords(value[key], key));
+    }, []);
+  }
+
   function showLoadError(tbodyId, colspan, message) {
     var tbody = document.getElementById(tbodyId);
     if (tbody) tbody.innerHTML = `<tr><td colspan="${colspan}" class="text-center py-3 text-danger">${message}</td></tr>`;
@@ -747,10 +760,23 @@
   async function loadTradeLicenses(page = 1) {
     var requestId = ++loadRequestStore.trade;
     currentPageStore.trade = page;
-    const list = await callBackend('getTradeLicenses');
+    const responses = await Promise.all([
+      callBackend('getTradeLicenses'),
+      callBackend('getTradeRenewals'),
+      callBackend('getTradeLicenseRenewals'),
+      callBackend('getRenewalApplications')
+    ]);
     if (requestId !== loadRequestStore.trade) return;
-    if (!list) return showLoadError('tradeTableBody', 8, 'ডাটাবেস থেকে ট্রেড লাইসেন্স লোড করা যায়নি। আবার রিফ্রেশ করুন।');
-    var tradeLists = collectTradeLists(list);
+    var tradeRecords = [];
+    responses.forEach(function(response, index) {
+      if (!response) return;
+      var sourceAction = ['getTradeLicenses', 'getTradeRenewals', 'getTradeLicenseRenewals', 'getRenewalApplications'][index];
+      var records = collectTradeRecords(response, sourceAction);
+      if (index > 0) records.forEach(function(trade) { trade.__renewalSource = true; });
+      tradeRecords = tradeRecords.concat(records);
+    });
+    if (!tradeRecords.length) return showLoadError('tradeTableBody', 8, 'ডাটাবেস থেকে ট্রেড লাইসেন্স লোড করা যায়নি। আবার রিফ্রেশ করুন।');
+    var tradeLists = [tradeRecords];
     var seenTradeIds = {};
     var allTrades = [];
     tradeLists.forEach(function(items) {
@@ -767,9 +793,15 @@
   }
   function isRenewalTradeLicense(trade) {
     if (!trade) return false;
+    if (trade.__renewalSource) return true;
+    function hasValue(value) {
+      if (value === null || value === undefined || value === false || value === 0) return false;
+      var normalized = String(value).trim().toLowerCase();
+      return normalized !== '' && normalized !== 'false' && normalized !== 'no' && normalized !== 'null' && normalized !== 'undefined' && normalized !== '0';
+    }
     var fields = Object.keys(trade);
     var renewalFlag = fields.some(function(field) {
-      return /isrenew|renewal|renewdate|originallic|originalapp/i.test(field) && Boolean(trade[field]);
+      return /isrenew|renewal|renewdate|originallic|originalapp/i.test(field) && hasValue(trade[field]);
     });
     var requestType = fields.filter(function(field) {
       return /type|service|request|category|subject/i.test(field);
@@ -804,7 +836,11 @@
     tbody.innerHTML = '';
     var list = getFilteredTradeLicenses();
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-    if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন লাইসেন্স নেই</td></tr>'; return; }
+    if(slice.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন লাইসেন্স নেই</td></tr>';
+      renderPagination('trade', 0, 'renderTradePage');
+      return;
+    }
     slice.forEach(function(t) {
       var act = renderActionButtons(t.appId, t.status, 'showTradeCertPreview', 'openEditTradeModal');
       tbody.innerHTML += `<tr><td><strong>${t.appId}</strong></td><td>${t.orgName}</td><td>${t.ownerName}</td><td>${t.fatherName || '-'}</td><td>${t.mobile}</td><td>৳${t.totalFee}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;

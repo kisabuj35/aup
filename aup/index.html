@@ -368,6 +368,27 @@
       }
     }
 
+    if (typeof openGeneralServicePage !== 'function') {
+      window.openGeneralServicePage = function(serviceName) {
+        var target = document.getElementById('generalServiceView');
+        if (!target) {
+          window.setTimeout(function() { window.openGeneralServicePage(serviceName); }, 150);
+          return;
+        }
+        navToSection('generalServiceView');
+        var form = document.getElementById('generalAppPageForm');
+        if (form) form.reset();
+        var type = document.getElementById('genTypeHidden');
+        var label = document.getElementById('genServiceLabel');
+        var title = document.getElementById('genPageMainTitle');
+        var post = document.getElementById('genPost');
+        if (type) type.value = serviceName;
+        if (label) label.innerText = serviceName;
+        if (title) title.innerText = serviceName + ' আবেদন';
+        if (post) post.value = 'আউলিয়াপুর ময়দান';
+      };
+    }
+
     function openFamilyWarishanPage(type) { openMasterService(type); }
   </script>
 </body>

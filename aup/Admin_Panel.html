@@ -341,6 +341,7 @@
 <script>
   var rawDataStore = { cit: [], trade: [], fam: [], war: [], gen: [], tax: [], users: [] };
   var currentPageStore = { cit: 1, trade: 1, fam: 1, war: 1, gen: 1, tax: 1 };
+  var loadRequestStore = { cit: 0, trade: 0, fam: 0, war: 0, gen: 0, tax: 0, users: 0 };
   var PAGE_SIZE = 15;
 
   /* ==========================================================
@@ -423,13 +424,32 @@
 
   async function callBackend(actionName, payload) {
     if (typeof callBackendAPI === 'function') {
-      try {
-        return await callBackendAPI(actionName, payload);
-      } catch (err) {
-        console.error('API Call error:', err);
+      for (var attempt = 1; attempt <= 3; attempt++) {
+        try {
+          var response = await callBackendAPI(actionName, payload);
+          if (response && response.success === false) throw new Error(response.error || response.message || 'API request failed');
+          if (response !== null && response !== undefined && response !== false) return response;
+        } catch (err) {
+          console.error('API Call error:', err);
+        }
+        if (attempt < 3) await new Promise(function(resolve) { setTimeout(resolve, 500 * attempt); });
       }
     }
     return null;
+  }
+
+  function getApiList(response, keys) {
+    if (Array.isArray(response)) return response;
+    if (!response || typeof response !== 'object') return [];
+    for (var i = 0; i < keys.length; i++) {
+      if (Array.isArray(response[keys[i]])) return response[keys[i]];
+    }
+    return [];
+  }
+
+  function showLoadError(tbodyId, colspan, message) {
+    var tbody = document.getElementById(tbodyId);
+    if (tbody) tbody.innerHTML = `<tr><td colspan="${colspan}" class="text-center py-3 text-danger">${message}</td></tr>`;
   }
 
   function renderPagination(type, totalItems, onPageClickName) {
@@ -498,11 +518,14 @@
      👥 ট্যাব ১৪: এডমিন ইউজার ও পারমিশন কন্ট্রোল (গুগল শিট)
   ========================================================== */
   async function loadAdminUsers() {
+    var requestId = ++loadRequestStore.users;
     var tbody = document.getElementById('userTableBody');
     tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted"><i class="fa fa-spinner fa-spin me-2"></i>ডাটাবেস থেকে ইউজার লোড হচ্ছে...</td></tr>';
     
     var users = await callBackend('getAdminUsers');
-    rawDataStore.users = Array.isArray(users) ? users : (users && Array.isArray(users.users) ? users.users : []);
+    if (requestId !== loadRequestStore.users) return;
+    if (!users) return showLoadError('userTableBody', 6, 'ডাটাবেস থেকে এডমিন তালিকা লোড করা যায়নি। আবার রিফ্রেশ করুন।');
+    rawDataStore.users = getApiList(users, ['users', 'data', 'results']);
     renderUserTable();
   }
 
@@ -627,9 +650,12 @@
      🟢 ট্যাব ৬: সাধারণ প্রত্যয়নপত্র তালিকা লোডার (Newest First)
   ========================================================== */
   async function loadAdminApps(page = 1) {
+    var requestId = ++loadRequestStore.gen;
     currentPageStore.gen = page;
     const apps = await callBackend('getAllApplications');
-    rawDataStore.gen = sortNewestFirst(apps);
+    if (requestId !== loadRequestStore.gen) return;
+    if (!apps) return showLoadError('adminAppTable', 8, 'ডাটাবেস থেকে আবেদন লোড করা যায়নি। আবার রিফ্রেশ করুন।');
+    rawDataStore.gen = sortNewestFirst(getApiList(apps, ['applications', 'data', 'results']));
     renderGenPage(page);
   }
 
@@ -644,7 +670,7 @@
       return; 
     }
     slice.forEach(function(a) {
-      var act = renderActionButtons(a.appId, a.status, 'showGeneralCertPrintPreview', 'openEditGeneralModal');
+      var act = renderActionButtons(a.appId, a.status, 'printGeneralCertificate', 'openEditGeneralModal');
       tbody.innerHTML += `
         <tr>
           <td><strong>${a.appId}</strong></td>
@@ -664,9 +690,12 @@
      🟢 অন্যান্য সনদের ট্যাব লোডার (Newest First)
   ========================================================== */
   async function loadCitizenshipApps(page = 1) {
+    var requestId = ++loadRequestStore.cit;
     currentPageStore.cit = page;
     const apps = await callBackend('getCitizenshipApps');
-    rawDataStore.cit = sortNewestFirst(apps);
+    if (requestId !== loadRequestStore.cit) return;
+    if (!apps) return showLoadError('citAppTable', 7, 'ডাটাবেস থেকে নাগরিকত্বের আবেদন লোড করা যায়নি। আবার রিফ্রেশ করুন।');
+    rawDataStore.cit = sortNewestFirst(getApiList(apps, ['applications', 'citizenship', 'data', 'results']));
     renderCitPage(page);
   }
   function renderCitPage(page = 1) {
@@ -684,9 +713,12 @@
   }
 
   async function loadTradeLicenses(page = 1) {
+    var requestId = ++loadRequestStore.trade;
     currentPageStore.trade = page;
     const list = await callBackend('getTradeLicenses');
-    rawDataStore.trade = sortNewestFirst(list);
+    if (requestId !== loadRequestStore.trade) return;
+    if (!list) return showLoadError('tradeTableBody', 8, 'ডাটাবেস থেকে ট্রেড লাইসেন্স লোড করা যায়নি। আবার রিফ্রেশ করুন।');
+    rawDataStore.trade = sortNewestFirst(getApiList(list, ['licenses', 'applications', 'data', 'results']));
     renderTradePage(page);
   }
   function renderTradePage(page = 1) {
@@ -704,9 +736,12 @@
   }
 
   async function loadFamilyApps(page = 1) {
+    var requestId = ++loadRequestStore.fam;
     currentPageStore.fam = page;
     const apps = await callBackend('getFamilyApps');
-    rawDataStore.fam = sortNewestFirst(apps);
+    if (requestId !== loadRequestStore.fam) return;
+    if (!apps) return showLoadError('famAppTable', 8, 'ডাটাবেস থেকে পারিবারিক আবেদন লোড করা যায়নি। আবার রিফ্রেশ করুন।');
+    rawDataStore.fam = sortNewestFirst(getApiList(apps, ['applications', 'family', 'data', 'results']));
     renderFamPage(page);
   }
   function renderFamPage(page = 1) {
@@ -724,9 +759,12 @@
   }
 
   async function loadWarishanApps(page = 1) {
+    var requestId = ++loadRequestStore.war;
     currentPageStore.war = page;
     const apps = await callBackend('getWarishanApps');
-    rawDataStore.war = sortNewestFirst(apps);
+    if (requestId !== loadRequestStore.war) return;
+    if (!apps) return showLoadError('warAppTable', 8, 'ডাটাবেস থেকে ওয়ারিশ আবেদন লোড করা যায়নি। আবার রিফ্রেশ করুন।');
+    rawDataStore.war = sortNewestFirst(getApiList(apps, ['applications', 'warishan', 'data', 'results']));
     renderWarPage(page);
   }
   function renderWarPage(page = 1) {
@@ -744,9 +782,12 @@
   }
 
   async function loadTaxPayers(page = 1) {
+    var requestId = ++loadRequestStore.tax;
     currentPageStore.tax = page;
     const list = await callBackend('getTaxPayers');
-    rawDataStore.tax = sortNewestFirst(list);
+    if (requestId !== loadRequestStore.tax) return;
+    if (!list) return showLoadError('taxTableBody', 7, 'ডাটাবেস থেকে করদাতার তালিকা লোড করা যায়নি। আবার রিফ্রেশ করুন।');
+    rawDataStore.tax = sortNewestFirst(getApiList(list, ['taxPayers', 'tax', 'data', 'results']));
     renderTaxPage(page);
   }
   function renderTaxPage(page = 1) {

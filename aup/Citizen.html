@@ -362,6 +362,8 @@
     if (data && appId) {
       var savedLanguage = localStorage.getItem('citizenLanguage_' + appId);
       if (savedLanguage && !data.language && !data.certificateLanguage) data.language = savedLanguage;
+      var savedSpouse = localStorage.getItem('citizenSpouse_' + appId);
+      if (savedSpouse && !data.spouseName && !data.spouse) data.spouseName = savedSpouse;
     }
     return data;
   }
@@ -406,6 +408,7 @@
 
     if(res && res.success) {
       localStorage.setItem('citizenLanguage_' + res.appId, selectedLanguage);
+      if (spouseVal) localStorage.setItem('citizenSpouse_' + res.appId, spouseVal);
       document.getElementById('dedicatedCitizenForm').reset();
       toggleCitizenSpouse('অবিবাহিত');
       document.getElementById('citSuccessAppId').innerText = res.appId;
@@ -662,7 +665,7 @@
     var nid = toEn(getVal('nid', 'nidNo', 'nationalId'));
     var maritalStatus = getVal('maritalStatus', 'marital').toLowerCase();
     maritalStatus = (maritalStatus === 'বিবাহিত' || maritalStatus === 'married') ? 'Married' : (maritalStatus === 'অবিবাহিত' || maritalStatus === 'unmarried' ? 'Unmarried' : maritalStatus);
-    var spouseName = getVal('spouseName', 'spouse');
+    var spouseName = getVal('spouseName', 'spouse', 'spouse_name', 'husbandName', 'wifeName', 'স্বামী/স্ত্রীর নাম', 'স্বামী/স্ত্রী');
     var mobile = toEn(getVal('mobile', 'phone', 'mobileNo'));
     var wardNo = toEn(getVal('wardNo', 'ward'));
     var village = getVal('village', 'gram');
@@ -670,7 +673,7 @@
     var certNo = toEn(getVal('certNo', 'certificateNo', 'appId'));
     var smarakNo = toEn(formatSerial3Digits(toEn(getVal('smarakNo', 'serialNo', 'appId'))));
     var issueDate = formatEnglishDate(getVal('issueDate', 'date', 'applyDate'));
-    var spouseRow = spouseName !== '-' ? `<tr><td class="label">Spouse name</td><td>:</td><td>${spouseName}</td></tr>` : '';
+    var spouseRow = (maritalStatus === 'Married' || spouseName !== '-') ? `<tr><td class="label">Spouse name</td><td>:</td><td>${spouseName}</td></tr>` : '';
     var sigRole = d.signatoryRole || 'Chairman';
     if (sigRole === 'প্যানেল চেয়ারম্যান' || sigRole === 'প্যানেল চেয়ারম্যান-১') sigRole = 'Panel Chairman';
     else if (sigRole === 'ভারপ্রাপ্ত চেয়ারম্যান') sigRole = 'Acting Chairman';
@@ -875,6 +878,8 @@
     btn.disabled = false; btn.innerText = 'সংরক্ষণ করুন';
 
     if(res && res.success) {
+      if (spouseVal) localStorage.setItem('citizenSpouse_' + payload.appId, spouseVal);
+      else localStorage.removeItem('citizenSpouse_' + payload.appId);
       bootstrap.Modal.getInstance(document.getElementById('editCitizenModal')).hide();
       if(typeof loadCitizenshipApps === 'function') loadCitizenshipApps();
       Swal.fire({

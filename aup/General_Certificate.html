@@ -435,8 +435,8 @@
     };
   }
 
-  // 🟢 অফিসিয়াল সনদ প্রিন্ট প্রিভিউ
-  function showGeneralCertPrintPreview(appId) {
+  // 🟢 এক ক্লিকে অফিসিয়াল সনদ প্রিন্ট
+  function printGeneralCertificate(appId) {
     google.script.run.withSuccessHandler(function(data) {
       if(!data || !data.found) return alert('সনদের তথ্য পাওয়া যায়নি!');
 
@@ -518,13 +518,19 @@
       `;
 
       printArea.innerHTML = certHtml;
-      bootstrap.Modal.getOrCreateInstance(document.getElementById('genOfficialCertModal')).show();
+      executeGeneralIframePrint('genOfficialCertPrintArea');
     }).trackApplication(appId);
   }
 
   // 🟢 আইফ্রেম প্রিন্ট ইঞ্জিন (Nikosh ফন্ট ও পারফেক্ট সাইজ সহ)
   function executeGeneralIframePrint(elementId) {
-    var content = document.getElementById(elementId).innerHTML;
+    var source = document.getElementById(elementId);
+    if (!source) {
+      alert('প্রিন্ট করার তথ্য পাওয়া যায়নি!');
+      return;
+    }
+
+    var content = source.innerHTML;
     var oldFrame = document.getElementById('gen_print_frame');
     if (oldFrame) oldFrame.remove();
 
@@ -669,11 +675,18 @@
     var loadedImgs = 0;
     var printed = false;
 
+    function cleanupPrintFrame() {
+      iframe.contentWindow.onafterprint = null;
+      if (iframe.parentNode) iframe.remove();
+    }
+
     function triggerPrintNow() {
       if (!printed) {
         printed = true;
+        iframe.contentWindow.onafterprint = cleanupPrintFrame;
         iframe.contentWindow.focus();
         iframe.contentWindow.print();
+        setTimeout(cleanupPrintFrame, 1500);
       }
     }
 

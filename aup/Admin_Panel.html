@@ -454,7 +454,22 @@
     for (var i = 0; i < keys.length; i++) {
       if (Array.isArray(response[keys[i]])) return response[keys[i]];
     }
+    var nested = [];
+    Object.keys(response).forEach(function(key) {
+      if (response[key] && typeof response[key] === 'object' && !Array.isArray(response[key])) {
+        nested = nested.concat(getApiList(response[key], keys));
+      }
+    });
+    if (nested.length) return nested;
     return [];
+  }
+
+  function collectTradeLists(value) {
+    if (Array.isArray(value)) return [value];
+    if (!value || typeof value !== 'object') return [];
+    return Object.keys(value).reduce(function(lists, key) {
+      return lists.concat(collectTradeLists(value[key]));
+    }, []);
   }
 
   function showLoadError(tbodyId, colspan, message) {
@@ -735,8 +750,7 @@
     const list = await callBackend('getTradeLicenses');
     if (requestId !== loadRequestStore.trade) return;
     if (!list) return showLoadError('tradeTableBody', 8, 'ডাটাবেস থেকে ট্রেড লাইসেন্স লোড করা যায়নি। আবার রিফ্রেশ করুন।');
-    var tradeLists = Array.isArray(list) ? [list] : ['licenses', 'renewals', 'renewalApplications', 'applications', 'data', 'results']
-      .map(function(key) { return Array.isArray(list[key]) ? list[key] : []; });
+    var tradeLists = collectTradeLists(list);
     var seenTradeIds = {};
     var allTrades = [];
     tradeLists.forEach(function(items) {
@@ -753,9 +767,16 @@
   }
   function isRenewalTradeLicense(trade) {
     if (!trade) return false;
-    var renewalFlag = trade.isRenewal === true || String(trade.isRenewal || '').toLowerCase() === 'true';
-    var requestType = String(trade.serviceType || trade.type || trade.applicationType || trade.requestType || '').toLocaleLowerCase();
-    return renewalFlag || Boolean(trade.renewDate || trade.renewalDate || trade.originalLicNo || trade.originalAppId) || requestType.indexOf('নবায়ন') !== -1 || requestType.indexOf('renew') !== -1;
+    var fields = Object.keys(trade);
+    var renewalFlag = fields.some(function(field) {
+      return /isrenew|renewal|renewdate|originallic|originalapp/i.test(field) && Boolean(trade[field]);
+    });
+    var requestType = fields.filter(function(field) {
+      return /type|service|request|category|subject/i.test(field);
+    }).map(function(field) {
+      return String(trade[field] || '').toLocaleLowerCase();
+    }).join(' ');
+    return renewalFlag || requestType.indexOf('নবায়ন') !== -1 || requestType.indexOf('renew') !== -1;
   }
   function getFilteredTradeLicenses() {
     var query = tradeSearchTerm.trim().toLocaleLowerCase();

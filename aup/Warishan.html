@@ -332,6 +332,22 @@
     return 'মৃত ' + name;
   }
 
+  function getDeceasedParentName(value) {
+    return String(value || '').replace(/\s*\[(পুত্র|কন্যা|স্ত্রী|স্বামী)\]\s*$/, '').trim();
+  }
+
+  function getDeceasedParentRelation(data) {
+    var explicit = data && (data.deceasedFatherRelation || data.deceasedRelation || data.deceasedParentRelation || data.deceasedFatherRelationType || data.DeceasedFatherRelation || data.DeceasedRelation || data.deceased_relation || data.relation);
+    if (explicit) return explicit;
+    var match = String(data && data.deceasedFather || '').match(/\[(পুত্র|কন্যা|স্ত্রী|স্বামী)\]\s*$/);
+    return match ? match[1] : 'পুত্র';
+  }
+
+  function getDeceasedParentText(data) {
+    var parentName = getDeceasedParentName(data && data.deceasedFather);
+    return parentName ? `${formatMrito(parentName)} এর ${getDeceasedParentRelation(data)} ` : '';
+  }
+
   function openWarishanPage() {
     navToSection('warishanView');
     var f = document.getElementById('warishanAppForm');
@@ -442,9 +458,13 @@
       applicantName: document.getElementById('warAppName').value.trim(),
       fatherSpouseName: document.getElementById('warAppFather').value.trim(),
       deceasedName: document.getElementById('warDeceasedName').value.trim(),
-      deceasedFather: document.getElementById('warDeceasedFather').value.trim(),
+      deceasedFather: document.getElementById('warDeceasedFather').value.trim() + ' [' + document.getElementById('warDeceasedRelation').value + ']',
+      deceasedFatherName: document.getElementById('warDeceasedFather').value.trim(),
       deceasedFatherRelation: document.getElementById('warDeceasedRelation').value,
       deceasedRelation: document.getElementById('warDeceasedRelation').value,
+      deceasedParentRelation: document.getElementById('warDeceasedRelation').value,
+      DeceasedFatherRelation: document.getElementById('warDeceasedRelation').value,
+      DeceasedRelation: document.getElementById('warDeceasedRelation').value,
       nid: document.getElementById('warAppNid').value.trim(),
       mobile: document.getElementById('warAppMobile').value.trim(),
       wardNo: document.getElementById('warAppWard').value,
@@ -539,8 +559,7 @@
 
     var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান') ? '(মোঃ আবদুস সালাম)<br>ইউ.পি সদস্য ৬নং ওয়ার্ড ও প্যানেল চেয়ারম্যান-১<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ' : '(অ্যাড. মোঃ হুমায়ুন কবির)<br>চেয়ারম্যান<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>পটুয়াখালী সদর, পটুয়াখালী।';
 
-    var deceasedRelation = data.deceasedFatherRelation || data.deceasedRelation || data.deceasedFatherRelationType || 'পুত্র';
-    var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর ${deceasedRelation} ` : '';
+    var decFatherText = getDeceasedParentText(data);
     var decNameText = formatMrito(data.deceasedName);
 
     var upLogoUrl = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
@@ -670,8 +689,7 @@
 
     var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান') ? '(মোঃ আবদুস সালাম)<br>ইউ.পি সদস্য ৬নং ওয়ার্ড ও প্যানেল চেয়ারম্যান-১<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ' : '(অ্যাড. মোঃ হুমায়ুন কবির)<br>চেয়ারম্যান<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>পটুয়াখালী সদর, পটুয়াখালী।';
 
-    var deceasedRelation = data.deceasedFatherRelation || data.deceasedRelation || data.deceasedFatherRelationType || 'পুত্র';
-    var decFatherText = data.deceasedFather ? `${formatMrito(data.deceasedFather)} এর ${deceasedRelation} ` : '';
+    var decFatherText = getDeceasedParentText(data);
     var decNameText = formatMrito(data.deceasedName);
 
     var upLogoUrl = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
@@ -725,6 +743,7 @@
                 ${renderRows(treeP1, true)}
               </tbody>
             </table>
+            <p style="margin: 8px 0 0; text-align: center; font-weight: bold; font-size: 14px;">বাকি ওয়ারিশগণের নাম পরের পাতায় দেওয়া হলো</p>
           </div>
 
           <div>
@@ -877,8 +896,8 @@
           }
           .war-watermark-bg { 
             position: absolute !important; top: 50% !important; left: 50% !important; 
-            transform: translate(-50%, -50%) !important; width: 440px !important; 
-            max-width: 440px !important; opacity: 0.11 !important; z-index: 1 !important; display: block !important; 
+            transform: translate(-50%, -50%) !important; width: 550px !important;
+            max-width: 92% !important; opacity: 0.11 !important; z-index: 1 !important; display: block !important;
           }
           .war-content-body { position: relative !important; z-index: 2 !important; height: 100% !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; }
           
@@ -923,31 +942,39 @@
     `);
     doc.close();
 
-    var images = doc.getElementsByTagName('img');
-    var totalImgs = images.length;
-    var loadedImgs = 0;
+    var images = Array.prototype.slice.call(doc.getElementsByTagName('img'));
     var printed = false;
+    var cleaned = false;
+
+    function cleanupPrintFrame() {
+      if (cleaned) return;
+      cleaned = true;
+      doc.close();
+      if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+    }
 
     function triggerPrintNow() {
       if (!printed) {
         printed = true;
+        iframe.contentWindow.onafterprint = cleanupPrintFrame;
         iframe.contentWindow.focus();
         iframe.contentWindow.print();
+        setTimeout(cleanupPrintFrame, 10000);
       }
     }
 
-    if (totalImgs === 0) {
-      setTimeout(triggerPrintNow, 300);
-    } else {
-      for (var i = 0; i < totalImgs; i++) {
-        images[i].onload = images[i].onerror = function() {
-          loadedImgs++;
-          if (loadedImgs >= totalImgs) {
-            setTimeout(triggerPrintNow, 250);
-          }
-        };
-      }
-      setTimeout(triggerPrintNow, 850);
+    function waitForImage(image) {
+      if (image.complete) return Promise.resolve();
+      return new Promise(function(resolve) {
+        image.addEventListener('load', resolve, { once: true });
+        image.addEventListener('error', resolve, { once: true });
+      });
     }
+
+    var imageReady = images.map(waitForImage);
+    var fontsReady = doc.fonts && doc.fonts.ready ? doc.fonts.ready : Promise.resolve();
+    Promise.all([fontsReady].concat(imageReady)).then(function() {
+      setTimeout(triggerPrintNow, 120);
+    });
   }
 </script>

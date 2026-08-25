@@ -416,8 +416,17 @@
   }
 
   function printExactCertificate() {
-    var rawHtml = document.getElementById('printableFamilyCert').innerHTML;
-    var printDoc = document.getElementById('secretFamilyPrintFrame').contentWindow.document;
+    var source = document.getElementById('printableFamilyCert');
+    if (!source || window._familyPrintInProgress) return;
+    window._familyPrintInProgress = true;
+
+    var iframe = document.createElement('iframe');
+    iframe.className = 'family-print-frame';
+    iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:1px;height:1px;border:0;opacity:0;pointer-events:none;';
+    document.body.appendChild(iframe);
+    var rawHtml = source.innerHTML;
+    var printWindow = iframe.contentWindow;
+    var printDoc = printWindow.document;
     
     printDoc.open();
     printDoc.write(`
@@ -466,9 +475,34 @@
     `);
     printDoc.close();
 
-    setTimeout(function() {
-      document.getElementById('secretFamilyPrintFrame').contentWindow.focus();
-      document.getElementById('secretFamilyPrintFrame').contentWindow.print();
-    }, 400);
+    var images = Array.prototype.slice.call(printDoc.images);
+    var printed = false;
+    var cleaned = false;
+    function cleanup() {
+      if (cleaned) return;
+      cleaned = true;
+      window._familyPrintInProgress = false;
+      printWindow.onafterprint = null;
+      if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+    }
+    function waitForImage(image) {
+      if (image.complete && image.naturalWidth > 0) return Promise.resolve();
+      return new Promise(function(resolve) {
+        image.addEventListener('load', resolve, { once: true });
+        image.addEventListener('error', resolve, { once: true });
+      });
+    }
+    function startPrint() {
+      if (printed) return;
+      printed = true;
+      printWindow.onafterprint = cleanup;
+      printWindow.focus();
+      try { printWindow.print(); } catch (error) { cleanup(); }
+      setTimeout(cleanup, 10000);
+    }
+    var fontsReady = printDoc.fonts && printDoc.fonts.ready ? printDoc.fonts.ready : Promise.resolve();
+    Promise.all([fontsReady].concat(images.map(waitForImage))).then(function() {
+      setTimeout(startPrint, 120);
+    });
   }
 </script>

@@ -34,6 +34,11 @@
   .page-link-btn { padding: 4px 10px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 4px; cursor: pointer; text-decoration: none; font-weight: bold; margin: 0 2px; }
   .page-link-btn:hover, .page-link-btn.active-page { background: #006837; color: #fff; border-color: #006837; }
   .trade-filter-tabs .btn.active { background: #006837; color: #fff; border-color: #006837; }
+  .general-category-card { background: #fff; border: 1px solid #d9e8df; border-radius: 8px; min-height: 112px; padding: 12px 8px; text-align: center; cursor: pointer; transition: .2s ease; }
+  .general-category-card:hover, .general-category-card.active { border-color: #006837; background: #f0faf4; box-shadow: 0 4px 12px rgba(0, 104, 55, .14); transform: translateY(-2px); }
+  .general-category-icon { width: 42px; height: 42px; margin: 0 auto 6px; border: 2px solid #087f55; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #087f55; background: #e9f7ef; }
+  .general-category-name { color: #234236; display: block; font-size: 13px; font-weight: 700; line-height: 1.25; }
+  .general-category-count { color: #63756c; display: block; font-size: 12px; margin-top: 2px; }
 </style>
 
 <!-- ADMIN PANEL VIEW -->
@@ -163,10 +168,17 @@
 
       <!-- 🟢 Tab 6: সাধারণ প্রত্যয়নপত্র তালিকা (প্রিন্ট ও এডিট ফাংশন General_Certificate.html থেকে রান হবে) -->
       <div id="appsTab" class="admin-tab d-none">
-        <div class="card p-3 shadow-sm border-0 mb-3 bg-success text-white d-flex flex-row justify-content-between align-items-center">
+        <div class="card p-3 shadow-sm border-0 mb-3 bg-success text-white d-flex flex-wrap gap-2 justify-content-between align-items-center">
           <h5 class="fw-bold m-0"><i class="fa fa-file-invoice me-2"></i> সাধারণ প্রত্যয়নপত্র তালিকা ও অনুমোদন</h5>
-          <button class="btn btn-light btn-sm fw-bold text-success" onclick="loadAdminApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
+          <div class="d-flex flex-wrap gap-2 align-items-center">
+            <div class="input-group input-group-sm" style="max-width:330px;">
+              <input type="search" id="generalSearchInput" class="form-control" placeholder="নাম / মোবাইল / আবেদন নং" oninput="searchGeneralApps()" aria-label="সাধারণ প্রত্যয়ন আবেদন খুঁজুন">
+              <button class="btn btn-light text-success fw-bold" type="button" onclick="searchGeneralApps()" title="সার্চ"><i class="fa fa-search"></i></button>
+            </div>
+            <button class="btn btn-light btn-sm fw-bold text-success" onclick="loadAdminApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
+          </div>
         </div>
+        <div id="generalCategoryGrid" class="row row-cols-2 row-cols-md-4 row-cols-xl-5 g-2 mb-3"></div>
         <div class="table-responsive bg-white p-3 shadow-sm rounded border">
           <table class="table table-hover align-middle">
             <thead class="table-dark"><tr><th>আবেদন নং</th><th>সেবার নাম</th><th>আবেদনকারী</th><th>NID</th><th>মোবাইল</th><th>ওয়ার্ড</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
@@ -352,6 +364,8 @@
   var loadRequestStore = { cit: 0, trade: 0, fam: 0, war: 0, gen: 0, tax: 0, users: 0 };
   var tradeListMode = 'new';
   var tradeSearchTerm = '';
+  var generalCategory = '';
+  var generalSearchTerm = '';
   var PAGE_SIZE = 15;
 
   /* ==========================================================
@@ -684,6 +698,49 @@
     }).map(function(entry) { return entry.item; });
   }
 
+  function getGeneralCategories() {
+    return (typeof GENERAL_TEMPLATES === 'object' && GENERAL_TEMPLATES)
+      ? Object.keys(GENERAL_TEMPLATES)
+      : ['বিবিধ প্রত্যয়নপত্র', 'চারিত্রিক সনদ', 'ভূমিহীন সনদ', 'অবিবাহিত সনদ', 'পুনঃ বিবাহ না হওয়া সনদ', 'বার্ষিক আয়ের প্রত্যয়ন', 'একই নামের প্রত্যয়ন', 'প্রতিবন্ধী সনদপত্র', 'অনাপত্তি সনদপত্র', 'আর্থিক অসচ্ছলতার সনদপত্র', 'বিবাহিত সনদ', 'দ্বিতীয় বিবাহের অনুমতি পত্র', 'নতুন ভোটারের প্রত্যয়ন পত্র', 'ভোটার স্থানান্তরের প্রত্যয়ন পত্র', 'বেকারত্বের সনদপত্র', 'অস্থায়ীভাবে বসবাসের প্রত্যয়ন পত্র', 'জাতীয়তা সনদ', 'স্থায়ী বাসিন্দা সনদ', 'এতিম সনদ', 'মাসিক আয়ের সনদ'];
+  }
+
+  function normalizeGeneralSearch(value) {
+    return String(value == null ? '' : value).toLowerCase().replace(/[০-৯]/g, function(d) { return '০১২৩৪৫৬৭৮৯'.indexOf(d); });
+  }
+
+  function renderGeneralCategories() {
+    var grid = document.getElementById('generalCategoryGrid');
+    if (!grid) return;
+    var categories = getGeneralCategories();
+    var icons = ['fa-file-signature', 'fa-user-check', 'fa-house-chimney-crack', 'fa-user', 'fa-ring', 'fa-money-bill-wave', 'fa-equals', 'fa-wheelchair', 'fa-file-contract', 'fa-hand-holding-dollar', 'fa-heart', 'fa-file-signature', 'fa-check-to-slot', 'fa-arrow-right-arrow-left', 'fa-user-slash', 'fa-house-user', 'fa-flag', 'fa-location-dot', 'fa-child', 'fa-sack-dollar'];
+    var search = normalizeGeneralSearch(generalSearchTerm);
+    var list = rawDataStore.gen.filter(function(app) {
+      var type = app.type || app.serviceType || '';
+      var text = [app.appId, app.applicationNo, app.applicationId, app.trackingId, app.name, app.applicantName, app.mobile].map(normalizeGeneralSearch).join(' ');
+      return (!generalCategory || type === generalCategory) && (!search || text.indexOf(search) !== -1);
+    });
+    var allCard = '<div class="col"><button type="button" class="general-category-card w-100 ' + (!generalCategory ? 'active' : '') + '" onclick="setGeneralCategory(\'\')"><span class="general-category-icon"><i class="fa fa-layer-group"></i></span><span class="general-category-name">সব প্রত্যয়ন</span><span class="general-category-count">' + toBnNumber(rawDataStore.gen.length) + ' টি আবেদন</span></button></div>';
+    grid.innerHTML = allCard + categories.map(function(category, index) {
+      var count = rawDataStore.gen.filter(function(app) { return (app.type || app.serviceType) === category; }).length;
+      return '<div class="col"><button type="button" class="general-category-card w-100 ' + (generalCategory === category ? 'active' : '') + '" onclick="setGeneralCategory(\'' + category.replace(/'/g, "\\'") + '\')"><span class="general-category-icon"><i class="fa ' + (icons[index] || 'fa-file-lines') + '"></i></span><span class="general-category-name">' + category + '</span><span class="general-category-count">' + toBnNumber(count) + ' টি আবেদন</span></button></div>';
+    }).join('');
+  }
+
+  function setGeneralCategory(category) {
+    generalCategory = category || '';
+    currentPageStore.gen = 1;
+    renderGeneralCategories();
+    renderGenPage(1);
+  }
+
+  function searchGeneralApps() {
+    var input = document.getElementById('generalSearchInput');
+    generalSearchTerm = input ? input.value.trim() : '';
+    currentPageStore.gen = 1;
+    renderGeneralCategories();
+    renderGenPage(1);
+  }
+
   /* ==========================================================
      🟢 ট্যাব ৬: সাধারণ প্রত্যয়নপত্র তালিকা লোডার (Newest First)
   ========================================================== */
@@ -693,14 +750,13 @@
     const apps = await callBackend('getAllApplications');
     if (requestId !== loadRequestStore.gen) return;
     if (!apps) return showLoadError('adminAppTable', 8, 'ডাটাবেস থেকে আবেদন লোড করা যায়নি। আবার রিফ্রেশ করুন।');
-    var generalServices = (typeof GENERAL_TEMPLATES === 'object')
-      ? Object.keys(GENERAL_TEMPLATES)
-      : [];
+    var generalServices = getGeneralCategories();
     rawDataStore.gen = sortNewestFirst(
       getApiList(apps, ['applications', 'data', 'results']).filter(function(app) {
         return generalServices.indexOf(app.type || app.serviceType) !== -1;
       })
     );
+    renderGeneralCategories();
     renderGenPage(page);
   }
 
@@ -708,10 +764,16 @@
     currentPageStore.gen = page;
     var tbody = document.getElementById('adminAppTable');
     tbody.innerHTML = '';
-    var list = rawDataStore.gen;
+    var search = normalizeGeneralSearch(generalSearchTerm);
+    var list = rawDataStore.gen.filter(function(app) {
+      var type = app.type || app.serviceType || '';
+      var text = [app.appId, app.applicationNo, app.applicationId, app.trackingId, app.name, app.applicantName, app.mobile].map(normalizeGeneralSearch).join(' ');
+      return (!generalCategory || type === generalCategory) && (!search || text.indexOf(search) !== -1);
+    });
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     if(slice.length === 0) { 
       tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; 
+      renderPagination('gen', 0, 'renderGenPage');
       return; 
     }
     slice.forEach(function(a) {

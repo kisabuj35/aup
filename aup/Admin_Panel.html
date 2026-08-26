@@ -34,21 +34,20 @@
   .page-link-btn { padding: 4px 10px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 4px; cursor: pointer; text-decoration: none; font-weight: bold; margin: 0 2px; }
   .page-link-btn:hover, .page-link-btn.active-page { background: #006837; color: #fff; border-color: #006837; }
   .trade-filter-tabs .btn.active { background: #006837; color: #fff; border-color: #006837; }
-  .general-app-toolbar { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(260px, 330px) minmax(110px, 1fr); gap: 16px; align-items: center; }
-  .general-app-heading { min-width: 0; }
-  .general-app-search { width: 100%; }
-  .general-app-refresh { justify-self: end; }
-  .general-category-card { background: #fff; border: 1px solid #d9e8df; border-radius: 8px; min-height: 78px; padding: 10px 12px; display: flex; align-items: center; text-align: left; cursor: pointer; transition: .2s ease; }
+  .general-app-toolbar { display: flex !important; flex-wrap: nowrap !important; gap: 16px; align-items: center; }
+  .general-app-heading { flex: 1 1 0; min-width: 0; white-space: nowrap; }
+  .general-app-search { flex: 0 1 330px; width: 330px; max-width: 330px; }
+  .general-app-refresh { flex: 0 0 auto; margin-left: auto; }
+  .general-category-card { background: #fff; border: 1px solid #d9e8df; border-radius: 8px; min-height: 78px; padding: 10px 12px; display: flex !important; flex-direction: row !important; align-items: center; justify-content: flex-start; text-align: left; cursor: pointer; transition: .2s ease; }
   .general-category-card:hover, .general-category-card.active { border-color: #006837; background: #f0faf4; box-shadow: 0 4px 12px rgba(0, 104, 55, .14); transform: translateY(-2px); }
-  .general-category-icon { width: 42px; height: 42px; flex: 0 0 42px; margin: 0 12px 0 0; border: 2px solid #087f55; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #087f55; background: #e9f7ef; }
+  .general-category-icon { width: 42px; height: 42px; flex: 0 0 42px; margin: 0 12px 0 0 !important; border: 2px solid #087f55; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #087f55; background: #e9f7ef; }
   .general-category-info { min-width: 0; }
   .general-category-name { color: #234236; display: block; font-size: 13px; font-weight: 700; line-height: 1.25; }
   .general-category-count { color: #63756c; display: block; font-size: 12px; margin-top: 3px; }
   @media (max-width: 767.98px) {
-    .general-app-toolbar { grid-template-columns: 1fr auto; }
-    .general-app-heading { grid-column: 1 / -1; }
-    .general-app-search { grid-column: 1; }
-    .general-app-refresh { grid-column: 2; }
+    .general-app-toolbar { gap: 8px; }
+    .general-app-heading { display: none; }
+    .general-app-search { flex: 1 1 auto; width: auto; max-width: none; }
   }
 </style>
 

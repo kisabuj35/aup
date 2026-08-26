@@ -903,6 +903,11 @@
   function isRenewalTradeLicense(trade) {
     if (!trade) return false;
     if (trade.__renewalSource) return true;
+    var recordType = String(trade.recordType || trade.licenseType || trade.tradeType || '').trim().toLocaleLowerCase();
+    if (recordType === 'renewal' || recordType === 'renew' || recordType.indexOf('নবায়ন') !== -1) return true;
+    if (recordType === 'new' || recordType === 'নতুন') return false;
+    var applicationId = String(trade.appId || trade.applicationId || trade.applicationNo || trade.id || '').trim().toUpperCase();
+    if (/\bRN[-_]/.test(applicationId) || /RENEW/.test(applicationId)) return true;
     function hasValue(value) {
       if (value === null || value === undefined || value === false || value === 0) return false;
       var normalized = String(value).trim().toLowerCase();

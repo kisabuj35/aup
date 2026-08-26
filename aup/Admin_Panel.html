@@ -524,13 +524,14 @@
   function collectTradeRecords(value, sourceKey) {
     if (Array.isArray(value)) {
       return value.map(function(trade) {
-        if (sourceKey && /renew/i.test(sourceKey)) trade.__renewalSource = true;
+        if (sourceKey && /renew|নবায়/i.test(sourceKey)) trade.__renewalSource = true;
         return trade;
       });
     }
     if (!value || typeof value !== 'object') return [];
     return Object.keys(value).reduce(function(records, key) {
-      return records.concat(collectTradeRecords(value[key], key));
+      var nextSourceKey = (sourceKey ? sourceKey + '.' : '') + key;
+      return records.concat(collectTradeRecords(value[key], nextSourceKey));
     }, []);
   }
 
@@ -889,8 +890,9 @@
     tradeLists.forEach(function(items) {
       items.forEach(function(trade) {
         var tradeId = String(trade.appId || trade.id || trade.licNo || '');
-        if (!tradeId || !seenTradeIds[tradeId]) {
-          if (tradeId) seenTradeIds[tradeId] = true;
+        var recordKey = tradeId + (isRenewalTradeLicense(trade) ? ':renew' : ':new');
+        if (!tradeId || !seenTradeIds[recordKey]) {
+          if (tradeId) seenTradeIds[recordKey] = true;
           allTrades.push(trade);
         }
       });
@@ -915,7 +917,10 @@
     }).map(function(field) {
       return String(trade[field] || '').toLocaleLowerCase();
     }).join(' ');
-    return renewalFlag || requestType.indexOf('নবায়ন') !== -1 || requestType.indexOf('renew') !== -1;
+    var originalLicense = fields.some(function(field) {
+      return /originallic|originalapp/i.test(field) && hasValue(trade[field]);
+    });
+    return renewalFlag || originalLicense || requestType.indexOf('নবায়ন') !== -1 || requestType.indexOf('renew') !== -1;
   }
   function getFilteredTradeLicenses() {
     var query = tradeSearchTerm.trim().toLocaleLowerCase();

@@ -34,9 +34,10 @@
   .page-link-btn { padding: 4px 10px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 4px; cursor: pointer; text-decoration: none; font-weight: bold; margin: 0 2px; }
   .page-link-btn:hover, .page-link-btn.active-page { background: #006837; color: #fff; border-color: #006837; }
   .trade-filter-tabs .btn.active { background: #006837; color: #fff; border-color: #006837; }
-  .general-app-toolbar { display: flex !important; flex-wrap: nowrap !important; gap: 16px; align-items: center; }
+  .general-app-toolbar { display: flex !important; flex-wrap: nowrap !important; height: 64px; min-height: 64px; gap: 16px; align-items: center; overflow: hidden; }
   .general-app-heading { flex: 1 1 0; min-width: 0; white-space: nowrap; }
-  .general-app-search { flex: 0 1 330px; width: 330px; max-width: 330px; }
+  .general-app-search { flex: 0 1 330px; width: 330px; max-width: 330px; height: 38px; min-height: 38px; align-self: center; }
+  .general-app-search #generalSearchInput, .general-app-search .btn { height: 38px !important; min-height: 38px; }
   .general-app-refresh { flex: 0 0 auto; margin-left: auto; }
   .general-category-card { background: #fff; border: 1px solid #d9e8df; border-radius: 8px; min-height: 78px; padding: 10px 12px; display: flex !important; flex-direction: row !important; align-items: center; justify-content: flex-start; text-align: left; cursor: pointer; transition: .2s ease; }
   .general-category-card:hover, .general-category-card.active { border-color: #006837; background: #f0faf4; box-shadow: 0 4px 12px rgba(0, 104, 55, .14); transform: translateY(-2px); }
@@ -45,7 +46,7 @@
   .general-category-name { color: #234236; display: block; font-size: 13px; font-weight: 700; line-height: 1.25; }
   .general-category-count { color: #63756c; display: block; font-size: 12px; margin-top: 3px; }
   @media (max-width: 767.98px) {
-    .general-app-toolbar { gap: 8px; }
+    .general-app-toolbar { height: 56px; min-height: 56px; gap: 8px; }
     .general-app-heading { display: none; }
     .general-app-search { flex: 1 1 auto; width: auto; max-width: none; }
   }

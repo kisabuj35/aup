@@ -669,29 +669,45 @@
     btn.disabled = true;
     btn.innerText = 'সংরক্ষণ হচ্ছে...';
     var res;
+    var savedData;
+    var isPersisted = false;
+    var verifySavedWarishanData = async function() {
+      savedData = await callBackendAPI('getWarishanDetails', payload.appId);
+      return savedData && savedData.found &&
+        String(savedData.applicantName || savedData.name || '') === payload.applicantName &&
+        String(savedData.fatherSpouseName || savedData.fatherName || '') === payload.fatherSpouseName &&
+        String(savedData.nid || '') === payload.nid &&
+        String(savedData.mobile || '') === payload.mobile &&
+        String(savedData.wardNo || '') === payload.wardNo &&
+        String(savedData.village || '') === payload.village &&
+        String(savedData.postOffice || '') === payload.postOffice &&
+        String(savedData.deceasedName || '') === payload.deceasedName &&
+        String(savedData.deceasedFatherName || getDeceasedParentName(savedData.deceasedFather || '')) === payload.deceasedFatherName &&
+        JSON.stringify(savedData.warishanTree || []) === JSON.stringify(payload.warishanTree);
+    };
     try {
       res = await callBackendAPI('saveEditedApplication', payload);
+      if (res && res.success) isPersisted = await verifySavedWarishanData();
+      if (!isPersisted) {
+        res = await callBackendAPI('updateWarishanApplication', payload);
+        if (res && res.success) isPersisted = await verifySavedWarishanData();
+      }
     } catch (error) {
       console.error('Warishan update error:', error);
       res = { success: false, error: 'সার্ভারে তথ্য সংরক্ষণ করা যায়নি।' };
     }
     btn.disabled = false;
     btn.innerHTML = '<i class="fa fa-save me-1"></i> সংশোধিত তথ্য সংরক্ষণ করুন';
-    if (res && res.success) {
-      var savedData = await callBackendAPI('getWarishanDetails', payload.appId);
-      var isPersisted = savedData && savedData.found &&
-        String(savedData.applicantName || savedData.name || '') === payload.applicantName &&
-        String(savedData.deceasedName || '') === payload.deceasedName &&
-        JSON.stringify(savedData.warishanTree || []) === JSON.stringify(payload.warishanTree);
-      if (!isPersisted) {
-        Swal.fire({ icon: 'error', title: 'তথ্য সংরক্ষণ নিশ্চিত হয়নি!', text: 'সার্ভার সফল দেখালেও সংশোধিত তথ্য ডাটাবেস থেকে পাওয়া যায়নি। আবার চেষ্টা করুন।' });
-        return;
-      }
+    if (res && res.success && isPersisted) {
       bootstrap.Modal.getInstance(document.getElementById('editWarishanModal')).hide();
       if (typeof loadWarishanApps === 'function') loadWarishanApps();
       Swal.fire({ icon: 'success', title: 'সংশোধিত হয়েছে!', text: 'ওয়ারিশান সনদের সকল তথ্য ডাটাবেসে আপডেট হয়েছে।', timer: 1800, showConfirmButton: false });
     } else {
-      Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: (res && (res.error || res.message)) || 'তথ্য আপডেট করা সম্ভব হয়নি।' });
+      if (!isPersisted) {
+        Swal.fire({ icon: 'error', title: 'তথ্য সংরক্ষণ নিশ্চিত হয়নি!', text: 'সার্ভার সফল দেখালেও সংশোধিত তথ্য ডাটাবেস থেকে পাওয়া যায়নি। আবার চেষ্টা করুন।' });
+      } else {
+        Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: (res && (res.error || res.message)) || 'তথ্য আপডেট করা সম্ভব হয়নি।' });
+      }
     }
   }
 

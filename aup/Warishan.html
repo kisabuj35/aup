@@ -319,6 +319,54 @@
   </div>
 </div>
 
+<!-- 🟢 4. WARISHAN ADMIN EDIT MODAL -->
+<div class="modal fade" id="editWarishanModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title fw-bold"><i class="fa fa-pen-to-square me-2"></i> ওয়ারিশান আবেদনের তথ্য সংশোধন</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body bg-light">
+        <form id="editWarishanForm" onsubmit="event.preventDefault(); saveEditedWarishanData();">
+          <input type="hidden" id="editWarAppId">
+          <div class="card p-3 mb-3 bg-white border">
+            <h6 class="fw-bold text-success border-bottom pb-2 mb-3">আবেদনকারীর তথ্য</h6>
+            <div class="row g-3">
+              <div class="col-md-4"><label class="form-label fw-bold">আবেদনকারীর নাম *</label><input type="text" id="editWarAppName" class="form-control" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">পিতা/স্বামীর নাম *</label><input type="text" id="editWarAppFather" class="form-control" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">এনআইডি / জন্ম নিবন্ধন *</label><input type="text" id="editWarAppNid" class="form-control" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">মোবাইল নম্বর *</label><input type="tel" id="editWarAppMobile" class="form-control" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">ওয়ার্ড নম্বর *</label><select id="editWarAppWard" class="form-select" required><option value="০১">০১</option><option value="০২">০২</option><option value="০৩">০৩</option><option value="০৪">০৪</option><option value="০৫">০৫</option><option value="০৬">০৬</option><option value="০৭">০৭</option><option value="০৮">০৮</option><option value="০৯">০৯</option></select></div>
+              <div class="col-md-4"><label class="form-label fw-bold">গ্রাম/মহল্লা *</label><input type="text" id="editWarAppVillage" class="form-control" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold">ডাকঘর *</label><input type="text" id="editWarAppPost" class="form-control" required></div>
+            </div>
+          </div>
+          <div class="card p-3 mb-3 bg-white border">
+            <h6 class="fw-bold text-danger border-bottom pb-2 mb-3">মূল মৃত ব্যক্তির তথ্য</h6>
+            <div class="row g-3">
+              <div class="col-md-6"><label class="form-label fw-bold">মূল মৃত ব্যক্তির নাম *</label><input type="text" id="editWarDeceasedName" class="form-control" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">পিতা/স্বামীর নাম *</label><input type="text" id="editWarDeceasedFather" class="form-control" required></div>
+              <div class="col-md-2"><label class="form-label fw-bold">সম্পর্ক *</label><select id="editWarDeceasedRelation" class="form-select" required><option value="পুত্র">পুত্র</option><option value="কন্যা">কন্যা</option><option value="স্ত্রী">স্ত্রী</option><option value="স্বামী">স্বামী</option></select></div>
+            </div>
+          </div>
+          <div class="card p-3 bg-white border">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="fw-bold text-primary m-0">ওয়ারিশগণের বিবরণ ও ধাপসমূহ</h6>
+              <button type="button" class="btn btn-sm btn-outline-success fw-bold" onclick="addWarishanEditGroup()"><i class="fa fa-folder-plus me-1"></i> উপ-গ্রুপ যোগ করুন</button>
+            </div>
+            <div id="editWarGroupsContainer"></div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">বন্ধ করুন</button>
+        <button type="submit" form="editWarishanForm" class="btn btn-success fw-bold" id="saveEditWarBtn"><i class="fa fa-save me-1"></i> সংশোধিত তথ্য সংরক্ষণ করুন</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 🟢 JAVASCRIPT LOGIC -->
 
 <!-- 🟢 UPDATED JAVASCRIPT LOGIC (DIRECT 1-CLICK PRINT) -->
@@ -490,6 +538,141 @@
         title: 'আবেদন ব্যর্থ',
         text: res ? res.error : 'আবেদন জমা দেওয়া যায়নি।'
       });
+    }
+  }
+
+  var warishanEditGroupCounter = 0;
+
+  function addWarishanEditRow(groupIndex, member) {
+    var tbody = document.getElementById('editWarTableBody_' + groupIndex);
+    if (!tbody) return;
+    member = member || {};
+    var row = document.createElement('tr');
+    row.innerHTML = `
+      <td><input type="text" class="form-control form-control-sm text-center edit-war-sl" value="${member.sl || ''}"></td>
+      <td><input type="text" class="form-control form-control-sm edit-war-name" value="${member.name || ''}" required></td>
+      <td><input type="text" class="form-control form-control-sm edit-war-rel-name" value="${member.relName || ''}"></td>
+      <td><input type="text" class="form-control form-control-sm edit-war-addr" value="${member.address || ''}"></td>
+      <td><input type="text" class="form-control form-control-sm edit-war-rel" value="${member.relation || ''}"></td>
+      <td class="text-center"><button type="button" class="btn btn-sm text-danger p-0" onclick="removeWarishanEditRow(this)"><i class="fa fa-trash"></i></button></td>
+    `;
+    tbody.appendChild(row);
+  }
+
+  function addWarishanEditGroup(group) {
+    var container = document.getElementById('editWarGroupsContainer');
+    if (!container) return;
+    var index = warishanEditGroupCounter++;
+    group = group || {};
+    var groupBox = document.createElement('div');
+    groupBox.className = 'war-group-box mb-3';
+    groupBox.id = 'editWarGroup_' + index;
+    groupBox.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <input type="text" class="form-control form-control-sm fw-bold text-success border-success edit-war-group-title" value="${group.groupTitle || ''}" placeholder="ওয়ারিশ উপ-গ্রুপের শিরোনাম" required>
+        <div class="ms-2 text-nowrap">
+          <button type="button" class="btn btn-sm btn-outline-success" onclick="addWarishanEditRow(${index})"><i class="fa fa-plus me-1"></i> সদস্য যোগ</button>
+          <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeWarishanEditGroup(${index})"><i class="fa fa-times"></i></button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-sm align-middle mb-0 bg-white">
+          <thead class="table-light"><tr><th>ক্র.নং</th><th>ওয়ারিশের নাম</th><th>পিতা/স্বামীর নাম</th><th>ঠিকানা</th><th>সম্পর্ক</th><th>মুছুন</th></tr></thead>
+          <tbody id="editWarTableBody_${index}"></tbody>
+        </table>
+      </div>
+    `;
+    container.appendChild(groupBox);
+    (group.members && group.members.length ? group.members : [{}]).forEach(function(member) { addWarishanEditRow(index, member); });
+  }
+
+  function removeWarishanEditRow(button) {
+    var tbody = button.closest('tbody');
+    if (tbody && tbody.rows.length > 1) button.closest('tr').remove();
+    else alert('প্রতিটি উপ-গ্রুপে কমপক্ষে একজন ওয়ারিশ থাকতে হবে!');
+  }
+
+  function removeWarishanEditGroup(index) {
+    var group = document.getElementById('editWarGroup_' + index);
+    if (group) group.remove();
+  }
+
+  function collectWarishanEditTreeData() {
+    return Array.from(document.querySelectorAll('#editWarGroupsContainer .war-group-box')).map(function(group) {
+      return {
+        groupTitle: group.querySelector('.edit-war-group-title').value.trim(),
+        members: Array.from(group.querySelectorAll('tbody tr')).map(function(row) {
+          return {
+            sl: row.querySelector('.edit-war-sl').value.trim(),
+            name: row.querySelector('.edit-war-name').value.trim(),
+            relName: row.querySelector('.edit-war-rel-name').value.trim(),
+            address: row.querySelector('.edit-war-addr').value.trim(),
+            relation: row.querySelector('.edit-war-rel').value.trim()
+          };
+        })
+      };
+    });
+  }
+
+  async function openEditWarishanModal(appId) {
+    var data = await callBackendAPI('getWarishanDetails', appId);
+    if (!data || !data.found) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
+
+    document.getElementById('editWarAppId').value = data.appId || appId;
+    document.getElementById('editWarAppName').value = data.applicantName || data.name || '';
+    document.getElementById('editWarAppFather').value = data.fatherSpouseName || data.fatherName || '';
+    document.getElementById('editWarAppNid').value = data.nid || '';
+    document.getElementById('editWarAppMobile').value = data.mobile || '';
+    document.getElementById('editWarAppWard').value = data.wardNo || '০১';
+    document.getElementById('editWarAppVillage').value = data.village || '';
+    document.getElementById('editWarAppPost').value = data.postOffice || '';
+    document.getElementById('editWarDeceasedName').value = data.deceasedName || '';
+    document.getElementById('editWarDeceasedFather').value = getDeceasedParentName(data.deceasedFather || data.deceasedFatherName || '');
+    document.getElementById('editWarDeceasedRelation').value = getDeceasedParentRelation(data);
+
+    var groupsContainer = document.getElementById('editWarGroupsContainer');
+    groupsContainer.innerHTML = '';
+    warishanEditGroupCounter = 0;
+    (data.warishanTree || []).forEach(addWarishanEditGroup);
+    if (!data.warishanTree || !data.warishanTree.length) addWarishanEditGroup();
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('editWarishanModal')).show();
+  }
+
+  async function saveEditedWarishanData() {
+    var btn = document.getElementById('saveEditWarBtn');
+    var deceasedFatherName = document.getElementById('editWarDeceasedFather').value.trim();
+    var deceasedRelation = document.getElementById('editWarDeceasedRelation').value;
+    var payload = {
+      appId: document.getElementById('editWarAppId').value,
+      applicantName: document.getElementById('editWarAppName').value.trim(),
+      name: document.getElementById('editWarAppName').value.trim(),
+      fatherSpouseName: document.getElementById('editWarAppFather').value.trim(),
+      nid: document.getElementById('editWarAppNid').value.trim(),
+      mobile: document.getElementById('editWarAppMobile').value.trim(),
+      wardNo: document.getElementById('editWarAppWard').value,
+      village: document.getElementById('editWarAppVillage').value.trim(),
+      postOffice: document.getElementById('editWarAppPost').value.trim(),
+      deceasedName: document.getElementById('editWarDeceasedName').value.trim(),
+      deceasedFather: deceasedFatherName + ' [' + deceasedRelation + ']',
+      deceasedFatherName: deceasedFatherName,
+      deceasedFatherRelation: deceasedRelation,
+      deceasedRelation: deceasedRelation,
+      deceasedParentRelation: deceasedRelation,
+      DeceasedFatherRelation: deceasedRelation,
+      DeceasedRelation: deceasedRelation,
+      warishanTree: collectWarishanEditTreeData()
+    };
+    btn.disabled = true;
+    btn.innerText = 'সংরক্ষণ হচ্ছে...';
+    var res = await callBackendAPI('saveEditedApplication', payload);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa fa-save me-1"></i> সংশোধিত তথ্য সংরক্ষণ করুন';
+    if (res && res.success) {
+      bootstrap.Modal.getInstance(document.getElementById('editWarishanModal')).hide();
+      if (typeof loadWarishanApps === 'function') loadWarishanApps();
+      Swal.fire({ icon: 'success', title: 'সংশোধিত হয়েছে!', text: 'ওয়ারিশান সনদের সকল তথ্য সফলভাবে আপডেট হয়েছে।', timer: 1800, showConfirmButton: false });
+    } else {
+      Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: (res && (res.error || res.message)) || 'তথ্য আপডেট করা সম্ভব হয়নি।' });
     }
   }
 

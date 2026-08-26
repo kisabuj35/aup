@@ -204,21 +204,6 @@
         appCopyBtn = `<button class="btn btn-sm btn-outline-primary fw-bold" onclick="printGeneralAppCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
       }
 
-      var officialCertBtn = '';
-      if(data.status === 'Approved') {
-        if(data.type === 'নাগরিকত্ব সনদ') {
-          officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showCitizenPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
-        } else if(data.type === 'পারিবারিক সনদ' || data.type === 'উত্তরাধিকারী সনদ') {
-          officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showFamilyPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
-        } else if(data.type === 'ওয়ারিশান সনদ') {
-          officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showFamilyWarishanPrintPreview('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
-        } else if(data.type === 'ট্রেড লাইসেন্স') {
-          officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="showTradeCertPreview('${data.appId}')"><i class="fa fa-print me-1"></i> লাইসেন্স প্রিন্ট</button>`;
-        } else {
-          officialCertBtn = `<button class="btn btn-sm btn-danger fw-bold ms-2" onclick="printGeneralCertificate('${data.appId}')"><i class="fa fa-print me-1"></i> সনদ প্রিন্ট</button>`;
-        }
-      }
-
       output.innerHTML = `
         <div class="card p-3 border mt-3 bg-white shadow-sm rounded-3">
           <h5 class="fw-bold text-success mb-2"><i class="fa fa-user-circle me-1"></i> আবেদনকারী: ${data.applicantName || data.name}</h5>
@@ -229,7 +214,6 @@
           <p class="mb-0"><strong>বর্তমান অবস্থা:</strong> ${statusBadge}</p>
           <div class="mt-3 d-flex gap-2">
             ${appCopyBtn}
-            ${officialCertBtn}
           </div>
         </div>
       `;

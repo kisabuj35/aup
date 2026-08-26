@@ -68,7 +68,7 @@
     margin: 8px 0 12px 0;
     position: relative;
   }
-  
+
   .royal-ribbon-3d {
     position: relative;
     display: inline-block;
@@ -190,10 +190,10 @@
       <h5 class="fw-bold m-0"><i class="fa fa-sitemap me-2"></i> ওয়ারিশান সনদের অনলাইন আবেদন ফরম</h5>
       <button class="btn btn-light btn-sm fw-bold text-success" onclick="navToSection('publicHome')"><i class="fa fa-arrow-left me-1"></i> হোম পেজ</button>
     </div>
-    
+
     <div class="card-body p-4 bg-light">
       <form id="warishanAppForm" onsubmit="event.preventDefault(); submitWarishanForm();">
-        
+
         <div class="card p-3 mb-4 bg-white border">
           <p class="mb-1 fw-bold">বরাবর,</p>
           <p class="mb-1">চেয়ারম্যান মহোদয়,</p>
@@ -391,7 +391,7 @@
   function removeWarRow(btn) {
     var tr = btn.closest('tr');
     var tbody = tr.parentElement;
-    if(tbody.getElementsByTagName('tr').length > 1) { tr.remove(); } 
+    if(tbody.getElementsByTagName('tr').length > 1) { tr.remove(); }
     else { alert('কমপক্ষে একজন ওয়ারিশের তথ্য থাকতে হবে!'); }
   }
 
@@ -569,7 +569,7 @@
       <div class="war-page-container">
         <!-- ওয়াটারমার্ক -->
         <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark">
-        
+
         <div class="war-content-body">
           <div>
             <!-- শীর্ষ হেডার -->
@@ -698,7 +698,7 @@
     var page1Html = `
       <div class="war-page-container">
         <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark">
-        
+
         <div class="war-content-body">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2.5px solid #006837; padding-bottom: 5px;">
@@ -768,7 +768,7 @@
     var page2Html = `
       <div class="war-page-container">
         <img src="${upLogoUrl}" class="war-watermark-bg" alt="Watermark">
-        
+
         <div class="war-content-body">
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2.5px solid #006837; padding-bottom: 5px;">
@@ -852,12 +852,12 @@
     document.getElementById('appCopyTrackingId').innerText = data.appId || appId;
     document.getElementById('appCopySignName').innerText = applicantName;
     document.getElementById('appCopySignMobile').innerText = data.mobile || '';
-    document.getElementById('appCopyMainBodyText').innerText = 'সবিনয় বিনীত নিবেদন এই যে, আমি নিম্ন স্বাক্ষরকারী আবেদনকারী ' + applicantName + ', পিতা/স্বামী: ' + applicantParent + ', ওয়ার্ড নং: ' + (data.wardNo || '') + ', গ্রাম: ' + (data.village || '') + ', ডাকঘর: ' + (data.postOffice || '') + ', ১১নং আউলিয়াপুর ইউনিয়ন, পটুয়াখালী সদর, পটুয়াখালী জেলার একজন বৈধ ওয়ারিশ। মৃত ' + deceasedName + ', পিতা/স্বামী: ' + deceasedParent + ', সম্পর্ক: ' + deceasedRelation + ' এর ওয়ারিশান সনদ প্রয়োজন হওয়ায় নিচে উল্লেখিত ওয়ারিশগণের নামের তালিকাসহ সনদটি প্রদানের জন্য বিনীতভাবে আবেদন করছি।';
+    document.getElementById('appCopyMainBodyText').innerText = 'সবিনয় বিনীত নিবেদন এই যে, আমি নিম্ন স্বাক্ষরকারী আবেদনকারী ' + applicantName + ', পিতা/স্বামী: ' + applicantParent + ', ওয়ার্ড নং: ' + (data.wardNo || '') + ', গ্রাম: ' + (data.village || '') + ', ডাকঘর: ' + (data.postOffice || '') + ', ১১নং আউলিয়াপুর ইউনিয়ন, পটুয়াখালী সদর, পটুয়াখালী জেলার একজন বৈধ ওয়ারিশ। মৃত ' + deceasedParent + ', সম্পর্ক: ' + deceasedRelation + ', মৃত ' + deceasedName + ' এর ওয়ারিশান সনদ প্রয়োজন হওয়ায় নিচে উল্লেখিত ওয়ারিশগণের নামের তালিকাসহ সনদটি প্রদানের জন্য বিনীতভাবে আবেদন করছি।';
     var tables = document.getElementById('appCopyTablesContainer');
     tables.innerHTML = '';
     (data.warishanTree || []).forEach(function(group) {
       var rows = (group.members || []).map(function(member, index) { return '<tr><td>' + (member.sl || toBnDigit(index + 1)) + '</td><td>' + (member.name || '') + '</td><td>' + (member.relName || '') + '</td><td>' + (member.address || '') + '</td><td>' + (member.relation || '') + '</td></tr>'; }).join('');
-      tables.innerHTML += '<p class="fw-bold mb-1">' + (group.groupTitle || '') + '</p><table class="table table-bordered table-sm text-center"><thead><tr><th>ক্রমিক</th><th>ওয়ারিশের নাম</th><th>পিতা/স্বামী</th><th>ঠিকানা</th><th>সম্পর্ক</th></tr></thead><tbody>' + rows + '</tbody></table>';
+      tables.innerHTML += '<div class="app-copy-table-group"><p class="fw-bold mb-1">' + (group.groupTitle || '') + '</p><table class="table table-bordered table-sm text-center"><thead><tr><th>ক্রমিক</th><th>ওয়ারিশের নাম</th><th>পিতা/স্বামী</th><th>ঠিকানা</th><th>সম্পর্ক</th></tr></thead><tbody>' + rows + '</tbody></table><p class="app-copy-declaration">উপরোক্ত ওয়ারিশগণ ব্যতীত তাদের আর কোন বৈধ ওয়ারিশ নেই।</p></div>';
     });
     printExactApplicationCopy();
   }
@@ -894,10 +894,10 @@
           * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
           body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Nikosh', 'Kalpurush', sans-serif; }
           .war-application-paper {
-            width: 210mm !important; height: 297mm !important; max-height: 297mm !important;
-            margin: 0 auto !important; padding: 15mm 18mm 12mm !important; overflow: hidden !important;
+            width: 210mm !important; min-height: 297mm !important; height: auto !important; max-height: none !important;
+            margin: 0 auto !important; padding: 15mm 18mm 12mm !important; overflow: visible !important;
             background: #ffffff !important; color: #000000 !important; font-family: 'Nikosh', 'Kalpurush', sans-serif !important;
-            font-size: 16px !important; line-height: 1.65 !important; page-break-after: avoid !important;
+            font-size: 16px !important; line-height: 1.65 !important; page-break-after: auto !important;
           }
           .war-application-paper p { margin: 0 0 7px !important; }
           .war-application-paper .d-flex { display: flex !important; }
@@ -916,9 +916,12 @@
           .war-application-paper h5 { font-size: 17px !important; }
           .war-application-paper #appCopyMainBodyText { text-indent: 42px !important; line-height: 1.8 !important; }
           .war-application-paper #appCopyTablesContainer table { width: 100% !important; border-collapse: collapse !important; margin: 3px 0 9px !important; font-size: 12px !important; }
+          .war-application-paper #appCopyTablesContainer .app-copy-table-group { break-inside: avoid !important; page-break-inside: avoid !important; }
           .war-application-paper #appCopyTablesContainer th, .war-application-paper #appCopyTablesContainer td { border: 1px solid #555 !important; padding: 3px 4px !important; text-align: center !important; line-height: 1.3 !important; }
           .war-application-paper #appCopyTablesContainer th { font-weight: bold !important; background: #f1f1f1 !important; }
           .war-application-paper #appCopyTablesContainer p { font-size: 13px !important; margin: 4px 0 0 !important; }
+          .war-application-paper #appCopyTablesContainer .app-copy-declaration { font-weight: bold !important; margin: 7px 0 14px !important; }
+          .war-application-paper > div:last-child { break-inside: avoid !important; page-break-inside: avoid !important; }
           .war-application-paper > div:last-child { display: flex !important; justify-content: space-between !important; text-align: center !important; font-size: 13px !important; }
           .war-application-paper > div:last-child > div { width: 30% !important; padding-top: 4px !important; border-top: 1px dashed #000 !important; }
           .war-application-paper > div:last-child > div:last-child { width: 34% !important; }
@@ -931,13 +934,13 @@
             display: flex !important; flex-direction: column !important; justify-content: space-between !important;
             page-break-after: always !important; page-break-inside: avoid !important; overflow: hidden !important;
           }
-          .war-watermark-bg { 
-            position: absolute !important; top: 50% !important; left: 50% !important; 
+          .war-watermark-bg {
+            position: absolute !important; top: 50% !important; left: 50% !important;
             transform: translate(-50%, -50%) !important; width: 550px !important;
             max-width: 92% !important; opacity: 0.11 !important; z-index: 1 !important; display: block !important;
           }
           .war-content-body { position: relative !important; z-index: 2 !important; height: 100% !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; }
-          
+
           /* ৩ডি রয়্যাল রিবন ব্যানার প্রিন্ট সিএসএস */
           .royal-ribbon-wrapper { text-align: center !important; margin: 8px 0 12px 0 !important; position: relative !important; }
           .royal-ribbon-3d {

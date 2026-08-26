@@ -34,11 +34,22 @@
   .page-link-btn { padding: 4px 10px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 4px; cursor: pointer; text-decoration: none; font-weight: bold; margin: 0 2px; }
   .page-link-btn:hover, .page-link-btn.active-page { background: #006837; color: #fff; border-color: #006837; }
   .trade-filter-tabs .btn.active { background: #006837; color: #fff; border-color: #006837; }
-  .general-category-card { background: #fff; border: 1px solid #d9e8df; border-radius: 8px; min-height: 112px; padding: 12px 8px; text-align: center; cursor: pointer; transition: .2s ease; }
+  .general-app-toolbar { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(260px, 330px) minmax(110px, 1fr); gap: 16px; align-items: center; }
+  .general-app-heading { min-width: 0; }
+  .general-app-search { width: 100%; }
+  .general-app-refresh { justify-self: end; }
+  .general-category-card { background: #fff; border: 1px solid #d9e8df; border-radius: 8px; min-height: 78px; padding: 10px 12px; display: flex; align-items: center; text-align: left; cursor: pointer; transition: .2s ease; }
   .general-category-card:hover, .general-category-card.active { border-color: #006837; background: #f0faf4; box-shadow: 0 4px 12px rgba(0, 104, 55, .14); transform: translateY(-2px); }
-  .general-category-icon { width: 42px; height: 42px; margin: 0 auto 6px; border: 2px solid #087f55; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #087f55; background: #e9f7ef; }
+  .general-category-icon { width: 42px; height: 42px; flex: 0 0 42px; margin: 0 12px 0 0; border: 2px solid #087f55; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #087f55; background: #e9f7ef; }
+  .general-category-info { min-width: 0; }
   .general-category-name { color: #234236; display: block; font-size: 13px; font-weight: 700; line-height: 1.25; }
-  .general-category-count { color: #63756c; display: block; font-size: 12px; margin-top: 2px; }
+  .general-category-count { color: #63756c; display: block; font-size: 12px; margin-top: 3px; }
+  @media (max-width: 767.98px) {
+    .general-app-toolbar { grid-template-columns: 1fr auto; }
+    .general-app-heading { grid-column: 1 / -1; }
+    .general-app-search { grid-column: 1; }
+    .general-app-refresh { grid-column: 2; }
+  }
 </style>
 
 <!-- ADMIN PANEL VIEW -->
@@ -168,15 +179,13 @@
 
       <!-- 🟢 Tab 6: সাধারণ প্রত্যয়নপত্র তালিকা (প্রিন্ট ও এডিট ফাংশন General_Certificate.html থেকে রান হবে) -->
       <div id="appsTab" class="admin-tab d-none">
-        <div class="card p-3 shadow-sm border-0 mb-3 bg-success text-white d-flex flex-wrap gap-2 justify-content-between align-items-center">
-          <h5 class="fw-bold m-0"><i class="fa fa-file-invoice me-2"></i> সাধারণ প্রত্যয়নপত্র তালিকা ও অনুমোদন</h5>
-          <div class="d-flex flex-wrap gap-2 align-items-center">
-            <div class="input-group input-group-sm" style="max-width:330px;">
+        <div class="card p-3 shadow-sm border-0 mb-3 bg-success text-white general-app-toolbar">
+          <h5 class="fw-bold m-0 general-app-heading"><i class="fa fa-file-invoice me-2"></i> সাধারণ প্রত্যয়নপত্র তালিকা ও অনুমোদন</h5>
+          <div class="input-group input-group-sm general-app-search">
               <input type="search" id="generalSearchInput" class="form-control" placeholder="নাম / মোবাইল / আবেদন নং" oninput="searchGeneralApps()" aria-label="সাধারণ প্রত্যয়ন আবেদন খুঁজুন">
               <button class="btn btn-light text-success fw-bold" type="button" onclick="searchGeneralApps()" title="সার্চ"><i class="fa fa-search"></i></button>
-            </div>
-            <button class="btn btn-light btn-sm fw-bold text-success" onclick="loadAdminApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
           </div>
+          <button class="btn btn-light btn-sm fw-bold text-success general-app-refresh" onclick="loadAdminApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
         </div>
         <div id="generalCategoryGrid" class="row row-cols-2 row-cols-md-4 row-cols-xl-5 g-2 mb-3"></div>
         <div class="table-responsive bg-white p-3 shadow-sm rounded border">
@@ -719,10 +728,10 @@
       var text = [app.appId, app.applicationNo, app.applicationId, app.trackingId, app.name, app.applicantName, app.mobile].map(normalizeGeneralSearch).join(' ');
       return (!generalCategory || type === generalCategory) && (!search || text.indexOf(search) !== -1);
     });
-    var allCard = '<div class="col"><button type="button" class="general-category-card w-100 ' + (!generalCategory ? 'active' : '') + '" onclick="setGeneralCategory(\'\')"><span class="general-category-icon"><i class="fa fa-layer-group"></i></span><span class="general-category-name">সব প্রত্যয়ন</span><span class="general-category-count">' + toBnNumber(rawDataStore.gen.length) + ' টি আবেদন</span></button></div>';
+    var allCard = '<div class="col"><button type="button" class="general-category-card w-100 ' + (!generalCategory ? 'active' : '') + '" onclick="setGeneralCategory(\'\')"><span class="general-category-icon"><i class="fa fa-layer-group"></i></span><span class="general-category-info"><span class="general-category-name">সব প্রত্যয়ন</span><span class="general-category-count">' + toBnNumber(rawDataStore.gen.length) + ' টি আবেদন</span></span></button></div>';
     grid.innerHTML = allCard + categories.map(function(category, index) {
       var count = rawDataStore.gen.filter(function(app) { return (app.type || app.serviceType) === category; }).length;
-      return '<div class="col"><button type="button" class="general-category-card w-100 ' + (generalCategory === category ? 'active' : '') + '" onclick="setGeneralCategory(\'' + category.replace(/'/g, "\\'") + '\')"><span class="general-category-icon"><i class="fa ' + (icons[index] || 'fa-file-lines') + '"></i></span><span class="general-category-name">' + category + '</span><span class="general-category-count">' + toBnNumber(count) + ' টি আবেদন</span></button></div>';
+      return '<div class="col"><button type="button" class="general-category-card w-100 ' + (generalCategory === category ? 'active' : '') + '" onclick="setGeneralCategory(\'' + category.replace(/'/g, "\\'") + '\')"><span class="general-category-icon"><i class="fa ' + (icons[index] || 'fa-file-lines') + '"></i></span><span class="general-category-info"><span class="general-category-name">' + category + '</span><span class="general-category-count">' + toBnNumber(count) + ' টি আবেদন</span></span></button></div>';
     }).join('');
   }
 

@@ -35,8 +35,8 @@
   .page-link-btn:hover, .page-link-btn.active-page { background: #006837; color: #fff; border-color: #006837; }
   .trade-filter-tabs .btn.active { background: #006837; color: #fff; border-color: #006837; }
   .certificate-list-toolbar { display: flex !important; flex-wrap: nowrap !important; align-items: center; gap: 16px; min-height: 64px; }
-  .certificate-list-title { flex: 1 1 0; min-width: 0; white-space: nowrap; }
-  .certificate-list-search { flex: 0 1 330px; width: 330px; max-width: 330px; }
+  .certificate-list-title { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .certificate-list-search { flex: 0 0 330px; width: 330px; max-width: 330px; min-width: 0; }
   .certificate-list-refresh { flex: 0 0 auto; margin-left: auto; }
   .certificate-list-search input, .certificate-list-search button { height: 34px !important; }
   @media (max-width: 767.98px) {

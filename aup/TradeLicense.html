@@ -964,9 +964,6 @@
     var source = document.getElementById(elemId);
     if (!source) return;
 
-    if (window._tradePrintInProgress) return;
-    window._tradePrintInProgress = true;
-
     var iframe = document.createElement('iframe');
     iframe.className = 'trade-print-frame';
     iframe.setAttribute('title', docTitle || 'Certificate');
@@ -1136,7 +1133,6 @@
     function cleanupPrintFrame() {
       if (cleaned) return;
       cleaned = true;
-      window._tradePrintInProgress = false;
       printWindow.onafterprint = null;
       if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
     }

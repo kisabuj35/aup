@@ -300,8 +300,10 @@
           <p class="mb-1 ms-3 fw-bold">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ ।</p>
           <p class="mb-2 ms-3">পটুয়াখালী সদর, পটুয়াখালী ।</p>
           <p class="fw-bold mb-3">বিষয়ঃ ওয়ারিশ সার্টিফিকেট পাওয়ার জন্য আবেদন পত্র ।</p>
-          <p class="mb-1 fw-bold">জনাব,</p>
-          <p class="text-justify mb-3 ms-3" id="appCopyMainBodyText"></p>
+          <p class="mb-2 fw-bold">জনাব,</p>
+          <div id="appCopyApplicantInfo" class="mb-2"></div>
+          <div id="appCopyDeceasedInfo" class="mb-2"></div>
+          <p class="text-justify mb-3" id="appCopyMainBodyText"></p>
           <h5 class="fw-bold text-center my-3 text-dark text-decoration-underline">ওয়ারিশগণের তালিকা</h5>
           <div id="appCopyTablesContainer" class="mb-4"></div>
           <div class="d-flex justify-content-between text-center mt-5 pt-4" style="font-size: 14px;">
@@ -840,12 +842,21 @@
 
   async function printWarishanApplicationCopy(appId) {
     var data = await callBackendAPI('getWarishanDetails', appId);
+    var escapeApplicationValue = function(value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function(character) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]; }); };
     if (!data || !data.found) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
+    var applicantName = data.applicantName || data.name || '';
+    var applicantParent = data.fatherSpouseName || data.fatherName || data.fatherSpouse || '';
+    var deceasedName = data.deceasedName || '';
+    var deceasedParent = getDeceasedParentName(data.deceasedFatherName || data.deceasedFather || '');
+    var deceasedRelation = data.deceasedFatherRelation || data.deceasedRelation || getDeceasedParentRelation(data);
+    var applicantAddress = [data.village ? 'গ্রাম: ' + data.village : '', data.postOffice ? 'ডাকঘর: ' + data.postOffice : '', data.wardNo ? 'ওয়ার্ড নং: ' + data.wardNo : ''].filter(function(value) { return value; }).join(', ');
     document.getElementById('appCopyDate').innerText = new Date().toLocaleDateString('bn-BD');
     document.getElementById('appCopyTrackingId').innerText = data.appId || appId;
-    document.getElementById('appCopySignName').innerText = data.applicantName || data.name || '';
+    document.getElementById('appCopySignName').innerText = applicantName;
     document.getElementById('appCopySignMobile').innerText = data.mobile || '';
-    document.getElementById('appCopyMainBodyText').innerText = 'আমি ' + (data.applicantName || data.name || '') + ', পিতা/স্বামী: ' + (data.fatherSpouseName || '') + ', গ্রাম: ' + (data.village || '') + ', ওয়ার্ড নং: ' + (data.wardNo || '') + ', ডাকঘর: ' + (data.postOffice || '') + '। মৃত ' + (data.deceasedName || '') + ' এর ওয়ারিশান সনদ প্রদানের জন্য আবেদন করছি।';
+    document.getElementById('appCopyApplicantInfo').innerHTML = '<div style="border:1px solid #555; padding:7px 10px; background:#f8f8f8;"><strong>আবেদনকারীর পরিচিতি</strong><div style="display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin-top:3px;"><span>নাম: ' + escapeApplicationValue(applicantName) + '</span><span>পিতা/স্বামী: ' + escapeApplicationValue(applicantParent) + '</span><span>এনআইডি/জন্ম নিবন্ধন: ' + escapeApplicationValue(data.nid || data.nidNo || '-') + '</span><span>মোবাইল: ' + escapeApplicationValue(data.mobile || '-') + '</span><span style="grid-column:1 / -1">' + escapeApplicationValue(applicantAddress || 'ঠিকানা: -') + '</span></div></div>';
+    document.getElementById('appCopyDeceasedInfo').innerHTML = '<div style="border:1px solid #555; padding:7px 10px; margin-top:7px;"><strong>মূল মৃত ব্যক্তির পরিচিতি</strong><div style="display:grid; grid-template-columns:1fr 1fr; gap:2px 18px; margin-top:3px;"><span>নাম: মৃত ' + escapeApplicationValue(deceasedName) + '</span><span>পিতা/স্বামীর নাম: ' + escapeApplicationValue(deceasedParent) + '</span><span>আবেদনকারীর সঙ্গে সম্পর্ক: ' + escapeApplicationValue(deceasedRelation) + '</span></div></div>';
+    document.getElementById('appCopyMainBodyText').innerText = 'আমি ' + applicantName + ', উপরোক্ত মূল মৃত ব্যক্তির বৈধ ওয়ারিশ। মৃত ' + deceasedName + ' এর ওয়ারিশান সনদ প্রয়োজন হওয়ায় নিচে উল্লেখিত ওয়ারিশগণের নামের তালিকাসহ সনদটি প্রদানের জন্য বিনীতভাবে আবেদন করছি।';
     var tables = document.getElementById('appCopyTablesContainer');
     tables.innerHTML = '';
     (data.warishanTree || []).forEach(function(group) {

@@ -55,6 +55,8 @@
   .general-category-info { min-width: 0; }
   .general-category-name { color: #234236; display: block; font-size: 11px; font-weight: 700; line-height: 1.2; }
   .general-category-count { color: #63756c; display: block; font-size: 10px; margin-top: 2px; }
+  .permission-group { border: 1px solid #dee2e6; border-radius: 6px; padding: 12px; height: 100%; }
+  .permission-group-title { color: #006837; font-weight: 700; margin-bottom: 8px; }
   @media (max-width: 767.98px) {
     .general-app-toolbar { height: 56px; min-height: 56px; }
     .general-app-heading { display: none; }
@@ -377,6 +379,37 @@
               <img id="photoPreviewImg" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" width="60" height="60" class="rounded-circle border" style="object-fit: cover;">
             </div>
           </div>
+          <div class="row g-3 mt-1">
+            <div class="col-md-7">
+              <div class="permission-group">
+                <div class="permission-group-title">যে মেনুগুলোতে কাজ করতে পারবে</div>
+                <div class="row g-2">
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="dashTab"> ড্যাশবোর্ড</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="citTab"> নাগরিকত্ব সনদ</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="tradeTab"> ট্রেড লাইসেন্স</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="famTab"> পারিবারিক সনদ</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="warTab"> ওয়ারিশ সনদ</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="appsTab"> সাধারণ প্রত্যয়ন</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="taxTab"> কর আদায় ও সদস্য</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="accountsTab"> আয়-ব্যয়ের হিসাব</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="bankTab"> ব্যাংক হিসাব ও ক্যাশ</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="beneficiaryTab"> উপকারভোগী</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="projectTab"> উন্নয়ন প্রকল্প</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="reportTab"> রিপোর্ট</label></div>
+                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="upSettingsTab"> ইউপি সেটিংস</label></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="permission-group">
+                <div class="permission-group-title">ডেটা অ্যাকশন</div>
+                <label class="form-check mb-2"><input class="form-check-input admin-action-permission" type="checkbox" value="canApprove"> অনুমোদন করতে পারবে</label>
+                <label class="form-check mb-2"><input class="form-check-input admin-action-permission" type="checkbox" value="canReject"> বাতিল করতে পারবে</label>
+                <label class="form-check mb-2"><input class="form-check-input admin-action-permission" type="checkbox" value="canEdit"> সংশোধন করতে পারবে</label>
+                <label class="form-check"><input class="form-check-input admin-action-permission" type="checkbox" value="canDelete"> ডিলিট করতে পারবে</label>
+              </div>
+            </div>
+          </div>
           <div class="text-end mt-4">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">বাতিল</button>
             <button type="submit" class="btn btn-warning fw-bold px-4" id="saveUserBtn">ইউজার সংরক্ষণ</button>
@@ -402,6 +435,8 @@
   var generalCategory = '';
   var generalSearchTerm = '';
   var PAGE_SIZE = 15;
+  var photoReadPromise = Promise.resolve();
+  var ADMIN_MENU_KEYS = ['dashTab', 'citTab', 'tradeTab', 'famTab', 'warTab', 'appsTab', 'taxTab', 'accountsTab', 'bankTab', 'beneficiaryTab', 'projectTab', 'reportTab', 'upSettingsTab'];
 
   /* ==========================================================
      🔒 সেশন ম্যানেজমেন্ট ও রিলোড সিকিউরিটি
@@ -464,10 +499,54 @@
       if (panel) panel.classList.remove('d-none');
       
       updateSidebarProfile(session);
+      applyAdminRolePermissions(session);
 
       var savedTab = localStorage.getItem('adminActiveTab') || 'dashTab';
       switchAdminTab(savedTab);
     }
+  }
+
+  function getPermissionSource(session) {
+    var permissions = session && (session.permissions || session.permission);
+    if (!permissions) return null;
+    if (typeof permissions === 'string') {
+      try { permissions = JSON.parse(permissions); } catch (e) { return null; }
+    }
+    return permissions && typeof permissions === 'object' ? permissions : null;
+  }
+
+  function hasAdminPermission(permissionName) {
+    var session = getActiveSession() || {};
+    if (session.role === 'SuperAdmin') return true;
+    var permissions = getPermissionSource(session);
+    if (!permissions) return true;
+    var value = permissions[permissionName];
+    return value === true || value === 1 || value === '1' || value === 'true' || value === 'TRUE';
+  }
+
+  function hasAdminMenuPermission(menuKey) {
+    var session = getActiveSession() || {};
+    if (session.role === 'SuperAdmin') return true;
+    var permissions = getPermissionSource(session);
+    if (!permissions) return true;
+    var menus = permissions.menus || permissions.menuPermissions || permissions.allowedMenus;
+    if (!menus && Object.prototype.hasOwnProperty.call(permissions, menuKey)) menus = permissions;
+    if (typeof menus === 'string') {
+      try { menus = JSON.parse(menus); } catch (e) { menus = menus.split(','); }
+    }
+    if (Array.isArray(menus)) return menus.indexOf(menuKey) !== -1;
+    if (menus && typeof menus === 'object') return !!menus[menuKey];
+    return true;
+  }
+
+  function applyAdminRolePermissions(session) {
+    session = session || getActiveSession() || {};
+    document.querySelectorAll('#adminSidebarMenuList .admin-menu-link').forEach(function(link) {
+      var menuKey = link.getAttribute('data-menu');
+      link.classList.toggle('d-none', menuKey !== 'settingsTab' && !hasAdminMenuPermission(menuKey));
+    });
+    var settingsButton = document.getElementById('superAdminSettingsBtn');
+    if (settingsButton) settingsButton.classList.toggle('d-none', session.role !== 'SuperAdmin');
   }
 
   if (document.readyState === 'loading') window.addEventListener('DOMContentLoaded', initializeAdminPanel);
@@ -565,7 +644,10 @@
 
   function renderActionButtons(appId, status, printCallbackName, editCallbackName) {
     var session = getActiveSession() || {};
-    var canDel = session.role === 'SuperAdmin' || (session.permissions && session.permissions.canDelete);
+    var canApprove = hasAdminPermission('canApprove');
+    var canReject = hasAdminPermission('canReject');
+    var canEdit = hasAdminPermission('canEdit');
+    var canDel = hasAdminPermission('canDelete');
 
     var stBadge = (status === 'Approved') ? '<span class="status-badge-approved">Approved</span>' : ((status === 'Rejected') ? '<span class="status-badge-rejected">Rejected</span>' : '<span class="status-badge-pending">Pending</span>');
     var printBtn = (status === 'Approved') ? `<button type="button" class="btn-act-print" onclick="${printCallbackName}('${appId}')" title="সরাসরি প্রিন্ট"><i class="fa fa-print me-1"></i>প্রিন্ট</button>` : '';
@@ -575,9 +657,9 @@
       badge: stBadge,
       actions: `
         <div class="d-flex align-items-center">
-          <button class="btn-act-approve" onclick="changeStatus('${appId}', 'Approved')" title="অনুমোদন"><i class="fa fa-check"></i></button>
-          <button class="btn-act-edit" onclick="${editCallbackName}('${appId}')" title="সংশোধন"><i class="fa fa-edit"></i></button>
-          <button class="btn-act-reject" onclick="changeStatus('${appId}', 'Rejected')" title="বাতিল"><i class="fa fa-times"></i></button>
+          ${canApprove ? `<button class="btn-act-approve" onclick="changeStatus('${appId}', 'Approved')" title="অনুমোদন"><i class="fa fa-check"></i></button>` : ''}
+          ${canEdit ? `<button class="btn-act-edit" onclick="${editCallbackName}('${appId}')" title="সংশোধন"><i class="fa fa-edit"></i></button>` : ''}
+          ${canReject ? `<button class="btn-act-reject" onclick="changeStatus('${appId}', 'Rejected')" title="বাতিল"><i class="fa fa-times"></i></button>` : ''}
           ${printBtn} ${deleteBtn}
         </div>
       `
@@ -585,8 +667,9 @@
   }
 
   function renderStatusActionButtons(appId, status) {
-    var session = getActiveSession() || {};
-    var canDel = session.role === 'SuperAdmin' || (session.permissions && session.permissions.canDelete);
+    var canApprove = hasAdminPermission('canApprove');
+    var canReject = hasAdminPermission('canReject');
+    var canDel = hasAdminPermission('canDelete');
     var stBadge = (status === 'Approved') ? '<span class="status-badge-approved">Approved</span>' : ((status === 'Rejected') ? '<span class="status-badge-rejected">Rejected</span>' : '<span class="status-badge-pending">Pending</span>');
     var deleteBtn = canDel ? `<button class="btn btn-sm btn-outline-danger ms-1" onclick="removeApp('${appId}')" title="ডিলিট"><i class="fa fa-trash"></i></button>` : '';
 
@@ -594,8 +677,8 @@
       badge: stBadge,
       actions: `
         <div class="d-flex align-items-center">
-          <button class="btn-act-approve" onclick="changeStatus('${appId}', 'Approved')" title="অনুমোদন"><i class="fa fa-check"></i></button>
-          <button class="btn-act-reject" onclick="changeStatus('${appId}', 'Rejected')" title="বাতিল"><i class="fa fa-times"></i></button>
+          ${canApprove ? `<button class="btn-act-approve" onclick="changeStatus('${appId}', 'Approved')" title="অনুমোদন"><i class="fa fa-check"></i></button>` : ''}
+          ${canReject ? `<button class="btn-act-reject" onclick="changeStatus('${appId}', 'Rejected')" title="বাতিল"><i class="fa fa-times"></i></button>` : ''}
           ${deleteBtn}
         </div>
       `
@@ -613,7 +696,7 @@
     var users = await callBackend('getAdminUsers');
     if (requestId !== loadRequestStore.users) return;
     if (!users) return showLoadError('userTableBody', 6, 'ডাটাবেস থেকে এডমিন তালিকা লোড করা যায়নি। আবার রিফ্রেশ করুন।');
-    rawDataStore.users = getApiList(users, ['users', 'data', 'results']);
+    rawDataStore.users = getApiList(users, ['users', 'admins', 'adminUsers', 'data', 'results']);
     renderUserTable();
   }
 
@@ -628,15 +711,16 @@
     }
 
     list.forEach(function(u) {
-      var photoUrl = (u.photo && u.photo.length > 10) ? u.photo : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
-      var roleBadge = (u.role === 'SuperAdmin') ? '<span class="badge bg-warning text-dark fw-bold">SuperAdmin</span>' : '<span class="badge bg-primary">Admin</span>';
-      var permBadge = (u.role === 'SuperAdmin') ? '<span class="badge bg-success">সকল মেনু এক্সেস</span>' : '<span class="badge bg-secondary">আবেদন অনুমোদন ও পরিদর্শন</span>';
+      var photoUrl = u.photo || u.photoUrl || u.Photos || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+      var role = u.role || u.Role || 'Admin';
+      var roleBadge = (role === 'SuperAdmin') ? '<span class="badge bg-warning text-dark fw-bold">SuperAdmin</span>' : '<span class="badge bg-primary">Admin</span>';
+      var permBadge = role === 'SuperAdmin' ? '<span class="badge bg-success">সকল মেনু ও অ্যাকশন</span>' : '<span class="badge bg-secondary">নির্বাচিত মেনু ও অ্যাকশন</span>';
       
       tbody.innerHTML += `
         <tr>
           <td><img src="${photoUrl}" width="40" height="40" class="rounded-circle border" style="object-fit:cover;"></td>
-          <td><strong>${u.username}</strong></td>
-          <td>${u.name || u.displayName || u.username}</td>
+          <td><strong>${u.username || u.Username || ''}</strong></td>
+          <td>${u.name || u.displayName || u.Name || u.username || u.Username || ''}</td>
           <td>${roleBadge}</td>
           <td>${permBadge}</td>
           <td>
@@ -651,30 +735,54 @@
     document.getElementById('addUserForm').reset();
     document.getElementById('photoPreviewImg').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
     document.getElementById('newPhotoBase64').value = "";
+    document.querySelectorAll('.admin-menu-permission, .admin-action-permission').forEach(function(input) { input.checked = false; });
     bootstrap.Modal.getOrCreateInstance(document.getElementById('addUserModal')).show();
   }
 
   function previewAdminPhoto(input) {
-    if (input.files && input.files[0]) {
+    if (!input.files || !input.files[0]) return;
+    photoReadPromise = new Promise(function(resolve) {
       var reader = new FileReader();
       reader.onload = function(e) {
-        document.getElementById('photoPreviewImg').src = e.target.result;
-        document.getElementById('newPhotoBase64').value = e.target.result;
+        var image = new Image();
+        image.onload = function() {
+          var scale = Math.min(1, 480 / Math.max(image.width, image.height));
+          var canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(image.width * scale));
+          canvas.height = Math.max(1, Math.round(image.height * scale));
+          canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+          var compactPhoto = canvas.toDataURL('image/jpeg', 0.78);
+          document.getElementById('photoPreviewImg').src = compactPhoto;
+          document.getElementById('newPhotoBase64').value = compactPhoto;
+          resolve();
+        };
+        image.onerror = resolve;
+        image.src = e.target.result;
       };
+      reader.onerror = resolve;
       reader.readAsDataURL(input.files[0]);
-    }
+    });
   }
 
   async function saveUser() {
     var btn = document.getElementById('saveUserBtn');
     btn.disabled = true; btn.innerText = 'সংরক্ষণ হচ্ছে...';
+    await photoReadPromise;
+
+    var menuPermissions = {};
+    document.querySelectorAll('.admin-menu-permission').forEach(function(input) { menuPermissions[input.value] = input.checked; });
+    var actionPermissions = {};
+    document.querySelectorAll('.admin-action-permission').forEach(function(input) { actionPermissions[input.value] = input.checked; });
+    var permissions = Object.assign({ menus: menuPermissions }, actionPermissions);
 
     var payload = {
       username: document.getElementById('newUsername').value.trim(),
       password: document.getElementById('newPassword').value.trim(),
       name: document.getElementById('newName').value.trim(),
       role: document.getElementById('newRole').value,
-      photo: document.getElementById('newPhotoBase64').value || ""
+      photo: document.getElementById('newPhotoBase64').value || "",
+      permissions: permissions,
+      menuPermissions: menuPermissions
     };
 
     var res = await callBackend('saveAdminUser', payload);
@@ -1077,6 +1185,8 @@
   }
 
   async function changeStatus(appId, status) {
+    if (status === 'Approved' && !hasAdminPermission('canApprove')) return;
+    if (status === 'Rejected' && !hasAdminPermission('canReject')) return;
     const res = await callBackend('updateAppStatus', { appId: appId, status: status });
     if(res && res.success) {
       loadCitizenshipApps(currentPageStore.cit);
@@ -1090,6 +1200,7 @@
   }
 
   async function removeApp(appId) {
+    if (!hasAdminPermission('canDelete')) return;
     Swal.fire({
       title: 'আপনি কি নিশ্চিত?',
       text: "আবেদনটি ডাটাবেস থেকে চিরতরে মুছে ফেলা হবে!",
@@ -1111,6 +1222,10 @@
   }
 
   function switchAdminTab(tabId) {
+    if (tabId !== 'settingsTab' && !hasAdminMenuPermission(tabId)) {
+      tabId = hasAdminMenuPermission('dashTab') ? 'dashTab' : ADMIN_MENU_KEYS.find(hasAdminMenuPermission);
+    }
+    if (tabId === 'settingsTab' && (getActiveSession() || {}).role !== 'SuperAdmin') return;
     localStorage.setItem('adminActiveTab', tabId);
 
     document.querySelectorAll('.admin-tab').forEach(el => el.classList.add('d-none'));

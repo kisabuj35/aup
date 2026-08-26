@@ -857,8 +857,11 @@
     tables.innerHTML = '';
     (data.warishanTree || []).forEach(function(group) {
       var rows = (group.members || []).map(function(member, index) { return '<tr><td>' + (member.sl || toBnDigit(index + 1)) + '</td><td>' + (member.name || '') + '</td><td>' + (member.relName || '') + '</td><td>' + (member.address || '') + '</td><td>' + (member.relation || '') + '</td></tr>'; }).join('');
-      tables.innerHTML += '<div class="app-copy-table-group"><p class="fw-bold mb-1">' + (group.groupTitle || '') + '</p><table class="table table-bordered table-sm text-center"><thead><tr><th>ক্রমিক</th><th>ওয়ারিশের নাম</th><th>পিতা/স্বামী</th><th>ঠিকানা</th><th>সম্পর্ক</th></tr></thead><tbody>' + rows + '</tbody></table><p class="app-copy-declaration">উপরোক্ত ওয়ারিশগণ ব্যতীত তাদের আর কোন বৈধ ওয়ারিশ নেই।</p></div>';
+      tables.innerHTML += '<div class="app-copy-table-group"><p class="fw-bold mb-1">' + (group.groupTitle || '') + '</p><table class="table table-bordered table-sm text-center"><thead><tr><th>ক্রমিক</th><th>ওয়ারিশের নাম</th><th>পিতা/স্বামী</th><th>ঠিকানা</th><th>সম্পর্ক</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
     });
+    if ((data.warishanTree || []).length) {
+      tables.innerHTML += '<p class="app-copy-declaration">উপরোক্ত ওয়ারিশগণ ব্যতীত তাদের আর কোন বৈধ ওয়ারিশ নেই।</p>';
+    }
     printExactApplicationCopy();
   }
 

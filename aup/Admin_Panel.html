@@ -34,6 +34,16 @@
   .page-link-btn { padding: 4px 10px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 4px; cursor: pointer; text-decoration: none; font-weight: bold; margin: 0 2px; }
   .page-link-btn:hover, .page-link-btn.active-page { background: #006837; color: #fff; border-color: #006837; }
   .trade-filter-tabs .btn.active { background: #006837; color: #fff; border-color: #006837; }
+  .certificate-list-toolbar { display: flex !important; flex-wrap: nowrap !important; align-items: center; gap: 16px; min-height: 64px; }
+  .certificate-list-title { flex: 1 1 0; min-width: 0; white-space: nowrap; }
+  .certificate-list-search { flex: 0 1 330px; width: 330px; max-width: 330px; }
+  .certificate-list-refresh { flex: 0 0 auto; margin-left: auto; }
+  .certificate-list-search input, .certificate-list-search button { height: 34px !important; }
+  @media (max-width: 767.98px) {
+    .certificate-list-toolbar { gap: 8px; min-height: 56px; }
+    .certificate-list-title { display: none; }
+    .certificate-list-search { flex: 1 1 auto; width: auto; max-width: none; }
+  }
   .general-app-toolbar { position: relative; display: block !important; height: 64px; min-height: 64px; padding: 0 16px !important; overflow: hidden; }
   .general-app-heading { position: absolute; left: 16px; top: 50%; max-width: 38%; margin: 0 !important; transform: translateY(-50%); white-space: nowrap; }
   .general-app-search { position: absolute; left: 50%; top: 50%; width: 300px; max-width: 32%; height: 34px; min-height: 34px; margin: 0; transform: translate(-50%, -50%); }
@@ -113,9 +123,13 @@
 
       <!-- Tab 2: Citizenship -->
       <div id="citTab" class="admin-tab d-none">
-        <div class="card p-3 shadow-sm border-0 mb-3 bg-danger text-white d-flex flex-row justify-content-between align-items-center">
-          <h5 class="fw-bold m-0"><i class="fa fa-id-card me-2"></i> নাগরিকত্ব সনদের আবেদন তালিকা</h5>
-          <button class="btn btn-light btn-sm fw-bold text-danger" onclick="loadCitizenshipApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
+        <div class="card p-3 shadow-sm border-0 mb-3 bg-danger text-white certificate-list-toolbar">
+          <h5 class="fw-bold m-0 certificate-list-title"><i class="fa fa-id-card me-2"></i> নাগরিকত্ব সনদের আবেদন তালিকা</h5>
+          <div class="input-group input-group-sm certificate-list-search">
+            <input type="search" id="citSearchInput" class="form-control" placeholder="নাম / মোবাইল / আবেদন নং" oninput="searchCitizenshipApps()" aria-label="নাগরিকত্ব আবেদন খুঁজুন">
+            <button class="btn btn-light text-danger fw-bold" type="button" onclick="searchCitizenshipApps()" title="সার্চ"><i class="fa fa-search"></i></button>
+          </div>
+          <button class="btn btn-light btn-sm fw-bold text-danger certificate-list-refresh" onclick="loadCitizenshipApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
         </div>
         <div class="table-responsive bg-white p-3 shadow-sm rounded border">
           <table class="table table-hover align-middle">
@@ -128,11 +142,11 @@
 
       <!-- Tab 3: Trade License -->
       <div id="tradeTab" class="admin-tab d-none">
-        <div class="card p-3 shadow-sm border-0 mb-3 bg-info text-dark d-flex flex-row justify-content-between align-items-center">
-          <h5 class="fw-bold m-0"><i class="fa fa-briefcase me-2"></i> ট্রেড লাইসেন্স তালিকা ও ব্যবস্থাপনা</h5>
-          <div class="input-group input-group-sm" style="max-width:360px;">
+        <div class="card p-3 shadow-sm border-0 mb-3 bg-info text-dark certificate-list-toolbar">
+          <h5 class="fw-bold m-0 certificate-list-title"><i class="fa fa-briefcase me-2"></i> ট্রেড লাইসেন্স তালিকা ও ব্যবস্থাপনা</h5>
+          <div class="input-group input-group-sm certificate-list-search">
             <input type="search" id="tradeSearchInput" class="form-control" placeholder="নাম / মোবাইল / আবেদন নং" oninput="searchTradeLicenses()">
-            <button class="btn btn-dark fw-bold" type="button" onclick="searchTradeLicenses()"><i class="fa fa-search me-1"></i> সার্চ</button>
+            <button class="btn btn-dark fw-bold" type="button" onclick="searchTradeLicenses()" title="সার্চ"><i class="fa fa-search"></i></button>
           </div>
         </div>
         <div class="trade-filter-tabs btn-group mb-3" role="tablist">
@@ -150,9 +164,13 @@
 
       <!-- Tab 4: Family Certificate -->
       <div id="famTab" class="admin-tab d-none">
-        <div class="card p-3 shadow-sm border-0 mb-3 bg-primary text-white d-flex flex-row justify-content-between align-items-center">
-          <h5 class="fw-bold m-0"><i class="fa fa-people-roof me-2"></i> পারিবারিক সনদের আবেদন তালিকা</h5>
-          <button class="btn btn-light btn-sm fw-bold text-primary" onclick="loadFamilyApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
+        <div class="card p-3 shadow-sm border-0 mb-3 bg-primary text-white certificate-list-toolbar">
+          <h5 class="fw-bold m-0 certificate-list-title"><i class="fa fa-people-roof me-2"></i> পারিবারিক সনদের আবেদন তালিকা</h5>
+          <div class="input-group input-group-sm certificate-list-search">
+            <input type="search" id="famSearchInput" class="form-control" placeholder="নাম / মোবাইল / আবেদন নং" oninput="searchFamilyApps()" aria-label="পারিবারিক আবেদন খুঁজুন">
+            <button class="btn btn-light text-primary fw-bold" type="button" onclick="searchFamilyApps()" title="সার্চ"><i class="fa fa-search"></i></button>
+          </div>
+          <button class="btn btn-light btn-sm fw-bold text-primary certificate-list-refresh" onclick="loadFamilyApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
         </div>
         <div class="table-responsive bg-white p-3 shadow-sm rounded border">
           <table class="table table-hover align-middle">
@@ -165,9 +183,13 @@
 
       <!-- Tab 5: Warishan -->
       <div id="warTab" class="admin-tab d-none">
-        <div class="card p-3 shadow-sm border-0 mb-3 bg-warning text-dark d-flex flex-row justify-content-between align-items-center">
-          <h5 class="fw-bold m-0"><i class="fa fa-sitemap me-2"></i> ওয়ারিশ সনদের আবেদন তালিকা</h5>
-          <button class="btn btn-dark btn-sm fw-bold" onclick="loadWarishanApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
+        <div class="card p-3 shadow-sm border-0 mb-3 bg-warning text-dark certificate-list-toolbar">
+          <h5 class="fw-bold m-0 certificate-list-title"><i class="fa fa-sitemap me-2"></i> ওয়ারিশ সনদের আবেদন তালিকা</h5>
+          <div class="input-group input-group-sm certificate-list-search">
+            <input type="search" id="warSearchInput" class="form-control" placeholder="নাম / মোবাইল / আবেদন নং" oninput="searchWarishanApps()" aria-label="ওয়ারিশ আবেদন খুঁজুন">
+            <button class="btn btn-dark fw-bold" type="button" onclick="searchWarishanApps()" title="সার্চ"><i class="fa fa-search"></i></button>
+          </div>
+          <button class="btn btn-dark btn-sm fw-bold certificate-list-refresh" onclick="loadWarishanApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
         </div>
         <div class="table-responsive bg-white p-3 shadow-sm rounded border">
           <table class="table table-hover align-middle">
@@ -374,6 +396,9 @@
   var loadRequestStore = { cit: 0, trade: 0, fam: 0, war: 0, gen: 0, tax: 0, users: 0 };
   var tradeListMode = 'new';
   var tradeSearchTerm = '';
+  var citSearchTerm = '';
+  var famSearchTerm = '';
+  var warSearchTerm = '';
   var generalCategory = '';
   var generalSearchTerm = '';
   var PAGE_SIZE = 15;
@@ -819,7 +844,12 @@
     currentPageStore.cit = page;
     var tbody = document.getElementById('citAppTable');
     tbody.innerHTML = '';
-    var list = rawDataStore.cit;
+    var query = citSearchTerm.trim().toLocaleLowerCase();
+    var list = rawDataStore.cit.filter(function(app) {
+      if (!query) return true;
+      return [app.appId, app.certNo, app.name, app.applicantName, app.mobile, app.nid]
+        .some(function(value) { return String(value || '').toLocaleLowerCase().indexOf(query) !== -1; });
+    });
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; return; }
     slice.forEach(function(a) {
@@ -827,6 +857,11 @@
       tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.certNo || '-'}</td><td>${a.name || a.applicantName}</td><td>${a.fatherName || a.fatherSpouseName || '-'}</td><td>${a.mobile}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
     });
     renderPagination('cit', list.length, 'renderCitPage');
+  }
+  function searchCitizenshipApps() {
+    var input = document.getElementById('citSearchInput');
+    citSearchTerm = input ? input.value : '';
+    renderCitPage(1);
   }
 
   async function loadTradeLicenses(page = 1) {
@@ -933,7 +968,12 @@
     currentPageStore.fam = page;
     var tbody = document.getElementById('famAppTable');
     tbody.innerHTML = '';
-    var list = rawDataStore.fam;
+    var query = famSearchTerm.trim().toLocaleLowerCase();
+    var list = rawDataStore.fam.filter(function(app) {
+      if (!query) return true;
+      return [app.appId, app.name, app.applicantName, app.nid, app.mobile, app.fatherName, app.fatherSpouseName]
+        .some(function(value) { return String(value || '').toLocaleLowerCase().indexOf(query) !== -1; });
+    });
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; return; }
     slice.forEach(function(a) {
@@ -941,6 +981,11 @@
       tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.name || a.applicantName}</td><td>${a.nid || '-'}</td><td>${a.fatherName || a.fatherSpouseName || '-'}</td><td>${a.mobile}</td><td>ওয়ার্ড-${a.wardNo}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
     });
     renderPagination('fam', list.length, 'renderFamPage');
+  }
+  function searchFamilyApps() {
+    var input = document.getElementById('famSearchInput');
+    famSearchTerm = input ? input.value : '';
+    renderFamPage(1);
   }
 
   async function loadWarishanApps(page = 1) {
@@ -956,7 +1001,12 @@
     currentPageStore.war = page;
     var tbody = document.getElementById('warAppTable');
     tbody.innerHTML = '';
-    var list = rawDataStore.war;
+    var query = warSearchTerm.trim().toLocaleLowerCase();
+    var list = rawDataStore.war.filter(function(app) {
+      if (!query) return true;
+      return [app.appId, app.applicantName, app.name, app.mobile, app.nid, app.fatherSpouseName, app.village]
+        .some(function(value) { return String(value || '').toLocaleLowerCase().indexOf(query) !== -1; });
+    });
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; return; }
     slice.forEach(function(a) {
@@ -964,6 +1014,11 @@
       tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.applicantName}</td><td>${a.fatherSpouseName || '-'}</td><td>${a.mobile}</td><td>ওয়ার্ড-${a.wardNo}</td><td>${a.village}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
     });
     renderPagination('war', list.length, 'renderWarPage');
+  }
+  function searchWarishanApps() {
+    var input = document.getElementById('warSearchInput');
+    warSearchTerm = input ? input.value : '';
+    renderWarPage(1);
   }
 
   async function loadTaxPayers(page = 1) {

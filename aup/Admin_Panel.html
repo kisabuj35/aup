@@ -34,13 +34,13 @@
   .page-link-btn { padding: 4px 10px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 4px; cursor: pointer; text-decoration: none; font-weight: bold; margin: 0 2px; }
   .page-link-btn:hover, .page-link-btn.active-page { background: #006837; color: #fff; border-color: #006837; }
   .trade-filter-tabs .btn.active { background: #006837; color: #fff; border-color: #006837; }
-  .certificate-list-toolbar { display: flex !important; flex-wrap: nowrap !important; align-items: center; gap: 16px; min-height: 64px; }
+  .certificate-list-toolbar { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center; justify-content: space-between; gap: 16px; height: 64px; min-height: 64px; max-height: 64px; overflow: hidden; }
   .certificate-list-title { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .certificate-list-search { flex: 0 0 330px; width: 330px; max-width: 330px; min-width: 0; }
   .certificate-list-refresh { flex: 0 0 auto; margin-left: auto; }
   .certificate-list-search input, .certificate-list-search button { height: 34px !important; }
   @media (max-width: 767.98px) {
-    .certificate-list-toolbar { gap: 8px; min-height: 56px; }
+    .certificate-list-toolbar { gap: 8px; height: 56px; min-height: 56px; max-height: 56px; }
     .certificate-list-title { display: none; }
     .certificate-list-search { flex: 1 1 auto; width: auto; max-width: none; }
   }

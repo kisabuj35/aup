@@ -686,12 +686,8 @@
         JSON.stringify(savedData.warishanTree || []) === JSON.stringify(payload.warishanTree);
     };
     try {
-      res = await callBackendAPI('saveEditedApplication', payload);
+      res = await callBackendAPI('updateWarishanData', payload);
       if (res && res.success) isPersisted = await verifySavedWarishanData();
-      if (!isPersisted) {
-        res = await callBackendAPI('updateWarishanApplication', payload);
-        if (res && res.success) isPersisted = await verifySavedWarishanData();
-      }
     } catch (error) {
       console.error('Warishan update error:', error);
       res = { success: false, error: 'সার্ভারে তথ্য সংরক্ষণ করা যায়নি।' };

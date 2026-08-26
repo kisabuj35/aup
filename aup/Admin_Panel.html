@@ -459,8 +459,9 @@
     document.getElementById('adminActiveName').innerText = userData.name || userData.username || 'ইউজার';
     document.getElementById('adminActiveRoleBadge').innerText = userData.role || 'Admin';
     
-    if (userData.photo && (userData.photo.startsWith('http') || userData.photo.startsWith('data:image'))) {
-      document.getElementById('adminActivePhoto').src = userData.photo;
+    var activePhoto = userData.photo || userData.photoUrl;
+    if (activePhoto && (activePhoto.startsWith('http') || activePhoto.startsWith('data:image'))) {
+      document.getElementById('adminActivePhoto').src = activePhoto;
     } else {
       document.getElementById('adminActivePhoto').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
     }
@@ -693,7 +694,7 @@
     var tbody = document.getElementById('userTableBody');
     tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted"><i class="fa fa-spinner fa-spin me-2"></i>ডাটাবেস থেকে ইউজার লোড হচ্ছে...</td></tr>';
     
-    var users = await callBackend('getAdminUsers');
+    var users = await callBackend('getAllUsers');
     if (requestId !== loadRequestStore.users) return;
     if (!users) return showLoadError('userTableBody', 6, 'ডাটাবেস থেকে এডমিন তালিকা লোড করা যায়নি। আবার রিফ্রেশ করুন।');
     rawDataStore.users = getApiList(users, ['users', 'admins', 'adminUsers', 'data', 'results']);
@@ -781,11 +782,13 @@
       name: document.getElementById('newName').value.trim(),
       role: document.getElementById('newRole').value,
       photo: document.getElementById('newPhotoBase64').value || "",
+      photoUrl: document.getElementById('newPhotoBase64').value || "",
       permissions: permissions,
-      menuPermissions: menuPermissions
+      menuPermissions: menuPermissions,
+      allowedMenus: Object.keys(menuPermissions).filter(function(key) { return menuPermissions[key]; })
     };
 
-    var res = await callBackend('saveAdminUser', payload);
+    var res = await callBackend('saveNewUser', payload);
     btn.disabled = false; btn.innerText = 'ইউজার সংরক্ষণ';
 
     if (res && res.success) {
@@ -813,7 +816,7 @@
       confirmButtonText: 'হ্যাঁ, ডিলিট করুন'
     }).then(async (result) => {
       if (result.isConfirmed) {
-        var res = await callBackend('deleteAdminUser', username);
+        var res = await callBackend('deleteUser', username);
         if (res && res.success) {
           Swal.fire({ icon: 'success', title: 'মুছে ফেলা হয়েছে!', timer: 1500, showConfirmButton: false });
           loadAdminUsers();

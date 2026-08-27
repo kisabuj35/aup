@@ -225,6 +225,11 @@
             <div class="col-md-6"><label class="form-label fw-bold text-danger">মূল মৃত ব্যক্তির নাম *</label><input type="text" id="warDeceasedName" class="form-control border-danger" placeholder="যেমন: আকুল আলী জমাদ্দার" required></div>
             <div class="col-md-4"><label class="form-label fw-bold text-danger">মৃত ব্যক্তির পিতা/স্বামীর নাম *</label><input type="text" id="warDeceasedFather" class="form-control border-danger" placeholder="যেমন: মুজাফ্ফর জমাদ্দার" required></div>
             <div class="col-md-2"><label class="form-label fw-bold text-danger">সম্পর্ক *</label><select id="warDeceasedRelation" class="form-select border-danger" required><option value="পুত্র">পুত্র</option><option value="কন্যা">কন্যা</option><option value="স্ত্রী">স্ত্রী</option><option value="স্বামী">স্বামী</option></select></div>
+            <div class="col-md-4"><label class="form-label fw-bold text-danger">ওয়ার্ড নম্বর *</label><select id="warDeceasedWard" class="form-select border-danger" required><option value="০১">০১</option><option value="০২">০২</option><option value="০৩">০৩</option><option value="০৪">০৪</option><option value="০৫">০৫</option><option value="০৬">০৬</option><option value="০৭">০৭</option><option value="০৮">০৮</option><option value="০৯">০৯</option></select></div>
+            <div class="col-md-4"><label class="form-label fw-bold text-danger">গ্রাম/মহল্লা *</label><input type="text" id="warDeceasedVillage" class="form-control border-danger" placeholder="মৃত ব্যক্তির গ্রামের নাম" required></div>
+            <div class="col-md-4"><label class="form-label fw-bold text-danger">ডাকঘর *</label><input type="text" id="warDeceasedPost" class="form-control border-danger" placeholder="মৃত ব্যক্তির ডাকঘর" required></div>
+            <div class="col-md-4"><label class="form-label fw-bold text-danger">উপজেলা *</label><input type="text" id="warDeceasedUpazila" class="form-control border-danger" value="পটুয়াখালী সদর" required></div>
+            <div class="col-md-4"><label class="form-label fw-bold text-danger">জেলা *</label><input type="text" id="warDeceasedDistrict" class="form-control border-danger" value="পটুয়াখালী" required></div>
           </div>
         </div>
 
@@ -348,6 +353,11 @@
               <div class="col-md-6"><label class="form-label fw-bold">মূল মৃত ব্যক্তির নাম *</label><input type="text" id="editWarDeceasedName" class="form-control" required></div>
               <div class="col-md-4"><label class="form-label fw-bold">পিতা/স্বামীর নাম *</label><input type="text" id="editWarDeceasedFather" class="form-control" required></div>
               <div class="col-md-2"><label class="form-label fw-bold">সম্পর্ক *</label><select id="editWarDeceasedRelation" class="form-select" required><option value="পুত্র">পুত্র</option><option value="কন্যা">কন্যা</option><option value="স্ত্রী">স্ত্রী</option><option value="স্বামী">স্বামী</option></select></div>
+              <div class="col-md-4"><label class="form-label fw-bold">ওয়ার্ড নম্বর *</label><select id="editWarDeceasedWard" class="form-select" required><option value="০১">০১</option><option value="০২">০২</option><option value="০৩">০৩</option><option value="০৪">০৪</option><option value="০৫">০৫</option><option value="০৬">০৬</option><option value="০৭">০৭</option><option value="০৮">০৮</option><option value="০৯">০৯</option></select></div>
+              <div class="col-md-4"><label class="form-label fw-bold">গ্রাম/মহল্লা *</label><input type="text" id="editWarDeceasedVillage" class="form-control" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">ডাকঘর *</label><input type="text" id="editWarDeceasedPost" class="form-control" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">উপজেলা *</label><input type="text" id="editWarDeceasedUpazila" class="form-control" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">জেলা *</label><input type="text" id="editWarDeceasedDistrict" class="form-control" required></div>
             </div>
           </div>
           <div class="card p-3 bg-white border">
@@ -394,6 +404,26 @@
   function getDeceasedParentText(data) {
     var parentName = getDeceasedParentName(data && data.deceasedFather);
     return parentName ? `${formatMrito(parentName)} এর ${getDeceasedParentRelation(data)} ` : '';
+  }
+
+  function getDeceasedAddress(data) {
+    return {
+      wardNo: data.deceasedWardNo || data.deceasedWard || '',
+      village: data.deceasedVillage || '',
+      postOffice: data.deceasedPostOffice || data.deceasedPost || '',
+      upazila: data.deceasedUpazila || '',
+      district: data.deceasedDistrict || ''
+    };
+  }
+
+  function getDeceasedAddressText(data) {
+    var address = getDeceasedAddress(data);
+    return (address.wardNo ? address.wardNo + ' নং ওয়ার্ড, ' : '') +
+      (address.village ? address.village + ' গ্রাম, ' : '') +
+      (address.postOffice ? 'ডাকঘর ' + address.postOffice + ', ' : '') +
+      '১১নং আউলিয়াপুর ইউনিয়ন পরিষদ, ' +
+      (address.upazila ? address.upazila + ' উপজেলা, ' : '') +
+      (address.district ? address.district + ' জেলা' : '');
   }
 
   function openWarishanPage() {
@@ -513,6 +543,11 @@
       deceasedParentRelation: document.getElementById('warDeceasedRelation').value,
       DeceasedFatherRelation: document.getElementById('warDeceasedRelation').value,
       DeceasedRelation: document.getElementById('warDeceasedRelation').value,
+      deceasedWardNo: document.getElementById('warDeceasedWard').value,
+      deceasedVillage: document.getElementById('warDeceasedVillage').value.trim(),
+      deceasedPostOffice: document.getElementById('warDeceasedPost').value.trim(),
+      deceasedUpazila: document.getElementById('warDeceasedUpazila').value.trim(),
+      deceasedDistrict: document.getElementById('warDeceasedDistrict').value.trim(),
       nid: document.getElementById('warAppNid').value.trim(),
       mobile: document.getElementById('warAppMobile').value.trim(),
       wardNo: document.getElementById('warAppWard').value,
@@ -629,6 +664,11 @@
     document.getElementById('editWarDeceasedName').value = data.deceasedName || '';
     document.getElementById('editWarDeceasedFather').value = getDeceasedParentName(data.deceasedFather || data.deceasedFatherName || '');
     document.getElementById('editWarDeceasedRelation').value = getDeceasedParentRelation(data);
+    document.getElementById('editWarDeceasedWard').value = data.deceasedWardNo || data.deceasedWard || '০১';
+    document.getElementById('editWarDeceasedVillage').value = data.deceasedVillage || '';
+    document.getElementById('editWarDeceasedPost').value = data.deceasedPostOffice || data.deceasedPost || '';
+    document.getElementById('editWarDeceasedUpazila').value = data.deceasedUpazila || 'পটুয়াখালী সদর';
+    document.getElementById('editWarDeceasedDistrict').value = data.deceasedDistrict || 'পটুয়াখালী';
 
     var groupsContainer = document.getElementById('editWarGroupsContainer');
     groupsContainer.innerHTML = '';
@@ -664,6 +704,11 @@
       deceasedParentRelation: deceasedRelation,
       DeceasedFatherRelation: deceasedRelation,
       DeceasedRelation: deceasedRelation,
+      deceasedWardNo: document.getElementById('editWarDeceasedWard').value,
+      deceasedVillage: document.getElementById('editWarDeceasedVillage').value.trim(),
+      deceasedPostOffice: document.getElementById('editWarDeceasedPost').value.trim(),
+      deceasedUpazila: document.getElementById('editWarDeceasedUpazila').value.trim(),
+      deceasedDistrict: document.getElementById('editWarDeceasedDistrict').value.trim(),
       warishanTree: collectWarishanEditTreeData()
     };
     btn.disabled = true;
@@ -754,6 +799,7 @@
 
     var decFatherText = getDeceasedParentText(data);
     var decNameText = formatMrito(data.deceasedName);
+    var deceasedAddressText = getDeceasedAddressText(data);
 
     var upLogoUrl = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
     var govtLogoUrl = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
@@ -798,7 +844,7 @@
 
             <!-- বিবরণী -->
             <div style="margin-bottom: 8px; text-align: justify; font-size: 15.5px; line-height: 1.8; text-indent: 40px; font-family: 'Nikosh', sans-serif;">
-              এই মর্মে ওয়ারিশ সার্টিফিকেট প্রদান করা যাইতেছে যে, পটুয়াখালী সদর উপজেলাধীন ১১নং আউলিয়াপুর ইউনিয়নের ${data.wardNo || '০৭'} নং ওয়ার্ডের ${data.village || 'উত্তর বাদুরা'} গ্রামের ${decFatherText}<strong style="font-size: 16.5px;">${decNameText}</strong> এর লোকান্তরে নিম্নলিখিত ব্যক্তিগণ তাহার স্থাবর-অস্থাবর সকল সম্পত্তির ওয়ারিশ বিদ্যমান থাকেন।
+              এই মর্মে ওয়ারিশ সার্টিফিকেট প্রদান করা যাইতেছে যে, ${deceasedAddressText}-এর ${decFatherText}<strong style="font-size: 16.5px;">${decNameText}</strong> এর লোকান্তরে নিম্নলিখিত ব্যক্তিগণ তাহার স্থাবর-অস্থাবর সকল সম্পত্তির ওয়ারিশ বিদ্যমান থাকেন।
             </div>
 
             <table class="war-main-table">
@@ -884,6 +930,7 @@
 
     var decFatherText = getDeceasedParentText(data);
     var decNameText = formatMrito(data.deceasedName);
+    var deceasedAddressText = getDeceasedAddressText(data);
 
     var upLogoUrl = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
     var govtLogoUrl = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
@@ -919,7 +966,7 @@
             </div>
 
             <div style="margin-bottom: 6px; text-align: justify; font-size: 15px; line-height: 1.7; font-family: 'Nikosh', sans-serif;">
-              এই মর্মে ওয়ারিশ সার্টিফিকেট প্রদান করা যাইতেছে যে, পটুয়াখালী সদর উপজেলাধীন ১১নং আউলিয়াপুর ইউনিয়নের ${data.wardNo || '০২'} নং ওয়ার্ডের ${data.village || 'পশ্চিম আউলিয়াপুর'} গ্রামের ${decFatherText}<strong style="font-size: 16px;">${decNameText}</strong> এর লোকান্তরে নিম্নলিখিত ব্যক্তিগণ তাহার স্থাবর-অস্থাবর সকল সম্পত্তির ওয়ারিশ বিদ্যমান থাকেন।
+              এই মর্মে ওয়ারিশ সার্টিফিকেট প্রদান করা যাইতেছে যে, ${deceasedAddressText}-এর ${decFatherText}<strong style="font-size: 16px;">${decNameText}</strong> এর লোকান্তরে নিম্নলিখিত ব্যক্তিগণ তাহার স্থাবর-অস্থাবর সকল সম্পত্তির ওয়ারিশ বিদ্যমান থাকেন।
             </div>
 
             <table class="war-main-table">
@@ -1041,11 +1088,13 @@
     var deceasedParent = getDeceasedParentName(data.deceasedFatherName || data.deceasedFather || '');
     var deceasedRelation = data.deceasedFatherRelation || data.deceasedRelation || getDeceasedParentRelation(data);
     var applicantAddress = [data.village ? 'গ্রাম: ' + data.village : '', data.postOffice ? 'ডাকঘর: ' + data.postOffice : '', data.wardNo ? 'ওয়ার্ড নং: ' + data.wardNo : ''].filter(function(value) { return value; }).join(', ');
+    var deceasedAddress = getDeceasedAddress(data);
+    var deceasedAddressText = [deceasedAddress.wardNo ? 'ওয়ার্ড নং: ' + deceasedAddress.wardNo : '', deceasedAddress.village ? 'গ্রাম: ' + deceasedAddress.village : '', deceasedAddress.postOffice ? 'ডাকঘর: ' + deceasedAddress.postOffice : '', deceasedAddress.upazila ? 'উপজেলা: ' + deceasedAddress.upazila : '', deceasedAddress.district ? 'জেলা: ' + deceasedAddress.district : ''].filter(function(value) { return value; }).join(', ');
     document.getElementById('appCopyDate').innerText = new Date().toLocaleDateString('bn-BD');
     document.getElementById('appCopyTrackingId').innerText = data.appId || appId;
     document.getElementById('appCopySignName').innerText = applicantName;
     document.getElementById('appCopySignMobile').innerText = data.mobile || '';
-    document.getElementById('appCopyMainBodyText').innerText = 'সবিনয় বিনীত নিবেদন এই যে, আমি নিম্ন স্বাক্ষরকারী আবেদনকারী ' + applicantName + ', পিতা/স্বামী: ' + applicantParent + ', ওয়ার্ড নং: ' + (data.wardNo || '') + ', গ্রাম: ' + (data.village || '') + ', ডাকঘর: ' + (data.postOffice || '') + ', ১১নং আউলিয়াপুর ইউনিয়ন, পটুয়াখালী সদর, পটুয়াখালী জেলার একজন বৈধ ওয়ারিশ। মৃত ' + deceasedParent + ', সম্পর্ক: ' + deceasedRelation + ', মৃত ' + deceasedName + ' এর ওয়ারিশান সনদ প্রয়োজন হওয়ায় নিচে উল্লেখিত ওয়ারিশগণের নামের তালিকাসহ সনদটি প্রদানের জন্য বিনীতভাবে আবেদন করছি।';
+    document.getElementById('appCopyMainBodyText').innerText = 'সবিনয় বিনীত নিবেদন এই যে, আমি নিম্ন স্বাক্ষরকারী আবেদনকারী ' + applicantName + ', পিতা/স্বামী: ' + applicantParent + ', ওয়ার্ড নং: ' + (data.wardNo || '') + ', গ্রাম: ' + (data.village || '') + ', ডাকঘর: ' + (data.postOffice || '') + ', ১১নং আউলিয়াপুর ইউনিয়নের একজন বৈধ ওয়ারিশ। মৃত ব্যক্তির পূর্ণ পরিচয়: ' + deceasedAddressText + ', ' + deceasedParent + ', সম্পর্ক: ' + deceasedRelation + ', মৃত ' + deceasedName + '। উক্ত মৃত ব্যক্তির ওয়ারিশান সনদ প্রয়োজন হওয়ায় নিচে উল্লেখিত ওয়ারিশগণের নামের তালিকাসহ সনদটি প্রদানের জন্য বিনীতভাবে আবেদন করছি।';
     var tables = document.getElementById('appCopyTablesContainer');
     tables.innerHTML = '';
     (data.warishanTree || []).forEach(function(group) {

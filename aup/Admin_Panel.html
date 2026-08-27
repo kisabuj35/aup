@@ -34,13 +34,13 @@
   .page-link-btn { padding: 4px 10px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 4px; cursor: pointer; text-decoration: none; font-weight: bold; margin: 0 2px; }
   .page-link-btn:hover, .page-link-btn.active-page { background: #006837; color: #fff; border-color: #006837; }
   .trade-filter-tabs .btn.active { background: #006837; color: #fff; border-color: #006837; }
-  .certificate-list-toolbar { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center; justify-content: space-between; gap: 16px; height: 64px; min-height: 64px; max-height: 64px; overflow: hidden; }
-  .certificate-list-title { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .certificate-list-search { flex: 0 0 330px; width: 330px; max-width: 330px; min-width: 0; }
+  .certificate-list-toolbar { display: flex !important; flex-wrap: nowrap !important; align-items: center; gap: 16px; min-height: 64px; }
+  .certificate-list-title { flex: 1 1 0; min-width: 0; white-space: nowrap; }
+  .certificate-list-search { flex: 0 1 330px; width: 330px; max-width: 330px; }
   .certificate-list-refresh { flex: 0 0 auto; margin-left: auto; }
   .certificate-list-search input, .certificate-list-search button { height: 34px !important; }
   @media (max-width: 767.98px) {
-    .certificate-list-toolbar { gap: 8px; height: 56px; min-height: 56px; max-height: 56px; }
+    .certificate-list-toolbar { gap: 8px; min-height: 56px; }
     .certificate-list-title { display: none; }
     .certificate-list-search { flex: 1 1 auto; width: auto; max-width: none; }
   }
@@ -55,8 +55,6 @@
   .general-category-info { min-width: 0; }
   .general-category-name { color: #234236; display: block; font-size: 11px; font-weight: 700; line-height: 1.2; }
   .general-category-count { color: #63756c; display: block; font-size: 10px; margin-top: 2px; }
-  .permission-group { border: 1px solid #dee2e6; border-radius: 6px; padding: 12px; height: 100%; }
-  .permission-group-title { color: #006837; font-weight: 700; margin-bottom: 8px; }
   @media (max-width: 767.98px) {
     .general-app-toolbar { height: 56px; min-height: 56px; }
     .general-app-heading { display: none; }
@@ -365,7 +363,7 @@
         <form id="addUserForm" onsubmit="event.preventDefault(); saveUser();">
           <div class="row g-3">
             <div class="col-md-6"><label class="form-label fw-bold">ইউজারনেম *</label><input type="text" id="newUsername" class="form-control" required placeholder="উদাহরণ: sabuj"></div>
-            <div class="col-md-6"><label class="form-label fw-bold">পাসওয়ার্ড <span id="passwordRequiredMark">*</span></label><input type="password" id="newPassword" class="form-control" required placeholder="গোপন পাসওয়ার্ড"></div>
+            <div class="col-md-6"><label class="form-label fw-bold">পাসওয়ার্ড *</label><input type="password" id="newPassword" class="form-control" required placeholder="গোপন পাসওয়ার্ড"></div>
             <div class="col-md-6"><label class="form-label fw-bold">নাম ও পদবী *</label><input type="text" id="newName" class="form-control" required placeholder="Sabuj (Admin)"></div>
             <div class="col-md-6"><label class="form-label fw-bold">রোল *</label>
               <select id="newRole" class="form-select">
@@ -377,37 +375,6 @@
             <div class="col-md-4 text-center my-1">
               <label class="form-label d-block fw-bold">ছবি প্রিভিউ</label>
               <img id="photoPreviewImg" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" width="60" height="60" class="rounded-circle border" style="object-fit: cover;">
-            </div>
-          </div>
-          <div class="row g-3 mt-1">
-            <div class="col-md-7">
-              <div class="permission-group">
-                <div class="permission-group-title">যে মেনুগুলোতে কাজ করতে পারবে</div>
-                <div class="row g-2">
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="dashTab"> ড্যাশবোর্ড</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="citTab"> নাগরিকত্ব সনদ</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="tradeTab"> ট্রেড লাইসেন্স</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="famTab"> পারিবারিক সনদ</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="warTab"> ওয়ারিশ সনদ</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="appsTab"> সাধারণ প্রত্যয়ন</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="taxTab"> কর আদায় ও সদস্য</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="accountsTab"> আয়-ব্যয়ের হিসাব</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="bankTab"> ব্যাংক হিসাব ও ক্যাশ</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="beneficiaryTab"> উপকারভোগী</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="projectTab"> উন্নয়ন প্রকল্প</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="reportTab"> রিপোর্ট</label></div>
-                  <div class="col-6"><label class="form-check"><input class="form-check-input admin-menu-permission" type="checkbox" value="upSettingsTab"> ইউপি সেটিংস</label></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-5">
-              <div class="permission-group">
-                <div class="permission-group-title">ডেটা অ্যাকশন</div>
-                <label class="form-check mb-2"><input class="form-check-input admin-action-permission" type="checkbox" value="canApprove"> অনুমোদন করতে পারবে</label>
-                <label class="form-check mb-2"><input class="form-check-input admin-action-permission" type="checkbox" value="canReject"> বাতিল করতে পারবে</label>
-                <label class="form-check mb-2"><input class="form-check-input admin-action-permission" type="checkbox" value="canEdit"> সংশোধন করতে পারবে</label>
-                <label class="form-check"><input class="form-check-input admin-action-permission" type="checkbox" value="canDelete"> ডিলিট করতে পারবে</label>
-              </div>
             </div>
           </div>
           <div class="text-end mt-4">
@@ -435,9 +402,6 @@
   var generalCategory = '';
   var generalSearchTerm = '';
   var PAGE_SIZE = 15;
-  var photoReadPromise = Promise.resolve();
-  var editingAdminUsername = '';
-  var ADMIN_MENU_KEYS = ['dashTab', 'citTab', 'tradeTab', 'famTab', 'warTab', 'appsTab', 'taxTab', 'accountsTab', 'bankTab', 'beneficiaryTab', 'projectTab', 'reportTab', 'upSettingsTab'];
 
   /* ==========================================================
      🔒 সেশন ম্যানেজমেন্ট ও রিলোড সিকিউরিটি
@@ -460,9 +424,8 @@
     document.getElementById('adminActiveName').innerText = userData.name || userData.username || 'ইউজার';
     document.getElementById('adminActiveRoleBadge').innerText = userData.role || 'Admin';
     
-    var activePhoto = userData.photo || userData.photoUrl;
-    if (activePhoto && (activePhoto.startsWith('http') || activePhoto.startsWith('data:image'))) {
-      document.getElementById('adminActivePhoto').src = activePhoto;
+    if (userData.photo && (userData.photo.startsWith('http') || userData.photo.startsWith('data:image'))) {
+      document.getElementById('adminActivePhoto').src = userData.photo;
     } else {
       document.getElementById('adminActivePhoto').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
     }
@@ -501,54 +464,10 @@
       if (panel) panel.classList.remove('d-none');
       
       updateSidebarProfile(session);
-      applyAdminRolePermissions(session);
 
       var savedTab = localStorage.getItem('adminActiveTab') || 'dashTab';
       switchAdminTab(savedTab);
     }
-  }
-
-  function getPermissionSource(session) {
-    var permissions = session && (session.permissions || session.permission);
-    if (!permissions) return null;
-    if (typeof permissions === 'string') {
-      try { permissions = JSON.parse(permissions); } catch (e) { return null; }
-    }
-    return permissions && typeof permissions === 'object' ? permissions : null;
-  }
-
-  function hasAdminPermission(permissionName) {
-    var session = getActiveSession() || {};
-    if (session.role === 'SuperAdmin') return true;
-    var permissions = getPermissionSource(session);
-    if (!permissions) return true;
-    var value = permissions[permissionName];
-    return value === true || value === 1 || value === '1' || value === 'true' || value === 'TRUE';
-  }
-
-  function hasAdminMenuPermission(menuKey) {
-    var session = getActiveSession() || {};
-    if (session.role === 'SuperAdmin') return true;
-    var permissions = getPermissionSource(session);
-    if (!permissions) return true;
-    var menus = permissions.menus || permissions.menuPermissions || permissions.allowedMenus;
-    if (!menus && Object.prototype.hasOwnProperty.call(permissions, menuKey)) menus = permissions;
-    if (typeof menus === 'string') {
-      try { menus = JSON.parse(menus); } catch (e) { menus = menus.split(','); }
-    }
-    if (Array.isArray(menus)) return menus.indexOf(menuKey) !== -1;
-    if (menus && typeof menus === 'object') return !!menus[menuKey];
-    return true;
-  }
-
-  function applyAdminRolePermissions(session) {
-    session = session || getActiveSession() || {};
-    document.querySelectorAll('#adminSidebarMenuList .admin-menu-link').forEach(function(link) {
-      var menuKey = link.getAttribute('data-menu');
-      link.classList.toggle('d-none', menuKey !== 'settingsTab' && !hasAdminMenuPermission(menuKey));
-    });
-    var settingsButton = document.getElementById('superAdminSettingsBtn');
-    if (settingsButton) settingsButton.classList.toggle('d-none', session.role !== 'SuperAdmin');
   }
 
   if (document.readyState === 'loading') window.addEventListener('DOMContentLoaded', initializeAdminPanel);
@@ -605,14 +524,13 @@
   function collectTradeRecords(value, sourceKey) {
     if (Array.isArray(value)) {
       return value.map(function(trade) {
-        if (sourceKey && /renew|নবায়/i.test(sourceKey)) trade.__renewalSource = true;
+        if (sourceKey && /renew/i.test(sourceKey)) trade.__renewalSource = true;
         return trade;
       });
     }
     if (!value || typeof value !== 'object') return [];
     return Object.keys(value).reduce(function(records, key) {
-      var nextSourceKey = (sourceKey ? sourceKey + '.' : '') + key;
-      return records.concat(collectTradeRecords(value[key], nextSourceKey));
+      return records.concat(collectTradeRecords(value[key], key));
     }, []);
   }
 
@@ -646,10 +564,7 @@
 
   function renderActionButtons(appId, status, printCallbackName, editCallbackName) {
     var session = getActiveSession() || {};
-    var canApprove = hasAdminPermission('canApprove');
-    var canReject = hasAdminPermission('canReject');
-    var canEdit = hasAdminPermission('canEdit');
-    var canDel = hasAdminPermission('canDelete');
+    var canDel = session.role === 'SuperAdmin' || (session.permissions && session.permissions.canDelete);
 
     var stBadge = (status === 'Approved') ? '<span class="status-badge-approved">Approved</span>' : ((status === 'Rejected') ? '<span class="status-badge-rejected">Rejected</span>' : '<span class="status-badge-pending">Pending</span>');
     var printBtn = (status === 'Approved') ? `<button type="button" class="btn-act-print" onclick="${printCallbackName}('${appId}')" title="সরাসরি প্রিন্ট"><i class="fa fa-print me-1"></i>প্রিন্ট</button>` : '';
@@ -659,9 +574,9 @@
       badge: stBadge,
       actions: `
         <div class="d-flex align-items-center">
-          ${canApprove ? `<button class="btn-act-approve" onclick="changeStatus('${appId}', 'Approved')" title="অনুমোদন"><i class="fa fa-check"></i></button>` : ''}
-          ${canEdit ? `<button class="btn-act-edit" onclick="${editCallbackName}('${appId}')" title="সংশোধন"><i class="fa fa-edit"></i></button>` : ''}
-          ${canReject ? `<button class="btn-act-reject" onclick="changeStatus('${appId}', 'Rejected')" title="বাতিল"><i class="fa fa-times"></i></button>` : ''}
+          <button class="btn-act-approve" onclick="changeStatus('${appId}', 'Approved')" title="অনুমোদন"><i class="fa fa-check"></i></button>
+          <button class="btn-act-edit" onclick="${editCallbackName}('${appId}')" title="সংশোধন"><i class="fa fa-edit"></i></button>
+          <button class="btn-act-reject" onclick="changeStatus('${appId}', 'Rejected')" title="বাতিল"><i class="fa fa-times"></i></button>
           ${printBtn} ${deleteBtn}
         </div>
       `
@@ -669,9 +584,8 @@
   }
 
   function renderStatusActionButtons(appId, status) {
-    var canApprove = hasAdminPermission('canApprove');
-    var canReject = hasAdminPermission('canReject');
-    var canDel = hasAdminPermission('canDelete');
+    var session = getActiveSession() || {};
+    var canDel = session.role === 'SuperAdmin' || (session.permissions && session.permissions.canDelete);
     var stBadge = (status === 'Approved') ? '<span class="status-badge-approved">Approved</span>' : ((status === 'Rejected') ? '<span class="status-badge-rejected">Rejected</span>' : '<span class="status-badge-pending">Pending</span>');
     var deleteBtn = canDel ? `<button class="btn btn-sm btn-outline-danger ms-1" onclick="removeApp('${appId}')" title="ডিলিট"><i class="fa fa-trash"></i></button>` : '';
 
@@ -679,8 +593,8 @@
       badge: stBadge,
       actions: `
         <div class="d-flex align-items-center">
-          ${canApprove ? `<button class="btn-act-approve" onclick="changeStatus('${appId}', 'Approved')" title="অনুমোদন"><i class="fa fa-check"></i></button>` : ''}
-          ${canReject ? `<button class="btn-act-reject" onclick="changeStatus('${appId}', 'Rejected')" title="বাতিল"><i class="fa fa-times"></i></button>` : ''}
+          <button class="btn-act-approve" onclick="changeStatus('${appId}', 'Approved')" title="অনুমোদন"><i class="fa fa-check"></i></button>
+          <button class="btn-act-reject" onclick="changeStatus('${appId}', 'Rejected')" title="বাতিল"><i class="fa fa-times"></i></button>
           ${deleteBtn}
         </div>
       `
@@ -695,10 +609,10 @@
     var tbody = document.getElementById('userTableBody');
     tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted"><i class="fa fa-spinner fa-spin me-2"></i>ডাটাবেস থেকে ইউজার লোড হচ্ছে...</td></tr>';
     
-    var users = await callBackend('getAllUsers');
+    var users = await callBackend('getAdminUsers');
     if (requestId !== loadRequestStore.users) return;
     if (!users) return showLoadError('userTableBody', 6, 'ডাটাবেস থেকে এডমিন তালিকা লোড করা যায়নি। আবার রিফ্রেশ করুন।');
-    rawDataStore.users = getApiList(users, ['users', 'admins', 'adminUsers', 'data', 'results']);
+    rawDataStore.users = getApiList(users, ['users', 'data', 'results']);
     renderUserTable();
   }
 
@@ -713,22 +627,19 @@
     }
 
     list.forEach(function(u) {
-      var photoUrl = u.photo || u.photoUrl || u.Photos || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
-      var username = u.username || u.Username || '';
-      var role = u.role || u.Role || 'Admin';
-      var roleBadge = (role === 'SuperAdmin') ? '<span class="badge bg-warning text-dark fw-bold">SuperAdmin</span>' : '<span class="badge bg-primary">Admin</span>';
-      var permBadge = role === 'SuperAdmin' ? '<span class="badge bg-success">সকল মেনু ও অ্যাকশন</span>' : '<span class="badge bg-secondary">নির্বাচিত মেনু ও অ্যাকশন</span>';
+      var photoUrl = (u.photo && u.photo.length > 10) ? u.photo : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+      var roleBadge = (u.role === 'SuperAdmin') ? '<span class="badge bg-warning text-dark fw-bold">SuperAdmin</span>' : '<span class="badge bg-primary">Admin</span>';
+      var permBadge = (u.role === 'SuperAdmin') ? '<span class="badge bg-success">সকল মেনু এক্সেস</span>' : '<span class="badge bg-secondary">আবেদন অনুমোদন ও পরিদর্শন</span>';
       
       tbody.innerHTML += `
         <tr>
           <td><img src="${photoUrl}" width="40" height="40" class="rounded-circle border" style="object-fit:cover;"></td>
-          <td><strong>${u.username || u.Username || ''}</strong></td>
-          <td>${u.name || u.displayName || u.Name || u.username || u.Username || ''}</td>
+          <td><strong>${u.username}</strong></td>
+          <td>${u.name || u.displayName || u.username}</td>
           <td>${roleBadge}</td>
           <td>${permBadge}</td>
           <td>
-            <button class="btn btn-sm btn-outline-primary me-1" onclick="openEditUserModal('${encodeURIComponent(username)}')" title="সংশোধন"><i class="fa fa-edit"></i></button>
-            <button class="btn btn-sm btn-outline-danger" onclick="deleteUser('${encodeURIComponent(username)}')" title="মুছে ফেলুন"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-sm btn-outline-danger" onclick="deleteUser('${u.username}')" title="মুছে ফেলুন"><i class="fa fa-trash"></i></button>
           </td>
         </tr>
       `;
@@ -736,123 +647,48 @@
   }
 
   function openAddUserModal() {
-    editingAdminUsername = '';
     document.getElementById('addUserForm').reset();
-    document.getElementById('userModalTitle').innerHTML = '<i class="fa fa-user-plus me-2"></i> নতুন এডমিন তৈরি';
-    document.getElementById('saveUserBtn').innerText = 'ইউজার সংরক্ষণ';
-    document.getElementById('newUsername').disabled = false;
-    document.getElementById('newPassword').required = true;
-    document.getElementById('passwordRequiredMark').textContent = '*';
     document.getElementById('photoPreviewImg').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
     document.getElementById('newPhotoBase64').value = "";
-    document.querySelectorAll('.admin-menu-permission, .admin-action-permission').forEach(function(input) { input.checked = false; });
-    bootstrap.Modal.getOrCreateInstance(document.getElementById('addUserModal')).show();
-  }
-
-  function openEditUserModal(encodedUsername) {
-    var username = decodeURIComponent(encodedUsername || '');
-    var user = rawDataStore.users.find(function(item) {
-      return (item.username || item.Username || '') === username;
-    });
-    if (!user) return Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: 'এডমিনের তথ্য পাওয়া যায়নি। আবার রিফ্রেশ করুন।' });
-
-    editingAdminUsername = username;
-    document.getElementById('addUserForm').reset();
-    document.getElementById('userModalTitle').innerHTML = '<i class="fa fa-user-edit me-2"></i> এডমিন পারমিশন সংশোধন';
-    document.getElementById('saveUserBtn').innerText = 'সংশোধন সংরক্ষণ';
-    document.getElementById('newUsername').value = username;
-    document.getElementById('newUsername').disabled = true;
-    document.getElementById('newPassword').required = false;
-    document.getElementById('passwordRequiredMark').textContent = '';
-    document.getElementById('newName').value = user.name || user.Name || user.displayName || '';
-    document.getElementById('newRole').value = user.role || user.Role || 'Admin';
-    var photo = user.photo || user.photoUrl || user.Photos || '';
-    document.getElementById('newPhotoBase64').value = photo;
-    document.getElementById('photoPreviewImg').src = photo || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
-
-    var permissions = user.permissions || user.permission || {};
-    if (typeof permissions === 'string') {
-      try { permissions = JSON.parse(permissions); } catch (e) { permissions = {}; }
-    }
-    var menus = permissions.menus || permissions.menuPermissions || permissions.allowedMenus || [];
-    document.querySelectorAll('.admin-menu-permission').forEach(function(input) {
-      input.checked = Array.isArray(menus) ? menus.indexOf(input.value) !== -1 : !!menus[input.value];
-    });
-    document.querySelectorAll('.admin-action-permission').forEach(function(input) {
-      input.checked = permissions[input.value] === true || permissions[input.value] === 1 || permissions[input.value] === 'true';
-    });
-    if (document.getElementById('newRole').value === 'SuperAdmin') {
-      document.querySelectorAll('.admin-menu-permission, .admin-action-permission').forEach(function(input) { input.checked = true; });
-    }
     bootstrap.Modal.getOrCreateInstance(document.getElementById('addUserModal')).show();
   }
 
   function previewAdminPhoto(input) {
-    if (!input.files || !input.files[0]) return;
-    photoReadPromise = new Promise(function(resolve) {
+    if (input.files && input.files[0]) {
       var reader = new FileReader();
       reader.onload = function(e) {
-        var image = new Image();
-        image.onload = function() {
-          var scale = Math.min(1, 480 / Math.max(image.width, image.height));
-          var canvas = document.createElement('canvas');
-          canvas.width = Math.max(1, Math.round(image.width * scale));
-          canvas.height = Math.max(1, Math.round(image.height * scale));
-          canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
-          var compactPhoto = canvas.toDataURL('image/jpeg', 0.78);
-          document.getElementById('photoPreviewImg').src = compactPhoto;
-          document.getElementById('newPhotoBase64').value = compactPhoto;
-          resolve();
-        };
-        image.onerror = resolve;
-        image.src = e.target.result;
+        document.getElementById('photoPreviewImg').src = e.target.result;
+        document.getElementById('newPhotoBase64').value = e.target.result;
       };
-      reader.onerror = resolve;
       reader.readAsDataURL(input.files[0]);
-    });
+    }
   }
 
   async function saveUser() {
     var btn = document.getElementById('saveUserBtn');
     btn.disabled = true; btn.innerText = 'সংরক্ষণ হচ্ছে...';
-    await photoReadPromise;
-
-    var menuPermissions = {};
-    document.querySelectorAll('.admin-menu-permission').forEach(function(input) { menuPermissions[input.value] = input.checked; });
-    var actionPermissions = {};
-    document.querySelectorAll('.admin-action-permission').forEach(function(input) { actionPermissions[input.value] = input.checked; });
-    var permissions = Object.assign({ menus: menuPermissions }, actionPermissions);
 
     var payload = {
       username: document.getElementById('newUsername').value.trim(),
       password: document.getElementById('newPassword').value.trim(),
       name: document.getElementById('newName').value.trim(),
       role: document.getElementById('newRole').value,
-      photo: document.getElementById('newPhotoBase64').value || "",
-      photoUrl: document.getElementById('newPhotoBase64').value || "",
-      permissions: permissions,
-      menuPermissions: menuPermissions,
-      allowedMenus: Object.keys(menuPermissions).filter(function(key) { return menuPermissions[key]; })
+      photo: document.getElementById('newPhotoBase64').value || ""
     };
 
-    var res = await callBackend(editingAdminUsername ? 'updateUser' : 'saveNewUser', editingAdminUsername ? {
-      originalUsername: editingAdminUsername,
-      ...payload
-    } : payload);
+    var res = await callBackend('saveAdminUser', payload);
     btn.disabled = false; btn.innerText = 'ইউজার সংরক্ষণ';
 
     if (res && res.success) {
       bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
       loadAdminUsers();
-      Swal.fire({ icon: 'success', title: 'সফল!', text: editingAdminUsername ? 'এডমিনের তথ্য সফলভাবে সংশোধন করা হয়েছে।' : 'নতুন এডমিন সফলভাবে যোগ করা হয়েছে।', timer: 1800, showConfirmButton: false });
-      editingAdminUsername = '';
+      Swal.fire({ icon: 'success', title: 'সফল!', text: 'নতুন এডমিন সফলভাবে যোগ করা হয়েছে।', timer: 1800, showConfirmButton: false });
     } else {
       Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: (res && res.message) ? res.message : 'ইউজার সংরক্ষণ করা যায়নি।' });
     }
   }
 
   async function deleteUser(username) {
-    username = decodeURIComponent(username || '');
     var session = getActiveSession() || {};
     if (session.username === username) {
       return Swal.fire({ icon: 'error', title: 'অসম্ভব!', text: 'আপনি বর্তমানে লগইন থাকা এডমিনকে ডিলিট করতে পারবেন না!' });
@@ -868,7 +704,7 @@
       confirmButtonText: 'হ্যাঁ, ডিলিট করুন'
     }).then(async (result) => {
       if (result.isConfirmed) {
-        var res = await callBackend('deleteUser', username);
+        var res = await callBackend('deleteAdminUser', username);
         if (res && res.success) {
           Swal.fire({ icon: 'success', title: 'মুছে ফেলা হয়েছে!', timer: 1500, showConfirmButton: false });
           loadAdminUsers();
@@ -1053,9 +889,8 @@
     tradeLists.forEach(function(items) {
       items.forEach(function(trade) {
         var tradeId = String(trade.appId || trade.id || trade.licNo || '');
-        var recordKey = tradeId + (isRenewalTradeLicense(trade) ? ':renew' : ':new');
-        if (!tradeId || !seenTradeIds[recordKey]) {
-          if (tradeId) seenTradeIds[recordKey] = true;
+        if (!tradeId || !seenTradeIds[tradeId]) {
+          if (tradeId) seenTradeIds[tradeId] = true;
           allTrades.push(trade);
         }
       });
@@ -1066,11 +901,6 @@
   function isRenewalTradeLicense(trade) {
     if (!trade) return false;
     if (trade.__renewalSource) return true;
-    var recordType = String(trade.recordType || trade.licenseType || trade.tradeType || '').trim().toLocaleLowerCase();
-    if (recordType === 'renewal' || recordType === 'renew' || recordType.indexOf('নবায়ন') !== -1) return true;
-    if (recordType === 'new' || recordType === 'নতুন') return false;
-    var applicationId = String(trade.appId || trade.applicationId || trade.applicationNo || trade.id || '').trim().toUpperCase();
-    if (/\bRN[-_]/.test(applicationId) || /RENEW/.test(applicationId)) return true;
     function hasValue(value) {
       if (value === null || value === undefined || value === false || value === 0) return false;
       var normalized = String(value).trim().toLowerCase();
@@ -1085,10 +915,7 @@
     }).map(function(field) {
       return String(trade[field] || '').toLocaleLowerCase();
     }).join(' ');
-    var originalLicense = fields.some(function(field) {
-      return /originallic|originalapp/i.test(field) && hasValue(trade[field]);
-    });
-    return renewalFlag || originalLicense || requestType.indexOf('নবায়ন') !== -1 || requestType.indexOf('renew') !== -1;
+    return renewalFlag || requestType.indexOf('নবায়ন') !== -1 || requestType.indexOf('renew') !== -1;
   }
   function getFilteredTradeLicenses() {
     var query = tradeSearchTerm.trim().toLocaleLowerCase();
@@ -1240,8 +1067,6 @@
   }
 
   async function changeStatus(appId, status) {
-    if (status === 'Approved' && !hasAdminPermission('canApprove')) return;
-    if (status === 'Rejected' && !hasAdminPermission('canReject')) return;
     const res = await callBackend('updateAppStatus', { appId: appId, status: status });
     if(res && res.success) {
       loadCitizenshipApps(currentPageStore.cit);
@@ -1255,7 +1080,6 @@
   }
 
   async function removeApp(appId) {
-    if (!hasAdminPermission('canDelete')) return;
     Swal.fire({
       title: 'আপনি কি নিশ্চিত?',
       text: "আবেদনটি ডাটাবেস থেকে চিরতরে মুছে ফেলা হবে!",
@@ -1277,10 +1101,6 @@
   }
 
   function switchAdminTab(tabId) {
-    if (tabId !== 'settingsTab' && !hasAdminMenuPermission(tabId)) {
-      tabId = hasAdminMenuPermission('dashTab') ? 'dashTab' : ADMIN_MENU_KEYS.find(hasAdminMenuPermission);
-    }
-    if (tabId === 'settingsTab' && (getActiveSession() || {}).role !== 'SuperAdmin') return;
     localStorage.setItem('adminActiveTab', tabId);
 
     document.querySelectorAll('.admin-tab').forEach(el => el.classList.add('d-none'));

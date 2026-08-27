@@ -421,7 +421,7 @@
     return (address.wardNo ? address.wardNo + ' নং ওয়ার্ড, ' : '') +
       (address.village ? address.village + ' গ্রাম, ' : '') +
       (address.postOffice ? 'ডাকঘর ' + address.postOffice + ', ' : '') +
-      '১১নং আউলিয়াপুর ইউনিয়ন পরিষদ, ' +
+      'ইউনিয়ন: ১১নং আউলিয়াপুর, ইউনিয়ন পরিষদ, ' +
       (address.upazila ? address.upazila + ' উপজেলা, ' : '') +
       (address.district ? address.district + ' জেলা' : '');
   }
@@ -1089,7 +1089,7 @@
     var deceasedRelation = data.deceasedFatherRelation || data.deceasedRelation || getDeceasedParentRelation(data);
     var applicantAddress = [data.village ? 'গ্রাম: ' + data.village : '', data.postOffice ? 'ডাকঘর: ' + data.postOffice : '', data.wardNo ? 'ওয়ার্ড নং: ' + data.wardNo : ''].filter(function(value) { return value; }).join(', ');
     var deceasedAddress = getDeceasedAddress(data);
-    var deceasedAddressText = [deceasedAddress.wardNo ? 'ওয়ার্ড নং: ' + deceasedAddress.wardNo : '', deceasedAddress.village ? 'গ্রাম: ' + deceasedAddress.village : '', deceasedAddress.postOffice ? 'ডাকঘর: ' + deceasedAddress.postOffice : '', deceasedAddress.upazila ? 'উপজেলা: ' + deceasedAddress.upazila : '', deceasedAddress.district ? 'জেলা: ' + deceasedAddress.district : ''].filter(function(value) { return value; }).join(', ');
+    var deceasedAddressText = [deceasedAddress.wardNo ? 'ওয়ার্ড নং: ' + deceasedAddress.wardNo : '', deceasedAddress.village ? 'গ্রাম: ' + deceasedAddress.village : '', deceasedAddress.postOffice ? 'ডাকঘর: ' + deceasedAddress.postOffice : '', 'ইউনিয়ন: ১১নং আউলিয়াপুর', deceasedAddress.upazila ? 'উপজেলা: ' + deceasedAddress.upazila : '', deceasedAddress.district ? 'জেলা: ' + deceasedAddress.district : ''].filter(function(value) { return value; }).join(', ');
     document.getElementById('appCopyDate').innerText = new Date().toLocaleDateString('bn-BD');
     document.getElementById('appCopyTrackingId').innerText = data.appId || appId;
     document.getElementById('appCopySignName').innerText = applicantName;

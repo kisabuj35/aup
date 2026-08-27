@@ -34,15 +34,16 @@
   .page-link-btn { padding: 4px 10px; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 4px; cursor: pointer; text-decoration: none; font-weight: bold; margin: 0 2px; }
   .page-link-btn:hover, .page-link-btn.active-page { background: #006837; color: #fff; border-color: #006837; }
   .trade-filter-tabs .btn.active { background: #006837; color: #fff; border-color: #006837; }
-  .certificate-list-toolbar { display: flex !important; flex-wrap: nowrap !important; align-items: center; gap: 16px; min-height: 64px; }
-  .certificate-list-title { flex: 1 1 0; min-width: 0; white-space: nowrap; }
-  .certificate-list-search { flex: 0 1 330px; width: 330px; max-width: 330px; }
-  .certificate-list-refresh { flex: 0 0 auto; margin-left: auto; }
+  .certificate-list-toolbar { display: grid !important; grid-template-columns: minmax(0, 1fr) 330px auto; align-items: center; gap: 16px; height: 64px; min-height: 64px; max-height: 64px; overflow: visible; }
+  .certificate-list-title { min-width: 0; white-space: nowrap; }
+  .certificate-list-search { width: 330px; max-width: 330px; min-width: 0; }
+  .certificate-list-refresh { margin-left: 0; white-space: nowrap; }
   .certificate-list-search input, .certificate-list-search button { height: 34px !important; }
   @media (max-width: 767.98px) {
-    .certificate-list-toolbar { gap: 8px; min-height: 56px; }
+    .certificate-list-toolbar { grid-template-columns: minmax(0, 1fr) auto; gap: 8px; height: 56px; min-height: 56px; max-height: 56px; }
     .certificate-list-title { display: none; }
-    .certificate-list-search { flex: 1 1 auto; width: auto; max-width: none; }
+    .certificate-list-search { grid-column: 1; width: auto; max-width: none; }
+    .certificate-list-refresh { grid-column: 2; }
   }
   .general-app-toolbar { position: relative; display: block !important; height: 64px; min-height: 64px; padding: 0 16px !important; overflow: hidden; }
   .general-app-heading { position: absolute; left: 16px; top: 50%; max-width: 38%; margin: 0 !important; transform: translateY(-50%); white-space: nowrap; }

@@ -14,16 +14,6 @@ function getSS() {
   return ss;
 }
 
-function doGet(e) {
-  initMasterDatabase();
-  var template = HtmlService.createTemplateFromFile('Index');
-  var contents = e.postData.contents;
-  return template.evaluate()
-    .setTitle('১১নং আউলিয়াপুর ইউনিয়ন পরিষদ - ক্যাশলেস সেবা সিস্টেম')
-    .addMetaTag('viewport', 'width=device-width, initial-scale=1.0')
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-}
-
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
@@ -499,11 +489,12 @@ function submitFamilyDirect(formData) {
     var sheet = getSheet('FamilyCert');
     var date = formatBanglaDate(new Date());
 
-    var certificateType =
+    var certificateType = String(
       formData.type ||
       formData.serviceType ||
       formData.certificateType ||
-      'পারিবারিক সনদ';
+      'পারিবারিক সনদ'
+    ).trim();
 
     var isSuccession = certificateType === 'উত্তরাধিকারী সনদ';
     var prefix = isSuccession ? 'AUL-UW-' : 'AUL-FW-';
@@ -535,7 +526,9 @@ function submitFamilyDirect(formData) {
     return {
       success: true,
       appId: trackingId,
-      type: certificateType
+      type: certificateType,
+      serviceType: certificateType,
+      certificateType: certificateType
     };
 
   } catch (e) {
@@ -895,7 +888,7 @@ function getFamilyApps() {
   for (var i = 1; i < data.length; i++) {
     if (!data[i][0]) continue;
 
-    var appId = data[i][0].toString();
+    var appId = data[i][0].toString().trim();
     var storedType = (data[i][13] || '').toString().trim();
 
     var certificateType = storedType;
@@ -1118,6 +1111,7 @@ function deleteUser(uname) {
 // 🟢 CLOUDFLARE / GITHUB API ROUTER ENGINE (DO NOT DELETE)
 function doPost(e) {
   try {
+    initMasterDatabase();
     var contents = e.postData.contents;
     var request = JSON.parse(contents);
     var action = request.action;

@@ -171,7 +171,7 @@
             <input type="search" id="famSearchInput" class="form-control" placeholder="নাম / মোবাইল / আবেদন নং" oninput="searchFamilyApps()" aria-label="পারিবারিক আবেদন খুঁজুন">
             <button class="btn btn-light text-primary fw-bold" type="button" onclick="searchFamilyApps()" title="সার্চ"><i class="fa fa-search"></i></button>
           </div>
-          <button class="btn btn-light btn-sm fw-bold text-primary certificate-list-refresh" onclick="loadFamilyApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
+          <button class="btn btn-light btn-sm fw-bold text-primary certificate-list-refresh" onclick="refreshFamilyCertificateList()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
         </div>
         <div class="trade-filter-tabs btn-group mb-3" role="tablist" aria-label="পারিবারিক সনদের আবেদন ধরন">
           <button type="button" class="btn btn-outline-primary active" id="familyCertificateTabBtn" onclick="setFamilyCertificateMode('family')" role="tab" aria-selected="true"><i class="fa fa-people-roof me-1"></i> পারিবারিক সনদ</button>
@@ -408,7 +408,7 @@
 <!-- ========================================================== -->
 <script>
   var rawDataStore = { cit: [], trade: [], fam: [], war: [], gen: [], tax: [], users: [] };
-  var currentPageStore = { cit: 1, trade: 1, fam: 1, war: 1, gen: 1, tax: 1 };
+  var currentPageStore = { cit: 1, trade: 1, fam: 1, familySuccession: 1, war: 1, gen: 1, tax: 1 };
   var loadRequestStore = { cit: 0, trade: 0, fam: 0, war: 0, gen: 0, tax: 0, users: 0 };
   var tradeListMode = 'new';
   var tradeSearchTerm = '';
@@ -997,25 +997,32 @@
       successionButton.setAttribute('aria-selected', isSuccession ? 'true' : 'false');
     }
     if (isSuccession) {
-      if (!rawDataStore.war.length) loadWarishanApps().then(function() { renderFamilySuccessionPage(1); });
-      else renderFamilySuccessionPage(1);
+      renderFamilySuccessionPage(1);
     } else {
       renderFamPage(1);
     }
   }
   function refreshFamilyCertificateList() {
-    loadFamilyApps();
-    loadWarishanApps().then(function() {
+    loadFamilyApps().then(function() {
       if (document.getElementById('familySuccessionPanel') && !document.getElementById('familySuccessionPanel').classList.contains('d-none')) renderFamilySuccessionPage(1);
     });
   }
+  function getFamilyApplicationType(app) {
+    return String((app && (app.type || app.serviceType || app.certificateType)) || '').trim();
+  }
+  function isFamilyCertificateApplication(app, type) {
+    var appType = getFamilyApplicationType(app);
+    if (type === 'succession') return appType === 'উত্তরাধিকারী সনদ';
+    return appType === '' || appType === 'পারিবারিক সনদ';
+  }
   function renderFamilySuccessionPage(page = 1) {
-    currentPageStore.war = page;
+    currentPageStore.familySuccession = page;
     var tbody = document.getElementById('familySuccessionTable');
     if (!tbody) return;
     tbody.innerHTML = '';
     var query = famSearchTerm.trim().toLocaleLowerCase();
-    var list = rawDataStore.war.filter(function(app) {
+    var list = rawDataStore.fam.filter(function(app) {
+      if (!isFamilyCertificateApplication(app, 'succession')) return false;
       if (!query) return true;
       return [app.appId, app.applicantName, app.name, app.mobile, app.nid, app.fatherSpouseName, app.village]
         .some(function(value) { return String(value || '').toLocaleLowerCase().indexOf(query) !== -1; });
@@ -1023,14 +1030,14 @@
     var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
     if (slice.length === 0) {
       tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন উত্তরাধিকারী আবেদন নেই</td></tr>';
-      renderPagination('war', 0, 'renderFamilySuccessionPage');
+      renderPagination('familySuccession', 0, 'renderFamilySuccessionPage');
       return;
     }
     slice.forEach(function(a) {
-      var act = renderActionButtons(a.appId, a.status, 'showFamilyWarishanPrintPreview', 'openEditWarishanModal');
+      var act = renderActionButtons(a.appId, a.status, 'showFamilyPrintPreview', 'openEditFamilyModal');
       tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.applicantName}</td><td>${a.fatherSpouseName || '-'}</td><td>${a.mobile}</td><td>ওয়ার্ড-${a.wardNo}</td><td>${a.village}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
     });
-    renderPagination('war', list.length, 'renderFamilySuccessionPage');
+    renderPagination('familySuccession', list.length, 'renderFamilySuccessionPage');
   }
   function renderFamPage(page = 1) {
     currentPageStore.fam = page;
@@ -1038,6 +1045,7 @@
     tbody.innerHTML = '';
     var query = famSearchTerm.trim().toLocaleLowerCase();
     var list = rawDataStore.fam.filter(function(app) {
+      if (!isFamilyCertificateApplication(app, 'family')) return false;
       if (!query) return true;
       return [app.appId, app.name, app.applicantName, app.nid, app.mobile, app.fatherName, app.fatherSpouseName]
         .some(function(value) { return String(value || '').toLocaleLowerCase().indexOf(query) !== -1; });

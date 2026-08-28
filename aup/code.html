@@ -63,7 +63,7 @@ function getSheet(sheetName) {
       headers = ['AppID', 'Name', 'NID', 'FatherName', 'MotherName', 'DOB', 'MaritalStatus', 'SpouseName', 'Mobile', 'WardNo', 'Village', 'PostOffice', 'Division', 'Status', 'ApplyDate', 'SignatoryRole', 'CertNo'];
     } else if (sheetName === 'FamilyCert') {
       headers = ['AppID','Name','NID','FatherName','MotherName','Mobile','WardNo','Village',
-      'PostOffice','Status','ApplyDate','SignatoryRole','Members_JSON','CertificateType','DeceasedName', 'DeceasedDate' ];
+      'PostOffice','Status','ApplyDate','SignatoryRole','Members_JSON','CertificateType','DeceasedName','DeceasedDate','DeceasedFather','DeceasedMother','ApplicantRelation','DeceasedWard','DeceasedVillage','DeceasedPostOffice' ];
     } else if (sheetName === 'Warishan') {
       headers = ['AppID', 'ApplicantName', 'FatherSpouse', 'DeceasedName', 'NID', 'Mobile', 'WardNo', 'Village', 'PostOffice', 'Status', 'Date', 'SignatoryRole', 'SmarakNo', 'WarishanJSON', 'DeceasedFather'];
     } else if (sheetName === 'TradeLicense') {
@@ -121,7 +121,16 @@ var familyHeaders = [
   'Members_JSON',
   'CertificateType',
   'DeceasedName',
-  'DeceasedDate'
+  'DeceasedDate',
+  'DeceasedFather',
+  'DeceasedMother',
+  'ApplicantRelation',
+  'DeceasedWard',
+  'DeceasedVillage',
+  'DeceasedPostOffice',
+  'DeceasedUnion',
+  'DeceasedUpazila',
+  'DeceasedDistrict'
 ];
 
 for (var h = 0; h < familyHeaders.length; h++) {
@@ -356,6 +365,15 @@ function updateApplicationData(ed) {
             sheet.getRange(i + 1, 14).setValue(editType);
             sheet.getRange(i + 1, 15).setValue(ed.deceasedName || '');
             sheet.getRange(i + 1, 16).setValue(ed.deceasedDate || '');
+            sheet.getRange(i + 1, 17).setValue(ed.deceasedFather || '');
+            sheet.getRange(i + 1, 18).setValue(ed.deceasedMother || '');
+            sheet.getRange(i + 1, 19).setValue(ed.applicantRelation || '');
+            sheet.getRange(i + 1, 20).setValue(toEnglishDigit(ed.deceasedWard || ''));
+            sheet.getRange(i + 1, 21).setValue(ed.deceasedVillage || '');
+            sheet.getRange(i + 1, 22).setValue(ed.deceasedPostOffice || '');
+            sheet.getRange(i + 1, 23).setValue(ed.deceasedUnion || '');
+            sheet.getRange(i + 1, 24).setValue(ed.deceasedUpazila || '');
+            sheet.getRange(i + 1, 25).setValue(ed.deceasedDistrict || '');
           } else if (sheetsToSearch[s] === 'Applications') {
             sheet.getRange(i + 1, 3).setValue(ed.name);
             sheet.getRange(i + 1, 4).setValue("'" + toEnglishDigit(ed.nid || ''));
@@ -520,7 +538,16 @@ function submitFamilyDirect(formData) {
       membersJson,
       certificateType,
       formData.deceasedName || '',
-      formData.deceasedDate || ''
+      formData.deceasedDate || '',
+      formData.deceasedFather || '',
+      formData.deceasedMother || '',
+      formData.applicantRelation || '',
+      toEnglishDigit(formData.deceasedWard || ''),
+      formData.deceasedVillage || '',
+      formData.deceasedPostOffice || '',
+      formData.deceasedUnion || '১১নং আউলিয়াপুর ইউনিয়ন',
+      formData.deceasedUpazila || 'পটুয়াখালী সদর',
+      formData.deceasedDistrict || 'পটুয়াখালী'
     ]);
 
     return {
@@ -776,7 +803,16 @@ function getFamilyDetails(appId) {
           signatoryRole: data[i][11] || 'চেয়ারম্যান',
           members: members,
           deceasedName: data[i][14] || '',
-          deceasedDate: formatBanglaDate(data[i][15]) || ''
+          deceasedDate: formatBanglaDate(data[i][15]) || '',
+          deceasedFather: data[i][16] || '',
+          deceasedMother: data[i][17] || '',
+          applicantRelation: data[i][18] || '',
+          deceasedWard: toBanglaDigit(data[i][19] || ''),
+          deceasedVillage: data[i][20] || '',
+          deceasedPostOffice: data[i][21] || '',
+          deceasedUnion: data[i][22] || '',
+          deceasedUpazila: data[i][23] || '',
+          deceasedDistrict: data[i][24] || ''
         };
       }
     }
@@ -918,7 +954,16 @@ function getFamilyApps() {
       applyDate: formatBanglaDate(data[i][10]),
       signatoryRole: data[i][11] || 'চেয়ারম্যান',
       deceasedName: data[i][14] || '',
-      deceasedDate: formatBanglaDate(data[i][15]) || ''
+      deceasedDate: formatBanglaDate(data[i][15]) || '',
+      deceasedFather: data[i][16] || '',
+      deceasedMother: data[i][17] || '',
+      applicantRelation: data[i][18] || '',
+      deceasedWard: toBanglaDigit(data[i][19] || ''),
+      deceasedVillage: data[i][20] || '',
+      deceasedPostOffice: data[i][21] || '',
+      deceasedUnion: data[i][22] || '',
+      deceasedUpazila: data[i][23] || '',
+      deceasedDistrict: data[i][24] || ''
     });
   }
 

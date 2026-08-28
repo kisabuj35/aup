@@ -173,12 +173,27 @@
           </div>
           <button class="btn btn-light btn-sm fw-bold text-primary certificate-list-refresh" onclick="loadFamilyApps()"><i class="fa fa-sync me-1"></i> রিফ্রেশ</button>
         </div>
-        <div class="table-responsive bg-white p-3 shadow-sm rounded border">
-          <table class="table table-hover align-middle">
-            <thead class="table-dark"><tr><th>আবেদন নং</th><th>নাম</th><th>NID</th><th>পিতার নাম</th><th>মোবাইল</th><th>ওয়ার্ড</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
-            <tbody id="famAppTable"></tbody>
-          </table>
-          <div id="famPagination" class="custom-pagination-wrap"></div>
+        <div class="trade-filter-tabs btn-group mb-3" role="tablist" aria-label="পারিবারিক সনদের আবেদন ধরন">
+          <button type="button" class="btn btn-outline-primary active" id="familyCertificateTabBtn" onclick="setFamilyCertificateMode('family')" role="tab" aria-selected="true"><i class="fa fa-people-roof me-1"></i> পারিবারিক সনদ</button>
+          <button type="button" class="btn btn-outline-warning" id="familySuccessionTabBtn" onclick="setFamilyCertificateMode('succession')" role="tab" aria-selected="false"><i class="fa fa-users me-1"></i> উত্তরাধিকারী সনদ</button>
+        </div>
+        <div id="familyCertificatePanel">
+          <div class="table-responsive bg-white p-3 shadow-sm rounded border">
+            <table class="table table-hover align-middle">
+              <thead class="table-dark"><tr><th>আবেদন নং</th><th>নাম</th><th>NID</th><th>পিতার নাম</th><th>মোবাইল</th><th>ওয়ার্ড</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
+              <tbody id="famAppTable"></tbody>
+            </table>
+            <div id="famPagination" class="custom-pagination-wrap"></div>
+          </div>
+        </div>
+        <div id="familySuccessionPanel" class="d-none">
+          <div class="table-responsive bg-white p-3 shadow-sm rounded border">
+            <table class="table table-hover align-middle">
+              <thead class="table-dark"><tr><th>আবেদন নং</th><th>আবেদনকারী</th><th>আবেদনকারীর পিতার নাম</th><th>মোবাইল</th><th>ওয়ার্ড</th><th>গ্রাম</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
+              <tbody id="familySuccessionTable"></tbody>
+            </table>
+            <div id="familySuccessionPagination" class="custom-pagination-wrap"></div>
+          </div>
         </div>
       </div>
 
@@ -965,6 +980,58 @@
     rawDataStore.fam = sortNewestFirst(getApiList(apps, ['applications', 'family', 'data', 'results']));
     renderFamPage(page);
   }
+  function setFamilyCertificateMode(mode) {
+    var isSuccession = mode === 'succession';
+    var familyPanel = document.getElementById('familyCertificatePanel');
+    var successionPanel = document.getElementById('familySuccessionPanel');
+    var familyButton = document.getElementById('familyCertificateTabBtn');
+    var successionButton = document.getElementById('familySuccessionTabBtn');
+    if (familyPanel) familyPanel.classList.toggle('d-none', isSuccession);
+    if (successionPanel) successionPanel.classList.toggle('d-none', !isSuccession);
+    if (familyButton) {
+      familyButton.classList.toggle('active', !isSuccession);
+      familyButton.setAttribute('aria-selected', isSuccession ? 'false' : 'true');
+    }
+    if (successionButton) {
+      successionButton.classList.toggle('active', isSuccession);
+      successionButton.setAttribute('aria-selected', isSuccession ? 'true' : 'false');
+    }
+    if (isSuccession) {
+      if (!rawDataStore.war.length) loadWarishanApps().then(function() { renderFamilySuccessionPage(1); });
+      else renderFamilySuccessionPage(1);
+    } else {
+      renderFamPage(1);
+    }
+  }
+  function refreshFamilyCertificateList() {
+    loadFamilyApps();
+    loadWarishanApps().then(function() {
+      if (document.getElementById('familySuccessionPanel') && !document.getElementById('familySuccessionPanel').classList.contains('d-none')) renderFamilySuccessionPage(1);
+    });
+  }
+  function renderFamilySuccessionPage(page = 1) {
+    currentPageStore.war = page;
+    var tbody = document.getElementById('familySuccessionTable');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    var query = famSearchTerm.trim().toLocaleLowerCase();
+    var list = rawDataStore.war.filter(function(app) {
+      if (!query) return true;
+      return [app.appId, app.applicantName, app.name, app.mobile, app.nid, app.fatherSpouseName, app.village]
+        .some(function(value) { return String(value || '').toLocaleLowerCase().indexOf(query) !== -1; });
+    });
+    var slice = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+    if (slice.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন উত্তরাধিকারী আবেদন নেই</td></tr>';
+      renderPagination('war', 0, 'renderFamilySuccessionPage');
+      return;
+    }
+    slice.forEach(function(a) {
+      var act = renderActionButtons(a.appId, a.status, 'showFamilyWarishanPrintPreview', 'openEditWarishanModal');
+      tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.applicantName}</td><td>${a.fatherSpouseName || '-'}</td><td>${a.mobile}</td><td>ওয়ার্ড-${a.wardNo}</td><td>${a.village}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
+    });
+    renderPagination('war', list.length, 'renderFamilySuccessionPage');
+  }
   function renderFamPage(page = 1) {
     currentPageStore.fam = page;
     var tbody = document.getElementById('famAppTable');
@@ -986,7 +1053,9 @@
   function searchFamilyApps() {
     var input = document.getElementById('famSearchInput');
     famSearchTerm = input ? input.value : '';
-    renderFamPage(1);
+    var successionPanel = document.getElementById('familySuccessionPanel');
+    if (successionPanel && !successionPanel.classList.contains('d-none')) renderFamilySuccessionPage(1);
+    else renderFamPage(1);
   }
 
   async function loadWarishanApps(page = 1) {

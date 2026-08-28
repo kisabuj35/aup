@@ -198,7 +198,10 @@
       var statusBadge = (data.status === 'Approved') ? '<span class="badge bg-success fs-6">Approved (অনুমোদিত)</span>' : ((data.status === 'Rejected') ? '<span class="badge bg-danger fs-6">Rejected (বাতিল)</span>' : '<span class="badge bg-warning text-dark fs-6">Pending (অপেক্ষমাণ)</span>');
 
       var appCopyBtn = '';
-      if(data.type === 'ওয়ারিশান সনদ' || (data.appId && data.appId.indexOf('WAR') > -1)) {
+      var applicationType = data.type || data.serviceType || data.certificateType || '';
+      if(applicationType === 'পারিবারিক সনদ' || applicationType === 'উত্তরাধিকারী সনদ') {
+        appCopyBtn = `<button class="btn btn-sm btn-outline-primary fw-bold" onclick="printFamilyApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
+      } else if(applicationType === 'ওয়ারিশান সনদ' || (data.appId && data.appId.indexOf('WAR') > -1)) {
         appCopyBtn = `<button class="btn btn-sm btn-outline-primary fw-bold" onclick="printWarishanApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
       } else {
         appCopyBtn = `<button class="btn btn-sm btn-outline-primary fw-bold" onclick="printGeneralAppCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;

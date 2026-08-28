@@ -161,6 +161,15 @@ function ensureFamilyCertSchema() {
   return sheet;
 }
 
+function getFamilyCertSheet() {
+  return ensureFamilyCertSchema();
+}
+
+function normalizeFamilyCertificateType(data) {
+  var value = String(data && (data.type || data.serviceType || data.certificateType) || 'পারিবারিক সনদ').trim();
+  return value === 'উত্তরাধিকারী সনদ' ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ';
+}
+
 // 🟢 GENERATE DYNAMIC SMARAK NO
 function generateNextSmarakNo() {
   var sheet = getSheet('Warishan');
@@ -359,6 +368,7 @@ function updateApplicationData(ed) {
             sheet.getRange(i + 1, 12).setValue(ed.postOffice);
             sheet.getRange(i + 1, 16).setValue(ed.signatoryRole || 'চেয়ারম্যান');
           } else if (sheetsToSearch[s] === 'FamilyCert') {
+            sheet = getFamilyCertSheet();
             var editType =
               ed.type ||
               ed.serviceType ||
@@ -521,15 +531,10 @@ function submitCitizenshipDirect(formData) {
 // 🟢 FAMILY SUBMISSION
 function submitFamilyDirect(formData) {
   try {
-    var sheet = getSheet('FamilyCert');
+    var sheet = getFamilyCertSheet();
     var date = formatBanglaDate(new Date());
 
-    var certificateType = String(
-      formData.type ||
-      formData.serviceType ||
-      formData.certificateType ||
-      'পারিবারিক সনদ'
-    ).trim();
+    var certificateType = normalizeFamilyCertificateType(formData);
 
     var isSuccession = certificateType === 'উত্তরাধিকারী সনদ';
     var prefix = isSuccession ? 'AUL-UW-' : 'AUL-FW-';
@@ -539,7 +544,7 @@ function submitFamilyDirect(formData) {
 
     var membersJson = JSON.stringify(formData.members || []);
 
-    sheet.appendRow([
+    var row = [
       trackingId,
       formData.name || '',
       "'" + toEnglishDigit(formData.nid || ''),
@@ -565,7 +570,9 @@ function submitFamilyDirect(formData) {
       formData.deceasedUnion || '১১নং আউলিয়াপুর ইউনিয়ন',
       formData.deceasedUpazila || 'পটুয়াখালী সদর',
       formData.deceasedDistrict || 'পটুয়াখালী'
-    ]);
+    ];
+    if (row.length !== 25) throw new Error('FamilyCert row-এর ২৫টি field পূর্ণ হয়নি।');
+    sheet.getRange(sheet.getLastRow() + 1, 1, 1, row.length).setValues([row]);
 
     return {
       success: true,
@@ -773,7 +780,7 @@ function getTradeLicenseDetails(query) {
 function getFamilyDetails(appId) {
   try {
     var q = toEnglishDigit(appId || '').toUpperCase();
-    var sheet = getSheet('FamilyCert');
+    var sheet = getFamilyCertSheet();
     var data = sheet.getDataRange().getValues();
 
     for (var i = 1; i < data.length; i++) {
@@ -930,7 +937,7 @@ function getAllApplications() {
 
 function getFamilyApps() {
   var result = [];
-  var sheet = getSheet('FamilyCert');
+  var sheet = getFamilyCertSheet();
   var data = sheet.getDataRange().getValues();
 
   for (var i = 1; i < data.length; i++) {

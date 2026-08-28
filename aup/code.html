@@ -180,8 +180,12 @@ function getFamilyCertSheet() {
 }
 
 function normalizeFamilyCertificateType(data) {
-  var value = String(data && (data.type || data.serviceType || data.certificateType) || 'পারিবারিক সনদ').trim();
-  return value === 'উত্তরাধিকারী সনদ' ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ';
+  var value = String(data && (data.type || data.serviceType || data.certificateType) || '').trim();
+  var prefix = String(data && data.appPrefix || '').trim().toUpperCase();
+  if (value === 'উত্তরাধিকারী সনদ' || value === 'উত্তরাধিকারী সনদপত্র' || prefix === 'AUL-UW-') {
+    return 'উত্তরাধিকারী সনদ';
+  }
+  return 'পারিবারিক সনদ';
 }
 
 // 🟢 GENERATE DYNAMIC SMARAK NO

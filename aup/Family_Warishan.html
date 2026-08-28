@@ -274,6 +274,7 @@
         <div class="col-md-8"><label class="form-label fw-bold">মৃত ব্যক্তির নাম (উত্তরাধিকারী হলে)</label><input id="editFwDeceasedName" class="form-control"></div>
         <div class="col-md-4"><label class="form-label fw-bold">মৃত্যুর তারিখ</label><input id="editFwDeceasedDate" class="form-control"></div>
       </div>
+      <div class="table-responsive mt-4"><table class="table table-bordered align-middle text-center"><thead class="table-dark"><tr><th>ক্রমিক</th><th>সদস্যের নাম</th><th>ভোটার আইডি / জন্ম নিবন্ধন</th><th>জন্ম তারিখ</th><th>সম্পর্ক</th><th>মন্তব্য</th></tr></thead><tbody id="editFwMembersTbody"></tbody></table></div>
       <div class="text-end mt-4"><button type="submit" class="btn btn-success px-4" id="saveEditFwBtn">সংরক্ষণ করুন</button></div>
     </form></div>
   </div></div>
@@ -293,6 +294,10 @@
   function getBanglaMemoNumber(appId) {
     var matches = String(appId || '').match(/[0-9০-৯]+/g) || [];
     return toBnDigit(matches.length ? matches[matches.length - 1] : '');
+  }
+
+  function escapeFamilyValue(value) {
+    return String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   function openFamilyCertPage(type) {
@@ -373,6 +378,7 @@
       type: document.getElementById('fwServiceType').value,
       serviceType: document.getElementById('fwServiceType').value,
       certificateType: document.getElementById('fwServiceType').value,
+      appPrefix: document.getElementById('fwServiceType').value === 'উত্তরাধিকারী সনদ' ? 'AUL-UW-' : 'AUL-FW-',
       name: document.getElementById('fwApplicantName').value.trim(),
       nid: document.getElementById('fwApplicantNid').value.trim(),
       fatherName: document.getElementById('fwFatherName').value.trim(),
@@ -412,7 +418,7 @@
     document.getElementById('prSmarakYear').innerText = getCurrentBanglaYear();
     document.getElementById('prIssueDate').innerText = new Date().toLocaleDateString('bn-BD');
     
-    var certificateType = String(d.type || d.serviceType || d.certificateType || (String(appId).indexOf('AUL-FW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ')).trim();
+    var certificateType = String(d.type || d.serviceType || d.certificateType || (String(appId).indexOf('AUL-UW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ')).trim();
     var isSuccession = certificateType === 'উত্তরাধিকারী সনদ';
     document.getElementById('prCertTitle').innerText = isSuccession ? 'উত্তরাধিকারী সনদপত্র' : 'পারিবারিক সনদপত্র';
     document.getElementById('prCertTypeTitle').innerText = isSuccession ? 'উত্তরাধিকারী সনদ পত্র' : 'পারিবারিক সনদ পত্র';
@@ -464,7 +470,7 @@
     if (!printWindow) return alert('প্রিন্ট উইন্ডো খোলা যায়নি। ব্রাউজারের পপ-আপ অনুমতি দিন।');
     var d = await callBackendAPI('getFamilyDetails', appId);
     if (!d || !d.found) { printWindow.close(); return alert('আবেদনের তথ্য পাওয়া যায়নি!'); }
-    var type = String(d.type || d.serviceType || d.certificateType || (String(appId).indexOf('AUL-FW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ')).trim();
+    var type = String(d.type || d.serviceType || d.certificateType || (String(appId).indexOf('AUL-UW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ')).trim();
     var isSuccession = type === 'উত্তরাধিকারী সনদ';
     var escapeHtml = function(value) { return String(value || '-').replace(/[&<>"']/g, function(ch) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); };
     var memberList = (d.members || []).map(function(member, index) {
@@ -482,9 +488,14 @@
   async function openEditFamilyModal(appId) {
     var d = await callBackendAPI('getFamilyDetails', appId);
     if (!d || !d.found) return alert('আবেদনের তথ্য পাওয়া যায়নি!');
-    var type = String(d.type || d.serviceType || d.certificateType || (String(appId).indexOf('AUL-FW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ')).trim();
+    var type = String(d.type || d.serviceType || d.certificateType || (String(appId).indexOf('AUL-UW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ')).trim();
     [['editFwAppId', d.appId || appId], ['editFwType', type], ['editFwName', d.name || d.applicantName], ['editFwNid', d.nid], ['editFwFather', d.fatherName || d.fatherSpouseName], ['editFwMother', d.motherName], ['editFwMobile', d.mobile], ['editFwWard', d.wardNo], ['editFwVillage', d.village], ['editFwPost', d.postOffice], ['editFwDeceasedName', d.deceasedName], ['editFwDeceasedDate', d.deceasedDate]].forEach(function(pair) {
       var field = document.getElementById(pair[0]); if (field) field.value = pair[1] || '';
+    });
+    var memberBody = document.getElementById('editFwMembersTbody');
+    memberBody.innerHTML = '';
+    (d.members || []).forEach(function(member, index) {
+      memberBody.innerHTML += '<tr><td>' + toBnDigit(index + 1) + '</td><td><input class="form-control edit-fw-member-name" value="' + escapeFamilyValue(member.name) + '"></td><td><input class="form-control edit-fw-member-nid" value="' + escapeFamilyValue(member.nid) + '"></td><td><input class="form-control edit-fw-member-dob" value="' + escapeFamilyValue(member.dob) + '"></td><td><input class="form-control edit-fw-member-relation" value="' + escapeFamilyValue(member.relation) + '"></td><td><input class="form-control edit-fw-member-remarks" value="' + escapeFamilyValue(member.remarks) + '"></td></tr>';
     });
     bootstrap.Modal.getOrCreateInstance(document.getElementById('familyEditModal')).show();
   }
@@ -493,7 +504,8 @@
     var btn = document.getElementById('saveEditFwBtn');
     btn.disabled = true; btn.innerText = 'সংরক্ষণ হচ্ছে...';
     var type = document.getElementById('editFwType').value;
-    var payload = { appId: document.getElementById('editFwAppId').value, type: type, serviceType: type, certificateType: type, name: document.getElementById('editFwName').value.trim(), nid: document.getElementById('editFwNid').value.trim(), fatherName: document.getElementById('editFwFather').value.trim(), motherName: document.getElementById('editFwMother').value.trim(), mobile: document.getElementById('editFwMobile').value.trim(), wardNo: document.getElementById('editFwWard').value.trim(), village: document.getElementById('editFwVillage').value.trim(), postOffice: document.getElementById('editFwPost').value.trim(), deceasedName: document.getElementById('editFwDeceasedName').value.trim(), deceasedDate: document.getElementById('editFwDeceasedDate').value.trim() };
+    var members = Array.prototype.map.call(document.querySelectorAll('#editFwMembersTbody tr'), function(row, index) { return { sl: index + 1, name: row.querySelector('.edit-fw-member-name').value.trim(), nid: row.querySelector('.edit-fw-member-nid').value.trim(), dob: row.querySelector('.edit-fw-member-dob').value.trim(), relation: row.querySelector('.edit-fw-member-relation').value.trim(), remarks: row.querySelector('.edit-fw-member-remarks').value.trim() }; }).filter(function(member) { return member.name; });
+    var payload = { appId: document.getElementById('editFwAppId').value, type: type, serviceType: type, certificateType: type, appPrefix: type === 'উত্তরাধিকারী সনদ' ? 'AUL-UW-' : 'AUL-FW-', name: document.getElementById('editFwName').value.trim(), nid: document.getElementById('editFwNid').value.trim(), fatherName: document.getElementById('editFwFather').value.trim(), motherName: document.getElementById('editFwMother').value.trim(), mobile: document.getElementById('editFwMobile').value.trim(), wardNo: document.getElementById('editFwWard').value.trim(), village: document.getElementById('editFwVillage').value.trim(), postOffice: document.getElementById('editFwPost').value.trim(), deceasedName: document.getElementById('editFwDeceasedName').value.trim(), deceasedDate: document.getElementById('editFwDeceasedDate').value.trim(), members: members };
     var res = await callBackendAPI('saveEditedApplication', payload);
     btn.disabled = false; btn.innerText = 'সংরক্ষণ করুন';
     if (res && res.success) {
@@ -521,7 +533,7 @@
       <!DOCTYPE html>
       <html>
       <head>
-        <title>${isSuccession ? 'উত্তরাধিকারী সনদপত্র' : 'পারিবারিক সনদপত্র'}</title>
+        <title>${document.getElementById('prCertTitle').innerText}</title>
         <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
         <style>

@@ -1011,7 +1011,7 @@
     var appType = String((app && (app.type || app.serviceType || app.certificateType)) || '').trim();
     if (appType) return appType;
     var appId = String((app && app.appId) || '');
-    return appId.indexOf('AUL-FW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ';
+    return appId.indexOf('AUL-UW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ';
   }
   function isFamilyCertificateApplication(app, type) {
     var appType = getFamilyApplicationType(app);

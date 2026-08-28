@@ -1040,7 +1040,7 @@
     }
     slice.forEach(function(a) {
       var act = renderActionButtons(a.appId, a.status, 'showFamilyPrintPreview', 'openEditFamilyModal');
-      tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.applicantName}</td><td>${a.fatherSpouseName || '-'}</td><td>${a.mobile}</td><td>ওয়ার্ড-${a.wardNo}</td><td>${a.village}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
+      tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.applicantName || a.name || '-'}</td><td>${a.fatherSpouseName || a.fatherName || '-'}</td><td>${a.mobile || '-'}</td><td>ওয়ার্ড-${a.wardNo || '-'}</td><td>${a.village || '-'}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
     });
     renderPagination('familySuccession', list.length, 'renderFamilySuccessionPage');
   }

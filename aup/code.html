@@ -1112,7 +1112,11 @@ function deleteUser(uname) {
 function doPost(e) {
   try {
     initMasterDatabase();
-    var contents = e.postData.contents;
+    var contents = e && e.postData && e.postData.contents;
+    if (!contents) {
+      return ContentService.createTextOutput(JSON.stringify({ success: false, error: 'POST data পাওয়া যায়নি।' }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
     var request = JSON.parse(contents);
     var action = request.action;
     var data = request.data;

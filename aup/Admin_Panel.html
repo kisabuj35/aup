@@ -1008,6 +1008,8 @@
     });
   }
   function getFamilyApplicationType(app) {
+    var localType = app && app.appId ? localStorage.getItem('familyApplicationType_' + app.appId) : '';
+    if (localType) return localType;
     var appType = String((app && (app.type || app.serviceType || app.certificateType)) || '').trim();
     if (appType) return appType;
     var appId = String((app && app.appId) || '');

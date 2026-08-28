@@ -362,6 +362,7 @@
   async function submitFamilyForm() {
     var btn = document.getElementById('fwSubmitBtn');
     btn.disabled = true; btn.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i> জমা হচ্ছে...';
+    var submittedType = document.getElementById('fwServiceType').value === 'উত্তরাধিকারী সনদ' ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ';
 
     var members = [];
     var rows = document.getElementById('fwMembersTbody').rows;
@@ -375,10 +376,10 @@
     }
 
     var payload = {
-      type: document.getElementById('fwServiceType').value,
-      serviceType: document.getElementById('fwServiceType').value,
-      certificateType: document.getElementById('fwServiceType').value,
-      appPrefix: document.getElementById('fwServiceType').value === 'উত্তরাধিকারী সনদ' ? 'AUL-UW-' : 'AUL-FW-',
+      type: submittedType,
+      serviceType: submittedType,
+      certificateType: submittedType,
+      appPrefix: submittedType === 'উত্তরাধিকারী সনদ' ? 'AUL-UW-' : 'AUL-FW-',
       name: document.getElementById('fwApplicantName').value.trim(),
       nid: document.getElementById('fwApplicantNid').value.trim(),
       fatherName: document.getElementById('fwFatherName').value.trim(),
@@ -396,10 +397,11 @@
     btn.disabled = false; btn.innerHTML = '<i class="fa fa-paper-plane me-1"></i> আবেদন দাখিল করুন';
 
     if(res && res.success) {
+      var localTypeKey = 'familyApplicationType_' + res.appId;
+      localStorage.setItem(localTypeKey, submittedType);
       document.getElementById('familyWarishanForm').reset();
-      openFamilyCertPage('পারিবারিক সনদ');
       document.getElementById('successAppId').innerText = res.appId;
-      document.getElementById('successAppCopyBtn').onclick = function() { printFamilyApplicationCopy(res.appId); };
+      document.getElementById('successAppCopyBtn').onclick = function() { printFamilyApplicationCopy(res.appId, submittedType); };
       bootstrap.Modal.getOrCreateInstance(document.getElementById('successModal')).show();
     } else {
       Swal.fire({
@@ -418,7 +420,7 @@
     document.getElementById('prSmarakYear').innerText = getCurrentBanglaYear();
     document.getElementById('prIssueDate').innerText = new Date().toLocaleDateString('bn-BD');
     
-    var certificateType = String(d.type || d.serviceType || d.certificateType || (String(appId).indexOf('AUL-UW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ')).trim();
+    var certificateType = String(localStorage.getItem('familyApplicationType_' + appId) || d.type || d.serviceType || d.certificateType || (String(appId).indexOf('AUL-UW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ')).trim();
     var isSuccession = certificateType === 'উত্তরাধিকারী সনদ';
     document.getElementById('prCertTitle').innerText = isSuccession ? 'উত্তরাধিকারী সনদপত্র' : 'পারিবারিক সনদপত্র';
     document.getElementById('prCertTypeTitle').innerText = isSuccession ? 'উত্তরাধিকারী সনদ পত্র' : 'পারিবারিক সনদ পত্র';
@@ -465,12 +467,12 @@
     }, 100);
   }
 
-  async function printFamilyApplicationCopy(appId) {
+  async function printFamilyApplicationCopy(appId, knownType) {
     var printWindow = window.open('', '_blank', 'width=900,height=700');
     if (!printWindow) return alert('প্রিন্ট উইন্ডো খোলা যায়নি। ব্রাউজারের পপ-আপ অনুমতি দিন।');
     var d = await callBackendAPI('getFamilyDetails', appId);
     if (!d || !d.found) { printWindow.close(); return alert('আবেদনের তথ্য পাওয়া যায়নি!'); }
-    var type = String(d.type || d.serviceType || d.certificateType || (String(appId).indexOf('AUL-UW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ')).trim();
+    var type = String(knownType || localStorage.getItem('familyApplicationType_' + appId) || d.type || d.serviceType || d.certificateType || (String(appId).indexOf('AUL-UW-') === 0 ? 'উত্তরাধিকারী সনদ' : 'পারিবারিক সনদ')).trim();
     var isSuccession = type === 'উত্তরাধিকারী সনদ';
     var escapeHtml = function(value) { return String(value || '-').replace(/[&<>"']/g, function(ch) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); };
     var memberList = (d.members || []).map(function(member, index) {

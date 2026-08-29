@@ -391,7 +391,7 @@
         </div>
         <div class="table-responsive bg-white p-3 shadow-sm rounded border">
           <table class="table table-hover align-middle">
-            <thead class="table-dark"><tr><th>আবেদন নং</th><th>আবেদনকারী</th><th>আবেদনকারীর পিতার নাম</th><th>মোবাইল</th><th>ওয়ার্ড</th><th>গ্রাম</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
+            <thead class="table-dark"><tr><th>আবেদন নং</th><th>আবেদনকারী</th><th>মূল মৃত ব্যক্তি</th><th>পিতার নাম</th><th>মোবাইল</th><th>ঠিকানা</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
             <tbody id="warAppTable"></tbody>
           </table>
           <div id="warPagination" class="custom-pagination-wrap"></div>
@@ -1276,7 +1276,16 @@
     if(slice.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">কোন আবেদন নেই</td></tr>'; return; }
     slice.forEach(function(a) {
       var act = renderActionButtons(a.appId, a.status, 'showFamilyWarishanPrintPreview', 'openEditWarishanModal');
-      tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.applicantName}</td><td>${a.fatherSpouseName || '-'}</td><td>${a.mobile}</td><td>ওয়ার্ড-${a.wardNo}</td><td>${a.village}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
+      var deceasedName = a.deceasedName || '-';
+      var deceasedFather = a.deceasedFather || a.deceasedFatherName || '-';
+      var deceasedAddress = [
+        a.deceasedWardNo ? 'ওয়ার্ড-' + a.deceasedWardNo : '',
+        a.deceasedVillage ? a.deceasedVillage : '',
+        a.deceasedPostOffice ? 'ডাকঘর: ' + a.deceasedPostOffice : '',
+        a.deceasedUpazila ? a.deceasedUpazila : '',
+        a.deceasedDistrict ? a.deceasedDistrict : ''
+      ].filter(Boolean).join(', ') || (a.village || '-');
+      tbody.innerHTML += `<tr><td><strong>${a.appId}</strong></td><td>${a.applicantName || '-'}</td><td>${deceasedName}</td><td>${deceasedFather}</td><td>${a.mobile || '-'}</td><td>${deceasedAddress}</td><td>${act.badge}</td><td>${act.actions}</td></tr>`;
     });
     renderPagination('war', list.length, 'renderWarPage');
   }

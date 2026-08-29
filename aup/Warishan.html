@@ -568,6 +568,19 @@
     var btn = document.getElementById('warSubmitBtn');
     btn.disabled = true; btn.innerText = 'জমা হচ্ছে...';
 
+    var deceasedWard = document.getElementById('warDeceasedWard').value;
+    var deceasedVillage = document.getElementById('warDeceasedVillage').value.trim();
+    var deceasedPostOffice = document.getElementById('warDeceasedPost').value.trim();
+    var deceasedUpazila = document.getElementById('warDeceasedUpazila').value.trim();
+    var deceasedDistrict = document.getElementById('warDeceasedDistrict').value.trim();
+    var deceasedAddressText = [
+      deceasedWard ? 'ওয়ার্ড-' + deceasedWard : '',
+      deceasedVillage ? 'গ্রাম: ' + deceasedVillage : '',
+      deceasedPostOffice ? 'ডাকঘর: ' + deceasedPostOffice : '',
+      deceasedUpazila ? 'উপজেলা: ' + deceasedUpazila : '',
+      deceasedDistrict ? 'জেলা: ' + deceasedDistrict : ''
+    ].filter(Boolean).join(', ');
+
     var warishanTree = collectWarishanTreeData();
     var formData = {
       applicantName: document.getElementById('warAppName').value.trim(),
@@ -580,11 +593,12 @@
       deceasedParentRelation: document.getElementById('warDeceasedRelation').value,
       DeceasedFatherRelation: document.getElementById('warDeceasedRelation').value,
       DeceasedRelation: document.getElementById('warDeceasedRelation').value,
-      deceasedWardNo: document.getElementById('warDeceasedWard').value,
-      deceasedVillage: document.getElementById('warDeceasedVillage').value.trim(),
-      deceasedPostOffice: document.getElementById('warDeceasedPost').value.trim(),
-      deceasedUpazila: document.getElementById('warDeceasedUpazila').value.trim(),
-      deceasedDistrict: document.getElementById('warDeceasedDistrict').value.trim(),
+      deceasedWardNo: deceasedWard,
+      deceasedVillage: deceasedVillage,
+      deceasedPostOffice: deceasedPostOffice,
+      deceasedUpazila: deceasedUpazila,
+      deceasedDistrict: deceasedDistrict,
+      deceasedAddressText: deceasedAddressText,
       nid: document.getElementById('warAppNid').value.trim(),
       mobile: document.getElementById('warAppMobile').value.trim(),
       wardNo: document.getElementById('warAppWard').value,

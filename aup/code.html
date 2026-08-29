@@ -65,7 +65,7 @@ function getSheet(sheetName) {
       headers = ['AppID','Name','NID','FatherName','MotherName','Mobile','WardNo','Village',
       'PostOffice','Status','ApplyDate','SignatoryRole','Members_JSON','DeceasedName','DeceasedFather','DeceasedMother','DeceasedDate','ApplicantRelation','DeceasedWard','DeceasedVillage','DeceasedPostOffice','DeceasedUnion','DeceasedUpazila','DeceasedDistrict','CertificateType'];
     } else if (sheetName === 'Warishan') {
-      headers = ['AppID', 'ApplicantName', 'FatherSpouse', 'DeceasedName', 'NID', 'Mobile', 'WardNo', 'Village', 'PostOffice', 'Status', 'Date', 'SignatoryRole', 'SmarakNo', 'WarishanJSON', 'DeceasedFather'];
+      headers = ['AppID', 'ApplicantName', 'FatherSpouse', 'DeceasedName', 'NID', 'Mobile', 'WardNo', 'Village', 'PostOffice', 'Status', 'Date', 'SignatoryRole', 'SmarakNo', 'WarishanJSON', 'DeceasedFather', 'DeceasedRelation', 'DeceasedWard', 'DeceasedVillage', 'DeceasedPostOffice', 'DeceasedUpazila', 'DeceasedDistrict'];
     } else if (sheetName === 'TradeLicense') {
       headers = ['AppID', 'LicenseNo', 'ReceiptNo', 'OrgName', 'OwnerName', 'FatherName', 'MotherName', 'NID', 'DOB', 'Mobile', 'OwnerAddress', 'Category', 'BizDetails', 'BizAddress', 'BizStartDate', 'FiscalYear', 'Capital', 'LicenseFee', 'VatFee', 'CommTax', 'SignTax', 'TotalFee', 'ApplyDate', 'SignatoryRole', 'Status', 'Photo'];
     } else if (sheetName === 'Applications') {
@@ -92,11 +92,7 @@ function initMasterDatabase() {
   getSheet('TaxPayers');
   getSheet('Users');
 
-  // নিশ্চিত করা হচ্ছে Warishan শিটে ১৫নং কলামে DeceasedFather হেডার আছে কিনা
-  var warSheet = getSheet('Warishan');
-  if (warSheet.getRange(1, 15).getValue() !== 'DeceasedFather') {
-    warSheet.getRange(1, 15).setValue('DeceasedFather').setFontWeight('bold').setBackground('#006837').setFontColor('#ffffff');
-  }
+  ensureWarishanSchema();
 
   var userSheet = getSheet('Users');
   if (userSheet.getLastRow() <= 1) {
@@ -143,6 +139,23 @@ for (var h = 0; h < familyHeaders.length; h++) {
   }
 }
   ensureFamilyCertSchema();
+}
+
+function ensureWarishanSchema() {
+  var sheet = getSheet('Warishan');
+  var headers = [
+    'AppID','ApplicantName','FatherSpouse','DeceasedName','NID','Mobile','WardNo','Village','PostOffice','Status','Date','SignatoryRole','SmarakNo','WarishanJSON','DeceasedFather','DeceasedRelation','DeceasedWard','DeceasedVillage','DeceasedPostOffice','DeceasedUpazila','DeceasedDistrict'
+  ];
+  var maxCols = Math.max(sheet.getLastColumn(), headers.length);
+  var currentHeaders = sheet.getRange(1, 1, 1, maxCols).getValues()[0];
+  for (var i = 0; i < headers.length; i++) {
+    if ((currentHeaders[i] || '').toString().trim() !== headers[i]) {
+      sheet.getRange(1, i + 1).setValue(headers[i]);
+    }
+  }
+  sheet.getRange(1, 1, 1, headers.length)
+    .setFontWeight('bold').setBackground('#006837').setFontColor('#ffffff');
+  return sheet;
 }
 
 function ensureFamilyCertSchema() {
@@ -204,7 +217,7 @@ function submitWarishanApplication(data) {
     var sheet = ss.getSheetByName("Warishan");
     if (!sheet) {
       sheet = ss.insertSheet("Warishan");
-      sheet.appendRow(["AppID", "ApplicantName", "FatherSpouse", "DeceasedName", "NID", "Mobile", "WardNo", "Village", "PostOffice", "Status", "Date", "SignatoryRole", "SmarakNo", "WarishanJSON", "DeceasedFather"]);
+      sheet.appendRow(["AppID", "ApplicantName", "FatherSpouse", "DeceasedName", "NID", "Mobile", "WardNo", "Village", "PostOffice", "Status", "Date", "SignatoryRole", "SmarakNo", "WarishanJSON", "DeceasedFather", "DeceasedRelation", "DeceasedWard", "DeceasedVillage", "DeceasedPostOffice", "DeceasedUpazila", "DeceasedDistrict"]);
     }
     
     var appId = "AUL-WAR-" + Math.floor(1000 + Math.random() * 9000);
@@ -225,8 +238,14 @@ function submitWarishanApplication(data) {
       date,                                     // K: Date
       "চেয়ারম্যান",                             // L: SignatoryRole
       smarakNo,                                 // M: SmarakNo
-      JSON.stringify(data.warishanTree || []),  // N: WarishanJSON
-      data.deceasedFather || ""                 // O: DeceasedFather (মৃত ব্যক্তির পিতার নাম)
+      JSON.stringify(data.warishanTree || []),   // N: WarishanJSON
+      data.deceasedFather || "",               // O: DeceasedFather
+      data.deceasedRelation || data.deceasedFatherRelation || "", // P: DeceasedRelation
+      data.deceasedWardNo || data.deceasedWard || "", // Q: DeceasedWard
+      data.deceasedVillage || "",              // R: DeceasedVillage
+      data.deceasedPostOffice || data.deceasedPost || "", // S: DeceasedPostOffice
+      data.deceasedUpazila || "",              // T: DeceasedUpazila
+      data.deceasedDistrict || ""               // U: DeceasedDistrict
     ];
     
     sheet.appendRow(rowData);
@@ -263,7 +282,14 @@ function getWarishanDetails(appId) {
           signatoryRole: data[i][11],
           smarakNo: data[i][12],
           warishanTree: tree,
-          deceasedFather: data[i][14] || "" // 🟢 Column O থেকে মৃত ব্যক্তির পিতার নাম রিড
+          deceasedFather: data[i][14] || "",
+          deceasedFatherName: data[i][14] ? (data[i][14].toString().replace(/\s*\[(.*?)\]\s*$/, '') || data[i][14].toString()) : "",
+          deceasedFatherRelation: data[i][15] || "",
+          deceasedWardNo: data[i][16] || "",
+          deceasedVillage: data[i][17] || "",
+          deceasedPostOffice: data[i][18] || "",
+          deceasedUpazila: data[i][19] || "",
+          deceasedDistrict: data[i][20] || ""
         };
       }
     }
@@ -285,20 +311,26 @@ function getWarishanApps() {
     if (!row[0]) continue;
 
     result.push({
-      appId: row[0] ? row[0].toString() : '',                                     // Col A (0): AppID
-      applicantName: row[1] ? row[1].toString() : '',                             // Col B (1): ApplicantName
-      fatherSpouseName: row[2] ? row[2].toString() : '',                          // Col C (2): FatherSpouse
-      deceasedName: row[3] ? row[3].toString() : '',                              // Col D (3): DeceasedName
-      nid: toBanglaDigit(row[4] !== undefined && row[4] !== null ? row[4] : ''),  // Col E (4): NID
-      mobile: toBanglaDigit(row[5] !== undefined && row[5] !== null ? row[5] : ''),// Col F (5): Mobile
-      wardNo: toBanglaDigit(row[6] !== undefined && row[6] !== null ? row[6] : ''),// Col G (6): WardNo
-      village: row[7] ? row[7].toString() : '',                                   // Col H (7): Village
-      postOffice: row[8] ? row[8].toString() : 'আউলিয়াপুর ময়দান',                 // Col I (8): PostOffice
-      status: row[9] ? row[9].toString().trim() : 'Pending',                      // Col J (9): Status
-      date: formatBanglaDate(row[10]),                                            // Col K (10): Date
-      signatoryRole: row[11] ? row[11].toString() : 'চেয়ারম্যান',                  // Col L (11): SignatoryRole
-      smarakNo: row[12] ? row[12].toString() : '',                                // Col M (12): SmarakNo
-      deceasedFather: (row[14] !== undefined && row[14] !== null) ? row[14].toString() : '' // Col O (14): DeceasedFather 🟢
+      appId: row[0] ? row[0].toString() : '',
+      applicantName: row[1] ? row[1].toString() : '',
+      fatherSpouseName: row[2] ? row[2].toString() : '',
+      deceasedName: row[3] ? row[3].toString() : '',
+      nid: toBanglaDigit(row[4] !== undefined && row[4] !== null ? row[4] : ''),
+      mobile: toBanglaDigit(row[5] !== undefined && row[5] !== null ? row[5] : ''),
+      wardNo: toBanglaDigit(row[6] !== undefined && row[6] !== null ? row[6] : ''),
+      village: row[7] ? row[7].toString() : '',
+      postOffice: row[8] ? row[8].toString() : 'আউলিয়াপুর ময়দান',
+      status: row[9] ? row[9].toString().trim() : 'Pending',
+      date: formatBanglaDate(row[10]),
+      signatoryRole: row[11] ? row[11].toString() : 'চেয়ারম্যান',
+      smarakNo: row[12] ? row[12].toString() : '',
+      deceasedFather: (row[14] !== undefined && row[14] !== null) ? row[14].toString() : '',
+      deceasedRelation: (row[15] !== undefined && row[15] !== null) ? row[15].toString() : '',
+      deceasedWardNo: (row[16] !== undefined && row[16] !== null) ? row[16].toString() : '',
+      deceasedVillage: (row[17] !== undefined && row[17] !== null) ? row[17].toString() : '',
+      deceasedPostOffice: (row[18] !== undefined && row[18] !== null) ? row[18].toString() : '',
+      deceasedUpazila: (row[19] !== undefined && row[19] !== null) ? row[19].toString() : '',
+      deceasedDistrict: (row[20] !== undefined && row[20] !== null) ? row[20].toString() : ''
     });
   }
   return result;
@@ -338,20 +370,38 @@ function updateWarishanData(ed) {
 
     for (var i = 1; i < data.length; i++) {
       if ((data[i][0] || '').toString().toUpperCase() === q) {
-        sheet.getRange(i + 1, 2).setValue(ed.applicantName);                    // Col B: ApplicantName
-        sheet.getRange(i + 1, 3).setValue(ed.fatherSpouseName || '');           // Col C: FatherSpouse
-        sheet.getRange(i + 1, 4).setValue(ed.deceasedName);                     // Col D: DeceasedName
-        sheet.getRange(i + 1, 5).setValue("'" + toEnglishDigit(ed.nid || ''));  // Col E: NID
-        sheet.getRange(i + 1, 6).setValue("'" + toEnglishDigit(ed.mobile));     // Col F: Mobile
-        sheet.getRange(i + 1, 7).setValue(toEnglishDigit(ed.wardNo));           // Col G: WardNo
-        sheet.getRange(i + 1, 8).setValue(ed.village);                          // Col H: Village
-        sheet.getRange(i + 1, 9).setValue(ed.postOffice);                       // Col I: PostOffice
-        sheet.getRange(i + 1, 12).setValue(ed.signatoryRole || 'চেয়ারম্যান');  // Col L: SignatoryRole
+        sheet.getRange(i + 1, 2).setValue(ed.applicantName);
+        sheet.getRange(i + 1, 3).setValue(ed.fatherSpouseName || '');
+        sheet.getRange(i + 1, 4).setValue(ed.deceasedName);
+        sheet.getRange(i + 1, 5).setValue("'" + toEnglishDigit(ed.nid || ''));
+        sheet.getRange(i + 1, 6).setValue("'" + toEnglishDigit(ed.mobile));
+        sheet.getRange(i + 1, 7).setValue(toEnglishDigit(ed.wardNo));
+        sheet.getRange(i + 1, 8).setValue(ed.village);
+        sheet.getRange(i + 1, 9).setValue(ed.postOffice);
+        sheet.getRange(i + 1, 12).setValue(ed.signatoryRole || 'চেয়ারম্যান');
         if (ed.warishanTree) {
-          sheet.getRange(i + 1, 14).setValue(JSON.stringify(ed.warishanTree));  // Col N: WarishanJSON
+          sheet.getRange(i + 1, 14).setValue(JSON.stringify(ed.warishanTree));
         }
         if (ed.deceasedFather !== undefined) {
-          sheet.getRange(i + 1, 15).setValue(ed.deceasedFather);                // Col O: DeceasedFather 🟢
+          sheet.getRange(i + 1, 15).setValue(ed.deceasedFather);
+        }
+        if (ed.deceasedFatherRelation !== undefined) {
+          sheet.getRange(i + 1, 16).setValue(ed.deceasedFatherRelation);
+        }
+        if (ed.deceasedWardNo !== undefined) {
+          sheet.getRange(i + 1, 17).setValue(ed.deceasedWardNo);
+        }
+        if (ed.deceasedVillage !== undefined) {
+          sheet.getRange(i + 1, 18).setValue(ed.deceasedVillage);
+        }
+        if (ed.deceasedPostOffice !== undefined) {
+          sheet.getRange(i + 1, 19).setValue(ed.deceasedPostOffice);
+        }
+        if (ed.deceasedUpazila !== undefined) {
+          sheet.getRange(i + 1, 20).setValue(ed.deceasedUpazila);
+        }
+        if (ed.deceasedDistrict !== undefined) {
+          sheet.getRange(i + 1, 21).setValue(ed.deceasedDistrict);
         }
         return { success: true };
       }

@@ -334,18 +334,100 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxyoOe2wWpX3SXHsO8ePFjWS7rQ9tG4HPretpWfu7cmfJ6G1paTbUoEKiRBoTKejM19JA/exec";
 
+    function ensureGlobalAlertBox() {
+      let box = document.getElementById('globalAppAlertBox');
+      if (!box) {
+        box = document.createElement('div');
+        box.id = 'globalAppAlertBox';
+        box.style.position = 'fixed';
+        box.style.top = '20px';
+        box.style.right = '20px';
+        box.style.zIndex = '99999';
+        box.style.maxWidth = '420px';
+        box.style.width = 'calc(100% - 30px)';
+        box.style.pointerEvents = 'none';
+        document.body.appendChild(box);
+      }
+      return box;
+    }
+
+    function showAppAlert(message, type = 'success', duration = 4000) {
+      if (!message) return;
+      const box = ensureGlobalAlertBox();
+      const alertEl = document.createElement('div');
+      const color = type === 'danger' ? '#d93025' : type === 'warning' ? '#f29900' : '#1e8e3e';
+      const bg = type === 'danger' ? '#fdecea' : type === 'warning' ? '#fff4e5' : '#e6f4ea';
+      const border = type === 'danger' ? '#f5c6cb' : type === 'warning' ? '#f6d28b' : '#c7e8d0';
+
+      alertEl.className = 'alert shadow-sm border rounded px-3 py-2 fw-bold';
+      alertEl.style.cssText = `
+        background:${bg};
+        border:1px solid ${border};
+        color:${color};
+        margin-bottom:10px;
+        pointer-events:auto;
+        font-size:14px;
+        line-height:1.5;
+      `;
+      alertEl.textContent = message;
+      box.appendChild(alertEl);
+
+      setTimeout(() => {
+        alertEl.remove();
+      }, duration);
+    }
+
+    function normalizeApiError(result, fallbackMessage) {
+      if (!result) return fallbackMessage;
+      if (typeof result === 'string') return result;
+      return result.message || result.error || result.details || fallbackMessage;
+    }
+
     // 🟢 ব্যাকএন্ডের সাথে সার্বজনীন API ব্রিজ
-    async function callBackendAPI(actionName, payload = {}) {
+    async function callBackendAPI(actionName, payload = {}, options = {}) {
+      const { showSuccess = false, showError = true } = options;
+
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 25000);
+
         const response = await fetch(SCRIPT_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: actionName, data: payload })
+          body: JSON.stringify({ action: actionName, data: payload }),
+          signal: controller.signal
         });
-        return await response.json();
+
+        clearTimeout(timeoutId);
+
+        let result = null;
+        try {
+          result = await response.json();
+        } catch (jsonErr) {
+          const text = await response.text();
+          result = { success: false, error: text || 'সার্ভার থেকে খারাপ রেসপন্স পাওয়া গেছে।' };
+        }
+
+        if (!response.ok || (result && result.success === false)) {
+          const msg = normalizeApiError(result, 'অনুরোধটি সম্পন্ন করা যায়নি।');
+          if (showError) showAppAlert(msg, 'danger');
+          return { success: false, error: msg, ...(result || {}) };
+        }
+
+        if (showSuccess) {
+          const msg = result && (result.message || result.statusText || 'অপারেশন সফল হয়েছে।');
+          showAppAlert(msg, 'success');
+        }
+
+        return result || { success: true };
       } catch (error) {
         console.error("API Call Error:", error);
-        return { success: false, error: "সার্ভারে সংযোগ বিচ্ছিন্ন হয়েছে।" };
+        const friendlyError = error && error.name === 'AbortError'
+          ? 'সার্ভার থেকে রেসপন্স এসেছে না। দয়া করে আবার চেষ্টা করুন।'
+          : 'সার্ভারে সংযোগ বিচ্ছিন্ন হয়েছে।';
+
+        if (showError) showAppAlert(friendlyError, 'danger');
+        return { success: false, error: friendlyError };
       }
     }
 

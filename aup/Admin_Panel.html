@@ -897,6 +897,8 @@
     };
   }
 
+  var currentEditingAdminUsername = null;
+
   /* ==========================================================
      👥 ট্যাব ১৪: এডমিন ইউজার ও পারমিশন কন্ট্রোল (গুগল শিট)
   ========================================================== */
@@ -923,7 +925,8 @@
     }
 
     list.forEach(function(u) {
-      var photoUrl = (u.photoUrl || u.photo || '').length > 10 ? (u.photoUrl || u.photo) : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+      var photoSource = u.photoUrl || u.photo || '';
+      var photoUrl = (photoSource && photoSource.length > 10) ? photoSource : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
       var roleBadge = (u.role === 'SuperAdmin') ? '<span class="badge bg-warning text-dark fw-bold">SuperAdmin</span>' : '<span class="badge bg-primary">Admin</span>';
       var perms = u.permissions || {};
       var allowedMenus = Array.isArray(perms.allowedMenus) ? perms.allowedMenus : [];
@@ -938,13 +941,16 @@
       
       tbody.innerHTML += `
         <tr>
-          <td><img src="${photoUrl}" width="40" height="40" class="rounded-circle border" style="object-fit:cover;"></td>
+          <td><img src="${photoUrl}" width="40" height="40" class="rounded-circle border" style="object-fit:cover;" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';"></td>
           <td><strong>${u.username}</strong></td>
           <td>${u.name || u.displayName || u.username}</td>
           <td>${roleBadge}</td>
           <td>${permBadge}</td>
           <td>
-            <button class="btn btn-sm btn-outline-danger" onclick="deleteUser('${u.username}')" title="মুছে ফেলুন"><i class="fa fa-trash"></i></button>
+            <div class="d-flex gap-1 justify-content-center">
+              <button class="btn btn-sm btn-outline-primary" onclick="openEditUserModal('${u.username}')" title="এডিট"><i class="fa fa-edit"></i></button>
+              <button class="btn btn-sm btn-outline-danger" onclick="deleteUser('${u.username}')" title="মুছে ফেলুন"><i class="fa fa-trash"></i></button>
+            </div>
           </td>
         </tr>
       `;
@@ -966,11 +972,43 @@
     document.getElementById('permDelete').checked = checked;
   }
 
+  function fillAdminPermissionForm(user) {
+    if (!user) return;
+    var permissions = user.permissions || {};
+    var allowedMenus = Array.isArray(permissions.allowedMenus) ? permissions.allowedMenus : [];
+    document.getElementById('newUsername').value = user.username || '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('newName').value = user.name || '';
+    document.getElementById('newRole').value = user.role || 'Admin';
+    document.getElementById('newPhotoBase64').value = user.photoUrl || user.photo || '';
+    document.getElementById('photoPreviewImg').src = user.photoUrl || user.photo || "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+
+    document.getElementById('permApprove').checked = !!permissions.canApprove;
+    document.getElementById('permReject').checked = !!permissions.canReject;
+    document.getElementById('permEdit').checked = !!permissions.canEdit;
+    document.getElementById('permDelete').checked = !!permissions.canDelete;
+
+    document.querySelectorAll('.admin-menu-check').forEach(function(box) {
+      box.checked = allowedMenus.indexOf(box.value) !== -1;
+    });
+  }
+
   function openAddUserModal() {
+    currentEditingAdminUsername = null;
+    document.getElementById('userModalTitle').innerHTML = '<i class="fa fa-user-plus me-2"></i> নতুন এডমিন তৈরি';
     document.getElementById('addUserForm').reset();
     document.getElementById('photoPreviewImg').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
     document.getElementById('newPhotoBase64').value = "";
     applyAdminPermissionDefaults('Admin');
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('addUserModal')).show();
+  }
+
+  function openEditUserModal(username) {
+    var user = (rawDataStore.users || []).find(function(item) { return String(item.username).trim() === String(username).trim(); });
+    if (!user) return;
+    currentEditingAdminUsername = username;
+    document.getElementById('userModalTitle').innerHTML = '<i class="fa fa-user-edit me-2"></i> এডমিনের পারমিশন আপডেট';
+    fillAdminPermissionForm(user);
     bootstrap.Modal.getOrCreateInstance(document.getElementById('addUserModal')).show();
   }
 
@@ -1001,6 +1039,7 @@
       name: document.getElementById('newName').value.trim(),
       role: document.getElementById('newRole').value,
       photo: document.getElementById('newPhotoBase64').value || "",
+      photoUrl: document.getElementById('newPhotoBase64').value || "",
       allowedMenus: allowedMenus,
       permissions: {
         canApprove: document.getElementById('permApprove').checked,
@@ -1010,6 +1049,20 @@
         allowedMenus: allowedMenus
       }
     };
+
+    if (currentEditingAdminUsername) {
+      payload.originalUsername = currentEditingAdminUsername;
+      var res = await callBackend('updateUser', payload);
+      btn.disabled = false; btn.innerText = 'ইউজার সংরক্ষণ';
+      if (res && res.success) {
+        bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+        loadAdminUsers();
+        Swal.fire({ icon: 'success', title: 'সফল!', text: 'এডমিনের পারমিশন আপডেট হয়েছে।', timer: 1800, showConfirmButton: false });
+      } else {
+        Swal.fire({ icon: 'error', title: 'ব্যর্থ!', text: (res && res.message) ? res.message : 'এডমিন আপডেট করা যায়নি।' });
+      }
+      return;
+    }
 
     var res = await callBackend('saveAdminUser', payload);
     btn.disabled = false; btn.innerText = 'ইউজার সংরক্ষণ';

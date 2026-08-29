@@ -137,14 +137,15 @@
               পারিবারিক সনদ: জীবিত পরিবারের প্রধানের পরিবারের বর্তমান সদস্যদের তথ্যের জন্য।
             </div>
 
+            <!-- ১২নং ছবির উত্তরাধিকারী / মৃত ব্যক্তির ফর্ম ফিল্ডস 🟢 -->
             <div id="fwDeceasedFields" class="row g-3 mb-4 d-none">
               <div class="col-md-6"><label class="form-label fw-bold">মৃত ব্যক্তির পূর্ণ নাম *</label><input type="text" id="fwDeceasedName" class="form-control" placeholder="যাঁর অবর্তমানে উত্তরাধিকারী সনদ প্রয়োজন"></div>
-              <div class="col-md-6"><label class="form-label fw-bold">মৃত্যুর তারিখ *</label><input type="text" id="fwDeceasedDate" class="form-control" placeholder="দিন-মাস-সাল"></div>
-              <div class="col-md-6"><label class="form-label fw-bold">মৃত ব্যক্তির পিতার নাম *</label><input type="text" id="fwDeceasedFather" class="form-control"></div>
-              <div class="col-md-6"><label class="form-label fw-bold">মৃত ব্যক্তির মাতার নাম *</label><input type="text" id="fwDeceasedMother" class="form-control"></div>
-              <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির সঙ্গে আবেদনকারীর সম্পর্ক *</label><input type="text" id="fwApplicantRelation" class="form-control" placeholder="যেমন: বাবা"></div>
+              <div class="col-md-6"><label class="form-label fw-bold">মৃত্যুর তারিখ *</label><input type="text" id="fwDeceasedDate" class="form-control" placeholder="দিন-মাস-সাল (যেমন: ১২-০৫-২০২৩)"></div>
+              <div class="col-md-6"><label class="form-label fw-bold">মৃত ব্যক্তির পিতার নাম *</label><input type="text" id="fwDeceasedFather" class="form-control" placeholder="পিতার নাম"></div>
+              <div class="col-md-6"><label class="form-label fw-bold">মৃত ব্যক্তির মাতার নাম *</label><input type="text" id="fwDeceasedMother" class="form-control" placeholder="মাতার নাম"></div>
+              <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির সঙ্গে আবেদনকারীর সম্পর্ক *</label><input type="text" id="fwApplicantRelation" class="form-control" placeholder="যেমন: বাবা / স্বামী / ভাই"></div>
               <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির ওয়ার্ড *</label><select id="fwDeceasedWard" class="form-select"><option value="০১">ওয়ার্ড-০১</option><option value="০২">ওয়ার্ড-০২</option><option value="০৩">ওয়ার্ড-০৩</option><option value="০৪">ওয়ার্ড-০৪</option><option value="০৫">ওয়ার্ড-০৫</option><option value="০৬">ওয়ার্ড-০৬</option><option value="০৭">ওয়ার্ড-০৭</option><option value="০৮">ওয়ার্ড-০৮</option><option value="০৯">ওয়ার্ড-০৯</option></select></div>
-              <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির গ্রাম *</label><input type="text" id="fwDeceasedVillage" class="form-control"></div>
+              <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির গ্রাম *</label><input type="text" id="fwDeceasedVillage" class="form-control" placeholder="গ্রামের নাম"></div>
               <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির ডাকঘর *</label><input type="text" id="fwDeceasedPost" class="form-control" value="বাদুরা হাট"></div>
               <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির ইউনিয়ন *</label><input type="text" id="fwDeceasedUnion" class="form-control" value="১১নং আউলিয়াপুর ইউনিয়ন"></div>
               <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির উপজেলা *</label><input type="text" id="fwDeceasedUpazila" class="form-control" value="পটুয়াখালী সদর"></div>
@@ -165,7 +166,7 @@
             </div>
 
             <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
-              <h6 class="fw-bold text-success m-0"><i class="fa fa-users me-2"></i> ২. পরিবারের সদস্যদের বিবরণ</h6>
+              <h6 class="fw-bold text-success m-0"><i class="fa fa-users me-2"></i> ২. পরিবারের সদস্য / উত্তরাধিকারীদের বিবরণ</h6>
               <button type="button" class="btn btn-sm btn-success fw-bold" onclick="addFwMemberRow()"><i class="fa fa-plus-circle me-1"></i> নতুন সদস্য যোগ করুন</button>
             </div>
             
@@ -206,7 +207,7 @@
   </div>
 </div>
 
-<!-- ২. অফিসিয়াল পারিবারিক সনদ প্রিন্ট মোডাল -->
+<!-- ২. অফিসিয়াল পারিবারিক ও উত্তরাধিকারী সনদ প্রিন্ট মোডাল -->
 <div class="modal fade" id="familyCertPrintModal" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
@@ -246,9 +247,12 @@
               </div>
             </div>
 
+            <!-- পারিবারিক সনদ ন্যারেটিভ -->
             <div id="prFamilyNarrative" class="my-3 text-justify text-dark" style="font-size: 15.5px; line-height: 2.3; text-indent: 45px; font-weight: 500;">
               এই মর্মে পারিবারিক সনদ পত্র প্রদান করা যাইতেছে যে, <strong id="prName"></strong>, পিতা- <strong id="prFather"></strong>, মাতা- <strong id="prMother"></strong>, গ্রাম- <strong id="prVillage"></strong>, ডাকঘর- <strong id="prPost"></strong>, উপজেলা- <strong>পটুয়াখালী সদর</strong>, জেলা- <strong>পটুয়াখালী</strong>। আমি তার পরিবারকে ব্যক্তিগতভাবে চিনি ও জানি। আমার জানা মতে তাহারা বাংলাদেশের নাগরিক এবং পরিবারের সকলের মধ্যে সুসম্পর্ক বিদ্যমান। তাদের পরিবারের সকল সদস্যদের নাম নিম্নে দেওয়া হলোঃ-
             </div>
+            
+            <!-- উত্তরাধিকারী সনদ ন্যারেটিভ 🟢 -->
             <div id="prSuccessionNarrative" class="my-3 text-justify text-dark d-none" style="font-size: 15.5px; line-height: 2.3; text-indent: 45px; font-weight: 500;">
               এই মর্মে উত্তরাধিকারী সনদপত্র প্রদান করা যাইতেছে যে, <strong id="prDeceasedName"></strong>, পিতা- <strong id="prDeceasedFather"></strong>, মাতা- <strong id="prDeceasedMother"></strong>, ওয়ার্ড-<strong id="prDeceasedWard"></strong>, গ্রাম- <strong id="prDeceasedVillage"></strong>, ডাকঘর- <strong id="prDeceasedPost"></strong>, ইউনিয়ন- <strong id="prDeceasedUnion"></strong>, উপজেলা- <strong id="prDeceasedUpazila"></strong>, জেলা- <strong id="prDeceasedDistrict"></strong> তিনি গত <strong id="prDeceasedDate"></strong> তারিখে মৃত্যুবরণ করেন। আমি তাকে ব্যক্তিগতভাবে চিনিতাম ও জানিতাম। আমার জানামতে তাহার অবর্তমানে তিনি নিম্নলিখিত ব্যক্তিবর্গকে বৈধ উত্তরাধিকারী হিসেবে রেখে যান।
             </div>
@@ -258,8 +262,8 @@
                 <thead>
                   <tr>
                     <th style="width: 55px;">ক্রমিক</th>
-                    <th>পরিবারের সদস্যের নাম</th>
-                    <th>ভোটার আইডি/ জন্ম নিবন্ধন নম্বর</th>
+                    <th>পরিবারের সদস্য / উত্তরাধিকারীর নাম</th>
+                    <th>ভোটার আইডি / জন্ম নিবন্ধন নম্বর</th>
                     <th style="width: 125px;">জন্ম তারিখ</th>
                     <th style="width: 100px;">সম্পর্ক</th>
                     <th style="width: 95px;">স্বাক্ষর</th>
@@ -270,7 +274,7 @@
             </div>
 
             <p class="mt-3 mb-2 text-dark" style="font-size: 14.5px; font-weight: bold;">
-              আমার জানা মতে উপরোক্ত পরিবারের সদস্য/সদস্যগণ ব্যতিত <strong id="prApplicantFooterName"></strong> এর পরিবারে আর কোন সদস্য নেই।
+              আমার জানা মতে উপরোক্ত সদস্য/সদস্যগণ ব্যতিত <strong id="prApplicantFooterName"></strong> এর পরিবারে আর কোন সদস্য/উত্তরাধিকারী নেই।
             </p>
 
             <p class="mt-3 mb-2 text-dark" style="font-size: 14px; font-weight: bold; text-decoration: underline;">
@@ -295,6 +299,7 @@
 
 <iframe id="secretFamilyPrintFrame" style="display:none; width:0; height:0; border:0;"></iframe>
 
+<!-- ৩. পারিবারিক / উত্তরাধিকারী আবেদন সংশোধন এডিট মোডাল 🟢 -->
 <div class="modal fade" id="familyEditModal" tabindex="-1" data-bs-backdrop="static">
   <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
     <div class="modal-header bg-success text-white"><h5 class="modal-title fw-bold">পারিবারিক / উত্তরাধিকারী আবেদন সংশোধন</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
@@ -310,6 +315,8 @@
         <div class="col-md-4"><label class="form-label fw-bold">ওয়ার্ড</label><input id="editFwWard" class="form-control"></div>
         <div class="col-md-4"><label class="form-label fw-bold">গ্রাম/মহল্লা</label><input id="editFwVillage" class="form-control"></div>
         <div class="col-md-4"><label class="form-label fw-bold">ডাকঘর</label><input id="editFwPost" class="form-control"></div>
+        
+        <!-- মৃত ব্যক্তির ফিল্ডস -->
         <div class="col-md-8"><label class="form-label fw-bold">মৃত ব্যক্তির নাম (উত্তরাধিকারী হলে)</label><input id="editFwDeceasedName" class="form-control"></div>
         <div class="col-md-4"><label class="form-label fw-bold">মৃত্যুর তারিখ</label><input id="editFwDeceasedDate" class="form-control"></div>
         <div class="col-md-6"><label class="form-label fw-bold">মৃত ব্যক্তির পিতার নাম</label><input id="editFwDeceasedFather" class="form-control"></div>
@@ -317,10 +324,10 @@
         <div class="col-md-4"><label class="form-label fw-bold">আবেদনকারীর সঙ্গে সম্পর্ক</label><input id="editFwApplicantRelation" class="form-control"></div>
         <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির ওয়ার্ড</label><input id="editFwDeceasedWard" class="form-control"></div>
         <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির গ্রাম</label><input id="editFwDeceasedVillage" class="form-control"></div>
-        <div class="col-md-6"><label class="form-label fw-bold">মৃত ব্যক্তির ডাকঘর</label><input id="editFwDeceasedPost" class="form-control"></div>
+        <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির ডাকঘর</label><input id="editFwDeceasedPost" class="form-control"></div>
         <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির ইউনিয়ন</label><input id="editFwDeceasedUnion" class="form-control"></div>
         <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির উপজেলা</label><input id="editFwDeceasedUpazila" class="form-control"></div>
-        <div class="col-md-4"><label class="form-label fw-bold">মৃত ব্যক্তির জেলা</label><input id="editFwDeceasedDistrict" class="form-control"></div>
+        <div class="col-md-12"><label class="form-label fw-bold">মৃত ব্যক্তির জেলা</label><input id="editFwDeceasedDistrict" class="form-control"></div>
       </div>
       <div class="table-responsive mt-4"><table class="table table-bordered align-middle text-center"><thead class="table-dark"><tr><th>ক্রমিক</th><th>সদস্যের নাম</th><th>ভোটার আইডি / জন্ম নিবন্ধন</th><th>জন্ম তারিখ</th><th>সম্পর্ক</th><th>মন্তব্য</th></tr></thead><tbody id="editFwMembersTbody"></tbody></table></div>
       <div class="text-end mt-4"><button type="submit" class="btn btn-success px-4" id="saveEditFwBtn">সংরক্ষণ করুন</button></div>
@@ -360,8 +367,10 @@
     document.getElementById('fwTypeGuidance').className = isSuccession ? 'alert alert-warning py-2 mb-4' : 'alert alert-success py-2 mb-4';
     document.getElementById('fwTypeGuidance').innerText = isSuccession ? 'উত্তরাধিকারী সনদ: মৃত ব্যক্তির অবর্তমানে তাঁর বৈধ উত্তরাধিকারীদের তথ্যের জন্য।' : 'পারিবারিক সনদ: জীবিত পরিবারের প্রধানের পরিবারের বর্তমান সদস্যদের তথ্যের জন্য।';
     document.getElementById('fwDeceasedFields').classList.toggle('d-none', !isSuccession);
+    
     ['fwDeceasedName', 'fwDeceasedDate', 'fwDeceasedFather', 'fwDeceasedMother', 'fwApplicantRelation', 'fwDeceasedWard', 'fwDeceasedVillage', 'fwDeceasedPost'].forEach(function(id) {
-      document.getElementById(id).required = isSuccession;
+      var el = document.getElementById(id);
+      if (el) el.required = isSuccession;
     });
 
     var tbody = document.getElementById('fwMembersTbody');
@@ -437,17 +446,17 @@
       wardNo: document.getElementById('fwWardNo').value,
       village: document.getElementById('fwVillage').value.trim(),
       postOffice: document.getElementById('fwPostOffice').value.trim(),
-      deceasedName: document.getElementById('fwDeceasedName').value.trim(),
-      deceasedDate: document.getElementById('fwDeceasedDate').value.trim(),
-      deceasedFather: document.getElementById('fwDeceasedFather').value.trim(),
-      deceasedMother: document.getElementById('fwDeceasedMother').value.trim(),
-      applicantRelation: document.getElementById('fwApplicantRelation').value.trim(),
-      deceasedWard: document.getElementById('fwDeceasedWard').value,
-      deceasedVillage: document.getElementById('fwDeceasedVillage').value.trim(),
-      deceasedPostOffice: document.getElementById('fwDeceasedPost').value.trim(),
-      deceasedUnion: document.getElementById('fwDeceasedUnion').value.trim(),
-      deceasedUpazila: document.getElementById('fwDeceasedUpazila').value.trim(),
-      deceasedDistrict: document.getElementById('fwDeceasedDistrict').value.trim(),
+      deceasedName: document.getElementById('fwDeceasedName') ? document.getElementById('fwDeceasedName').value.trim() : '',
+      deceasedDate: document.getElementById('fwDeceasedDate') ? document.getElementById('fwDeceasedDate').value.trim() : '',
+      deceasedFather: document.getElementById('fwDeceasedFather') ? document.getElementById('fwDeceasedFather').value.trim() : '',
+      deceasedMother: document.getElementById('fwDeceasedMother') ? document.getElementById('fwDeceasedMother').value.trim() : '',
+      applicantRelation: document.getElementById('fwApplicantRelation') ? document.getElementById('fwApplicantRelation').value.trim() : '',
+      deceasedWard: document.getElementById('fwDeceasedWard') ? document.getElementById('fwDeceasedWard').value : '',
+      deceasedVillage: document.getElementById('fwDeceasedVillage') ? document.getElementById('fwDeceasedVillage').value.trim() : '',
+      deceasedPostOffice: document.getElementById('fwDeceasedPost') ? document.getElementById('fwDeceasedPost').value.trim() : '',
+      deceasedUnion: document.getElementById('fwDeceasedUnion') ? document.getElementById('fwDeceasedUnion').value.trim() : '',
+      deceasedUpazila: document.getElementById('fwDeceasedUpazila') ? document.getElementById('fwDeceasedUpazila').value.trim() : '',
+      deceasedDistrict: document.getElementById('fwDeceasedDistrict') ? document.getElementById('fwDeceasedDistrict').value.trim() : '',
       members: members
     };
 
@@ -465,11 +474,7 @@
       document.getElementById('successAppCopyBtn').onclick = function() { printFamilyApplicationCopy(res.appId, submittedType); };
       bootstrap.Modal.getOrCreateInstance(document.getElementById('successModal')).show();
     } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'আবেদন ব্যর্থ',
-        text: res ? res.error : 'আবেদন জমা দেওয়া যায়নি।'
-      });
+      Swal.fire({ icon: 'error', title: 'আবেদন ব্যর্থ', text: res ? res.error : 'আবেদন জমা দেওয়া যায়নি।' });
     }
   }
 
@@ -493,6 +498,7 @@
     document.getElementById('prVillage').innerText = d.village;
     document.getElementById('prPost').innerText = d.postOffice;
     document.getElementById('prApplicantFooterName').innerText = d.name;
+    
     document.getElementById('prDeceasedName').innerText = d.deceasedName || '';
     document.getElementById('prDeceasedFather').innerText = d.deceasedFather || '';
     document.getElementById('prDeceasedMother').innerText = d.deceasedMother || '';

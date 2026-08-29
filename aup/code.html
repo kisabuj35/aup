@@ -1409,6 +1409,8 @@ function doPost(e) {
       result = getCitizenshipApps();
     } else if (action === 'getTradeLicenses') {
       result = getTradeLicenses();
+    } else if (action === 'getTradeRenewals' || action === 'getTradeLicenseRenewals' || action === 'getRenewalApplications') {
+      result = getTradeRenewals();
     } else if (action === 'getFamilyApps') {
       result = getFamilyApps();
     } else if (action === 'getWarishanApps') {

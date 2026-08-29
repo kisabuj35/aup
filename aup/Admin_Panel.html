@@ -10,13 +10,79 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
+  :root {
+    --admin-bg: #f3f7f5;
+    --admin-sidebar-bg: linear-gradient(180deg, #0b1220 0%, #111827 100%);
+    --admin-sidebar-border: rgba(148, 163, 184, 0.22);
+    --admin-accent: #0ea66f;
+    --admin-accent-deep: #0a7b58;
+    --admin-accent-soft: rgba(14, 166, 111, 0.12);
+    --admin-text: #e2e8f0;
+    --admin-panel-white: rgba(255, 255, 255, 0.92);
+  }
+
   /* এডমিন সাইডবার ও প্রোফাইল */
-  .admin-sidebar { background-color: #0f172a; min-height: calc(100vh - 60px); color: #cbd5e1; border-radius: 8px; font-family: 'Kalpurush', 'Tiro Bangla', sans-serif; }
-  .admin-profile-box { text-align: center; padding: 15px 10px; border-bottom: 1px solid #334155; margin-bottom: 12px; }
-  .admin-avatar-img { width: 75px; height: 75px; border-radius: 50%; border: 3px solid #00897b; object-fit: cover; background: #fff; margin-bottom: 6px; }
-  .admin-menu-link { color: #cbd5e1; text-decoration: none; padding: 9px 14px; display: flex; align-items: center; border-radius: 6px; margin-bottom: 3px; font-size: 14px; font-weight: 500; transition: 0.2s; cursor: pointer; }
-  .admin-menu-link:hover, .admin-menu-link.active { background-color: #006837; color: #ffffff; font-weight: bold; }
-  .admin-menu-link i { width: 22px; font-size: 15px; }
+  .admin-sidebar {
+    background: var(--admin-sidebar-bg);
+    min-height: calc(100vh - 60px);
+    color: var(--admin-text);
+    border-radius: 18px;
+    font-family: 'Kalpurush', 'Tiro Bangla', sans-serif;
+    border: 1px solid var(--admin-sidebar-border);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
+    overflow: hidden;
+    position: relative;
+  }
+  .admin-sidebar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(16,185,129,0.12), transparent 40%, rgba(59,130,246,0.08));
+    pointer-events: none;
+  }
+  .admin-profile-box { text-align: center; padding: 18px 12px 16px; border-bottom: 1px solid rgba(148, 163, 184, 0.22); margin-bottom: 10px; position: relative; z-index: 1; }
+  .admin-avatar-img { width: 78px; height: 78px; border-radius: 50%; border: 3px solid rgba(52,211,153,0.9); object-fit: cover; background: #fff; margin-bottom: 8px; box-shadow: 0 10px 20px rgba(16,185,129,0.22); }
+  .admin-sidebar-menu-wrap { position: relative; z-index: 1; padding: 0 10px 12px; }
+  .admin-menu-link {
+    color: #dbeafe;
+    text-decoration: none;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    margin-bottom: 4px;
+    font-size: 13.5px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    background: rgba(148, 163, 184, 0.02);
+    border: 1px solid transparent;
+    letter-spacing: 0.01em;
+  }
+  .admin-menu-link:hover {
+    background: rgba(14, 165, 111, 0.12);
+    color: #ffffff;
+    border-color: rgba(52, 211, 153, 0.2);
+    transform: translateX(2px);
+  }
+  .admin-menu-link.active {
+    background: linear-gradient(90deg, rgba(14, 166, 111, 0.22), rgba(8, 127, 85, 0.18));
+    color: #ffffff;
+    border-color: rgba(52, 211, 153, 0.35);
+    box-shadow: inset 0 0 0 1px rgba(110,231,183,0.1);
+    font-weight: 800;
+  }
+  .admin-menu-link i { width: 22px; font-size: 14px; }
+  .admin-menu-link.text-warning { color: #f8d77d; }
+  .admin-menu-link.text-info { color: #7dd3fc; }
+  .admin-menu-link.text-danger { color: #fca5a5; }
+  .admin-mobile-toggle,
+  .admin-mobile-close {
+    display: none;
+  }
+  .admin-main-panel {
+    min-width: 0;
+  }
 
   /* স্ট্যাটাস ও অ্যাকশন বাটন */
   .status-badge-approved { background-color: #00796b !important; color: #ffffff !important; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; display: inline-block; }
@@ -59,7 +125,50 @@
 
   @media (max-width: 991.98px) {
     #adminPanel { padding-left: 0; padding-right: 0; }
-    .admin-sidebar { min-height: unset; }
+    .admin-main-panel { width: 100%; }
+    .admin-mobile-toggle,
+    .admin-mobile-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.25);
+      background: rgba(255,255,255,0.8);
+      color: #0f172a;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.1);
+    }
+    .admin-sidebar {
+      min-height: calc(100vh - 20px);
+      position: fixed;
+      left: -110%;
+      top: 10px;
+      bottom: 10px;
+      width: min(86vw, 320px);
+      z-index: 1040;
+      transition: left 0.3s ease;
+      border-radius: 18px;
+      overflow-y: auto;
+      box-shadow: 0 24px 50px rgba(15,23,42,0.28);
+    }
+    .admin-sidebar.show {
+      left: 10px;
+    }
+    .admin-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.42);
+      backdrop-filter: blur(3px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      z-index: 1030;
+    }
+    .admin-backdrop.show {
+      opacity: 1;
+      visibility: visible;
+    }
     #adminSidebarMenuList {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -71,6 +180,7 @@
       padding: 10px 10px;
       white-space: normal;
       line-height: 1.3;
+      border-radius: 10px;
     }
     .admin-menu-link i { width: 16px; font-size: 13px; }
     .certificate-list-toolbar {
@@ -124,11 +234,18 @@
 
 <!-- ADMIN PANEL VIEW -->
 <div id="adminPanel" class="view-section container-fluid my-3 d-none">
-  <div class="row g-3">
+  <div class="admin-backdrop" id="adminSidebarBackdrop" onclick="toggleAdminSidebar(false)"></div>
+  <div class="row g-3 align-items-start">
     
     <!-- 🟢 LEFT SIDEBAR MENU -->
     <div class="col-md-3 col-lg-2 no-print">
-      <div class="admin-sidebar p-2 shadow-sm">
+      <div class="admin-sidebar p-2 shadow-sm" id="adminSidebar">
+        <div class="d-flex justify-content-between align-items-center px-2 pt-2 d-lg-none">
+          <div class="fw-bold text-white">ম্যানু</div>
+          <button type="button" class="admin-mobile-close" onclick="toggleAdminSidebar(false)" aria-label="Close menu">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
         
         <!-- প্রোফাইল বক্স -->
         <div class="admin-profile-box">
@@ -137,7 +254,7 @@
           <span class="badge bg-success mt-1" id="adminActiveRoleBadge">Admin</span>
         </div>
 
-        <div id="adminSidebarMenuList">
+        <div id="adminSidebarMenuList" class="admin-sidebar-menu-wrap">
           <a href="javascript:void(0)" class="admin-menu-link active" data-menu="dashTab" onclick="switchAdminTab('dashTab')"><i class="fa fa-tachometer-alt"></i> ড্যাশবোর্ড</a>
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="citTab" onclick="switchAdminTab('citTab')"><i class="fa fa-id-card"></i> নাগরিকত্ব সনদ</a>
           <a href="javascript:void(0)" class="admin-menu-link" data-menu="tradeTab" onclick="switchAdminTab('tradeTab')"><i class="fa fa-briefcase"></i> ট্রেড লাইসেন্স</a>
@@ -162,7 +279,14 @@
     </div>
 
     <!-- RIGHT MAIN CONTENT -->
-    <div class="col-md-9 col-lg-10">
+    <div class="col-md-9 col-lg-10 admin-main-panel">
+      <div class="d-lg-none mb-3 d-flex justify-content-between align-items-center">
+        <button type="button" class="admin-mobile-toggle" aria-label="Open menu" onclick="toggleAdminSidebar(true)">
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="fw-bold text-success">এডমিন প্যানেল</div>
+        <div class="badge bg-success">Live</div>
+      </div>
       
       <!-- Tab 1: Dashboard -->
       <div id="dashTab" class="admin-tab">
@@ -1241,6 +1365,15 @@
     });
   }
 
+  function toggleAdminSidebar(forceOpen) {
+    var sidebar = document.getElementById('adminSidebar');
+    var backdrop = document.getElementById('adminSidebarBackdrop');
+    if (!sidebar || !backdrop) return;
+    var shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !sidebar.classList.contains('show');
+    sidebar.classList.toggle('show', shouldOpen);
+    backdrop.classList.toggle('show', shouldOpen);
+  }
+
   function switchAdminTab(tabId) {
     localStorage.setItem('adminActiveTab', tabId);
 
@@ -1252,6 +1385,10 @@
     var activeBtn = document.querySelector(`[data-menu="${tabId}"]`);
     if(activeBtn) activeBtn.classList.add('active');
 
+    if (window.innerWidth <= 991) {
+      toggleAdminSidebar(false);
+    }
+
     if(tabId === 'citTab') loadCitizenshipApps();
     else if(tabId === 'tradeTab') loadTradeLicenses();
     else if(tabId === 'famTab') loadFamilyApps();
@@ -1261,4 +1398,13 @@
     else if(tabId === 'dashTab') loadAdminDashboard();
     else if(tabId === 'settingsTab') loadAdminUsers();
   }
+
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 991) {
+      var sidebar = document.getElementById('adminSidebar');
+      var backdrop = document.getElementById('adminSidebarBackdrop');
+      if (sidebar) sidebar.classList.remove('show');
+      if (backdrop) backdrop.classList.remove('show');
+    }
+  });
 </script>

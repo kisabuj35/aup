@@ -148,6 +148,59 @@
 
     @media print { .no-print { display: none !important; } }
     .swal2-popup { font-family: 'Kalpurush', 'Tiro Bangla', sans-serif !important; border-radius: 12px !important; }
+
+    .global-loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.38);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+    }
+
+    .global-loader-box {
+      width: min(360px, calc(100vw - 32px));
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(13, 110, 253, 0.15);
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+      padding: 24px 20px 18px;
+      text-align: center;
+    }
+
+    .global-loader-spinner {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      border: 4px solid rgba(13, 110, 253, 0.18);
+      border-top-color: #0d6efd;
+      border-right-color: #14b8a6;
+      animation: globalLoaderSpin 1s linear infinite;
+      box-shadow: 0 0 18px rgba(13, 110, 253, 0.2);
+    }
+
+    @keyframes globalLoaderSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .global-loader-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: 0.02em;
+    }
+
+    .global-loader-subtext {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #475569;
+      letter-spacing: 0.02em;
+    }
   </style>
 </head>
 <body>
@@ -351,6 +404,43 @@
       return box;
     }
 
+    let globalLoaderCounter = 0;
+
+    function ensureGlobalLoader() {
+      let loader = document.getElementById('globalAppLoaderOverlay');
+      if (!loader) {
+        loader = document.createElement('div');
+        loader.id = 'globalAppLoaderOverlay';
+        loader.className = 'global-loader-overlay';
+        loader.innerHTML = `
+          <div class="global-loader-box">
+            <div class="global-loader-spinner"></div>
+            <div class="global-loader-text">তথ্য লোড হচ্ছে...</div>
+            <div class="global-loader-subtext">সার্ভার ও ডাটাবেস সংযোগ স্থাপনে অপেক্ষা করছে</div>
+          </div>
+        `;
+        document.body.appendChild(loader);
+      }
+      return loader;
+    }
+
+    function showGlobalLoader(message = 'তথ্য লোড হচ্ছে...') {
+      const loader = ensureGlobalLoader();
+      const textEl = loader.querySelector('.global-loader-text');
+      if (textEl) textEl.textContent = message;
+      globalLoaderCounter += 1;
+      loader.style.display = 'flex';
+    }
+
+    function hideGlobalLoader() {
+      globalLoaderCounter = Math.max(0, globalLoaderCounter - 1);
+      if (globalLoaderCounter <= 0) {
+        globalLoaderCounter = 0;
+        const loader = document.getElementById('globalAppLoaderOverlay');
+        if (loader) loader.style.display = 'none';
+      }
+    }
+
     function showAppAlert(message, type = 'success', duration = 4000) {
       if (!message) return;
       const box = ensureGlobalAlertBox();
@@ -385,50 +475,90 @@
 
     // 🟢 ব্যাকএন্ডের সাথে সার্বজনীন API ব্রিজ
     async function callBackendAPI(actionName, payload = {}, options = {}) {
-      const { showSuccess = false, showError = true } = options;
+      const {
+        showSuccess = false,
+        showError = true,
+        showLoader = true,
+        loaderText = 'তথ্য লোড হচ্ছে...',
+        retries = 3
+      } = options;
 
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 25000);
+      let attempt = 0;
+      let lastResult = null;
 
-        const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: actionName, data: payload }),
-          signal: controller.signal
-        });
+      while (attempt < retries) {
+        attempt += 1;
 
-        clearTimeout(timeoutId);
+        if (showLoader) showGlobalLoader(loaderText);
 
-        let result = null;
         try {
-          result = await response.json();
-        } catch (jsonErr) {
-          const text = await response.text();
-          result = { success: false, error: text || 'সার্ভার থেকে খারাপ রেসপন্স পাওয়া গেছে।' };
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 35000);
+
+          const response = await fetch(SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: actionName, data: payload }),
+            signal: controller.signal,
+            cache: 'no-store',
+            credentials: 'omit'
+          });
+
+          clearTimeout(timeoutId);
+
+          let result = null;
+          try {
+            result = await response.json();
+          } catch (jsonErr) {
+            const text = await response.text();
+            result = { success: false, error: text || 'সার্ভার থেকে খারাপ রেসপন্স পাওয়া গেছে।' };
+          }
+
+          if (!response.ok || (result && result.success === false)) {
+            const msg = normalizeApiError(result, 'অনুরোধটি সম্পন্ন করা যায়নি।');
+            lastResult = { success: false, error: msg, ...(result || {}) };
+
+            const transientFailure = /AbortError|timeout|network|failed to fetch|disconnected|connection|temporar|429|500/i.test(msg);
+            if (transientFailure && attempt < retries) {
+              await new Promise(r => setTimeout(r, 600 * attempt));
+              continue;
+            }
+
+            if (showError) showAppAlert(msg, 'danger');
+            return lastResult;
+          }
+
+          if (showSuccess) {
+            const msg = result && (result.message || result.statusText || 'অপারেশন সফল হয়েছে।');
+            showAppAlert(msg, 'success');
+          }
+
+          if (showLoader) hideGlobalLoader();
+          return result || { success: true };
+        } catch (error) {
+          console.error("API Call Error:", error);
+          lastResult = {
+            success: false,
+            error: error && error.name === 'AbortError'
+              ? 'সার্ভার থেকে রেসপন্স এসেছে না। দয়া করে আবার চেষ্টা করুন।'
+              : 'সার্ভারে সংযোগ বিচ্ছিন্ন হয়েছে।'
+          };
+
+          const transientFailure = !error || error.name === 'AbortError' || /fetch|network|timeout/i.test(String(error));
+          if (transientFailure && attempt < retries) {
+            await new Promise(r => setTimeout(r, 700 * attempt));
+            continue;
+          }
+
+          if (showError) showAppAlert(lastResult.error, 'danger');
+          return lastResult;
+        } finally {
+          if (showLoader) hideGlobalLoader();
         }
-
-        if (!response.ok || (result && result.success === false)) {
-          const msg = normalizeApiError(result, 'অনুরোধটি সম্পন্ন করা যায়নি।');
-          if (showError) showAppAlert(msg, 'danger');
-          return { success: false, error: msg, ...(result || {}) };
-        }
-
-        if (showSuccess) {
-          const msg = result && (result.message || result.statusText || 'অপারেশন সফল হয়েছে।');
-          showAppAlert(msg, 'success');
-        }
-
-        return result || { success: true };
-      } catch (error) {
-        console.error("API Call Error:", error);
-        const friendlyError = error && error.name === 'AbortError'
-          ? 'সার্ভার থেকে রেসপন্স এসেছে না। দয়া করে আবার চেষ্টা করুন।'
-          : 'সার্ভারে সংযোগ বিচ্ছিন্ন হয়েছে।';
-
-        if (showError) showAppAlert(friendlyError, 'danger');
-        return { success: false, error: friendlyError };
       }
+
+      if (showError && lastResult) showAppAlert(lastResult.error || 'অনুরোধটি সম্পন্ন করা যায়নি।', 'danger');
+      return lastResult || { success: false, error: 'অনুরোধটি সম্পন্ন করা যায়নি।' };
     }
 
     // 🟢 গুগল স্ক্রিপ্ট রান কম্প্যাটিবিলিটি লেয়ার (পুরোনো ফাংশনগুলো সচল রাখার জন্য)

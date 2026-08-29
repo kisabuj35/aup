@@ -805,11 +805,31 @@
     }, []);
   }
 
+  function isTradeRenewalAppId(appId) {
+    return !!(appId && /^AUL-RN-/i.test(String(appId).trim()));
+  }
+
+  function normalizeTradeRecord(trade, sourceKey) {
+    if (!trade || typeof trade !== 'object') return trade;
+    var appId = trade.appId || trade.id || trade.licNo || '';
+    var isRenewal = isTradeRenewalAppId(appId)
+      || !!(sourceKey && /renew/i.test(sourceKey))
+      || !!(trade.requestType && /renew/i.test(String(trade.requestType)))
+      || !!(trade.serviceType && /renew/i.test(String(trade.serviceType)))
+      || !!(trade.isRenewal)
+      || !!(trade.renewalSource);
+
+    trade.__renewalSource = isRenewal;
+    trade.isRenewal = trade.isRenewal || isRenewal;
+    trade.requestType = trade.requestType || (isRenewal ? 'renewal' : 'new');
+    trade.serviceType = trade.serviceType || (isRenewal ? 'ট্রেড লাইসেন্স নবায়ন' : 'ট্রেড লাইসেন্স');
+    return trade;
+  }
+
   function collectTradeRecords(value, sourceKey) {
     if (Array.isArray(value)) {
       return value.map(function(trade) {
-        if (sourceKey && /renew/i.test(sourceKey)) trade.__renewalSource = true;
-        return trade;
+        return normalizeTradeRecord(trade, sourceKey);
       });
     }
     if (!value || typeof value !== 'object') return [];
@@ -1288,7 +1308,8 @@
   }
   function isRenewalTradeLicense(trade) {
     if (!trade) return false;
-    if (trade.__renewalSource) return true;
+    if (trade.__renewalSource || trade.isRenewal || trade.renewalSource) return true;
+    if (isTradeRenewalAppId(trade.appId || trade.id)) return true;
     function hasValue(value) {
       if (value === null || value === undefined || value === false || value === 0) return false;
       var normalized = String(value).trim().toLowerCase();

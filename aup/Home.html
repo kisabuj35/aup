@@ -236,7 +236,7 @@
     btn.disabled = false; btn.innerText = 'প্রবেশ করুন';
 
     if(res && res.success) {
-      localStorage.setItem('upAdminSession', JSON.stringify(res));
+      sessionStorage.setItem('upAdminSession', JSON.stringify(res));
       document.getElementById('adminAuthBtn').innerHTML = '<i class="fa fa-tachometer-alt me-1"></i> এডমিন প্যানেল';
       document.getElementById('adminAuthBtn').className = 'btn btn-sm btn-success fw-bold px-3';
       

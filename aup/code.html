@@ -1067,6 +1067,53 @@ function getTaxPayers() {
   return list;
 }
 
+var ADMIN_MENU_LIST = [
+  'dashTab', 'citTab', 'tradeTab', 'famTab', 'warTab', 'appsTab',
+  'taxTab', 'accountsTab', 'bankTab', 'beneficiaryTab', 'projectTab',
+  'reportTab', 'upSettingsTab', 'settingsTab'
+];
+
+function normalizeAdminPermissions(input, role) {
+  var raw = (input && typeof input === 'object') ? input : {};
+  var allowedMenus = Array.isArray(raw.allowedMenus) ? raw.allowedMenus.slice() : [];
+  if (!allowedMenus.length && Array.isArray(raw.menus)) {
+    allowedMenus = raw.menus.filter(function(item) {
+      return item && item.enabled !== false;
+    }).map(function(item) {
+      return item.code || item.name || item.id || '';
+    }).filter(Boolean);
+  }
+  if (!allowedMenus.length && Array.isArray(raw.permissions)) {
+    allowedMenus = raw.permissions.filter(Boolean);
+  }
+  if (!allowedMenus.length && Array.isArray(raw.access)) {
+    allowedMenus = raw.access.filter(Boolean);
+  }
+
+  var perms = {
+    canApprove: raw.canApprove === true || raw.approve === true,
+    canReject: raw.canReject === true || raw.reject === true,
+    canEdit: raw.canEdit === true || raw.edit === true,
+    canDelete: raw.canDelete === true || raw.delete === true,
+    allowedMenus: allowedMenus,
+    photoUrl: raw.photoUrl || raw.photo || ''
+  };
+
+  if (String(role || '').toLowerCase() === 'superadmin') {
+    perms.canApprove = true;
+    perms.canReject = true;
+    perms.canEdit = true;
+    perms.canDelete = true;
+    perms.allowedMenus = ADMIN_MENU_LIST.slice();
+  }
+
+  if (!perms.allowedMenus.length) {
+    perms.allowedMenus = ADMIN_MENU_LIST.slice();
+  }
+
+  return perms;
+}
+
 // 🔐 এডমিন লগইন ও পারমিশন সিঙ্ক
 function adminLogin(username, password) {
   var u = (username || "").toString().trim();
@@ -1078,36 +1125,50 @@ function adminLogin(username, password) {
       var sheetUser = (data[i][0] || "").toString().trim();
       var sheetPass = (data[i][1] || "").toString().trim();
       if (sheetUser.toLowerCase() === u.toLowerCase() && sheetPass === p) {
-        var perms = { canEdit: true, canApprove: true, canDelete: false, allowedMenus: [] };
-        var photoUrl = '';
+        var parsed = {};
         try {
-          var parsed = JSON.parse(data[i][4]);
-          perms = parsed;
-          photoUrl = parsed.photoUrl || '';
-        } catch(e) {}
+          parsed = JSON.parse(data[i][4] || '{}');
+        } catch (e) {}
+        var perms = normalizeAdminPermissions(parsed, data[i][2] || 'Admin');
+        var photoUrl = parsed.photoUrl || parsed.photo || '';
 
-        return { 
-          success: true, username: sheetUser, role: data[i][2] || "Admin", name: data[i][3] || "ইউজার",
-          photoUrl: photoUrl,
-          permissions: perms
+        return {
+          success: true,
+          username: sheetUser,
+          role: data[i][2] || 'Admin',
+          name: data[i][3] || 'ইউজার',
+          photoUrl: photoUrl || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+          permissions: perms,
+          allowedMenus: perms.allowedMenus
         };
       }
     }
   } catch (e) {}
 
-  if (u.toLowerCase() === "admin" || u.toLowerCase() === "superadmin") {
-    if (p === "123456") {
-      return { 
-        success: true, username: u, role: "SuperAdmin", name: "অ্যাড. মোঃ হুমায়ুন কবির (চেয়ারম্যান)", 
-        photoUrl: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
-        permissions: { canEdit: true, canApprove: true, canDelete: true, allowedMenus: ['citTab','tradeTab','famTab','warTab','appsTab','taxTab','accountsTab','bankTab','beneficiaryTab','projectTab','reportTab'] } 
-      };
-    }
+  if ((u.toLowerCase() === 'admin' || u.toLowerCase() === 'superadmin') && p === '123456') {
+    var role = u.toLowerCase() === 'superadmin' ? 'SuperAdmin' : 'Admin';
+    var defaultPerms = normalizeAdminPermissions({
+      canApprove: true,
+      canReject: true,
+      canEdit: true,
+      canDelete: true,
+      allowedMenus: ADMIN_MENU_LIST.slice()
+    }, role);
+
+    return {
+      success: true,
+      username: u,
+      role: role,
+      name: role === 'SuperAdmin' ? 'অ্যাড. মোঃ হুমায়ুন কবির (চেয়ারম্যান)' : 'অ্যাডমিন',
+      photoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+      permissions: defaultPerms,
+      allowedMenus: defaultPerms.allowedMenus
+    };
   }
   return { success: false, message: 'ইউজারনেম বা পাসওয়ার্ড সঠিক নয়!' };
 }
 
-function getAllUsers() {
+function getAdminUsers() {
   var sheet = getSheet('Users');
   var data = sheet.getDataRange().getValues();
   var users = [];
@@ -1116,47 +1177,38 @@ function getAllUsers() {
     var perms = {};
     var photoUrl = '';
     try {
-      perms = JSON.parse(data[i][4]);
-      photoUrl = perms.photoUrl || '';
-    } catch(e) {}
+      perms = JSON.parse(data[i][4] || '{}');
+      photoUrl = perms.photoUrl || perms.photo || '';
+    } catch (e) {}
+    var normalized = normalizeAdminPermissions(perms, data[i][2] || 'Admin');
     users.push({
-      username: data[i][0], role: data[i][2], name: data[i][3], photoUrl: photoUrl, permissions: perms
+      username: data[i][0],
+      role: data[i][2] || 'Admin',
+      name: data[i][3] || '',
+      photo: photoUrl || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+      photoUrl: photoUrl || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+      permissions: normalized,
+      allowedMenus: normalized.allowedMenus,
+      canApprove: normalized.canApprove,
+      canReject: normalized.canReject,
+      canEdit: normalized.canEdit,
+      canDelete: normalized.canDelete
     });
   }
   return users;
+}
+
+function getAllUsers() {
+  return getAdminUsers();
 }
 
 // 🟢 নতুন ইউজার ডাটাবেসে সেভ করা
 function saveNewUser(uData) {
   try {
     var sheet = getSheet('Users');
-    var permissions = uData.permissions || {};
-    var allowedMenus = uData.allowedMenus ||
-      permissions.allowedMenus ||
-      Object.keys(permissions.menus || {}).filter(function(key) {
-        return permissions.menus[key];
-      });
-
-    var permsPayload = {
-      canApprove: permissions.canApprove === true,
-      canReject: permissions.canReject === true,
-      canEdit: permissions.canEdit === true,
-      canDelete: permissions.canDelete === true,
-      allowedMenus: allowedMenus,
-      photoUrl: uData.photoUrl || uData.photo || ''
-    };
-
-    if (uData.role === 'SuperAdmin') {
-      permsPayload.canApprove = true;
-      permsPayload.canReject = true;
-      permsPayload.canEdit = true;
-      permsPayload.canDelete = true;
-      permsPayload.allowedMenus = [
-        'dashTab', 'citTab', 'tradeTab', 'famTab', 'warTab',
-        'appsTab', 'taxTab', 'accountsTab', 'bankTab',
-        'beneficiaryTab', 'projectTab', 'reportTab', 'upSettingsTab'
-      ];
-    }
+    var permissionInput = (uData && uData.permissions) ? uData.permissions : {};
+    var permsPayload = normalizeAdminPermissions(permissionInput, uData && uData.role ? uData.role : 'Admin');
+    permsPayload.photoUrl = uData.photoUrl || uData.photo || permsPayload.photoUrl || '';
 
     sheet.appendRow([
       uData.username,
@@ -1177,7 +1229,7 @@ function updateUser(uData) {
     var data = sheet.getDataRange().getValues();
 
     for (var i = 1; i < data.length; i++) {
-      if (String(data[i][0]).trim() !== String(uData.originalUsername).trim()) continue;
+      if (String(data[i][0]).trim() !== String(uData.originalUsername || uData.username).trim()) continue;
 
       var oldPermissions = {};
       try {
@@ -1185,35 +1237,12 @@ function updateUser(uData) {
       } catch (e) {}
 
       var incoming = uData.permissions || {};
-      var menus = uData.allowedMenus ||
-        incoming.allowedMenus ||
-        Object.keys(incoming.menus || {}).filter(function(key) {
-          return incoming.menus[key];
-        });
+      var permissions = normalizeAdminPermissions(incoming, uData.role || data[i][2] || 'Admin');
+      permissions.photoUrl = uData.photoUrl || uData.photo || oldPermissions.photoUrl || permissions.photoUrl || '';
 
-      var permissions = {
-        canApprove: incoming.canApprove === true,
-        canReject: incoming.canReject === true,
-        canEdit: incoming.canEdit === true,
-        canDelete: incoming.canDelete === true,
-        allowedMenus: menus,
-        photoUrl: uData.photoUrl || uData.photo || oldPermissions.photoUrl || ''
-      };
-
-      if (uData.role === 'SuperAdmin') {
-        permissions.canApprove = true;
-        permissions.canReject = true;
-        permissions.canEdit = true;
-        permissions.canDelete = true;
-      }
-
+      sheet.getRange(i + 1, 2).setValue(uData.password && uData.password.trim() ? uData.password.trim() : data[i][1]);
       sheet.getRange(i + 1, 3).setValue(uData.role || data[i][2]);
       sheet.getRange(i + 1, 4).setValue(uData.name || data[i][3]);
-
-      if (uData.password && uData.password.trim()) {
-        sheet.getRange(i + 1, 2).setValue(uData.password.trim());
-      }
-
       sheet.getRange(i + 1, 5).setValue(JSON.stringify(permissions));
       return { success: true };
     }
@@ -1228,12 +1257,16 @@ function deleteUser(uname) {
   var sheet = getSheet('Users');
   var data = sheet.getDataRange().getValues();
   for (var i = 1; i < data.length; i++) {
-    if (data[i][0] === uname) {
+    if (String(data[i][0]).trim() === String(uname).trim()) {
       sheet.deleteRow(i + 1);
       return { success: true };
     }
   }
   return { success: false };
+}
+
+function deleteAdminUser(uname) {
+  return deleteUser(uname);
 }
 // 🟢 CLOUDFLARE / GITHUB API ROUTER ENGINE (DO NOT DELETE)
 function doPost(e) {
@@ -1289,12 +1322,12 @@ function doPost(e) {
       result = getAllApplications();
     } else if (action === 'getTaxPayers') {
       result = getTaxPayers();
-    } else if (action === 'getAllUsers') {
-      result = getAllUsers();
-    } else if (action === 'saveNewUser') {
+    } else if (action === 'getAllUsers' || action === 'getAdminUsers') {
+      result = getAdminUsers();
+    } else if (action === 'saveNewUser' || action === 'saveAdminUser') {
       result = saveNewUser(data);
-    } else if (action === 'deleteUser') {
-      result = deleteUser(data);
+    } else if (action === 'deleteUser' || action === 'deleteAdminUser') {
+      result = deleteAdminUser(data || data.username || data.uname || data);
     } else if (action === 'updateAppStatus') {
       result = updateAppStatus(data.appId, data.status);
     } else if (action === 'deleteApplication') {

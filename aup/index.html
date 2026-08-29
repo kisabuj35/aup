@@ -491,7 +491,7 @@
     });
 
     function checkAdminSession() {
-      var session = localStorage.getItem('upAdminSession');
+      var session = sessionStorage.getItem('upAdminSession');
       if (session) {
         var btn = document.getElementById('adminAuthBtn');
         if(btn) {
@@ -502,10 +502,10 @@
     }
 
     function handleNavAuthBtn() {
-      var session = localStorage.getItem('upAdminSession');
+      var session = sessionStorage.getItem('upAdminSession');
       if (session) {
         navToSection('adminPanel');
-        var savedTab = localStorage.getItem('adminActiveTab') || 'dashTab';
+        var savedTab = sessionStorage.getItem('adminActiveTab') || 'dashTab';
         if (typeof switchAdminTab === 'function') switchAdminTab(savedTab);
         if (typeof loadAdminDashboard === 'function') loadAdminDashboard();
       } else {

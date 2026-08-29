@@ -791,6 +791,44 @@ function getTradeLicenses() {
   return list;
 }
 
+// 🟢 GET ALL TRADE LICENSE RENEWAL RECORDS
+function getTradeRenewals() {
+  var sheet = getSheet('TradeLicense');
+  var data = sheet.getDataRange().getValues();
+  var list = [];
+  for (var i = 1; i < data.length; i++) {
+    if (!data[i][0]) continue;
+    var appId = (data[i][0] || '').toString();
+    if (appId.indexOf('AUL-RN-') !== 0) continue;
+    list.push({
+      appId: appId,
+      licNo: toBanglaDigit(data[i][1] || ''),
+      receiptNo: toBanglaDigit(data[i][2] || ''),
+      orgName: data[i][3] || '',
+      ownerName: data[i][4] || '',
+      fatherName: data[i][5] || '',
+      mobile: toBanglaDigit(data[i][9] || ''),
+      fiscalYear: data[i][15] || '২০২৫-২০২৬',
+      totalFee: toBanglaDigit(data[i][21] || ''),
+      status: data[i][24] || 'Pending',
+      isRenewal: true,
+      renewalSource: true,
+      __renewalSource: true,
+      requestType: 'renewal',
+      serviceType: 'ট্রেড লাইসেন্স নবায়ন'
+    });
+  }
+  return list;
+}
+
+function getTradeLicenseRenewals() {
+  return getTradeRenewals();
+}
+
+function getRenewalApplications() {
+  return getTradeRenewals();
+}
+
 // 🟢 GET SINGLE TRADE LICENSE DETAILS
 function getTradeLicenseDetails(query) {
   var sheet = getSheet('TradeLicense');
@@ -911,6 +949,26 @@ function getFamilyDetails(appId) {
       found: false,
       error: e.toString()
     };
+  }
+}
+
+// 🟢 SAVE GENERIC EDITED APPLICATION
+function saveEditedApplication(data) {
+  try {
+    if (!data || !data.appId) {
+      return { success: false, error: 'অ্যাপ আইডি অনুপস্থিত।' };
+    }
+    var appId = (data.appId || '').toString().trim();
+    var type = (data.type || data.serviceType || data.certificateType || data.applicationType || '').toString().trim();
+    if (type === 'ওয়ারিশান সনদ' || appId.indexOf('AUL-WAR-') === 0) {
+      return updateWarishanData(data);
+    }
+    if (type === 'পারিবারিক সনদ' || type === 'উত্তরাধিকারী সনদ' || appId.indexOf('AUL-FW-') === 0 || appId.indexOf('AUL-UW-') === 0 || appId.indexOf('AUL-FAM-') === 0) {
+      return updateApplicationData(data);
+    }
+    return updateApplicationData(data);
+  } catch (e) {
+    return { success: false, error: e.toString() };
   }
 }
 
@@ -1267,6 +1325,43 @@ function deleteUser(uname) {
 
 function deleteAdminUser(uname) {
   return deleteUser(uname);
+}
+
+// 🟢 UPDATE TRADE LICENSE DATA (EDIT MODAL)
+function updateTradeLicenseData(ed) {
+  try {
+    var sheet = getSheet('TradeLicense');
+    var data = sheet.getDataRange().getValues();
+    var q = toEnglishDigit((ed && ed.appId) || '').toUpperCase();
+    var qLic = toEnglishDigit((ed && ed.licNo) || '').toUpperCase();
+
+    for (var i = 1; i < data.length; i++) {
+      var appId = (data[i][0] || '').toString().toUpperCase();
+      var licNo = (data[i][1] || '').toString().toUpperCase();
+      if ((q && (appId === q || appId.indexOf(q) > -1)) || (qLic && (licNo === qLic || licNo.indexOf(qLic) > -1)) || (appId === (ed && ed.originalAppId || '').toString().toUpperCase())) {
+        if (ed && ed.orgName !== undefined) sheet.getRange(i + 1, 4).setValue(ed.orgName);
+        if (ed && ed.ownerName !== undefined) sheet.getRange(i + 1, 5).setValue(ed.ownerName);
+        if (ed && ed.fatherName !== undefined) sheet.getRange(i + 1, 6).setValue(ed.fatherName);
+        if (ed && ed.motherName !== undefined) sheet.getRange(i + 1, 7).setValue(ed.motherName);
+        if (ed && ed.nid !== undefined) sheet.getRange(i + 1, 8).setValue("'" + toEnglishDigit(ed.nid || ''));
+        if (ed && ed.mobile !== undefined) sheet.getRange(i + 1, 10).setValue("'" + toEnglishDigit(ed.mobile || ''));
+        if (ed && ed.ownerAddress !== undefined) sheet.getRange(i + 1, 11).setValue(ed.ownerAddress);
+        if (ed && ed.category !== undefined) sheet.getRange(i + 1, 12).setValue(ed.category);
+        if (ed && ed.bizDetails !== undefined) sheet.getRange(i + 1, 13).setValue(ed.bizDetails || '');
+        if (ed && ed.bizAddress !== undefined) sheet.getRange(i + 1, 14).setValue(ed.bizAddress);
+        if (ed && ed.bizStartDate !== undefined) sheet.getRange(i + 1, 15).setValue(formatBanglaDate(ed.bizStartDate));
+        if (ed && ed.fiscalYear !== undefined) sheet.getRange(i + 1, 16).setValue(ed.fiscalYear);
+        if (ed && ed.commTax !== undefined) sheet.getRange(i + 1, 19).setValue(ed.commTax || '0');
+        if (ed && ed.signTax !== undefined) sheet.getRange(i + 1, 20).setValue(ed.signTax || '0');
+        if (ed && ed.totalFee !== undefined) sheet.getRange(i + 1, 22).setValue(toBanglaDigit(ed.totalFee || '0'));
+        if (ed && ed.signatoryRole !== undefined) sheet.getRange(i + 1, 24).setValue(ed.signatoryRole);
+        return { success: true };
+      }
+    }
+    return { success: false, error: 'ট্রেড লাইসেন্স তথ্য পাওয়া যায়নি!' };
+  } catch (e) {
+    return { success: false, error: e.toString() };
+  }
 }
 // 🟢 CLOUDFLARE / GITHUB API ROUTER ENGINE (DO NOT DELETE)
 function doPost(e) {

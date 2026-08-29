@@ -36,6 +36,116 @@
     
     .credit-box-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 12px; height: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 
+    * { box-sizing: border-box; }
+    html, body { overflow-x: hidden; }
+    img { max-width: 100%; }
+
+    @media (max-width: 991.98px) {
+      .top-purple-bar .container,
+      .uniontax-header .container {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px;
+      }
+
+      .uniontax-header .container > div:last-child {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .navbar-nav {
+        gap: 8px;
+        width: 100%;
+      }
+
+      .nav-link-custom {
+        padding: 8px 10px !important;
+        font-size: 13px;
+      }
+
+      .notice-marquee .container {
+        display: block;
+      }
+
+      .notice-marquee marquee {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .top-purple-bar {
+        font-size: 11px;
+        line-height: 1.5;
+      }
+
+      .uniontax-header {
+        padding: 10px 0;
+      }
+
+      .uniontax-header .container > div:first-child {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start !important;
+      }
+
+      .uniontax-header h3 {
+        font-size: clamp(1.05rem, 3.6vw, 1.45rem);
+      }
+
+      .uniontax-header small {
+        display: block;
+        font-size: 11px;
+      }
+
+      .uniontax-header .container > div:last-child {
+        grid-template-columns: 1fr;
+      }
+
+      .navbar {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+
+      .navbar-nav {
+        flex-direction: column;
+        align-items: stretch !important;
+      }
+
+      .nav-link-custom {
+        display: block;
+        width: 100%;
+        text-align: left;
+      }
+
+      #adminAuthBtn {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .section-header-green {
+        font-size: 14px;
+      }
+
+      .section-body-white {
+        padding: 12px;
+      }
+
+      .credit-box-card {
+        padding: 12px 10px;
+      }
+
+      .footer-link-list li {
+        font-size: 12px;
+      }
+
+      .hotline-badge {
+        font-size: 11px;
+        padding: 6px 10px;
+      }
+    }
+
     @media print { .no-print { display: none !important; } }
     .swal2-popup { font-family: 'Kalpurush', 'Tiro Bangla', sans-serif !important; border-radius: 12px !important; }
   </style>

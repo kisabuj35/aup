@@ -82,6 +82,33 @@
   .family-cert-container, .family-cert-container * { font-family: 'Nikosh', sans-serif !important; }
   .family-cert-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 8mm; padding: 3mm 2mm 0; border-top: 1.5px solid #7c3aed; color: #4c1d95; font-size: 13px; font-weight: bold; text-align: center; }
   .family-cert-footer > * { flex: 1; }
+
+  @media (max-width: 767.98px) {
+    .family-cert-container {
+      width: 100%;
+      min-height: auto;
+      padding: 8mm 6mm;
+      font-size: 13px;
+    }
+
+    .family-cert-container .ribbon-center-box {
+      font-size: 16px !important;
+      padding: 6px 18px !important;
+    }
+
+    .cert-table-exact th,
+    .cert-table-exact td {
+      font-size: 11.5px;
+      padding: 4px 2px;
+    }
+
+    .card-header.bg-success {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 8px;
+      padding: 12px 14px;
+    }
+  }
 </style>
 
 <!-- ১. পারিবারিক ও উত্তরাধিকারী সনদের মূল আবেদন ফর্ম -->

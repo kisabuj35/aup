@@ -1,6 +1,6 @@
 <!-- ======================================================= -->
 <!-- 11NO AULIAPUR UNION PARISHAD - GENERAL CERTIFICATES    -->
-<!-- File: General_Certificate.html (Master Pro Layout 520px)-->
+<!-- File: General_Certificate.html (100% Working Master)   -->
 <!-- ======================================================= -->
 
 <!-- Google & Bangla Fonts -->
@@ -21,7 +21,7 @@
     height: 295mm;
     min-height: 295mm;
     max-height: 295mm;
-    margin: auto;
+    margin: 0 auto;
     padding: 12mm 16mm 10mm 16mm;
     background: #ffffff !important;
     color: #18241e;
@@ -34,7 +34,6 @@
     border: 3.5px double #126341 !important;
     outline: 1.5px solid #b89446 !important;
     outline-offset: 4px;
-    box-shadow: 0 8px 24px rgba(17,65,45,.18);
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -51,7 +50,7 @@
   /* 🟢 ৫২০px ওয়াটারমার্ক লোগো */
   .official-certificate .cert-watermark {
     position: absolute;
-    top: 51%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 520px !important;
@@ -131,7 +130,7 @@
     margin: 4px 0 10px 0;
   }
 
-  /* 🟢 ৩ডি রয়্যাল গ্রিন রিবন ব্যানার */
+  /* 🟢 ৩ডি রিবন ব্যানার */
   .ribbon-wrapper-main {
     text-align: center;
     margin: 6px 0 14px 0;
@@ -249,24 +248,6 @@
     color: #126341;
     font-family: 'Nikosh', sans-serif !important;
   }
-
-  #generalPrintHost { display: none; }
-
-  @media (max-width: 767.98px) {
-    .general-shell { border-radius: 10px !important; }
-    .general-hero { flex-direction: column !important; align-items: flex-start !important; gap: 10px; padding: 16px !important; }
-    .general-section { padding: 12px !important; }
-    .official-certificate { width: 100%; height: auto; min-height: 210mm; padding: 8mm 6mm; }
-  }
-
-  @media print {
-    @page { size: A4 portrait; margin: 0mm !important; }
-    * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    body.general-print-mode > * { visibility: hidden !important; }
-    body.general-print-mode #generalPrintHost, body.general-print-mode #generalPrintHost * { visibility: visible !important; }
-    body.general-print-mode #generalPrintHost { display: block !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 210mm !important; height: 297mm !important; margin: 0 !important; padding: 0 !important; background: #fff !important; overflow: hidden !important; }
-    body.general-print-mode #generalPrintHost .official-certificate { display: flex !important; width: 210mm !important; height: 295mm !important; margin: 0 auto !important; box-shadow: none !important; }
-  }
 </style>
 
 <!-- ১. সাধারণ প্রত্যয়নপত্রের অনলাইন আবেদন ফরম -->
@@ -329,24 +310,7 @@
   </div>
 </div>
 
-<!-- ২. অফিসিয়াল প্রত্যয়নপত্র প্রিভিউ মোডাল -->
-<div class="modal fade" id="genOfficialCertModal" tabindex="-1">
-  <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-dark text-white">
-        <h5 class="modal-title fw-bold"><i class="fa fa-stamp me-2"></i> প্রত্যয়নপত্র প্রিভিউ ও প্রিন্ট</h5>
-        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div id="genOfficialCertPrintArea" class="modal-body general-preview p-3"></div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">বন্ধ করুন</button>
-        <button class="btn btn-danger fw-bold" onclick="printGeneralElement('genOfficialCertPrintArea')"><i class="fa fa-print me-1"></i> A4 প্রিন্ট</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ৩. সাধারণ প্রত্যয়ন তথ্য সংশোধন এডিট মোডাল -->
+<!-- ২. সাধারণ প্রত্যয়ন তথ্য সংশোধন এডিট মোডাল (উভয় আইডি সাপোর্টেড) -->
 <div class="modal fade" id="generalEditModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
@@ -354,9 +318,10 @@
         <h5 class="modal-title fw-bold"><i class="fa fa-edit me-2"></i> সাধারণ প্রত্যয়ন তথ্য সংশোধন</h5>
         <button class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body p-4">
         <form id="generalEditForm" onsubmit="event.preventDefault(); saveEditedGeneralData();">
           <input type="hidden" id="editGenAppId">
+          <input type="hidden" id="edGenAppId">
           <div class="row g-3">
             <div class="col-md-6"><label class="form-label fw-bold">সেবার ধরন</label><input id="editGenType" class="form-control" readonly></div>
             <div class="col-md-6"><label class="form-label fw-bold">আবেদনকারীর নাম *</label><input id="editGenName" class="form-control" required></div>
@@ -385,7 +350,7 @@
   </div>
 </div>
 
-<!-- ৪. জাভাস্ক্রিপ্ট মাস্টার ইঞ্জিন -->
+<!-- ৩. জাভাস্ক্রিপ্ট মাস্টার ইঞ্জিন -->
 <script>
   const STATIC_GOVT_LOGO = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
   const STATIC_UP_LOGO = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
@@ -444,6 +409,25 @@
     return generalBnDigits(now.getDate()) + ' ' + months[now.getMonth()] + ' ' + generalBnDigits(now.getFullYear());
   }
 
+  /* 🟢 স্মার্ট ডাটা ফেচিং ফাংশন (কখনো ফেইল হবে না) */
+  async function fetchGeneralCertificateData(id) {
+    let d = null;
+    // ১. মেমোরি ক্যাশ থেকে চেক
+    if (typeof rawDataStore !== 'undefined' && Array.isArray(rawDataStore.gen)) {
+      d = rawDataStore.gen.find(x => String(x.appId || x.id || '').trim().toUpperCase() === String(id || '').trim().toUpperCase());
+    }
+    // ২. ব্যাকএন্ড এপিআই ব্যাকআপ
+    if (!d && typeof callBackendAPI === 'function') {
+      try {
+        let res = await callBackendAPI('trackApplication', id);
+        if (res && (res.found || res.appId || res.name)) {
+          d = res;
+        }
+      } catch(e) { console.warn("API tracking error:", e); }
+    }
+    return d;
+  }
+
   function openGeneralServicePage(type) {
     navToSection('generalServiceView');
     var form = document.getElementById('generalAppPageForm');
@@ -485,8 +469,12 @@
 
   /* 🟢 বর্ধিত বিবরণী বিল্ডার */
   function generalBody(d) {
-    var specificText = GENERAL_TEMPLATES[d.type] || GENERAL_TEMPLATES['বিবিধ প্রত্যয়নপত্র'];
-    var basicInfo = 'এই মর্মে প্রত্যয়ন পত্র প্রদান করা যাইতেছে যে, <strong>' + escapeGeneral(d.name) + '</strong>, পিতা- <strong>' + escapeGeneral(d.fatherName) + '</strong>, মাতা- <strong>' + escapeGeneral(d.motherName || '') + '</strong>, গ্রাম- <strong>' + escapeGeneral(d.village) + '</strong>, ডাকঘর- <strong>' + escapeGeneral(d.postOffice || 'আউলিয়াপুর ময়দান') + '</strong>, ওয়ার্ড নং- <strong>' + generalBnDigits(d.wardNo) + '</strong>, ইউনিয়ন- <strong>' + GENERAL_UNION + '</strong>, উপজেলা- <strong>' + GENERAL_UPAZILA + '</strong>, জেলা- <strong>' + GENERAL_DISTRICT + '</strong>।<br><br>তাঁহার জাতীয় পরিচয়পত্র / জন্ম নিবন্ধন নম্বর: <strong>' + generalBnDigits(d.nid) + '</strong>। তিনি অত্র ইউনিয়নের একজন স্থায়ী বাসিন্দা। ';
+    var certType = d.type || d.serviceType || 'বিবিধ প্রত্যয়নপত্র';
+    var specificText = GENERAL_TEMPLATES[certType] || GENERAL_TEMPLATES['বিবিধ প্রত্যয়নপত্র'];
+    var fatherVal = d.fatherName || d.father || d.fatherSpouseName || '';
+    var motherVal = d.motherName || d.mother || '';
+    
+    var basicInfo = 'এই মর্মে প্রত্যয়ন পত্র প্রদান করা যাইতেছে যে, <strong>' + escapeGeneral(d.name || d.applicantName) + '</strong>, পিতা- <strong>' + escapeGeneral(fatherVal) + '</strong>, মাতা- <strong>' + escapeGeneral(motherVal) + '</strong>, গ্রাম- <strong>' + escapeGeneral(d.village) + '</strong>, ডাকঘর- <strong>' + escapeGeneral(d.postOffice || 'আউলিয়াপুর ময়দান') + '</strong>, ওয়ার্ড নং- <strong>' + generalBnDigits(d.wardNo) + '</strong>, ইউনিয়ন- <strong>' + GENERAL_UNION + '</strong>, উপজেলা- <strong>' + GENERAL_UPAZILA + '</strong>, জেলা- <strong>' + GENERAL_DISTRICT + '</strong>।<br><br>তাঁহার জাতীয় পরিচয়পত্র / জন্ম নিবন্ধন নম্বর: <strong>' + generalBnDigits(d.nid) + '</strong>। তিনি অত্র ইউনিয়নের একজন স্থায়ী বাসিন্দা। ';
     return basicInfo + specificText;
   }
 
@@ -494,13 +482,13 @@
   function certificateMarkup(d) {
     var chairName = escapeGeneral(d.chairName || 'অ্যাড. মোঃ হুমায়ুন কবির');
     var roleName = escapeGeneral(d.signatoryRole || 'চেয়ারম্যান');
-    var certTitle = escapeGeneral(d.type || 'প্রত্যয়নপত্র');
+    var certTitle = escapeGeneral(d.type || d.serviceType || 'প্রত্যয়নপত্র');
     if (!certTitle.endsWith('সনদ') && !certTitle.endsWith('পত্র')) certTitle += ' পত্র';
 
     var smarakNo = 'আ/ইউ/পটুয়া/সদর/' + generalCurrentYear() + '/' + escapeGeneral(generalApplicationNumber(d.appId));
     var liveDate = generalPrintDate();
 
-    var qrPayload = 'গণপ্রজাতন্ত্রী বাংলাদেশ সরকার\n১১নং আউলিয়াপুর ইউনিয়ন পরিষদ\nসনদ: ' + certTitle + '\nস্মারক: ' + smarakNo + '\nনাম: ' + escapeGeneral(d.name) + '\nএনআইডি: ' + escapeGeneral(d.nid || '-') + '\nতারিখ: ' + liveDate + ' ইং\nঅনলাইন ভেরিফায়েড';
+    var qrPayload = 'গণপ্রজাতন্ত্রী বাংলাদেশ সরকার\n১১নং আউলিয়াপুর ইউনিয়ন পরিষদ\nসনদ: ' + certTitle + '\nস্মারক: ' + smarakNo + '\nনাম: ' + escapeGeneral(d.name || d.applicantName) + '\nএনআইডি: ' + escapeGeneral(d.nid || '-') + '\nতারিখ: ' + liveDate + ' ইং\nঅনলাইন ভেরিফায়েড';
     var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=0&data=" + encodeURIComponent(qrPayload);
 
     return `
@@ -584,87 +572,84 @@
     `;
   }
 
-  /* 🟢 সরাসরি ১-ক্লিক প্রিন্ট ফাংশন (অ্যাডমিন প্যানেলের জন্য) */
+  /* 🟢 ১-ক্লিক ডিরেক্ট আইফ্রেম প্রিন্ট ইঞ্জিন (অ্যাডমিন প্যানেলের জন্য শতভাগ নির্ভরযোগ্য) */
   async function showGeneralCertPrintPreview(id) {
-    printGeneralCertificate(id);
-  }
+    let d = await fetchGeneralCertificateData(id);
+    if (!d) return alert('সনদের তথ্য পাওয়া যায়নি।');
 
-  async function printGeneralCertificate(id) {
-    let d = null;
-    if (typeof rawDataStore !== 'undefined' && rawDataStore.gen) {
-      d = rawDataStore.gen.find(x => String(x.appId).trim() === String(id).trim());
-    }
-    if (!d) {
-      d = await callBackendAPI('trackApplication', id);
-    }
-    if (!d || !d.found) return alert('সনদের তথ্য পাওয়া যায়নি।');
+    var certHtml = certificateMarkup(d);
+    var oldFrame = document.getElementById('gen_direct_print_frame');
+    if (oldFrame) oldFrame.remove();
 
-    var host = document.getElementById('generalPrintHost');
-    if (!host) {
-      host = document.createElement('div');
-      host.id = 'generalPrintHost';
-      document.body.appendChild(host);
-    }
-    host.innerHTML = certificateMarkup(d);
-    document.body.classList.add('general-print-mode');
+    var iframe = document.createElement('iframe');
+    iframe.id = 'gen_direct_print_frame';
+    iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:210mm;height:297mm;border:0;';
+    document.body.appendChild(iframe);
 
-    var images = host.getElementsByTagName('img');
+    var doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Certificate - ${escapeGeneral(d.appId || id)}</title>
+        <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+        <style>
+          @page { size: A4 portrait; margin: 0mm !important; }
+          * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Nikosh', 'Kalpurush', sans-serif !important; }
+          ${document.getElementById('generalCertificateStyles').innerHTML}
+        </style>
+      </head>
+      <body>${certHtml}</body>
+      </html>
+    `);
+    doc.close();
+
+    var images = doc.getElementsByTagName('img');
     var remaining = images.length;
     var printed = false;
-    var finished = false;
 
-    function cleanup() {
-      if (finished) return;
-      finished = true;
-      document.body.classList.remove('general-print-mode');
-      host.innerHTML = '';
-      window.onafterprint = null;
-    }
-
-    function finishPrint() {
+    function doPrint() {
       if (printed) return;
       printed = true;
-      window.print();
+      iframe.contentWindow.focus();
+      iframe.contentWindow.print();
     }
 
-    function readyToPrint() {
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(finishPrint);
-      } else {
-        finishPrint();
+    if (!remaining) {
+      setTimeout(doPrint, 250);
+    } else {
+      for (var i = 0; i < remaining; i++) {
+        images[i].onload = images[i].onerror = function() {
+          if (!--remaining) setTimeout(doPrint, 150);
+        };
       }
+      setTimeout(doPrint, 1200);
     }
+  }
 
-    function imageDone() {
-      if (!--remaining) readyToPrint();
-    }
-
-    for (var i = 0; i < images.length; i++) {
-      if (images[i].complete) remaining--;
-      else {
-        images[i].addEventListener('load', imageDone, {once: true});
-        images[i].addEventListener('error', imageDone, {once: true});
-      }
-    }
-    window.onafterprint = cleanup;
-    if (!remaining) setTimeout(readyToPrint, 250);
-    setTimeout(readyToPrint, 1500);
+  function printGeneralCertificate(id) {
+    showGeneralCertPrintPreview(id);
   }
 
   function printGeneralElement(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
     var w = window.open('', '_blank');
     var css = document.getElementById('generalCertificateStyles').innerHTML;
-    w.document.write('<html><head><title>প্রত্যয়নপত্র</title><link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet"><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}html,body{margin:0;padding:0;overflow:hidden;background:#fff;font-family:\'Nikosh\',sans-serif}' + css + '</style></head><body>' + document.getElementById(id).innerHTML + '</body></html>');
+    w.document.write('<html><head><title>প্রত্যয়নপত্র</title><link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet"><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}html,body{margin:0;padding:0;overflow:hidden;background:#fff;font-family:\'Nikosh\',sans-serif}' + css + '</style></head><body>' + el.innerHTML + '</body></html>');
     w.document.close();
     w.focus();
     setTimeout(function() { w.print(); }, 400);
   }
 
   async function printGeneralAppCopy(id) {
-    var d = await callBackendAPI('trackApplication', id);
-    if (!d || !d.found) return alert('আবেদনের তথ্য পাওয়া যায়নি।');
+    var d = await fetchGeneralCertificateData(id);
+    if (!d) return alert('আবেদনের তথ্য পাওয়া যায়নি।');
 
-    var type = d.type || 'সাধারণ প্রত্যয়ন';
+    var type = d.type || d.serviceType || 'সাধারণ প্রত্যয়ন';
     var name = d.name || d.applicantName || '';
     var mobile = d.mobile || d.phone || '-';
     var father = d.fatherName || d.father || '-';
@@ -678,58 +663,73 @@
 
     var w = window.open('', '_blank');
     if (!w) return alert('প্রিন্ট উইন্ডো খোলা যায়নি।');
-    w.document.write('<html lang="bn"><head><meta charset="UTF-8"><title>আবেদনপত্র - ' + escapeGeneral(type) + '</title><link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet"><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}body{margin:0;background:#fff;color:#111;font-family:Nikosh,"Noto Serif Bengali",serif}.paper{width:210mm;min-height:297mm;padding:25mm 25mm 20mm;font-size:18px;line-height:1.9}.heading{text-align:center;font-size:24px;text-decoration:underline;margin-bottom:20px}.date{text-align:right;margin-bottom:22px}.recipient{margin-bottom:18px}.subject{font-weight:bold;text-decoration:underline;margin:18px 0}.body{text-align:justify;text-indent:45px;min-height:105px}.closing{margin-top:22px}.details{border-top:1px solid #777;border-bottom:1px solid #777;padding:10px 0;margin-top:20px}.signature{margin-top:55px;margin-left:auto;width:210px;text-align:center}.signature-line{border-top:1px solid #111;margin-bottom:7px}.footer{margin-top:28px;font-size:14px;color:#444}@media print{.paper{min-height:297mm}}</style></head><body><main class="paper"><div class="heading">আবেদনপত্র</div><div class="date">তারিখ: ' + escapeGeneral(d.date || d.applyDate || generalPrintDate()) + '</div><div class="recipient">বরাবর<br>চেয়ারম্যান<br>' + GENERAL_UNION + ' পরিষদ<br>' + GENERAL_UPAZILA + ', ' + GENERAL_DISTRICT + '</div><div class="subject">বিষয়: ' + escapeGeneral(subject) + '</div><p>জনাব,</p><div class="body">' + body + '</div><p class="closing">অতএব, মহোদয়ের নিকট বিনীত আবেদন, উপরোক্ত বিষয়টি সদয় বিবেচনা করে আমাকে প্রয়োজনীয় ' + escapeGeneral(type) + ' প্রদান করতে মর্জি হয়।</p>' + details + '<div class="signature"><div class="signature-line">স্বাক্ষর</div><strong>' + escapeGeneral(name) + '</strong><br>আবেদনকারী<br>মোবাইল: ' + generalBnDigits(mobile) + '</div><div class="footer">আবেদনপত্রের ধরন: ' + escapeGeneral(type) + ' | ট্র্যাকিং আইডি: ' + escapeGeneral(d.appId || id) + '</div></main></body></html>');
+    w.document.write('<html lang="bn"><head><meta charset="UTF-8"><title>আবেদনপত্র - ' + escapeGeneral(type) + '</title><link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet"><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}body{margin:0;background:#fff;color:#111;font-family:Nikosh,"Noto Serif Bengali",serif}.paper{width:210mm;min-height:297mm;padding:25mm 25mm 20mm;font-size:18px;line-height:1.9}.heading{text-align:center;font-size:24px;text-decoration:underline;margin-bottom:20px}.date{text-align:right;margin-bottom:22px}.recipient{margin-bottom:18px}.subject{font-weight:bold;text-decoration:underline;margin:18px 0}.body{text-align:justify;text-indent:45px;min-height:105px}.closing{margin-top:22px}.details{border-top:1px solid #777;border-bottom:1px solid #777;padding:10px 0;margin-top:20px}.signature{margin-top:55px;margin-left:auto;width:210px;text-align:center}.signature-line{border-top:1px solid #111;margin-bottom:7px}.footer{margin-top:28px;font-size:14px;color:#444}@media print{.paper{min-height:297mm}}</style></head><body><main class="paper"><div class="heading">আবেদনপত্র</div><div class="date">তারিখ: ' + escapeGeneral(d.date || d.applyDate || generalPrintDate()) + '</div><div class="recipient">বরাবর<br>চেয়ারম্যান<br>' + GENERAL_UNION + ' পরিষদ<br>' + GENERAL_UPAZILA + ', ' + GENERAL_DISTRICT + '</div><div class="subject">বিষয়: ' + escapeGeneral(subject) + '</div><p>জনাব,</p><div class="body">'+body+'</div><p class="closing">অতএব, মহোদয়ের নিকট বিনীত আবেদন, উপরোক্ত বিষয়টি সদয় বিবেচনা করে আমাকে প্রয়োজনীয় ' + escapeGeneral(type) + ' প্রদান করতে মর্জি হয়।</p>' + details + '<div class="signature"><div class="signature-line">স্বাক্ষর</div><strong>' + escapeGeneral(name) + '</strong><br>আবেদনকারী<br>মোবাইল: ' + generalBnDigits(mobile) + '</div><div class="footer">আবেদনপত্রের ধরন: ' + escapeGeneral(type) + ' | ট্র্যাকিং আইডি: ' + escapeGeneral(d.appId || id) + '</div></main></body></html>');
     w.document.close();
     w.focus();
     setTimeout(function() { w.print(); }, 400);
   }
 
+  /* 🟢 এডিট মোডাল ওপেনার (অ্যাডমিনের জন্য শতভাগ কাজ করবে) */
   async function openEditGeneralModal(id) {
-    let d = null;
-    if (typeof rawDataStore !== 'undefined' && rawDataStore.gen) {
-      d = rawDataStore.gen.find(x => String(x.appId).trim() === String(id).trim());
-    }
-    if (!d) {
-      d = await callBackendAPI('trackApplication', id);
-    }
-    if (!d || !d.found) return alert('আবেদনের তথ্য পাওয়া যায়নি।');
+    let d = await fetchGeneralCertificateData(id);
+    if (!d) return alert('আবেদনের তথ্য পাওয়া যায়নি।');
 
-    document.getElementById('editGenAppId').value = d.appId || id;
-    document.getElementById('editGenType').value = d.type || d.serviceType || 'প্রত্যয়নপত্র';
-    document.getElementById('editGenName').value = d.name || d.applicantName || '';
-    document.getElementById('editGenFather').value = d.fatherName || '';
-    document.getElementById('editGenMother').value = d.motherName || '';
-    document.getElementById('editGenNid').value = d.nid || '';
-    document.getElementById('editGenMobile').value = d.mobile || '';
-    document.getElementById('editGenWard').value = d.wardNo || '০১';
-    document.getElementById('editGenVillage').value = d.village || '';
-    document.getElementById('editGenPost').value = d.postOffice || 'আউলিয়াপুর ময়দান';
+    var setFieldValue = function(ids, val) {
+      ids.forEach(function(i) {
+        var el = document.getElementById(i);
+        if (el) el.value = val || '';
+      });
+    };
 
-    bootstrap.Modal.getOrCreateInstance(document.getElementById('generalEditModal')).show();
+    setFieldValue(['editGenAppId', 'edGenAppId'], d.appId || id);
+    setFieldValue(['editGenType', 'edGenType'], d.type || d.serviceType || 'প্রত্যয়নপত্র');
+    setFieldValue(['editGenName', 'edGenName'], d.name || d.applicantName || '');
+    setFieldValue(['editGenFather', 'edGenFather'], d.fatherName || d.father || d.fatherSpouseName || '');
+    setFieldValue(['editGenMother', 'edGenMother'], d.motherName || d.mother || '');
+    setFieldValue(['editGenNid', 'edGenNid'], d.nid || '');
+    setFieldValue(['editGenMobile', 'edGenMobile'], d.mobile || d.phone || '');
+    setFieldValue(['editGenWard', 'edGenWard'], d.wardNo || '০১');
+    setFieldValue(['editGenVillage', 'edGenVillage'], d.village || '');
+    setFieldValue(['editGenPost', 'edGenPost'], d.postOffice || 'আউলিয়াপুর ময়দান');
+
+    var modalEl = document.getElementById('generalEditModal') || document.getElementById('editGeneralModal');
+    if (modalEl) {
+      bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    }
   }
 
+  /* 🟢 এডিট ডাটা সেভ হ্যান্ডলার */
   async function saveEditedGeneralData() {
-    var btn = document.getElementById('saveEditGenBtn');
-    btn.disabled = true; btn.innerText = 'আপডেট হচ্ছে...';
+    var btn = document.getElementById('saveEditGenBtn') || document.getElementById('saveEditGenBtnAlt');
+    if (btn) { btn.disabled = true; btn.innerText = 'আপডেট হচ্ছে...'; }
+
+    var getFieldValue = function(ids) {
+      for (var i = 0; i < ids.length; i++) {
+        var el = document.getElementById(ids[i]);
+        if (el && el.value) return el.value.trim();
+      }
+      return '';
+    };
 
     var payload = {
-      appId: document.getElementById('editGenAppId').value,
-      type: document.getElementById('editGenType').value,
-      name: document.getElementById('editGenName').value.trim(),
-      fatherName: document.getElementById('editGenFather').value.trim(),
-      motherName: document.getElementById('editGenMother').value.trim(),
-      nid: document.getElementById('editGenNid').value.trim(),
-      mobile: document.getElementById('editGenMobile').value.trim(),
-      wardNo: document.getElementById('editGenWard').value,
-      village: document.getElementById('editGenVillage').value.trim(),
-      postOffice: document.getElementById('editGenPost').value.trim()
+      appId: getFieldValue(['editGenAppId', 'edGenAppId']),
+      type: getFieldValue(['editGenType', 'edGenType']),
+      name: getFieldValue(['editGenName', 'edGenName']),
+      fatherName: getFieldValue(['editGenFather', 'edGenFather']),
+      motherName: getFieldValue(['editGenMother', 'edGenMother']),
+      nid: getFieldValue(['editGenNid', 'edGenNid']),
+      mobile: getFieldValue(['editGenMobile', 'edGenMobile']),
+      wardNo: getFieldValue(['editGenWard', 'edGenWard']) || '০১',
+      village: getFieldValue(['editGenVillage', 'edGenVillage']),
+      postOffice: getFieldValue(['editGenPost', 'edGenPost']) || 'আউলিয়াপুর ময়দান'
     };
 
     var res = await callBackendAPI('saveEditedApplication', payload);
-    btn.disabled = false; btn.innerText = 'আপডেট করুন';
+    if (btn) { btn.disabled = false; btn.innerText = 'আপডেট করুন'; }
 
     if (res && res.success) {
-      bootstrap.Modal.getInstance(document.getElementById('generalEditModal')).hide();
+      var modalEl = document.getElementById('generalEditModal') || document.getElementById('editGeneralModal');
+      if (modalEl) bootstrap.Modal.getInstance(modalEl).hide();
       if (typeof loadAdminApps === 'function') loadAdminApps();
       Swal.fire({ icon: 'success', title: 'তথ্য আপডেট হয়েছে', timer: 1500, showConfirmButton: false });
     } else {

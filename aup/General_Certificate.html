@@ -1,317 +1,798 @@
+<!-- ======================================================= -->
+<!-- 11NO AULIAPUR UNION PARISHAD - GENERAL CERTIFICATES    -->
+<!-- File: General_Certificate.html (Exact 1-Page A4 Fixed) -->
+<!-- ======================================================= -->
+
+<!-- Google & Bangla Fonts -->
 <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+
 <style id="generalCertificateStyles">
-.general-shell{background:#f4f8f6;border:1px solid #d7e8de}.general-hero{background:linear-gradient(120deg,#063b2a,#087f55);color:#fff}.general-section{background:#fff;border:1px solid #e1ebe5;border-radius:6px}.general-section-title{color:#075d3d;border-bottom:2px solid #dceee4}.general-preview{background:#e9efeb;min-height:620px;overflow:auto}
+  .general-shell { background: #f4f8f6; border: 1px solid #d7e8de; }
+  .general-hero { background: linear-gradient(120deg, #063b2a, #087f55); color: #fff; }
+  .general-section { background: #fff; border: 1px solid #e1ebe5; border-radius: 6px; }
+  .general-section-title { color: #075d3d; border-bottom: 2px solid #dceee4; }
+  .general-preview { background: #e9efeb; min-height: 620px; overflow: auto; }
 
-/* 🟢 অফিশিয়াল A4 সনদ ফ্রেম */
-.official-certificate{
-  position:relative;
-  width:210mm;
-  height:295mm;
-  min-height:295mm;
-  max-height:295mm;
-  margin:auto;
-  padding:12mm 16mm 10mm 16mm;
-  background:#fff !important;
-  color:#18241e;
-  font-family:'Nikosh',sans-serif !important;
-  box-sizing:border-box;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  overflow:hidden;
-  border:3.5px double #126341 !important;
-  outline:1.5px solid #b89446 !important;
-  outline-offset:-7px;
-  box-shadow:0 8px 24px rgba(17,65,45,.18);
-  -webkit-print-color-adjust:exact !important;
-  print-color-adjust:exact !important;
-}
-.official-certificate:before{content:"";position:absolute;inset:4mm;border:1px solid rgba(184,148,70,.65);pointer-events:none;z-index:3}
+  /* 🟢 অফিশিয়াল A4 সনদ ফ্রেম (১ পেজে ১০০% ফিক্সড) */
+  .official-certificate {
+    position: relative;
+    width: 210mm;
+    height: 295mm;
+    min-height: 295mm;
+    max-height: 295mm;
+    margin: 0 auto;
+    padding: 10mm 15mm 8mm 15mm;
+    background: #ffffff !important;
+    color: #18241e;
+    font-family: 'Nikosh', 'Kalpurush', sans-serif !important;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    border: 3.5px double #126341 !important;
+    outline: 1.5px solid #b89446 !important;
+    outline-offset: -7px;
+    box-shadow: 0 8px 24px rgba(17,65,45,.18);
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 
-/* 🟢 ৫২০px ওয়াটারমার্ক */
-.official-certificate .cert-watermark{
-  position:absolute;
-  top:50%;
-  left:50%;
-  width:520px !important;
-  height:520px !important;
-  max-width:520px !important;
-  max-height:520px !important;
-  object-fit:contain;
-  transform:translate(-50%,-50%);
-  opacity:.09 !important;
-  z-index:0;
-  pointer-events:none;
-  display:block !important;
-  -webkit-print-color-adjust:exact !important;
-  print-color-adjust:exact !important;
-}
+  .official-certificate:before {
+    content: "";
+    position: absolute;
+    inset: 4mm;
+    border: 1px solid rgba(184,148,70,.65);
+    pointer-events: none;
+    z-index: 3;
+  }
 
-.cert-content{
-  position:relative;
-  z-index:1;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  height:100%;
-}
+  /* 🟢 ৫২০px ওয়াটারমার্ক লোগো */
+  .official-certificate .cert-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 520px !important;
+    height: 520px !important;
+    max-width: 520px !important;
+    max-height: 520px !important;
+    object-fit: contain;
+    opacity: 0.09 !important;
+    z-index: 0;
+    pointer-events: none;
+    display: block !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 
-.official-certificate header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 2mm 3mm;border-bottom:2px solid #126341}
-.official-certificate header img{width:22mm;height:22mm;object-fit:contain;display:block !important}
-.official-certificate .header-copy{flex:1;text-align:center}
-.official-certificate .header-copy .govt-title{font-size:13.5px;font-weight:bold;color:#222;margin-bottom:2px}
-.official-certificate h1{margin:0;color:#073d2a;font-size:27px;font-weight:800;letter-spacing:0.5px;font-family:'Nikosh',sans-serif !important}
-.official-certificate .header-copy .address-text{font-size:15px;font-weight:bold;color:#000;margin-top:2px}
-.official-certificate .seal-box{width:22mm;height:19mm;border:1.5px dashed #666;color:#555;font-size:12px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.2}
+  .cert-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
 
-.official-certificate .rule{height:4px;margin:2mm 0 3mm;border-top:1px solid #b89446;border-bottom:1.5px solid #126341}
-.official-certificate .meta{display:flex;justify-content:space-between;font-size:15px;font-weight:bold;color:#000;margin:0 2mm 5mm}
+  /* 🟢 শীর্ষ হেডার ডিজাইন */
+  .official-certificate header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #126341;
+  }
 
-/* 🟢 ৩ডি রিবন ব্যানার */
-.official-certificate h2{
-  position:relative;
-  width:fit-content;
-  margin:0 auto 7mm;
-  padding:5px 45px;
-  color:#fff !important;
-  background:linear-gradient(180deg,#007a3d 0%,#005a2d 60%,#004622 100%) !important;
-  font-size:23px;
-  font-weight:bold;
-  border-radius:2px;
-  border-top:1.5px solid #6ee7b7;
-  border-bottom:2px solid #002813;
-  box-shadow:0 4px 8px rgba(0,0,0,.25);
-  text-shadow:0 1.5px 3px rgba(0,0,0,.4);
-  letter-spacing:1px;
-  -webkit-print-color-adjust:exact !important;
-  print-color-adjust:exact !important;
-}
-.official-certificate h2:before,.official-certificate h2:after{content:"";position:absolute;top:5px;width:17mm;height:12mm;background:#00361a !important;z-index:-1;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
-.official-certificate h2:before{left:-11mm;clip-path:polygon(0 0,100% 0,72% 50%,100% 100%,0 100%,28% 50%)}
-.official-certificate h2:after{right:-11mm;clip-path:polygon(0 0,100% 0,72% 50%,100% 100%,0 100%,28% 50%);transform:scaleX(-1)}
+  .official-certificate header .logo-left img,
+  .official-certificate header .logo-right img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    display: block !important;
+  }
 
-/* 🟢 মূল বিবরণী: ২০px ফন্ট সাইজ ও ২.৩ লাইন-হাইট */
-.certificate-body{
-  font-size:20px !important;
-  line-height:2.3 !important;
-  text-align:justify;
-  text-indent:45px;
-  margin:8px 2mm 0;
-  font-family:'Nikosh',sans-serif !important;
-  color:#000000;
-  font-weight:500;
-}
-.certificate-body strong{color:#073d2a;font-weight:bold}
+  .official-certificate .header-copy {
+    flex: 1;
+    text-align: center;
+    padding: 0 8px;
+  }
 
-.official-certificate .closing{
-  margin:16px 2mm 0;
-  text-align:center;
-  font-size:20px !important;
-  font-weight:bold;
-  color:#000;
-  font-family:'Nikosh',sans-serif !important;
-}
+  .official-certificate .header-copy .govt-sub {
+    font-size: 13.5px;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 1px;
+  }
 
-/* 🟢 নিচে চেয়ারম্যানের একক স্বাক্ষর (একেবারে নিচে নামানো) */
-.certificate-signatures{
-  display:flex;
-  justify-content:flex-end;
-  align-items:flex-end;
-  margin:0 2mm 5mm;
-  margin-top:auto !important; /* নিচে নামিয়ে দেওয়া হয়েছে */
-  padding-top:15mm;
-  text-align:center;
-  font-family:'Nikosh',sans-serif !important;
-}
-.certificate-signatures .chairman{
-  width:42%;
-  margin-left:auto;
-  font-size:16.5px !important;
-  font-weight:bold;
-  color:#000;
-  line-height:1.35;
-}
-.certificate-signatures .chairman small{
-  font-size:13.5px !important;
-  color:#333;
-  font-weight:normal;
-}
-.signature-line{display:block;border-top:1.5px solid #000;width:85%;margin:0 auto 4px auto}
+  .official-certificate h1 {
+    margin: 0;
+    color: #073d2a;
+    font-size: 26.5px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    font-family: 'Nikosh', sans-serif !important;
+  }
 
-.official-certificate footer{
-  display:flex;
-  justify-content:space-between;
-  margin-top:auto;
-  padding:3mm 2mm 0;
-  border-top:1.5px solid #126341;
-  font-size:13px;
-  font-weight:bold;
-  color:#126341;
-  font-family:'Nikosh',sans-serif !important;
-}
-.official-certificate footer strong{color:#073d2a}
+  .official-certificate .header-copy .up-address {
+    font-size: 14.5px;
+    font-weight: bold;
+    color: #000;
+    margin-top: 1px;
+  }
 
-.official-certificate,.official-certificate *{font-family:'Nikosh',sans-serif !important}
-#generalPrintHost{display:none}
+  .official-certificate .seal-box {
+    width: 22mm;
+    height: 19mm;
+    border: 1.5px dashed #666;
+    color: #555;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.2;
+  }
 
-@media (max-width: 767.98px) {
-  .general-shell { border-radius: 10px !important; }
-  .general-hero { flex-direction: column !important; align-items: flex-start !important; gap: 10px; padding: 16px !important; }
-  .general-hero h3 { font-size: 1.4rem; }
-  .general-section { padding: 12px !important; }
-  .official-certificate { width: 100%; height: auto; min-height: 210mm; padding: 8mm 6mm; }
-}
-@media print{
-  @page{size:A4 portrait;margin:0}
-  * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  body.general-print-mode>*{visibility:hidden!important}
-  body.general-print-mode #generalPrintHost,body.general-print-mode #generalPrintHost *{visibility:visible!important}
-  body.general-print-mode #generalPrintHost{display:block!important;position:absolute!important;top:0!important;left:0!important;width:210mm!important;height:297mm!important;margin:0!important;padding:0!important;overflow:hidden!important;background:#fff!important}
-  body.general-print-mode #generalPrintHost .official-certificate{display:flex!important;width:210mm!important;height:295mm!important;min-height:295mm!important;margin:0 auto!important;box-shadow:none!important}
-}
+  /* 🟢 ১. মার্ক করা অংশ: স্মারক নং ও তারিখ বার (সাইজ বৃদ্ধি: 16px) */
+  .official-certificate .meta-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #b89446;
+    border-bottom: 1.5px solid #126341;
+    padding: 4px 6px;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    color: #000;
+    margin: 3px 0 8px 0;
+    font-family: 'Nikosh', sans-serif !important;
+  }
+
+  /* 🟢 ২. মার্ক করা অংশ: ৩ডি রিবন ব্যানার (সাইজ বৃদ্ধি: 24px) */
+  .ribbon-wrapper-main {
+    text-align: center;
+    margin: 4px auto 8px auto;
+    position: relative;
+  }
+  .ribbon-green-box {
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(180deg, #007a3d 0%, #005a2d 60%, #004622 100%) !important;
+    color: #ffffff !important;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    padding: 4px 48px;
+    z-index: 2;
+    border-radius: 2px;
+    border-top: 1.5px solid #6ee7b7;
+    border-bottom: 2px solid #002813;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+    text-shadow: 0 1.5px 3px rgba(0,0,0,0.4);
+    letter-spacing: 1px;
+    font-family: 'Nikosh', sans-serif !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .ribbon-wing-l {
+    position: absolute; top: 5px; left: -22px; border: 16px solid #00361a !important; border-right-width: 13px; border-left-color: transparent !important; z-index: 1; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+  }
+  .ribbon-wing-r {
+    position: absolute; top: 5px; right: -22px; border: 16px solid #00361a !important; border-left-width: 13px; border-right-color: transparent !important; z-index: 1; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+  }
+
+  /* 🟢 মূল বিবরণী: ১৮.৫px ফন্ট সাইজ ও ২.১ লাইন-হাইট (১ পেজে পারফেক্ট ফিট) */
+  .certificate-body {
+    font-size: 18.5px !important;
+    line-height: 2.1 !important;
+    text-align: justify;
+    text-indent: 45px;
+    margin: 8px 2px 0;
+    color: #000000;
+    font-weight: 500;
+    font-family: 'Nikosh', sans-serif !important;
+  }
+  .certificate-body strong { color: #073d2a; font-weight: bold; }
+
+  /* 🟢 ৩. মার্ক করা অংশ: শুভকামনা লাইন (সাইজ বৃদ্ধি: 19.5px Bold) */
+  .official-certificate .closing {
+    margin: 12px 2px 0;
+    text-align: center;
+    font-size: 19.5px !important;
+    font-weight: bold !important;
+    color: #000;
+    font-family: 'Nikosh', sans-serif !important;
+  }
+
+  /* 🟢 ৪. মার্ক করা অংশ: ডানে চেয়ারম্যানের একক স্বাক্ষর (নিচে নামানো ও সাইজ বৃদ্ধি) */
+  .certificate-signatures-single {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: auto !important;
+    padding-top: 10mm;
+    margin-bottom: 4mm;
+    font-family: 'Nikosh', sans-serif !important;
+  }
+  .signature-single-chairman {
+    width: 44%;
+    text-align: center;
+    margin-left: auto;
+  }
+  .signature-single-chairman .sign-name {
+    font-weight: bold !important;
+    font-size: 17.5px !important;
+    color: #000;
+    font-family: 'Nikosh', sans-serif !important;
+  }
+  .signature-single-chairman .sign-line {
+    border-top: 1.5px solid #000;
+    width: 85%;
+    margin: 2px auto 4px auto;
+  }
+  .signature-single-chairman .sign-role {
+    font-weight: bold !important;
+    font-size: 16px !important;
+    color: #000;
+    font-family: 'Nikosh', sans-serif !important;
+  }
+  .signature-single-chairman .sign-sub {
+    font-size: 14px !important;
+    color: #222;
+    font-family: 'Nikosh', sans-serif !important;
+    line-height: 1.35;
+  }
+
+  .official-certificate footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 3px;
+    border-top: 1.5px solid #126341;
+    font-size: 12.5px;
+    font-weight: bold;
+    color: #126341;
+    font-family: 'Nikosh', sans-serif !important;
+  }
+  .official-certificate footer strong { color: #073d2a; }
+
+  #generalPrintHost { display: none; }
+
+  @media (max-width: 767.98px) {
+    .general-shell { border-radius: 10px !important; }
+    .general-hero { flex-direction: column !important; align-items: flex-start !important; gap: 10px; padding: 16px !important; }
+    .general-section { padding: 12px !important; }
+    .official-certificate { width: 100%; height: auto; min-height: 210mm; padding: 8mm 6mm; }
+  }
+
+  @media print {
+    @page { size: A4 portrait; margin: 0mm !important; }
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; overflow: hidden !important; width: 210mm !important; height: 297mm !important; }
+    body.general-print-mode > * { visibility: hidden !important; }
+    body.general-print-mode #generalPrintHost, body.general-print-mode #generalPrintHost * { visibility: visible !important; }
+    body.general-print-mode #generalPrintHost { display: block !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 210mm !important; height: 297mm !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; background: #fff !important; }
+    body.general-print-mode #generalPrintHost .official-certificate { display: flex !important; width: 210mm !important; height: 295mm !important; min-height: 295mm !important; max-height: 295mm !important; margin: 0 auto !important; box-shadow: none !important; page-break-after: avoid !important; }
+  }
 </style>
 
-<div id="generalServiceView" class="view-section container my-4 d-none"><div class="general-shell shadow-sm rounded-3 overflow-hidden"><div class="general-hero p-4 d-flex justify-content-between align-items-center"><div><span class="small text-uppercase opacity-75">Digital Citizen Service</span><h3 id="genPageMainTitle" class="fw-bold mb-0 mt-1">সাধারণ প্রত্যয়ন আবেদন</h3></div><button class="btn btn-light fw-bold" onclick="navToSection('publicHome')"><i class="fa fa-arrow-left me-1"></i> হোম</button></div><div class="p-3 p-md-4"><div class="alert alert-success border-0 mb-4"><i class="fa fa-circle-info me-2"></i> সঠিক তথ্য দিয়ে আবেদন করুন। অনুমোদনের পর প্রশাসনিক প্যানেল থেকে প্রত্যয়নটি প্রিন্ট করা যাবে।</div><form id="generalAppPageForm" onsubmit="event.preventDefault();submitGeneralAppForm()"><input type="hidden" id="genTypeHidden"><div class="general-section p-3 p-md-4 mb-3"><h5 class="general-section-title fw-bold pb-2 mb-3"><i class="fa fa-file-signature me-2"></i>আবেদনের ধরন: <span id="genServiceLabel"></span></h5><div class="row g-3"><div class="col-md-6"><label class="form-label fw-bold">আবেদনকারীর পূর্ণ নাম *</label><input id="genName" class="form-control" required></div><div class="col-md-6"><label class="form-label fw-bold">পিতার নাম *</label><input id="genFather" class="form-control" required></div><div class="col-md-6"><label class="form-label fw-bold">জন্ম নিবন্ধন / ভোটার আইডি নম্বর *</label><input id="genNid" class="form-control" required></div><div class="col-md-6"><label class="form-label fw-bold">মোবাইল নম্বর</label><input id="genMobile" class="form-control" inputmode="tel"></div><div class="col-md-4"><label class="form-label fw-bold">ওয়ার্ড নম্বর *</label><select id="genWard" class="form-select" required><option>০১</option><option>০২</option><option>০৩</option><option>০৪</option><option>০৫</option><option>০৬</option><option>০৭</option><option>০৮</option><option>০৯</option></select></div><div class="col-md-4"><label class="form-label fw-bold">গ্রাম *</label><input id="genVillage" class="form-control" required></div><div class="col-md-4"><label class="form-label fw-bold">ডাকঘর *</label><input id="genPost" class="form-control" value="আউলিয়াপুর ময়দান" required></div><div class="col-md-4"><label class="form-label fw-bold">ইউনিয়ন</label><input class="form-control" value="১১নং আউলিয়াপুর ইউনিয়ন" readonly></div><div class="col-md-4"><label class="form-label fw-bold">উপজেলা</label><input class="form-control" value="পটুয়াখালী সদর" readonly></div><div class="col-md-4"><label class="form-label fw-bold">জেলা</label><input class="form-control" value="পটুয়াখালী" readonly></div></div></div><div class="general-section p-3 mb-3"><label class="form-check fw-bold"><input id="genDeclaration" class="form-check-input me-2" type="checkbox" required checked> আমি ঘোষণা করছি যে, উপরের তথ্য সত্য ও সঠিক।</label></div><div class="text-end"><button type="button" class="btn btn-outline-secondary me-2" onclick="navToSection('publicHome')">বাতিল</button><button id="genSubmitBtn" class="btn btn-success px-4 fw-bold"><i class="fa fa-paper-plane me-1"></i> আবেদন জমা দিন</button></div></form></div></div></div>
-<div class="modal fade" id="genOfficialCertModal" tabindex="-1"><div class="modal-dialog modal-xl modal-dialog-centered"><div class="modal-content"><div class="modal-header bg-dark text-white"><h5 class="modal-title">প্রত্যয়নপত্র প্রিভিউ</h5><button class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div><div id="genOfficialCertPrintArea" class="modal-body general-preview p-3"></div><div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal">বন্ধ</button><button class="btn btn-danger fw-bold" onclick="printGeneralElement('genOfficialCertPrintArea')"><i class="fa fa-print me-1"></i> A4 প্রিন্ট</button></div></div></div></div>
-<div class="modal fade" id="generalEditModal" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content"><div class="modal-header bg-warning"><h5 class="modal-title fw-bold">সাধারণ প্রত্যয়ন তথ্য সংশোধন</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><form onsubmit="event.preventDefault();saveEditedGeneralData()"><input type="hidden" id="editGenAppId"><div class="row g-3"><div class="col-md-6"><label class="form-label fw-bold">সেবার ধরন</label><input id="editGenType" class="form-control" readonly></div><div class="col-md-6"><label class="form-label fw-bold">নাম *</label><input id="editGenName" class="form-control" required></div><div class="col-md-6"><label class="form-label fw-bold">পিতার নাম *</label><input id="editGenFather" class="form-control" required></div><div class="col-md-6"><label class="form-label fw-bold">জন্ম নিবন্ধন / ভোটার আইডি *</label><input id="editGenNid" class="form-control" required></div><div class="col-md-4"><label class="form-label fw-bold">মোবাইল</label><input id="editGenMobile" class="form-control"></div><div class="col-md-4"><label class="form-label fw-bold">ওয়ার্ড</label><select id="editGenWard" class="form-select"><option>০১</option><option>০২</option><option>০৩</option><option>০৪</option><option>০৫</option><option>০৬</option><option>০৭</option><option>০৮</option><option>০৯</option></select></div><div class="col-md-4"><label class="form-label fw-bold">গ্রাম</label><input id="editGenVillage" class="form-control" required></div><div class="col-md-12"><label class="form-label fw-bold">ডাকঘর</label><input id="editGenPost" class="form-control" required></div></div><div class="text-end mt-4"><button class="btn btn-warning fw-bold" id="saveEditGenBtn">আপডেট করুন</button></div></form></div></div></div></div>
+<!-- ১. সাধারণ প্রত্যয়নপত্রের অনলাইন আবেদন ফরম -->
+<div id="generalServiceView" class="view-section container my-4 d-none">
+  <div class="general-shell shadow-sm rounded-3 overflow-hidden">
+    <div class="general-hero p-4 d-flex justify-content-between align-items-center">
+      <div>
+        <span class="small text-uppercase opacity-75">Digital Citizen Service</span>
+        <h3 id="genPageMainTitle" class="fw-bold mb-0 mt-1">সাধারণ প্রত্যয়ন আবেদন</h3>
+      </div>
+      <button class="btn btn-light fw-bold" onclick="navToSection('publicHome')"><i class="fa fa-arrow-left me-1"></i> হোম</button>
+    </div>
+    
+    <div class="p-3 p-md-4">
+      <div class="alert alert-success border-0 mb-4">
+        <i class="fa fa-circle-info me-2"></i> সঠিক তথ্য দিয়ে আবেদন সম্পন্ন করুন। চেয়ারম্যান মহোদয়ের অনুমোদনের পর অনলাইন থেকেই সনদ প্রিন্ট করা যাবে।
+      </div>
+      
+      <form id="generalAppPageForm" onsubmit="event.preventDefault(); submitGeneralAppForm();">
+        <input type="hidden" id="genTypeHidden">
+        
+        <div class="general-section p-3 p-md-4 mb-3">
+          <h5 class="general-section-title fw-bold pb-2 mb-3">
+            <i class="fa fa-file-signature me-2"></i>আবেদনের ধরন: <span id="genServiceLabel" class="text-success"></span>
+          </h5>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label fw-bold">আবেদনকারীর পূর্ণ নাম *</label><input id="genName" class="form-control" placeholder="জাতীয় পরিচয়পত্র অনুযায়ী" required></div>
+            <div class="col-md-6"><label class="form-label fw-bold">পিতার নাম *</label><input id="genFather" class="form-control" placeholder="পিতার নাম" required></div>
+            <div class="col-md-6"><label class="form-label fw-bold">মাতার নাম *</label><input id="genMother" class="form-control" placeholder="মাতার নাম" required></div>
+            <div class="col-md-6"><label class="form-label fw-bold">জন্ম নিবন্ধন / ভোটার আইডি নম্বর *</label><input id="genNid" class="form-control" placeholder="১০, ১৩ বা ১৭ ডিজিট" required></div>
+            <div class="col-md-4"><label class="form-label fw-bold">মোবাইল নম্বর *</label><input id="genMobile" class="form-control" placeholder="০১XXXXXXXXX" required></div>
+            <div class="col-md-4">
+              <label class="form-label fw-bold">ওয়ার্ড নম্বর *</label>
+              <select id="genWard" class="form-select" required>
+                <option value="০১">০১</option><option value="০২">০২</option><option value="০৩">০৩</option>
+                <option value="০৪">০৪</option><option value="০৫">০৫</option><option value="০৬">০৬</option>
+                <option value="০৭">০৭</option><option value="০৮">০৮</option><option value="০৯">০৯</option>
+              </select>
+            </div>
+            <div class="col-md-4"><label class="form-label fw-bold">গ্রাম / মহল্লা *</label><input id="genVillage" class="form-control" placeholder="গ্রামের নাম" required></div>
+            <div class="col-md-4"><label class="form-label fw-bold">ডাকঘর *</label><input id="genPost" class="form-control" value="আউলিয়াপুর ময়দান" required></div>
+            <div class="col-md-4"><label class="form-label fw-bold">ইউনিয়ন</label><input class="form-control" value="১১নং আউলিয়াপুর ইউনিয়ন" readonly></div>
+            <div class="col-md-4"><label class="form-label fw-bold">উপজেলা ও জেলা</label><input class="form-control" value="পটুয়াখালী সদর, পটুয়াখালী" readonly></div>
+          </div>
+        </div>
 
+        <div class="general-section p-3 mb-3">
+          <label class="form-check fw-bold mb-0">
+            <input id="genDeclaration" class="form-check-input me-2" type="checkbox" required checked> 
+            আমি অঙ্গীকার করছি যে, উপরে বর্ণিত সকল তথ্য সম্পূর্ণ সত্য ও সঠিক।
+          </label>
+        </div>
+
+        <div class="text-end">
+          <button type="button" class="btn btn-outline-secondary me-2" onclick="navToSection('publicHome')">বাতিল</button>
+          <button id="genSubmitBtn" class="btn btn-success px-4 fw-bold"><i class="fa fa-paper-plane me-1"></i> আবেদন জমা দিন</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ২. সাধারণ প্রত্যয়ন তথ্য সংশোধন এডিট মোডাল -->
+<div class="modal fade" id="generalEditModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title fw-bold"><i class="fa fa-edit me-2"></i> সাধারণ প্রত্যয়ন তথ্য সংশোধন</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="closeGeneralEditModal()"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form id="generalEditForm" onsubmit="event.preventDefault(); saveEditedGeneralData();">
+          <input type="hidden" id="editGenAppId">
+          <input type="hidden" id="edGenAppId">
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label fw-bold">সেবার ধরন</label><input id="editGenType" class="form-control" readonly></div>
+            <div class="col-md-6"><label class="form-label fw-bold">আবেদনকারীর নাম *</label><input id="editGenName" class="form-control" required></div>
+            <div class="col-md-6"><label class="form-label fw-bold">পিতার নাম *</label><input id="editGenFather" class="form-control" required></div>
+            <div class="col-md-6"><label class="form-label fw-bold">মাতার নাম *</label><input id="editGenMother" class="form-control" required></div>
+            <div class="col-md-6"><label class="form-label fw-bold">জাতীয় পরিচয়পত্র / জন্ম নিবন্ধন *</label><input id="editGenNid" class="form-control" required></div>
+            <div class="col-md-6"><label class="form-label fw-bold">মোবাইল নম্বর *</label><input id="editGenMobile" class="form-control" required></div>
+            <div class="col-md-4">
+              <label class="form-label fw-bold">ওয়ার্ড নম্বর *</label>
+              <select id="editGenWard" class="form-select" required>
+                <option value="০১">০১</option><option value="০২">০২</option><option value="০৩">০৩</option>
+                <option value="০৪">০৪</option><option value="০৫">০৫</option><option value="০৬">০৬</option>
+                <option value="০৭">০৭</option><option value="০৮">০৮</option><option value="০৯">০৯</option>
+              </select>
+            </div>
+            <div class="col-md-4"><label class="form-label fw-bold">গ্রাম *</label><input id="editGenVillage" class="form-control" required></div>
+            <div class="col-md-4"><label class="form-label fw-bold">ডাকঘর *</label><input id="editGenPost" class="form-control" required></div>
+          </div>
+          <div class="text-end mt-4">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal" onclick="closeGeneralEditModal()">বাতিল</button>
+            <button type="submit" class="btn btn-warning fw-bold px-4" id="saveEditGenBtn">আপডেট করুন</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ৩. জাভাস্ক্রিপ্ট মাস্টার ইঞ্জিন -->
 <script>
-var GENERAL_UNION='১১নং আউলিয়াপুর ইউনিয়ন',GENERAL_UPAZILA='পটুয়াখালী সদর',GENERAL_DISTRICT='পটুয়াখালী';
+  const STATIC_GOVT_LOGO = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
+  const STATIC_UP_LOGO = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
+  const BACKUP_UP_LOGO = "https://drive.google.com/thumbnail?id=1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs&sz=w1000";
 
-/* 🟢 ১৮ নম্বর ছবির ২১টি সনদের বর্ধিত, প্রফেশনাল ও বিস্তারিত বিবরণী */
-var GENERAL_TEMPLATES={
-  'চারিত্রিক সনদ':'তিনি জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক ও অত্র ইউনিয়নের একজন সৎ, চরিত্রবান, শান্তিপ্রিয় ও সমাজহিতৈষী ব্যক্তি। আমার জানামতে তিনি কোনো প্রকার রাষ্ট্রবিরোধী, আইনবিরোধী বা সমাজবিধ্বংসী অনৈতিক কর্মকাণ্ডের সহিত জড়িত নন এবং তাঁর বিরুদ্ধে কোনো প্রকার নৈতিক স্খলনজনিত অভিযোগ নেই। সমাজে তাঁহার নৈতিক চরিত্র অত্যন্ত প্রশংসনীয় ও অনুকরণীয়।',
-  'ভূমিহীন সনদ':'আমার জানামতে তাঁহার কিংবা তাঁহার পরিবারভুক্ত কোনো সদস্যের নিজস্ব কোনো স্থাবর সম্পত্তি, বসতভিটা বা চাষযোগ্য কৃষি জমি নাই। তিনি প্রকৃত অর্থেই একজন নিঃস্ব ও ভূমিহীন নাগরিক এবং পরিবারের সদস্যদের লইয়া অতি কষ্টে জীবনযাপন করিতেছেন। তিনি সরকারি যেকোনো খাসজমি বন্দোবস্ত ও সরকারি ভূমিহীন পুনর্বাসন সহায়তা পাওয়ার সম্পূর্ণ উপযুক্ত।',
-  'অবিবাহিত সনদ':'আমার জানামতে অদ্যাবধি তিনি কোনো প্রকার বিবাহ বন্ধনে আবদ্ধ হন নাই। তিনি বর্তমানে সম্পূর্ণ অবিবাহিত অবস্থায় আছেন এবং সামাজিক, ধর্মীয় ও আইনগতভাবে তিনি একজন অবিবাহিত নাগরিক হিসেবে গণ্য।',
-  'বিবাহিত সনদ':'তিনি সামাজিক ও ধর্মীয় বিধান মোতাবেক বিবাহ বন্ধনে আবদ্ধ হইয়া স্বামী/স্ত্রী সহকারে সুখে-শান্তিতে ও সৌহার্দ্যপূর্ণ পরিবেশে দাম্পত্য জীবন অতিবাহিত করিতেছেন। তিনি অত্র ইউনিয়নের একজন দায়িত্বশীল বিবাহিত নাগরিক।',
-  'পুনঃ বিবাহ না হওয়া সনদ':'তাঁহার পূর্বের স্বামী/স্ত্রীর মৃত্যুর পর অদ্যাবধি তিনি দ্বিতীয় কোনো বিবাহ বন্ধনে আবদ্ধ হন নাই। তিনি বর্তমানে সম্পূর্ণ নিঃসঙ্গ ও বিধবা/বিপত্মীক জীবন যাপন করিতেছেন এবং অদ্যাবধি দ্বিতীয় কোনো বিবাহ করেন নাই মর্মে প্রত্যয়ন করা হইল।',
-  'বার্ষিক আয়ের প্রত্যয়ন':'আমার জানামতে তাঁহার পরিবারে কৃষি, ব্যবসা, মজুরি ও অন্যান্য যাবতীয় বৈধ উৎস হইতে বার্ষিক মোট আনুমানিক আয় প্রায় ১,২০,০০০/- (এক লক্ষ বিশ হাজার) টাকা মাত্র। উক্ত সীমিত আয়ের ওপরই তাঁহার সমগ্র পরিবারের যাবতীয় ব্যয়ভার ও ভরণপোষণ নির্ভরশীল।',
-  'মাসিক আয়ের সনদ':'আমার জানামতে তাঁহার যাবতীয় নিজস্ব ও পারিবারিক বৈধ উৎস হইতে অর্জিত মাসিক মোট গড় আয় প্রায় ১০,০০০/- (দশ হাজার) টাকা মাত্র। এই সীমিত আয়ের ওপর ভিত্তি করিয়াই তাঁহার পরিবারের প্রাত্যহিক ব্যয়ভার ও জীবিকা নির্বাহ হয়।',
-  'আর্থিক অসচ্ছলতার সনদ':'তাঁহার পরিবারের সার্বিক আর্থিক অবস্থা অত্যন্ত নাজুক, অসচ্ছল ও দারিদ্র্যসীমার নিচে। পরিবার পরিচালনায় তিনি চরম আর্থিক দৈন্যদশায় আছেন। তিনি যেকোনো সরকারি, আধা-সরকারি ও বেসরকারি আর্থিক সহায়তা, অনুদান এবং বিশেষ সাহায্য পাওয়ার সম্পূর্ণ উপযুক্ত ও হকদার।',
-  'আর্থিক অসচ্ছলতার সনদপত্র':'তাঁহার পরিবারের সার্বিক আর্থিক অবস্থা অত্যন্ত নাজুক, অসচ্ছল ও দারিদ্র্যসীমার নিচে। পরিবার পরিচালনায় তিনি চরম আর্থিক দৈন্যদশায় আছেন। তিনি যেকোনো সরকারি, আধা-সরকারি ও বেসরকারি আর্থিক সহায়তা, অনুদান এবং বিশেষ সাহায্য পাওয়ার সম্পূর্ণ উপযুক্ত ও হকদার।',
-  'প্রতিবন্ধী সনদপত্র':'তিনি শারীরিক/মানসিক প্রতিবন্ধকতায় ভুগিতেছেন এবং স্বাভাবিক কাজকর্ম ও জীবিকা পরিচালনায় অক্ষম। তিনি সমাজসেবা অধিদপ্তর এবং সরকারের সামাজিক নিরাপত্তা কর্মসূচির আওতায় প্রতিবন্ধী ভাতা ও অন্যান্য সুযোগ-সুবিধা পাওয়ার পূর্ণ যোগ্য।',
-  'অনাপত্তি সনদপত্র':'তাঁহার নতুন পাসপোর্ট গ্রহণ, সরকারি/বেসরকারি চাকুরিতে যোগদান, উচ্চশিক্ষা অর্জন কিংবা বিদেশ গমনাগমনের ক্ষেত্রে অত্র ইউনিয়ন পরিষদ কার্যালয়ের পক্ষ হইতে কোনো প্রকার আপত্তি বা বাধা নাই।',
-  'নতুন ভোটারের প্রত্যয়ন':'তাঁহার বয়স ১৮ (আঠারো) বছর পূর্ণ হইয়াছে এবং তিনি অত্র এলাকার একজন স্থায়ী অধিবাসী। তিনি বাংলাদেশ নির্বাচন কমিশনের ভোটার তালিকায় নতুন ভোটার হিসেবে নাম অন্তর্ভুক্তির জন্য সর্বতোভাবে উপযুক্ত।',
-  'নতুন ভোটারের প্রত্যয়ন পত্র':'তাঁহার বয়স ১৮ (আঠারো) বছর পূর্ণ হইয়াছে এবং তিনি অত্র এলাকার একজন স্থায়ী অধিবাসী। তিনি বাংলাদেশ নির্বাচন কমিশনের ভোটার তালিকায় নতুন ভোটার হিসেবে নাম অন্তর্ভুক্তির জন্য সর্বতোভাবে উপযুক্ত।',
-  'ভোটার স্থানান্তরের প্রত্যয়ন':'তিনি স্থায়ীভাবে অত্র ইউনিয়নে বসবাস করিতে থাকায় তাঁহার পূর্বের নির্বাচনী এলাকা হইতে অত্র ইউনিয়ন পরিষদ এলাকার ভোটার তালিকায় নাম স্থানান্তর করার বিষয়ে অত্র কার্যালয়ের কোনো প্রকার আপত্তি বা বাধা নাই।',
-  'ভোটার স্থানান্তরের প্রত্যয়ন পত্র':'তিনি স্থায়ীভাবে অত্র ইউনিয়নে বসবাস করিতে থাকায় তাঁহার পূর্বের নির্বাচনী এলাকা হইতে অত্র ইউনিয়ন পরিষদ এলাকার ভোটার তালিকায় নাম স্থানান্তর করার বিষয়ে অত্র কার্যালয়ের কোনো প্রকার আপত্তি বা বাধা নাই।',
-  'বেকারত্বের সনদপত্র':'তিনি শিক্ষাজীবন সমাপ্ত করিয়া বর্তমানে কোনো প্রকার সরকারি, আধাসরকারি বা বেসরকারি চাকুরিতে নিয়োজিত নাই। তিনি একজন প্রকৃত বেকার যুবক/যুবতী এবং কর্মসংস্থানের জন্য সচেষ্ট আছেন।',
-  'অস্থায়ী বসবাসের প্রত্যয়ন':'তিনি জীবিকা নির্বাহ, চাকুরি বা ব্যবসা পরিচালনার উদ্দেশ্যে অত্র ইউনিয়ন পরিষদ এলাকার উক্ত ঠিকানায় অস্থায়ীভাবে বসবাস করিতেছেন। আমার জানামতে তিনি কোনো প্রকার অসামাজিক বা রাষ্ট্রবিরোধী কার্যকলাপে জড়িত নন।',
-  'অস্থায়ীভাবে বসবাসের প্রত্যয়ন পত্র':'তিনি জীবিকা নির্বাহ, চাকুরি বা ব্যবসা পরিচালনার উদ্দেশ্যে অত্র ইউনিয়ন পরিষদ এলাকার উক্ত ঠিকানায় অস্থায়ীভাবে বসবাস করিতেছেন। আমার জানামতে তিনি কোনো প্রকার অসামাজিক বা রাষ্ট্রবিরোধী কার্যকলাপে জড়িত নন।',
-  'জাতীয়তা সনদ':'তিনি জন্মসূত্রে ও বংশানুক্রমিকভাবে বাংলাদেশের একজন গর্বিত ও স্থায়ী নাগরিক। তিনি অদ্যাবধি কোনো বিদেশি রাষ্ট্রের নাগরিকত্ব গ্রহণ করেন নাই এবং তিনি বাংলাদেশ রাষ্ট্রের প্রতি সম্পূর্ণ অনুগত।',
-  'স্থায়ী বাসিন্দা সনদ':'তিনি এবং তাঁহার পূর্বপুরুষগণ বংশানুক্রমিকভাবে অত্র ইউনিয়ন পরিষদের উক্ত ওয়ার্ডের স্থায়ী অধিবাসী এবং তিনি এলাকার যাবতীয় নাগরিক অধিকার ও সাংবিধানিক সুযোগ-সুবিধা ভোগ করিয়া আসিতেছেন।',
-  'এতিম সনদ':'শৈশবাবস্থাতেই তাঁহার জন্মদাতা পিতা মৃত্যুবরণ করিয়াছেন এবং বর্তমানে তিনি একজন অসহায় ও পিতৃহীন এতিম সন্তান। তিনি সরকার ও বিভিন্ন দাতব্য সংস্থার এতিম ভাতা ও সাহায্য পাওয়ার সম্পূর্ণ যোগ্য।',
-  'একই নামের প্রত্যয়ন':'বিভিন্ন জাতীয় পরিচয়পত্র, জন্ম নিবন্ধন, শিক্ষা সনদ ও জমির দলিলে তাঁহার নামের বানানে আংশিক অমিল বা ভিন্নতা পরিলক্ষিত হইলেও প্রকৃতপক্ষে সকল নথিতে উল্লিখিত নামধারী ব্যক্তি একই ও অভিন্ন ব্যক্তি।',
-  'দ্বিতীয় বিবাহের অনুমতি':'পারিবারিক বিশেষ পরিস্থিতি ও ধর্মীয় ও মুসলিম পারিবারিক আইন অধ্যাদেশ মোতাবেক যাবতীয় শর্ত পূরণ সাপেক্ষে তাঁহার দ্বিতীয় বিবাহে অত্র ইউনিয়ন পরিষদ কার্যালয়ের পক্ষ হইতে কোনো প্রকার আপত্তি নাই।',
-  'দ্বিতীয় বিবাহের অনুমতি পত্র':'পারিবারিক বিশেষ পরিস্থিতি ও ধর্মীয় ও মুসলিম পারিবারিক আইন অধ্যাদেশ মোতাবেক যাবতীয় শর্ত পূরণ সাপেক্ষে তাঁহার দ্বিতীয় বিবাহে অত্র ইউনিয়ন পরিষদ কার্যালয়ের পক্ষ হইতে কোনো প্রকার আপত্তি নাই।',
-  'পারিবারিক সনদ':'আমার জানামতে তিনি অত্র ইউনিয়ন পরিষদের একজন স্থায়ী বাসিন্দা এবং তাঁহার পরিবারের সকল সদস্যগণের মধ্যে সুসম্পর্ক বিদ্যমান রহিয়াছে।',
-  'বিবিধ প্রত্যয়নপত্র':'তিনি অত্র এলাকার একজন সুপরিচিত, সৎ, শান্তিপ্রিয় ও আইনানুগ নাগরিক। আমার জানামতে তিনি কোনো প্রকার সমাজবিরোধী, রাষ্ট্রদ্রোহী বা অনৈতিক কর্মকাণ্ডে জড়িত নন।'
-};
+  var GENERAL_UNION = '১১নং আউলিয়াপুর ইউনিয়ন', GENERAL_UPAZILA = 'পটুয়াখালী সদর', GENERAL_DISTRICT = 'পটুয়াখালী';
 
-function escapeGeneral(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function generalBnDigits(v){return String(v==null?'':v).replace(/\d/g,function(d){return '০১২৩৪৫৬৭৮৯'[d]})}
-function generalApplicationNumber(appId){var value=String(appId==null?'':appId).replace(/^AUL[-/\s]*/i,'');var parts=value.split(/[-/\s]+/).filter(function(part){return part!==''});return generalBnDigits(parts.length?parts[parts.length-1]:value)}
-function generalCurrentYear(){return generalBnDigits(new Date().getFullYear())}
-function generalPrintDate(){return new Date().toLocaleDateString('bn-BD',{day:'2-digit',month:'2-digit',year:'numeric'})}
-function openGeneralServicePage(type){navToSection('generalServiceView');document.getElementById('generalAppPageForm').reset();document.getElementById('genTypeHidden').value=type;document.getElementById('genServiceLabel').innerText=type;document.getElementById('genPageMainTitle').innerText=type+' আবেদন';document.getElementById('genPost').value='আউলিয়াপুর ময়দান'}
-function submitGeneralAppForm(){var b=document.getElementById('genSubmitBtn');b.disabled=true;var d={type:document.getElementById('genTypeHidden').value,name:document.getElementById('genName').value.trim(),fatherName:document.getElementById('genFather').value.trim(),nid:document.getElementById('genNid').value.trim(),mobile:document.getElementById('genMobile').value.trim(),wardNo:document.getElementById('genWard').value,village:document.getElementById('genVillage').value.trim(),postOffice:document.getElementById('genPost').value.trim()};callBackendAPI('submitApplication',d).then(function(r){b.disabled=false;if(r&&r.success){document.getElementById('successAppId').innerText=r.appId;document.getElementById('successAppCopyBtn').onclick=function(){printGeneralAppCopy(r.appId)};bootstrap.Modal.getOrCreateInstance(document.getElementById('successModal')).show();document.getElementById('generalAppPageForm').reset()}else alert((r&&(r.error||r.message))||'আবেদন জমা দেওয়া যায়নি।')})}
+  /* 🟢 ১৮ নম্বর ছবির ২১টি সনদের বর্ধিত, প্রফেশনাল ও বিস্তারিত বিবরণী */
+  var GENERAL_TEMPLATES = {
+    'চারিত্রিক সনদ': 'তিনি জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক ও অত্র ইউনিয়নের একজন সৎ, চরিত্রবান, শান্তিপ্রিয় ও সমাজহিতৈষী ব্যক্তি। আমার জানামতে তিনি কোনো প্রকার রাষ্ট্রবিরোধী, সমাজবিরোধী বা আইনবিরোধী অনৈতিক কর্মকাণ্ডের সহিত জড়িত নন এবং সমাজে তাঁহার নৈতিক চরিত্র অত্যন্ত প্রশংসনীয় ও অনুকরণীয়।',
+    'ভূমিহীন সনদ': 'আমার জানামতে তাঁহার কিংবা তাঁহার পরিবারভুক্ত কোনো সদস্যের নিজস্ব কোনো স্থাবর সম্পত্তি, বসতভিটা বা চাষযোগ্য কৃষি জমি নাই। তিনি প্রকৃত অর্থেই একজন নিঃস্ব ও ভূমিহীন নাগরিক এবং পরিবারের সদস্যদের লইয়া অতি কষ্টে জীবনযাপন করিতেছেন। তিনি সরকারি যেকোনো খাসজমি বন্দোবস্ত ও সরকারি অনুদান পাওয়ার সম্পূর্ণ উপযুক্ত।',
+    'অবিবাহিত সনদ': 'আমার জানামতে অদ্যাবধি তিনি কোনো প্রকার বিবাহ বন্ধনে আবদ্ধ হন নাই। তিনি বর্তমানে সম্পূর্ণ অবিবাহিত অবস্থায় আছেন এবং সামাজিক ও আইনগতভাবে তিনি অবিবাহিত হিসেবে গণ্য।',
+    'বিবাহিত সনদ': 'তিনি সামাজিকভাবে ও ধর্মীয় বিধান মোতাবেক বিবাহ বন্ধনে আবদ্ধ হইয়া স্বামী/স্ত্রী সহকারে সুখে-শান্তিতে দাম্পত্য জীবন অতিবাহিত করিতেছেন। তিনি অত্র ইউনিয়নের একজন দায়িত্বশীল বিবাহিত নাগরিক।',
+    'পুনঃ বিবাহ না হওয়া সনদ': 'তাঁহার পূর্বের স্বামী/স্ত্রীর মৃত্যুর পর অদ্যাবধি তিনি দ্বিতীয় কোনো বিবাহ বন্ধনে আবদ্ধ হন নাই। তিনি বর্তমানে সম্পূর্ণ নিঃসঙ্গ ও বিধবা/বিপত্মীক জীবন যাপন করিতেছেন এবং অদ্যাবধি দ্বিতীয় কোনো বিবাহ করেন নাই মর্মে প্রত্যয়ন করা হইল।',
+    'বার্ষিক আয়ের প্রত্যয়ন': 'আমার জানামতে তাঁহার পরিবারে কৃষি, ব্যবসা, মজুরি ও অন্যান্য যাবতীয় বৈধ উৎস হইতে বার্ষিক মোট আনুমানিক আয় প্রায় ১,২০,০০০/- (এক লক্ষ বিশ হাজার) টাকা মাত্র। উক্ত আয়ের ওপর তাঁহার সমগ্র পরিবারের যাবতীয় ব্যয়ভার ও ভরণপোষণ নির্ভরশীল।',
+    'মাসিক আয়ের সনদ': 'আমার জানামতে তাঁহার যাবতীয় নিজস্ব ও পারিবারিক বৈধ উৎস হইতে অর্জিত মাসিক মোট গড় আয় প্রায় ১০,০০০/- (দশ হাজার) টাকা মাত্র। এই সীমিত আয়ের ওপর ভিত্তি করিয়াই তাঁহার পরিবারের সার্বিক জীবিকা নির্বাহ হয়।',
+    'আর্থিক অসচ্ছলতার সনদ': 'তাঁহার পরিবারের সার্বিক আর্থিক অবস্থা অত্যন্ত নাজুক, অসচ্ছল ও দারিদ্র্যসীমার নিচে। পরিবার পরিচালনায় তিনি চরম আর্থিক দৈন্যদশায় আছেন। তিনি যেকোনো সরকারি, আধা-সরকারি ও বেসরকারি আর্থিক সহায়তা, অনুদান এবং বিশেষ সাহায্য পাওয়ার সম্পূর্ণ উপযুক্ত ও হকদার।',
+    'আর্থিক অসচ্ছলতার সনদপত্র': 'তাঁহার পরিবারের সার্বিক আর্থিক অবস্থা অত্যন্ত নাজুক, অসচ্ছল ও দারিদ্র্যসীমার নিচে। পরিবার পরিচালনায় তিনি চরম আর্থিক দৈন্যদশায় আছেন। তিনি যেকোনো সরকারি, আধা-সরকারি ও বেসরকারি আর্থিক সহায়তা, অনুদান এবং বিশেষ সাহায্য পাওয়ার সম্পূর্ণ উপযুক্ত ও হকদার।',
+    'প্রতিবন্ধী সনদপত্র': 'তিনি শারীরিক/মানসিক প্রতিবন্ধকতায় ভুগিতেছেন এবং স্বাভাবিক কাজকর্ম ও জীবিকা পরিচালনায় অক্ষম। তিনি সমাজসেবা অধিদপ্তর এবং সরকারের সামাজিক নিরাপত্তা কর্মসূচির আওতায় প্রতিবন্ধী ভাতা ও সুযোগ-সুবিধা পাওয়ার পূর্ণ যোগ্য।',
+    'অনাপত্তি সনদপত্র': 'তাঁহার নতুন পাসপোর্ট গ্রহণ, সরকারি/বেসরকারি চাকুরিতে যোগদান, উচ্চশিক্ষা অর্জন কিংবা বিদেশ গমনাগমনের ক্ষেত্রে অত্র ইউনিয়ন পরিষদ কার্যালয়ের পক্ষ হইতে কোনো প্রকার আপত্তি নাই।',
+    'নতুন ভোটারের প্রত্যয়ন': 'তাঁহার বয়স ১৮ (আঠারো) বছর পূর্ণ হইয়াছে এবং তিনি অত্র এলাকার একজন স্থায়ী অধিবাসী। তিনি বাংলাদেশ নির্বাচন কমিশনের ভোটার তালিকায় নতুন ভোটার হিসেবে নাম অন্তর্ভুক্তির জন্য সর্বতোভাবে উপযুক্ত।',
+    'নতুন ভোটারের প্রত্যয়ন পত্র': 'তাঁহার বয়স ১৮ (আঠারো) বছর পূর্ণ হইয়াছে এবং তিনি অত্র এলাকার একজন স্থায়ী অধিবাসী। তিনি বাংলাদেশ নির্বাচন কমিশনের ভোটার তালিকায় নতুন ভোটার হিসেবে নাম অন্তর্ভুক্তির জন্য সর্বতোভাবে উপযুক্ত।',
+    'ভোটার স্থানান্তরের প্রত্যয়ন': 'তিনি স্থায়ীভাবে অত্র ইউনিয়নে বসবাস করিতে থাকায় তাঁহার পূর্বের নির্বাচনী এলাকা হইতে অত্র ইউনিয়ন পরিষদ এলাকার ভোটার তালিকায় নাম স্থানান্তর করার ক্ষেত্রে অত্র কার্যালয়ের কোনো প্রকার আপত্তি বা বাধা নাই।',
+    'ভোটার স্থানান্তরের প্রত্যয়ন পত্র': 'তিনি স্থায়ীভাবে অত্র ইউনিয়নে বসবাস করিতে থাকায় তাঁহার পূর্বের নির্বাচনী এলাকা হইতে অত্র ইউনিয়ন পরিষদ এলাকার ভোটার তালিকায় নাম স্থানান্তর করার ক্ষেত্রে অত্র কার্যালয়ের কোনো প্রকার আপত্তি বা বাধা নাই।',
+    'বেকারত্বের সনদপত্র': 'তিনি শিক্ষাজীবন সমাপ্ত করিয়া বর্তমানে কোনো প্রকার সরকারি, আধাসরকারি বা বেসরকারি চাকুরিতে নিয়োজিত নাই। তিনি একজন প্রকৃত বেকার যুবক/যুবতী এবং চাকুরির সন্ধানে সচেষ্ট আছেন।',
+    'অস্থায়ী বসবাসের প্রত্যয়ন': 'তিনি জীবিকা নির্বাহ, চাকুরি বা ব্যবসা পরিচালনার উদ্দেশ্যে অত্র ইউনিয়ন পরিষদ এলাকার উক্ত ঠিকানায় অস্থায়ীভাবে বসবাস করিতেছেন। আমার জানামতে তিনি কোনো প্রকার অসামাজিক কার্যকলাপে জড়িত নন।',
+    'অস্থায়ীভাবে বসবাসের প্রত্যয়ন পত্র': 'তিনি জীবিকা নির্বাহ, চাকুরি বা ব্যবসা পরিচালনার উদ্দেশ্যে অত্র ইউনিয়ন পরিষদ এলাকার উক্ত ঠিকানায় অস্থায়ীভাবে বসবাস করিতেছেন। আমার জানামতে তিনি কোনো প্রকার অসামাজিক কার্যকলাপে জড়িত নন।',
+    'জাতীয়তা সনদ': 'তিনি জন্মসূত্রে ও বংশানুক্রমিকভাবে বাংলাদেশের একজন গর্বিত ও স্থায়ী নাগরিক। তিনি অদ্যাবধি কোনো বিদেশি রাষ্ট্রের নাগরিকত্ব গ্রহণ করেন নাই এবং তিনি রাষ্ট্রবিরোধী কোনো কর্মকাণ্ডে জড়িত নন।',
+    'স্থায়ী বাসিন্দা সনদ': 'তিনি এবং তাঁহার পূর্বপুরুষগণ বংশানুক্রমিকভাবে অত্র ইউনিয়ন পরিষদের উক্ত ওয়ার্ডের স্থায়ী অধিবাসী এবং তিনি এলাকার যাবতীয় নাগরিক অধিকার ও সুযোগ-সুবিধা ভোগ করিয়া আসিতেছেন।',
+    'এতিম সনদ': 'শৈশবাবস্থাতেই তাঁহার জন্মদাতা পিতা মৃত্যুবরণ করিয়াছেন এবং বর্তমানে তিনি একজন অসহায় ও পিতৃহীন এতিম সন্তান। তিনি সরকার ও বিভিন্ন দাতব্য সংস্থার এতিম ভাতা ও সাহায্য পাওয়ার সম্পূর্ণ যোগ্য।',
+    'একই নামের প্রত্যয়ন': 'বিভিন্ন জাতীয় পরিচয়পত্র, জন্ম নিবন্ধন, শিক্ষা সনদ ও জমির দলিলে তাঁহার নামের বানানে আংশিক অমিল বা ভিন্নতা পরিলক্ষিত হইলেও প্রকৃতপক্ষে সকল নথিতে উল্লিখিত নামধারী ব্যক্তি একই ও অভিন্ন ব্যক্তি।',
+    'দ্বিতীয় বিবাহের অনুমতি': 'পারিবারিক বিশেষ পরিস্থিতি ও ধর্মীয় ও মুসলিম পারিবারিক আইন অধ্যাদেশ মোতাবেক যাবতীয় শর্ত পূরণ সাপেক্ষে তাঁহার দ্বিতীয় বিবাহে অত্র ইউনিয়ন পরিষদ কার্যালয়ের পক্ষ হইতে কোনো প্রকার আপত্তি নাই।',
+    'দ্বিতীয় বিবাহের অনুমতি পত্র': 'পারিবারিক বিশেষ পরিস্থিতি ও ধর্মীয় ও মুসলিম পারিবারিক আইন অধ্যাদেশ মোতাবেক যাবতীয় শর্ত পূরণ সাপেক্ষে তাঁহার দ্বিতীয় বিবাহে অত্র ইউনিয়ন পরিষদ কার্যালয়ের পক্ষ হইতে কোনো প্রকার আপত্তি নাই।',
+    'পারিবারিক সনদ': 'আমার জানামতে তিনি অত্র ইউনিয়ন পরিষদের স্থায়ী বাসিন্দা এবং তাঁহার পরিবারের সকল সদস্যগণের মধ্যে সুসম্পর্ক বিদ্যমান।',
+    'বিবিধ প্রত্যয়নপত্র': 'তিনি অত্র এলাকার একজন সুপরিচিত, সৎ, শান্তিপ্রিয় ও আইনানুগ নাগরিক। আমার জানামতে তিনি কোনো প্রকার সমাজবিরোধী বা রাষ্ট্রদ্রোহী কর্মকাণ্ডে জড়িত নন।'
+  };
 
-/* 🟢 মূল বিবরণী তৈরি */
-function generalBody(d){
-  var certType=d.type||d.serviceType||'বিবিধ প্রত্যয়নপত্র';
-  var specificText=GENERAL_TEMPLATES[certType]||GENERAL_TEMPLATES['বিবিধ প্রত্যয়নপত্র'];
-  var fatherVal=d.fatherName||d.father||'';
-  var motherVal=d.motherName||d.mother||'';
-  
-  return 'এই মর্মে প্রত্যয়ন পত্র প্রদান করা যাইতেছে যে, <strong>'+escapeGeneral(d.name||d.applicantName)+'</strong>, পিতা: <strong>'+escapeGeneral(fatherVal)+'</strong>, মাতা: <strong>'+escapeGeneral(motherVal)+'</strong>, জন্ম নিবন্ধন/ভোটার আইডি নম্বর: <strong>'+generalBnDigits(d.nid)+'</strong>, গ্রাম: <strong>'+escapeGeneral(d.village)+'</strong>, ডাকঘর: <strong>'+escapeGeneral(d.postOffice||'আউলিয়াপুর ময়দান')+'</strong>, ওয়ার্ড নং: <strong>'+generalBnDigits(d.wardNo)+'</strong>, '+GENERAL_UNION+', '+GENERAL_UPAZILA+', '+GENERAL_DISTRICT+'-এর একজন স্থায়ী বাসিন্দা। '+specificText;
-}
+  function escapeGeneral(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function(c) {
+      return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c];
+    });
+  }
 
-/* 🟢 অফিসিয়াল A4 সনদ মার্কআপ */
-function certificateMarkup(d){
-  var logo='https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs';
-  var chair=escapeGeneral(d.chairName||'অ্যাড. মোঃ হুমায়ুন কবির');
-  var role=escapeGeneral(d.signatoryRole||'চেয়ারম্যান');
-  var certTitle=escapeGeneral(d.type||'প্রত্যয়নপত্র');
-  if(!certTitle.endsWith('সনদ')&&!certTitle.endsWith('পত্র')) certTitle+=' পত্র';
+  function generalBnDigits(v) {
+    if (v === null || v === undefined || v === '') return '';
+    return String(v).replace(/\d/g, function(d) { return '০১২৩৪৫৬৭৮৯'[d]; });
+  }
 
-  return '<article class="official-certificate">' +
-    '<img class="cert-watermark" src="'+logo+'" alt="Watermark">' +
-    '<div class="cert-content">' +
-      '<div>' +
-        '<header>' +
-          '<img src="'+logo+'" alt="ইউনিয়ন পরিষদ লোগো">' +
-          '<div class="header-copy">' +
-            '<div class="govt-title">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>' +
-            '<h1>'+GENERAL_UNION+' পরিষদ কার্যালয়</h1>' +
-            '<div class="address-text">ডাকঘর: আউলিয়াপুর ময়দান, '+GENERAL_UPAZILA+', '+GENERAL_DISTRICT+'</div>' +
-          '</div>' +
-          '<div class="seal-box">সিল /<br>ছবি</div>' +
-        '</header>' +
-        '<div class="rule"></div>' +
-        '<div class="meta">' +
-          '<span>স্মারক নং- আ/ইউ/পটুয়া/সদর/'+generalCurrentYear()+'/'+escapeGeneral(generalApplicationNumber(d.appId))+'</span>' +
-          '<span>তারিখ: '+generalPrintDate()+' ইং</span>' +
-        '</div>' +
-        '<h2>'+certTitle+'</h2>' +
-        '<div class="certificate-body">'+generalBody(d)+'</div>' +
-        '<div class="closing">আমি তাঁর সর্বাঙ্গীন উন্নতি ও মঙ্গল কামনা করি।</div>' +
-      '</div>' +
-      '<div>' +
-        '<div class="certificate-signatures">' +
-          '<div class="chairman">' +
-            '<span class="signature-line"></span>' +
-            '('+chair+')<br>' +
-            role+'<br>' +
-            '<small>'+GENERAL_UNION+' পরিষদ<br>'+GENERAL_UPAZILA+', '+GENERAL_DISTRICT+' ।</small>' +
-          '</div>' +
-        '</div>' +
-        '<footer>' +
-          '<span>তথ্য যাচাই করুন</span>' +
-          '<strong>সত্যের জয় হোক</strong>' +
-          '<span>অফিসিয়াল প্রত্যয়নপত্র</span>' +
-        '</footer>' +
-      '</div>' +
-    '</div>' +
-  '</article>';
-}
+  function generalApplicationNumber(appId) {
+    var value = String(appId == null ? '' : appId).replace(/^AUL[-/\s]*/i, '');
+    var parts = value.split(/[-/\s]+/).filter(function(part) { return part !== ''; });
+    return generalBnDigits(parts.length ? parts[parts.length - 1] : value);
+  }
 
-function printGeneralCertificate(id){callBackendAPI('trackApplication',id).then(function(d){if(!d||!d.found)return alert('সনদের তথ্য পাওয়া যায়নি।');if(d.status!=='Approved')return alert('অনুমোদনের পর সনদ প্রিন্ট করা যাবে।');var host=document.getElementById('generalPrintHost');if(!host){host=document.createElement('div');host.id='generalPrintHost';document.body.appendChild(host)}host.innerHTML=certificateMarkup(d);document.body.classList.add('general-print-mode');var images=host.getElementsByTagName('img'),remaining=images.length,printed=false,finished=false;function cleanup(){if(finished)return;finished=true;document.body.classList.remove('general-print-mode');host.innerHTML='';window.onafterprint=null}function finishPrint(){if(printed)return;printed=true;window.print()}function readyToPrint(){if(document.fonts&&document.fonts.ready){document.fonts.ready.then(finishPrint)}else{finishPrint()}}function imageDone(){if(!--remaining)readyToPrint()}for(var i=0;i<images.length;i++){if(images[i].complete)remaining--;else{images[i].addEventListener('load',imageDone,{once:true});images[i].addEventListener('error',imageDone,{once:true})}}window.onafterprint=cleanup;if(!remaining)setTimeout(readyToPrint,300);setTimeout(readyToPrint,2500)})}
-function printGeneralElement(id){var w=window.open('','_blank'),css=document.getElementById('generalCertificateStyles').innerHTML;w.document.write('<html><head><title>প্রত্যয়নপত্র</title><link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet"><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}html,body{margin:0;padding:0;overflow:hidden}'+css+'</style></head><body>'+document.getElementById(id).innerHTML+'</body></html>');w.document.close();w.focus();w.print()}
-function printGeneralAppCopy(id){callBackendAPI('trackApplication',id).then(function(d){if(!d||!d.found)return alert('আবেদনের তথ্য পাওয়া যায়নি।');var type=d.type||'সাধারণ প্রত্যয়ন';var name=d.name||d.applicantName||'';var mobile=d.mobile||d.phone||'-';var father=d.fatherName||d.father||'-';var nid=d.nid||d.nidNo||'-';var address=[d.village,d.postOffice,d.wardNo?'ওয়ার্ড নং '+d.wardNo:''].filter(function(value){return value}).join(', ')||'-';var subject=type+' প্রাপ্তির জন্য আবেদন।';var body='আমি '+escapeGeneral(name)+', পিতা: '+escapeGeneral(father)+', '+escapeGeneral(address)+'-এর বাসিন্দা। আমার প্রয়োজনীয় তথ্য ও কাগজপত্র অনুযায়ী আমাকে '+escapeGeneral(type)+' প্রদান করার জন্য বিনীতভাবে আবেদন করছি।';if(type==='নাগরিকত্ব সনদ')body='আমি '+escapeGeneral(name)+', পিতা: '+escapeGeneral(father)+', '+escapeGeneral(address)+'-এর একজন স্থায়ী বাসিন্দা। আমাকে নাগরিকত্ব সনদ প্রদান করার জন্য বিনীতভাবে আবেদন করছি।';else if(type==='ট্রেড লাইসেন্স')body='আমি '+escapeGeneral(name)+', পিতা: '+escapeGeneral(father)+', '+escapeGeneral(address)+'-এ ব্যবসা পরিচালনার জন্য ট্রেড লাইসেন্স প্রাপ্তির আবেদন করছি। প্রয়োজনীয় তথ্য যাচাই করে আমাকে ট্রেড লাইসেন্স প্রদানের জন্য অনুরোধ করছি।';else if(type==='পারিবারিক সনদ')body='আমি '+escapeGeneral(name)+', পিতা: '+escapeGeneral(father)+', '+escapeGeneral(address)+'-এর বাসিন্দা। আমার পরিবারের তথ্য উল্লেখ করে পারিবারিক সনদ প্রদান করার জন্য বিনীতভাবে আবেদন করছি।';var details='<p><strong>আবেদনকারীর নাম:</strong> '+escapeGeneral(name)+'<br><strong>পিতার নাম:</strong> '+escapeGeneral(father)+'<br><strong>জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন:</strong> '+escapeGeneral(nid)+'<br><strong>মোবাইল নম্বর:</strong> '+escapeGeneral(mobile)+'<br><strong>ট্র্যাকিং আইডি:</strong> '+escapeGeneral(d.appId||id)+'</p>';var w=window.open('','_blank');if(!w)return alert('প্রিন্ট উইন্ডো খোলা যায়নি।');w.document.write('<html lang="bn"><head><meta charset="UTF-8"><title>আবেদনপত্র - '+escapeGeneral(type)+'</title><link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet"><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}body{margin:0;background:#fff;color:#111;font-family:Nikosh,"Noto Serif Bengali",serif}.paper{width:210mm;min-height:297mm;padding:25mm 25mm 20mm;font-size:18px;line-height:1.9}.heading{text-align:center;font-size:24px;text-decoration:underline;margin-bottom:20px}.date{text-align:right;margin-bottom:22px}.recipient{margin-bottom:18px}.subject{font-weight:bold;text-decoration:underline;margin:18px 0}.body{text-align:justify;text-indent:45px;min-height:105px}.closing{margin-top:22px}.details{border-top:1px solid #777;border-bottom:1px solid #777;padding:10px 0;margin-top:20px}.signature{margin-top:55px;margin-left:auto;width:210px;text-align:center}.signature-line{border-top:1px solid #111;margin-bottom:7px}.footer{margin-top:28px;font-size:14px;color:#444}@media print{.paper{min-height:297mm}}</style></head><body><main class="paper"><div class="heading">আবেদনপত্র</div><div class="date">তারিখ: '+escapeGeneral(d.date||d.applyDate||generalPrintDate())+'</div><div class="recipient">বরাবর<br>চেয়ারম্যান<br>'+GENERAL_UNION+' পরিষদ<br>'+GENERAL_UPAZILA+', '+GENERAL_DISTRICT+'</div><div class="subject">বিষয়: '+escapeGeneral(subject)+'</div><p>জনাব,</p><div class="body">'+body+'</div><p class="closing">অতএব, মহোদয়ের নিকট বিনীত আবেদন, উপরোক্ত বিষয়টি সদয় বিবেচনা করে আমাকে প্রয়োজনীয় '+escapeGeneral(type)+' প্রদান করতে মর্জি হয়।</p>'+details+'<div class="signature"><div class="signature-line">স্বাক্ষর</div><strong>'+escapeGeneral(name)+'</strong><br>আবেদনকারী<br>মোবাইল: '+escapeGeneral(mobile)+'</div><div class="footer">আবেদনপত্রের ধরন: '+escapeGeneral(type)+' | ট্র্যাকিং আইডি: '+escapeGeneral(d.appId||id)+'</div></main></body></html>');w.document.close();w.focus();setTimeout(function(){w.print()},500)})}
-function openEditGeneralModal(id){callBackendAPI('trackApplication',id).then(function(d){if(!d||!d.found)return alert('আবেদনের তথ্য পাওয়া যায়নি।');[['editGenAppId','appId'],['editGenType','type'],['editGenName','name'],['editGenFather','fatherName'],['editGenNid','nid'],['editGenMobile','mobile'],['editGenWard','wardNo'],['editGenVillage','village'],['editGenPost','postOffice']].forEach(function(x){document.getElementById(x[0]).value=d[x[1]]||''});bootstrap.Modal.getOrCreateInstance(document.getElementById('generalEditModal')).show()})}
-function saveEditedGeneralData(){var b=document.getElementById('saveEditGenBtn'),d={appId:document.getElementById('editGenAppId').value,type:document.getElementById('editGenType').value,name:document.getElementById('editGenName').value.trim(),fatherName:document.getElementById('editGenFather').value.trim(),nid:document.getElementById('editGenNid').value.trim(),mobile:document.getElementById('editGenMobile').value.trim(),wardNo:document.getElementById('editGenWard').value,village:document.getElementById('editGenVillage').value.trim(),postOffice:document.getElementById('editGenPost').value.trim()};b.disabled=true;callBackendAPI('saveEditedApplication',d).then(function(r){b.disabled=false;if(r&&r.success){bootstrap.Modal.getInstance(document.getElementById('generalEditModal')).hide();loadAdminApps();Swal.fire({icon:'success',title:'তথ্য আপডেট হয়েছে',timer:1400,showConfirmButton:false})}else alert('তথ্য আপডেট করা যায়নি।')})}
-</script>
+  function generalCurrentYear() {
+    return generalBnDigits(new Date().getFullYear());
+  }
 
-<script>
-(function(){
-	function addMotherField(formId, anchorId, fieldId){
-		var form=document.getElementById(formId),anchor=document.getElementById(anchorId);
-		if(!form||!anchor||document.getElementById(fieldId))return;
-		var wrap=document.createElement('div');wrap.className='col-md-6';wrap.innerHTML='<label class="form-label fw-bold">মাতার নাম *</label><input id="'+fieldId+'" class="form-control" required>';
-		anchor.parentNode.insertBefore(wrap,anchor.nextSibling);
-	}
-	function ensureGeneralMotherFields(){
-		addMotherField('generalAppPageForm','genFather','genMother');
-		addMotherField('generalEditModal','editGenFather','editGenMother');
-	}
-	var originalOpenGeneralServicePage=window.openGeneralServicePage;
-	window.openGeneralServicePage=function(type){originalOpenGeneralServicePage(type);ensureGeneralMotherFields()};
-	var originalSubmitGeneralAppForm=window.submitGeneralAppForm;
-	window.submitGeneralAppForm=function(){
-		ensureGeneralMotherFields();var button=document.getElementById('genSubmitBtn');button.disabled=true;
-		var data={type:document.getElementById('genTypeHidden').value,name:document.getElementById('genName').value.trim(),fatherName:document.getElementById('genFather').value.trim(),motherName:document.getElementById('genMother').value.trim(),nid:document.getElementById('genNid').value.trim(),mobile:document.getElementById('genMobile').value.trim(),wardNo:document.getElementById('genWard').value,village:document.getElementById('genVillage').value.trim(),postOffice:document.getElementById('genPost').value.trim()};
-		callBackendAPI('submitApplication',data).then(function(result){button.disabled=false;if(result&&result.success){document.getElementById('successAppId').innerText=result.appId;document.getElementById('successAppCopyBtn').onclick=function(){printGeneralAppCopy(result.appId)};bootstrap.Modal.getOrCreateInstance(document.getElementById('successModal')).show();document.getElementById('generalAppPageForm').reset()}else alert((result&&(result.error||result.message))||'আবেদন জমা দেওয়া যায়নি।')});
-	};
-	var originalOpenEditGeneralModal=window.openEditGeneralModal;
-	window.openEditGeneralModal=function(id){
-		ensureGeneralMotherFields();originalOpenEditGeneralModal(id);
-		setTimeout(function(){ensureGeneralMotherFields();callBackendAPI('trackApplication',id).then(function(data){if(data&&data.found&&document.getElementById('editGenMother'))document.getElementById('editGenMother').value=data.motherName||''})},100);
-	};
-	var originalSaveEditedGeneralData=window.saveEditedGeneralData;
-	window.saveEditedGeneralData=function(){
-		ensureGeneralMotherFields();var button=document.getElementById('saveEditGenBtn'),data={appId:document.getElementById('editGenAppId').value,type:document.getElementById('editGenType').value,name:document.getElementById('editGenName').value.trim(),fatherName:document.getElementById('editGenFather').value.trim(),motherName:document.getElementById('editGenMother').value.trim(),nid:document.getElementById('editGenNid').value.trim(),mobile:document.getElementById('editGenMobile').value.trim(),wardNo:document.getElementById('editGenWard').value,village:document.getElementById('editGenVillage').value.trim(),postOffice:document.getElementById('editGenPost').value.trim()};button.disabled=true;callBackendAPI('saveEditedApplication',data).then(function(result){button.disabled=false;if(result&&result.success){bootstrap.Modal.getInstance(document.getElementById('generalEditModal')).hide();loadAdminApps();Swal.fire({icon:'success',title:'তথ্য আপডেট হয়েছে',timer:1400,showConfirmButton:false})}else alert('তথ্য আপডেট করা যায়নি।')});
-	};
-	var originalGeneralBody=window.generalBody;
-	window.generalBody=function(data){return originalGeneralBody(data)};
-})();
+  function generalPrintDate() {
+    var months = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+    var now = new Date();
+    return generalBnDigits(now.getDate()) + ' ' + months[now.getMonth()] + ' ' + generalBnDigits(now.getFullYear());
+  }
+
+  /* 🟢 শক্তিশালী ও নিরাপদ ডাটা লোডার */
+  async function fetchGeneralCertificateData(id) {
+    if (!id) return null;
+    var cleanId = String(id).trim().toUpperCase();
+    var d = null;
+
+    if (typeof rawDataStore !== 'undefined' && Array.isArray(rawDataStore.gen)) {
+      d = rawDataStore.gen.find(function(x) {
+        return String(x.appId || x.id || '').trim().toUpperCase() === cleanId;
+      });
+    }
+
+    if (!d && typeof callBackendAPI === 'function') {
+      try {
+        var res = await callBackendAPI('trackApplication', cleanId);
+        if (res && (res.found || res.appId || res.name || res.applicantName)) {
+          d = res;
+        }
+      } catch(e) { console.warn("API tracking error:", e); }
+    }
+    return d;
+  }
+
+  function openGeneralServicePage(type) {
+    navToSection('generalServiceView');
+    var form = document.getElementById('generalAppPageForm');
+    if (form) form.reset();
+    document.getElementById('genTypeHidden').value = type;
+    document.getElementById('genServiceLabel').innerText = type;
+    document.getElementById('genPageMainTitle').innerText = type + ' আবেদন ফরম';
+    document.getElementById('genPost').value = 'আউলিয়াপুর ময়দান';
+  }
+
+  async function submitGeneralAppForm() {
+    var btn = document.getElementById('genSubmitBtn');
+    btn.disabled = true; btn.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i> জমা হচ্ছে...';
+
+    var data = {
+      type: document.getElementById('genTypeHidden').value,
+      name: document.getElementById('genName').value.trim(),
+      fatherName: document.getElementById('genFather').value.trim(),
+      motherName: document.getElementById('genMother').value.trim(),
+      nid: document.getElementById('genNid').value.trim(),
+      mobile: document.getElementById('genMobile').value.trim(),
+      wardNo: document.getElementById('genWard').value,
+      village: document.getElementById('genVillage').value.trim(),
+      postOffice: document.getElementById('genPost').value.trim()
+    };
+
+    var res = await callBackendAPI('submitApplication', data);
+    btn.disabled = false; btn.innerHTML = '<i class="fa fa-paper-plane me-1"></i> আবেদন জমা দিন';
+
+    if (res && res.success) {
+      document.getElementById('successAppId').innerText = res.appId;
+      document.getElementById('successAppCopyBtn').onclick = function() { printGeneralAppCopy(res.appId); };
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('successModal')).show();
+      document.getElementById('generalAppPageForm').reset();
+    } else {
+      Swal.fire({ icon: 'error', title: 'ব্যর্থ', text: (res && (res.error || res.message)) || 'আবেদন জমা দেওয়া যায়নি।' });
+    }
+  }
+
+  /* 🟢 মূল বিবরণী তৈরি */
+  function generalBody(d) {
+    var certType = d.type || d.serviceType || 'বিবিধ প্রত্যয়নপত্র';
+    var specificText = GENERAL_TEMPLATES[certType] || GENERAL_TEMPLATES['বিবিধ প্রত্যয়নপত্র'];
+    var fatherVal = d.fatherName || d.father || d.fatherSpouseName || '';
+    var motherVal = d.motherName || d.mother || '';
+    
+    var basicInfo = 'এই মর্মে প্রত্যয়ন পত্র প্রদান করা যাইতেছে যে, <strong>' + escapeGeneral(d.name || d.applicantName) + '</strong>, পিতা- <strong>' + escapeGeneral(fatherVal) + '</strong>, মাতা- <strong>' + escapeGeneral(motherVal) + '</strong>, গ্রাম- <strong>' + escapeGeneral(d.village) + '</strong>, ডাকঘর- <strong>' + escapeGeneral(d.postOffice || 'আউলিয়াপুর ময়দান') + '</strong>, ওয়ার্ড নং- <strong>' + generalBnDigits(d.wardNo) + '</strong>, ইউনিয়ন- <strong>' + GENERAL_UNION + '</strong>, উপজেলা- <strong>' + GENERAL_UPAZILA + '</strong>, জেলা- <strong>' + GENERAL_DISTRICT + '</strong>।<br><br>তাঁহার জাতীয় পরিচয়পত্র / জন্ম নিবন্ধন নম্বর: <strong>' + generalBnDigits(d.nid) + '</strong>। তিনি অত্র ইউনিয়নের একজন স্থায়ী বাসিন্দা। ';
+    return basicInfo + specificText;
+  }
+
+  /* 🟢 অফিসিয়াল A4 সনদ মার্কআপ */
+  function certificateMarkup(d) {
+    var chairName = escapeGeneral(d.chairName || 'অ্যাড. মোঃ হুমায়ুন কবির');
+    var roleName = escapeGeneral(d.signatoryRole || 'চেয়ারম্যান');
+    var certTitle = escapeGeneral(d.type || d.serviceType || 'প্রত্যয়নপত্র');
+    if (!certTitle.endsWith('সনদ') && !certTitle.endsWith('পত্র')) certTitle += ' পত্র';
+
+    var smarakNo = 'আ/ইউ/পটুয়া/সদর/' + generalCurrentYear() + '/' + escapeGeneral(generalApplicationNumber(d.appId));
+    var liveDate = generalPrintDate();
+
+    return `
+      <article class="official-certificate">
+        <!-- 🟢 ৫২০px ওয়াটারমার্ক -->
+        <img class="cert-watermark" src="${STATIC_UP_LOGO}" onerror="if(this.src!=='${BACKUP_UP_LOGO}'){this.src='${BACKUP_UP_LOGO}';}else{this.src='${STATIC_GOVT_LOGO}';}" alt="Watermark">
+        
+        <div class="cert-content">
+          <div>
+            <!-- 🟢 শীর্ষ হেডার: বামে ইউনিয়ন লোগো, ডানে সিল বক্স -->
+            <header>
+              <div class="logo-left">
+                <img src="${STATIC_UP_LOGO}" onerror="if(this.src!=='${BACKUP_UP_LOGO}'){this.src='${BACKUP_UP_LOGO}';}else{this.src='${STATIC_GOVT_LOGO}';}" alt="UP Logo">
+              </div>
+              <div class="header-copy">
+                <div class="govt-sub">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
+                <h1>${GENERAL_UNION} পরিষদ কার্যালয়</h1>
+                <div class="up-address">ডাকঘরঃ আউলিয়াপুর ময়দান, উপজেলা ও জেলাঃ পটুয়াখালী ।</div>
+              </div>
+              <div class="seal-box">
+                সিল /<br>ছবি
+              </div>
+            </header>
+
+            <!-- 🟢 ১. স্মারক নং ও তারিখ বার (১৬px Bold) -->
+            <div class="meta-bar">
+              <div>স্মারক নং- <span>${smarakNo}</span></div>
+              <div>তারিখঃ <span>${liveDate} ইং</span></div>
+            </div>
+
+            <!-- 🟢 ২. ৩ডি রিবন ব্যানার (২৪px Bold) -->
+            <div class="ribbon-wrapper-main">
+              <div class="ribbon-green-box">
+                <div class="ribbon-wing-l"></div>
+                ${certTitle}
+                <div class="ribbon-wing-r"></div>
+              </div>
+            </div>
+
+            <!-- মূল বিবরণী: ১৮.৫px ফন্ট ও ২.১ লাইন-হাইট -->
+            <div class="certificate-body">
+              ${generalBody(d)}
+            </div>
+
+            <!-- 🟢 ৩. শুভকামনা লাইন (১৯.৫px Bold) -->
+            <div class="closing">
+              আমি তাঁর সর্বাঙ্গীন উন্নতি ও মঙ্গল কামনা করি।
+            </div>
+          </div>
+
+          <!-- 🟢 ৪. নিচে চেয়ারম্যানের একক স্বাক্ষর (১৭.৫px / ১৬px) -->
+          <div>
+            <div class="certificate-signatures-single">
+              <div class="signature-single-chairman">
+                <div class="sign-name">(${chairName})</div>
+                <div class="sign-line"></div>
+                <div class="sign-role">${roleName}</div>
+                <div class="sign-sub">${GENERAL_UNION} পরিষদ</div>
+                <div class="sign-sub">${GENERAL_UPAZILA}, ${GENERAL_DISTRICT} ।</div>
+              </div>
+            </div>
+
+            <!-- ফুটার ব্যানার -->
+            <footer>
+              <span>তথ্য যাচাই করুন</span>
+              <strong>সত্যের জয় হোক</strong>
+              <span>অফিসিয়াল প্রত্যয়নপত্র</span>
+            </footer>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  /* 🟢 ১০০% গ্যারান্টেড ১-ক্লিক প্রিন্ট ইঞ্জিন (১ পেজেই প্রিন্ট হবে) */
+  async function showGeneralCertPrintPreview(id) {
+    let d = await fetchGeneralCertificateData(id);
+    if (!d) return alert('সনদের তথ্য পাওয়া যায়নি।');
+
+    var certHtml = certificateMarkup(d);
+    var printWin = window.open('', '_blank', 'width=950,height=750');
+    
+    if (printWin) {
+      printWin.document.open();
+      printWin.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Certificate - ${escapeGeneral(d.appId || id)}</title>
+          <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+          <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+          <style>
+            @page { size: A4 portrait; margin: 0mm !important; }
+            * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            html, body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Nikosh', 'Kalpurush', sans-serif !important; overflow: hidden !important; width: 210mm !important; height: 297mm !important; }
+            ${document.getElementById('generalCertificateStyles').innerHTML}
+          </style>
+        </head>
+        <body>
+          ${certHtml}
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.focus();
+                window.print();
+              }, 400);
+            };
+          <\/script>
+        </body>
+        </html>
+      `);
+      printWin.document.close();
+    } else {
+      var oldFrame = document.getElementById('gen_direct_print_frame');
+      if (oldFrame) oldFrame.remove();
+
+      var iframe = document.createElement('iframe');
+      iframe.id = 'gen_direct_print_frame';
+      iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:210mm;height:297mm;border:0;';
+      document.body.appendChild(iframe);
+
+      var doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Certificate</title>
+          <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+          <style>
+            @page { size: A4 portrait; margin: 0mm !important; }
+            * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            html, body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Nikosh', sans-serif !important; overflow: hidden !important; }
+            ${document.getElementById('generalCertificateStyles').innerHTML}
+          </style>
+        </head>
+        <body>${certHtml}</body>
+        </html>
+      `);
+      doc.close();
+
+      setTimeout(function() {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+      }, 400);
+    }
+  }
+
+  function printGeneralCertificate(id) {
+    showGeneralCertPrintPreview(id);
+  }
+
+  function printGeneralElement(id) {
+    showGeneralCertPrintPreview(id);
+  }
+
+  async function printGeneralAppCopy(id) {
+    var d = await fetchGeneralCertificateData(id);
+    if (!d) return alert('আবেদনের তথ্য পাওয়া যায়নি।');
+
+    var type = d.type || d.serviceType || 'সাধারণ প্রত্যয়ন';
+    var name = d.name || d.applicantName || '';
+    var mobile = d.mobile || d.phone || '-';
+    var father = d.fatherName || d.father || '-';
+    var mother = d.motherName || d.mother || '-';
+    var nid = d.nid || d.nidNo || '-';
+    var address = [d.village, d.postOffice, d.wardNo ? 'ওয়ার্ড নং ' + d.wardNo : ''].filter(Boolean).join(', ') || '-';
+    var subject = type + ' প্রাপ্তির জন্য আবেদন।';
+    var body = 'আমি ' + escapeGeneral(name) + ', পিতা: ' + escapeGeneral(father) + ', মাতা: ' + escapeGeneral(mother) + ', ' + escapeGeneral(address) + '-এর একজন স্থায়ী বাসিন্দা। আমার প্রয়োজনীয় কাজের জন্য আমাকে ' + escapeGeneral(type) + ' প্রদান করার জন্য বিনীতভাবে আবেদন করছি।';
+
+    var details = '<p><strong>আবেদনকারীর নাম:</strong> ' + escapeGeneral(name) + '<br><strong>পিতার নাম:</strong> ' + escapeGeneral(father) + '<br><strong>মাতার নাম:</strong> ' + escapeGeneral(mother) + '<br><strong>জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন:</strong> ' + generalBnDigits(nid) + '<br><strong>মোবাইল নম্বর:</strong> ' + generalBnDigits(mobile) + '<br><strong>ট্র্যাকিং আইডি:</strong> ' + escapeGeneral(d.appId || id) + '</p>';
+
+    var w = window.open('', '_blank');
+    if (!w) return alert('প্রিন্ট উইন্ডো খোলা যায়নি।');
+    w.document.write('<html lang="bn"><head><meta charset="UTF-8"><title>আবেদনপত্র - ' + escapeGeneral(type) + '</title><link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet"><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}body{margin:0;background:#fff;color:#111;font-family:Nikosh,"Noto Serif Bengali",serif}.paper{width:210mm;min-height:297mm;padding:25mm 25mm 20mm;font-size:18px;line-height:1.9}.heading{text-align:center;font-size:24px;text-decoration:underline;margin-bottom:20px}.date{text-align:right;margin-bottom:22px}.recipient{margin-bottom:18px}.subject{font-weight:bold;text-decoration:underline;margin:18px 0}.body{text-align:justify;text-indent:45px;min-height:105px}.closing{margin-top:22px}.details{border-top:1px solid #777;border-bottom:1px solid #777;padding:10px 0;margin-top:20px}.signature{margin-top:55px;margin-left:auto;width:210px;text-align:center}.signature-line{border-top:1px solid #111;margin-bottom:7px}.footer{margin-top:28px;font-size:14px;color:#444}@media print{.paper{min-height:297mm}}</style></head><body><main class="paper"><div class="heading">আবেদনপত্র</div><div class="date">তারিখ: ' + escapeGeneral(d.date || d.applyDate || generalPrintDate()) + '</div><div class="recipient">বরাবর<br>চেয়ারম্যান<br>' + GENERAL_UNION + ' পরিষদ<br>' + GENERAL_UPAZILA + ', ' + GENERAL_DISTRICT + '</div><div class="subject">বিষয়: ' + escapeGeneral(subject) + '</div><p>জনাব,</p><div class="body">' + body + '</div><p class="closing">অতএব, মহোদয়ের নিকট বিনীত আবেদন, উপরোক্ত বিষয়টি সদয় বিবেচনা করে আমাকে প্রয়োজনীয় ' + escapeGeneral(type) + ' প্রদান করতে মর্জি হয়।</p>' + details + '<div class="signature"><div class="signature-line">স্বাক্ষর</div><strong>' + escapeGeneral(name) + '</strong><br>আবেদনকারী<br>মোবাইল: ' + generalBnDigits(mobile) + '</div><div class="footer">আবেদনপত্রের ধরন: ' + escapeGeneral(type) + ' | ট্র্যাকিং আইডি: ' + escapeGeneral(d.appId || id) + '</div></main></body></html>');
+    w.document.close();
+    w.focus();
+    setTimeout(function() { w.print(); }, 400);
+  }
+
+  /* 🟢 এডিট মোডাল ওপেনার */
+  async function openEditGeneralModal(id) {
+    let d = await fetchGeneralCertificateData(id);
+    if (!d) return alert('আবেদনের তথ্য পাওয়া যায়নি।');
+
+    var setVal = function(ids, val) {
+      ids.forEach(function(i) {
+        var el = document.getElementById(i);
+        if (el) el.value = val || '';
+      });
+    };
+
+    setVal(['editGenAppId', 'edGenAppId'], d.appId || id);
+    setVal(['editGenType', 'edGenType'], d.type || d.serviceType || 'প্রত্যয়নপত্র');
+    setVal(['editGenName', 'edGenName'], d.name || d.applicantName || '');
+    setVal(['editGenFather', 'edGenFather'], d.fatherName || d.father || d.fatherSpouseName || '');
+    setVal(['editGenMother', 'edGenMother'], d.motherName || d.mother || '');
+    setVal(['editGenNid', 'edGenNid'], d.nid || '');
+    setVal(['editGenMobile', 'edGenMobile'], d.mobile || d.phone || '');
+    setVal(['editGenWard', 'edGenWard'], d.wardNo || '০১');
+    setVal(['editGenVillage', 'edGenVillage'], d.village || '');
+    setVal(['editGenPost', 'edGenPost'], d.postOffice || 'আউলিয়াপুর ময়দান');
+
+    var modalEl = document.getElementById('generalEditModal') || document.getElementById('editGeneralModal');
+    if (modalEl) {
+      try {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+          bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        } else {
+          modalEl.classList.add('show');
+          modalEl.style.display = 'block';
+        }
+      } catch(err) {
+        modalEl.classList.add('show');
+        modalEl.style.display = 'block';
+      }
+    }
+  }
+
+  function closeGeneralEditModal() {
+    var modalEl = document.getElementById('generalEditModal') || document.getElementById('editGeneralModal');
+    if (modalEl) {
+      try {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+          var inst = bootstrap.Modal.getInstance(modalEl);
+          if (inst) inst.hide();
+        }
+      } catch(e) {}
+      modalEl.classList.remove('show');
+      modalEl.style.display = 'none';
+    }
+  }
+
+  /* 🟢 এডিট ডাটা সেভ হ্যান্ডলার */
+  async function saveEditedGeneralData() {
+    var btn = document.getElementById('saveEditGenBtn') || document.getElementById('saveEditGenBtnAlt');
+    if (btn) { btn.disabled = true; btn.innerText = 'আপডেট হচ্ছে...'; }
+
+    var getVal = function(ids) {
+      for (var i = 0; i < ids.length; i++) {
+        var el = document.getElementById(ids[i]);
+        if (el && el.value !== undefined && el.value !== '') return el.value.trim();
+      }
+      return '';
+    };
+
+    var payload = {
+      appId: getVal(['editGenAppId', 'edGenAppId']),
+      type: getVal(['editGenType', 'edGenType']),
+      name: getVal(['editGenName', 'edGenName']),
+      fatherName: getVal(['editGenFather', 'edGenFather']),
+      motherName: getVal(['editGenMother', 'edGenMother']),
+      nid: getVal(['editGenNid', 'edGenNid']),
+      mobile: getVal(['editGenMobile', 'edGenMobile']),
+      wardNo: getVal(['editGenWard', 'edGenWard']) || '০১',
+      village: getVal(['editGenVillage', 'edGenVillage']),
+      postOffice: getVal(['editGenPost', 'edGenPost']) || 'আউলিয়াপুর ময়দান'
+    };
+
+    var res = await callBackendAPI('saveEditedApplication', payload);
+    if (btn) { btn.disabled = false; btn.innerText = 'আপডেট করুন'; }
+
+    if (res && res.success) {
+      closeGeneralEditModal();
+      if (typeof loadAdminApps === 'function') loadAdminApps();
+      Swal.fire({ icon: 'success', title: 'তথ্য আপডেট হয়েছে', timer: 1500, showConfirmButton: false });
+    } else {
+      Swal.fire({ icon: 'error', title: 'ব্যর্থ', text: 'তথ্য আপডেট করা যায়নি।' });
+    }
+  }
 </script>

@@ -59,7 +59,7 @@
     max-width: 520px !important;
     max-height: 520px !important;
     object-fit: contain;
-    opacity: 0.09 !important;
+    opacity: 0.12 !important;
     z-index: 0;
     pointer-events: none;
     display: block !important;
@@ -357,9 +357,10 @@
 
 <!-- ৩. জাভাস্ক্রিপ্ট মাস্টার ইঞ্জিন -->
 <script>
-  // 🟢 নির্ভরযোগ্য ইমেজ লিংক
+  // 🟢 নিশ্চিত লোড হওয়া ইমেজ লিংকসমূহ
   const STATIC_GOVT_LOGO = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
-  const STATIC_UP_LOGO = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
+  const PRIMARY_UP_LOGO = "https://drive.google.com/thumbnail?id=1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs&sz=w1000";
+  const FALLBACK_UP_LOGO = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
 
   var GENERAL_UNION = '১১নং আউলিয়াপুর ইউনিয়ন', GENERAL_UPAZILA = 'পটুয়াখালী সদর', GENERAL_DISTRICT = 'পটুয়াখালী';
 
@@ -415,7 +416,7 @@
     return generalBnDigits(now.getDate()) + ' ' + months[now.getMonth()] + ' ' + generalBnDigits(now.getFullYear());
   }
 
-  /* 🟢 শক্তিশালী ডাটা ফেচার (মেমোরি ও এপিআই উভয়েই ১০০% কাজ করবে) */
+  /* 🟢 স্মার্ট ডাটা ফেচার (মেমোরি ও এপিআই উভয়েই ১০০% কাজ করবে) */
   async function fetchGeneralCertificateData(id) {
     if (!id) return null;
     var cleanId = String(id).trim().toUpperCase();
@@ -503,15 +504,15 @@
 
     return `
       <article class="official-certificate">
-        <!-- 🟢 ৫২০px ওয়াটারমার্ক (সরাসরি লোড হবে) -->
-        <img class="cert-watermark" src="${STATIC_UP_LOGO}" alt="Watermark">
+        <!-- 🟢 ৫২০px ওয়াটারমার্ক (নিশ্চিত লোড ও অপাসিটি ১২%) -->
+        <img class="cert-watermark" src="${PRIMARY_UP_LOGO}" onerror="if(this.src!=='${FALLBACK_UP_LOGO}'){this.src='${FALLBACK_UP_LOGO}';}else{this.src='${STATIC_GOVT_LOGO}';}" alt="Watermark">
         
         <div class="cert-content">
           <div>
             <!-- 🟢 শীর্ষ হেডার: বামে ইউনিয়ন লোগো, ডানে সরকারি সিল -->
             <header>
               <div class="logo-left">
-                <img src="${STATIC_UP_LOGO}" alt="UP Logo">
+                <img src="${PRIMARY_UP_LOGO}" onerror="if(this.src!=='${FALLBACK_UP_LOGO}'){this.src='${FALLBACK_UP_LOGO}';}else{this.src='${STATIC_GOVT_LOGO}';}" alt="UP Logo">
               </div>
               <div class="header-copy">
                 <div class="govt-sub">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
@@ -617,16 +618,42 @@
     `);
     doc.close();
 
-    // 🟢 নিশ্চিত প্রিন্ট ট্রিগার (কখনো আটকে থাকবে না)
+    // 🟢 নিশ্চিত ও শক্তিশালী প্রিন্ট ট্রিগার
+    var images = Array.prototype.slice.call(doc.getElementsByTagName('img'));
+    var remaining = images.length;
     var printed = false;
+
     function doPrint() {
       if (printed) return;
       printed = true;
-      iframe.contentWindow.focus();
-      iframe.contentWindow.print();
+      try {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+      } catch(e) { console.error('Print error:', e); }
     }
 
-    setTimeout(doPrint, 350);
+    if (remaining === 0) {
+      setTimeout(doPrint, 200);
+    } else {
+      var fallbackTimer = setTimeout(doPrint, 1200);
+      images.forEach(function(img) {
+        if (img.complete && img.naturalWidth > 0) {
+          remaining--;
+          if (remaining === 0) {
+            clearTimeout(fallbackTimer);
+            setTimeout(doPrint, 100);
+          }
+        } else {
+          img.onload = img.onerror = function() {
+            remaining--;
+            if (remaining === 0) {
+              clearTimeout(fallbackTimer);
+              setTimeout(doPrint, 100);
+            }
+          };
+        }
+      });
+    }
   }
 
   function printGeneralCertificate(id) {

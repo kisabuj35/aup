@@ -1,6 +1,6 @@
 <!-- ======================================================= -->
 <!-- 11NO AULIAPUR UNION PARISHAD - GENERAL CERTIFICATES    -->
-<!-- File: General_Certificate.html (Exact 1-Page A4 Fixed) -->
+<!-- File: General_Certificate.html (100% Working Master)   -->
 <!-- ======================================================= -->
 
 <!-- Google & Bangla Fonts -->
@@ -61,7 +61,7 @@
     max-width: 520px !important;
     max-height: 520px !important;
     object-fit: contain;
-    opacity: 0.09 !important;
+    opacity: 0.095 !important;
     z-index: 0;
     pointer-events: none;
     display: block !important;
@@ -124,20 +124,7 @@
     margin-top: 1px;
   }
 
-  .official-certificate .seal-box {
-    width: 22mm;
-    height: 19mm;
-    border: 1.5px dashed #666;
-    color: #555;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    line-height: 1.2;
-  }
-
-  /* 🟢 ১. মার্ক করা অংশ: স্মারক নং ও তারিখ বার (সাইজ বৃদ্ধি: 16px) */
+  /* 🟢 ১. স্মারক নং ও তারিখ বার (১৬px Bold) */
   .official-certificate .meta-bar {
     display: flex;
     justify-content: space-between;
@@ -152,7 +139,7 @@
     font-family: 'Nikosh', sans-serif !important;
   }
 
-  /* 🟢 ২. মার্ক করা অংশ: ৩ডি রিবন ব্যানার (সাইজ বৃদ্ধি: 24px) */
+  /* 🟢 ২. ৩ডি রিবন ব্যানার (২৪px Bold) */
   .ribbon-wrapper-main {
     text-align: center;
     margin: 4px auto 8px auto;
@@ -184,7 +171,7 @@
     position: absolute; top: 5px; right: -22px; border: 16px solid #00361a !important; border-left-width: 13px; border-right-color: transparent !important; z-index: 1; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
   }
 
-  /* 🟢 মূল বিবরণী: ১৮.৫px ফন্ট সাইজ ও ২.১ লাইন-হাইট (১ পেজে পারফেক্ট ফিট) */
+  /* 🟢 মূল বিবরণী: ১৮.৫px ফন্ট সাইজ ও ২.১ লাইন-হাইট */
   .certificate-body {
     font-size: 18.5px !important;
     line-height: 2.1 !important;
@@ -197,7 +184,7 @@
   }
   .certificate-body strong { color: #073d2a; font-weight: bold; }
 
-  /* 🟢 ৩. মার্ক করা অংশ: শুভকামনা লাইন (সাইজ বৃদ্ধি: 19.5px Bold) */
+  /* 🟢 ৩. শুভকামনা লাইন (১৯.৫px Bold) */
   .official-certificate .closing {
     margin: 12px 2px 0;
     text-align: center;
@@ -207,7 +194,7 @@
     font-family: 'Nikosh', sans-serif !important;
   }
 
-  /* 🟢 ৪. মার্ক করা অংশ: ডানে চেয়ারম্যানের একক স্বাক্ষর (নিচে নামানো ও সাইজ বৃদ্ধি) */
+  /* 🟢 ৪. নিচে চেয়ারম্যানের একক স্বাক্ষর */
   .certificate-signatures-single {
     display: flex;
     justify-content: flex-end;
@@ -575,7 +562,7 @@
             </div>
           </div>
 
-          <!-- 🟢 ৪. নিচে চেয়ারম্যানের একক স্বাক্ষর (১৭.৫px / ১৬px) -->
+          <!-- 🟢 ৪. নিচে চেয়ারম্যানের একক স্বাক্ষর -->
           <div>
             <div class="certificate-signatures-single">
               <div class="signature-single-chairman">
@@ -599,78 +586,51 @@
     `;
   }
 
-  /* 🟢 ১০০% গ্যারান্টেড ১-ক্লিক প্রিন্ট ইঞ্জিন (১ পেজেই প্রিন্ট হবে) */
+  /* 🟢 ১০০% গ্যারান্টেড ডিরেক্ট প্রিন্ট ইঞ্জিন (কোনো পপআপ ব্লকিং ছাড়াই সরাসরি কাজ করবে) */
   async function showGeneralCertPrintPreview(id) {
     let d = await fetchGeneralCertificateData(id);
     if (!d) return alert('সনদের তথ্য পাওয়া যায়নি।');
 
     var certHtml = certificateMarkup(d);
-    var printWin = window.open('', '_blank', 'width=950,height=750');
-    
-    if (printWin) {
-      printWin.document.open();
-      printWin.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Certificate - ${escapeGeneral(d.appId || id)}</title>
-          <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
-          <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
-          <style>
-            @page { size: A4 portrait; margin: 0mm !important; }
-            * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            html, body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Nikosh', 'Kalpurush', sans-serif !important; overflow: hidden !important; width: 210mm !important; height: 297mm !important; }
-            ${document.getElementById('generalCertificateStyles').innerHTML}
-          </style>
-        </head>
-        <body>
-          ${certHtml}
-          <script>
-            window.onload = function() {
-              setTimeout(function() {
-                window.focus();
-                window.print();
-              }, 400);
-            };
-          <\/script>
-        </body>
-        </html>
-      `);
-      printWin.document.close();
-    } else {
-      var oldFrame = document.getElementById('gen_direct_print_frame');
-      if (oldFrame) oldFrame.remove();
 
-      var iframe = document.createElement('iframe');
-      iframe.id = 'gen_direct_print_frame';
-      iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:210mm;height:297mm;border:0;';
-      document.body.appendChild(iframe);
+    var oldFrame = document.getElementById('gen_direct_print_frame');
+    if (oldFrame) oldFrame.remove();
 
-      var doc = iframe.contentWindow.document;
-      doc.open();
-      doc.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Certificate</title>
-          <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
-          <style>
-            @page { size: A4 portrait; margin: 0mm !important; }
-            * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            html, body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Nikosh', sans-serif !important; overflow: hidden !important; }
-            ${document.getElementById('generalCertificateStyles').innerHTML}
-          </style>
-        </head>
-        <body>${certHtml}</body>
-        </html>
-      `);
-      doc.close();
+    var iframe = document.createElement('iframe');
+    iframe.id = 'gen_direct_print_frame';
+    iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:210mm;height:297mm;border:0;opacity:0;';
+    document.body.appendChild(iframe);
 
-      setTimeout(function() {
+    var doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Certificate - ${escapeGeneral(d.appId || id)}</title>
+        <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+        <style>
+          @page { size: A4 portrait; margin: 0mm !important; }
+          * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          html, body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Nikosh', 'Kalpurush', sans-serif !important; overflow: hidden !important; width: 210mm !important; height: 297mm !important; }
+          ${document.getElementById('generalCertificateStyles').innerHTML}
+        </style>
+      </head>
+      <body>${certHtml}</body>
+      </html>
+    `);
+    doc.close();
+
+    // 🟢 সরাসরি প্রিন্ট ট্রিগার (৩৫০ms সেফটি টাইমার)
+    setTimeout(function() {
+      try {
         iframe.contentWindow.focus();
         iframe.contentWindow.print();
-      }, 400);
-    }
+      } catch(e) {
+        console.error('Print trigger error:', e);
+      }
+    }, 350);
   }
 
   function printGeneralCertificate(id) {
@@ -697,15 +657,69 @@
 
     var details = '<p><strong>আবেদনকারীর নাম:</strong> ' + escapeGeneral(name) + '<br><strong>পিতার নাম:</strong> ' + escapeGeneral(father) + '<br><strong>মাতার নাম:</strong> ' + escapeGeneral(mother) + '<br><strong>জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন:</strong> ' + generalBnDigits(nid) + '<br><strong>মোবাইল নম্বর:</strong> ' + generalBnDigits(mobile) + '<br><strong>ট্র্যাকিং আইডি:</strong> ' + escapeGeneral(d.appId || id) + '</p>';
 
-    var w = window.open('', '_blank');
-    if (!w) return alert('প্রিন্ট উইন্ডো খোলা যায়নি।');
-    w.document.write('<html lang="bn"><head><meta charset="UTF-8"><title>আবেদনপত্র - ' + escapeGeneral(type) + '</title><link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet"><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}body{margin:0;background:#fff;color:#111;font-family:Nikosh,"Noto Serif Bengali",serif}.paper{width:210mm;min-height:297mm;padding:25mm 25mm 20mm;font-size:18px;line-height:1.9}.heading{text-align:center;font-size:24px;text-decoration:underline;margin-bottom:20px}.date{text-align:right;margin-bottom:22px}.recipient{margin-bottom:18px}.subject{font-weight:bold;text-decoration:underline;margin:18px 0}.body{text-align:justify;text-indent:45px;min-height:105px}.closing{margin-top:22px}.details{border-top:1px solid #777;border-bottom:1px solid #777;padding:10px 0;margin-top:20px}.signature{margin-top:55px;margin-left:auto;width:210px;text-align:center}.signature-line{border-top:1px solid #111;margin-bottom:7px}.footer{margin-top:28px;font-size:14px;color:#444}@media print{.paper{min-height:297mm}}</style></head><body><main class="paper"><div class="heading">আবেদনপত্র</div><div class="date">তারিখ: ' + escapeGeneral(d.date || d.applyDate || generalPrintDate()) + '</div><div class="recipient">বরাবর<br>চেয়ারম্যান<br>' + GENERAL_UNION + ' পরিষদ<br>' + GENERAL_UPAZILA + ', ' + GENERAL_DISTRICT + '</div><div class="subject">বিষয়: ' + escapeGeneral(subject) + '</div><p>জনাব,</p><div class="body">' + body + '</div><p class="closing">অতএব, মহোদয়ের নিকট বিনীত আবেদন, উপরোক্ত বিষয়টি সদয় বিবেচনা করে আমাকে প্রয়োজনীয় ' + escapeGeneral(type) + ' প্রদান করতে মর্জি হয়।</p>' + details + '<div class="signature"><div class="signature-line">স্বাক্ষর</div><strong>' + escapeGeneral(name) + '</strong><br>আবেদনকারী<br>মোবাইল: ' + generalBnDigits(mobile) + '</div><div class="footer">আবেদনপত্রের ধরন: ' + escapeGeneral(type) + ' | ট্র্যাকিং আইডি: ' + escapeGeneral(d.appId || id) + '</div></main></body></html>');
-    w.document.close();
-    w.focus();
-    setTimeout(function() { w.print(); }, 400);
+    var oldFrame = document.getElementById('gen_app_copy_frame');
+    if (oldFrame) oldFrame.remove();
+
+    var iframe = document.createElement('iframe');
+    iframe.id = 'gen_app_copy_frame';
+    iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:210mm;height:297mm;border:0;opacity:0;';
+    document.body.appendChild(iframe);
+
+    var doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(`
+      <!DOCTYPE html>
+      <html lang="bn">
+      <head>
+        <meta charset="UTF-8">
+        <title>আবেদনপত্র - ${escapeGeneral(type)}</title>
+        <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+        <style>
+          @page { size: A4 portrait; margin: 0mm !important; }
+          * { box-sizing: border-box; }
+          body { margin: 0; padding: 25mm 25mm 20mm; background: #fff; color: #111; font-family: 'Nikosh', 'Kalpurush', serif; font-size: 18px; line-height: 1.9; }
+          .heading { text-align: center; font-size: 24px; text-decoration: underline; margin-bottom: 20px; font-weight: bold; }
+          .date { text-align: right; margin-bottom: 22px; }
+          .recipient { margin-bottom: 18px; }
+          .subject { font-weight: bold; text-decoration: underline; margin: 18px 0; }
+          .body { text-align: justify; text-indent: 45px; min-height: 105px; }
+          .closing { margin-top: 22px; }
+          .details { border-top: 1px solid #777; border-bottom: 1px solid #777; padding: 10px 0; margin-top: 20px; }
+          .signature { margin-top: 55px; margin-left: auto; width: 210px; text-align: center; }
+          .signature-line { border-top: 1px solid #111; margin-bottom: 7px; }
+          .footer { margin-top: 28px; font-size: 14px; color: #444; }
+        </style>
+      </head>
+      <body>
+        <div class="heading">আবেদনপত্র</div>
+        <div class="date">তারিখ: ${escapeGeneral(d.date || d.applyDate || generalPrintDate())}</div>
+        <div class="recipient">বরাবর<br>চেয়ারম্যান<br>${GENERAL_UNION} পরিষদ<br>${GENERAL_UPAZILA}, ${GENERAL_DISTRICT}</div>
+        <div class="subject">বিষয়: ${escapeGeneral(subject)}</div>
+        <p>জনাব,</p>
+        <div class="body">${body}</div>
+        <p class="closing">অতএব, মহোদয়ের নিকট বিনীত আবেদন, উপরোক্ত বিষয়টি সদয় বিবেচনা করে আমাকে প্রয়োজনীয় ${escapeGeneral(type)} প্রদান করতে মর্জি হয়।</p>
+        <div class="details">${details}</div>
+        <div class="signature">
+          <div class="signature-line">স্বাক্ষর</div>
+          <strong>${escapeGeneral(name)}</strong><br>
+          আবেদনকারী<br>
+          মোবাইল: ${generalBnDigits(mobile)}
+        </div>
+        <div class="footer">আবেদনপত্রের ধরন: ${escapeGeneral(type)} | ট্র্যাকিং আইডি: ${escapeGeneral(d.appId || id)}</div>
+      </body>
+      </html>
+    `);
+    doc.close();
+
+    setTimeout(function() {
+      try {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+      } catch(e) {}
+    }, 350);
   }
 
-  /* 🟢 এডিট মোডাল ওপেনার */
+  /* 🟢 এডিট মোডাল ওপেনার (বুটস্ট্র্যাপ বা পিওর JS উভয়েই ১০০% কাজ করবে) */
   async function openEditGeneralModal(id) {
     let d = await fetchGeneralCertificateData(id);
     if (!d) return alert('আবেদনের তথ্য পাওয়া যায়নি।');

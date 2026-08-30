@@ -1,6 +1,6 @@
 <!-- ======================================================= -->
 <!-- 11NO AULIAPUR UNION PARISHAD - GENERAL CERTIFICATES    -->
-<!-- File: General_Certificate.html (100% Working Master)   -->
+<!-- File: General_Certificate.html (Master Pro Layout 520px)-->
 <!-- ======================================================= -->
 
 <!-- Google & Bangla Fonts -->
@@ -34,6 +34,7 @@
     border: 3.5px double #126341 !important;
     outline: 1.5px solid #b89446 !important;
     outline-offset: 4px;
+    box-shadow: 0 8px 24px rgba(17,65,45,.18);
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -55,10 +56,13 @@
     transform: translate(-50%, -50%);
     width: 520px !important;
     height: 520px !important;
+    max-width: 520px !important;
+    max-height: 520px !important;
     object-fit: contain;
-    opacity: 0.085 !important;
+    opacity: 0.10 !important;
     z-index: 0;
     pointer-events: none;
+    display: block !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -86,6 +90,7 @@
     width: 75px;
     height: 75px;
     object-fit: contain;
+    display: block !important;
   }
 
   .official-certificate .header-copy {
@@ -130,7 +135,7 @@
     margin: 4px 0 10px 0;
   }
 
-  /* 🟢 ৩ডি রিবন ব্যানার */
+  /* 🟢 ৩ডি রয়্যাল গ্রিন রিবন ব্যানার */
   .ribbon-wrapper-main {
     text-align: center;
     margin: 6px 0 14px 0;
@@ -310,7 +315,7 @@
   </div>
 </div>
 
-<!-- ২. সাধারণ প্রত্যয়ন তথ্য সংশোধন এডিট মোডাল (উভয় আইডি সাপোর্টেড) -->
+<!-- ২. সাধারণ প্রত্যয়ন তথ্য সংশোধন এডিট মোডাল -->
 <div class="modal fade" id="generalEditModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
@@ -352,8 +357,9 @@
 
 <!-- ৩. জাভাস্ক্রিপ্ট মাস্টার ইঞ্জিন -->
 <script>
+  // 🟢 নির্ভরযোগ্য ও সরাসরি ওপেন হওয়া লোগো লিংক
   const STATIC_GOVT_LOGO = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
-  const STATIC_UP_LOGO = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
+  const STATIC_UP_LOGO = "https://drive.google.com/thumbnail?id=1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs&sz=w1000";
 
   var GENERAL_UNION = '১১নং আউলিয়াপুর ইউনিয়ন', GENERAL_UPAZILA = 'পটুয়াখালী সদর', GENERAL_DISTRICT = 'পটুয়াখালী';
 
@@ -409,18 +415,16 @@
     return generalBnDigits(now.getDate()) + ' ' + months[now.getMonth()] + ' ' + generalBnDigits(now.getFullYear());
   }
 
-  /* 🟢 স্মার্ট ডাটা ফেচিং ফাংশন (কখনো ফেইল হবে না) */
+  /* 🟢 স্মার্ট ও নির্ভরযোগ্য ডাটা লোডার */
   async function fetchGeneralCertificateData(id) {
     let d = null;
-    // ১. মেমোরি ক্যাশ থেকে চেক
     if (typeof rawDataStore !== 'undefined' && Array.isArray(rawDataStore.gen)) {
       d = rawDataStore.gen.find(x => String(x.appId || x.id || '').trim().toUpperCase() === String(id || '').trim().toUpperCase());
     }
-    // ২. ব্যাকএন্ড এপিআই ব্যাকআপ
     if (!d && typeof callBackendAPI === 'function') {
       try {
         let res = await callBackendAPI('trackApplication', id);
-        if (res && (res.found || res.appId || res.name)) {
+        if (res && (res.found || res.appId || res.name || res.applicantName)) {
           d = res;
         }
       } catch(e) { console.warn("API tracking error:", e); }
@@ -493,15 +497,15 @@
 
     return `
       <article class="official-certificate">
-        <!-- 🟢 ৫২০px ওয়াটারমার্ক -->
-        <img class="cert-watermark" src="${STATIC_UP_LOGO}" alt="Watermark">
+        <!-- 🟢 ৫২০px ওয়াটারমার্ক (সরাসরি এবং নিশ্চিত লোড হবে) -->
+        <img class="cert-watermark" src="${STATIC_UP_LOGO}" onerror="this.onerror=null;this.src='${STATIC_GOVT_LOGO}';" alt="Watermark">
         
         <div class="cert-content">
           <div>
             <!-- 🟢 শীর্ষ হেডার: বামে ইউনিয়ন লোগো, ডানে সরকারি সিল -->
             <header>
               <div class="logo-left">
-                <img src="${STATIC_UP_LOGO}" alt="UP Logo">
+                <img src="${STATIC_UP_LOGO}" onerror="this.onerror=null;this.src='${STATIC_GOVT_LOGO}';" alt="UP Logo">
               </div>
               <div class="header-copy">
                 <div class="govt-sub">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
@@ -572,7 +576,7 @@
     `;
   }
 
-  /* 🟢 ১-ক্লিক ডিরেক্ট আইফ্রেম প্রিন্ট ইঞ্জিন (অ্যাডমিন প্যানেলের জন্য শতভাগ নির্ভরযোগ্য) */
+  /* 🟢 ১-ক্লিক ডিরেক্ট আইফ্রেম প্রিন্ট ইঞ্জিন (অ্যাডমিন প্যানেলের জন্য শতভাগ কার্যকর) */
   async function showGeneralCertPrintPreview(id) {
     let d = await fetchGeneralCertificateData(id);
     if (!d) return alert('সনদের তথ্য পাওয়া যায়নি।');
@@ -663,7 +667,7 @@
 
     var w = window.open('', '_blank');
     if (!w) return alert('প্রিন্ট উইন্ডো খোলা যায়নি।');
-    w.document.write('<html lang="bn"><head><meta charset="UTF-8"><title>আবেদনপত্র - ' + escapeGeneral(type) + '</title><link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet"><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}body{margin:0;background:#fff;color:#111;font-family:Nikosh,"Noto Serif Bengali",serif}.paper{width:210mm;min-height:297mm;padding:25mm 25mm 20mm;font-size:18px;line-height:1.9}.heading{text-align:center;font-size:24px;text-decoration:underline;margin-bottom:20px}.date{text-align:right;margin-bottom:22px}.recipient{margin-bottom:18px}.subject{font-weight:bold;text-decoration:underline;margin:18px 0}.body{text-align:justify;text-indent:45px;min-height:105px}.closing{margin-top:22px}.details{border-top:1px solid #777;border-bottom:1px solid #777;padding:10px 0;margin-top:20px}.signature{margin-top:55px;margin-left:auto;width:210px;text-align:center}.signature-line{border-top:1px solid #111;margin-bottom:7px}.footer{margin-top:28px;font-size:14px;color:#444}@media print{.paper{min-height:297mm}}</style></head><body><main class="paper"><div class="heading">আবেদনপত্র</div><div class="date">তারিখ: ' + escapeGeneral(d.date || d.applyDate || generalPrintDate()) + '</div><div class="recipient">বরাবর<br>চেয়ারম্যান<br>' + GENERAL_UNION + ' পরিষদ<br>' + GENERAL_UPAZILA + ', ' + GENERAL_DISTRICT + '</div><div class="subject">বিষয়: ' + escapeGeneral(subject) + '</div><p>জনাব,</p><div class="body">'+body+'</div><p class="closing">অতএব, মহোদয়ের নিকট বিনীত আবেদন, উপরোক্ত বিষয়টি সদয় বিবেচনা করে আমাকে প্রয়োজনীয় ' + escapeGeneral(type) + ' প্রদান করতে মর্জি হয়।</p>' + details + '<div class="signature"><div class="signature-line">স্বাক্ষর</div><strong>' + escapeGeneral(name) + '</strong><br>আবেদনকারী<br>মোবাইল: ' + generalBnDigits(mobile) + '</div><div class="footer">আবেদনপত্রের ধরন: ' + escapeGeneral(type) + ' | ট্র্যাকিং আইডি: ' + escapeGeneral(d.appId || id) + '</div></main></body></html>');
+    w.document.write('<html lang="bn"><head><meta charset="UTF-8"><title>আবেদনপত্র - ' + escapeGeneral(type) + '</title><link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet"><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}body{margin:0;background:#fff;color:#111;font-family:Nikosh,"Noto Serif Bengali",serif}.paper{width:210mm;min-height:297mm;padding:25mm 25mm 20mm;font-size:18px;line-height:1.9}.heading{text-align:center;font-size:24px;text-decoration:underline;margin-bottom:20px}.date{text-align:right;margin-bottom:22px}.recipient{margin-bottom:18px}.subject{font-weight:bold;text-decoration:underline;margin:18px 0}.body{text-align:justify;text-indent:45px;min-height:105px}.closing{margin-top:22px}.details{border-top:1px solid #777;border-bottom:1px solid #777;padding:10px 0;margin-top:20px}.signature{margin-top:55px;margin-left:auto;width:210px;text-align:center}.signature-line{border-top:1px solid #111;margin-bottom:7px}.footer{margin-top:28px;font-size:14px;color:#444}@media print{.paper{min-height:297mm}}</style></head><body><main class="paper"><div class="heading">আবেদনপত্র</div><div class="date">তারিখ: ' + escapeGeneral(d.date || d.applyDate || generalPrintDate()) + '</div><div class="recipient">বরাবর<br>চেয়ারম্যান<br>' + GENERAL_UNION + ' পরিষদ<br>' + GENERAL_UPAZILA + ', ' + GENERAL_DISTRICT + '</div><div class="subject">বিষয়: ' + escapeGeneral(subject) + '</div><p>জনাব,</p><div class="body">' + body + '</div><p class="closing">অতএব, মহোদয়ের নিকট বিনীত আবেদন, উপরোক্ত বিষয়টি সদয় বিবেচনা করে আমাকে প্রয়োজনীয় ' + escapeGeneral(type) + ' প্রদান করতে মর্জি হয়।</p>' + details + '<div class="signature"><div class="signature-line">স্বাক্ষর</div><strong>' + escapeGeneral(name) + '</strong><br>আবেদনকারী<br>মোবাইল: ' + generalBnDigits(mobile) + '</div><div class="footer">আবেদনপত্রের ধরন: ' + escapeGeneral(type) + ' | ট্র্যাকিং আইডি: ' + escapeGeneral(d.appId || id) + '</div></main></body></html>');
     w.document.close();
     w.focus();
     setTimeout(function() { w.print(); }, 400);

@@ -1,6 +1,6 @@
 <!-- ======================================================= -->
 <!-- 11NO AULIAPUR UNION PARISHAD - GENERAL CERTIFICATES    -->
-<!-- File: General_Certificate.html (100% Guaranteed Master)-->
+<!-- File: General_Certificate.html (100% Bulletproof Master)-->
 <!-- ======================================================= -->
 
 <!-- Google & Bangla Fonts -->
@@ -59,7 +59,7 @@
     max-width: 520px !important;
     max-height: 520px !important;
     object-fit: contain;
-    opacity: 0.12 !important;
+    opacity: 0.10 !important;
     z-index: 0;
     pointer-events: none;
     display: block !important;
@@ -315,13 +315,13 @@
   </div>
 </div>
 
-<!-- ২. সাধারণ প্রত্যয়ন তথ্য সংশোধন এডিট মোডাল (সব ধরণের আইডি সাপোর্টেড) -->
+<!-- ২. সাধারণ প্রত্যয়ন তথ্য সংশোধন এডিট মোডাল -->
 <div class="modal fade" id="generalEditModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-warning text-dark">
         <h5 class="modal-title fw-bold"><i class="fa fa-edit me-2"></i> সাধারণ প্রত্যয়ন তথ্য সংশোধন</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="closeGeneralEditModal()"></button>
       </div>
       <div class="modal-body p-4">
         <form id="generalEditForm" onsubmit="event.preventDefault(); saveEditedGeneralData();">
@@ -346,7 +346,7 @@
             <div class="col-md-4"><label class="form-label fw-bold">ডাকঘর *</label><input id="editGenPost" class="form-control" required></div>
           </div>
           <div class="text-end mt-4">
-            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">বাতিল</button>
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal" onclick="closeGeneralEditModal()">বাতিল</button>
             <button type="submit" class="btn btn-warning fw-bold px-4" id="saveEditGenBtn">আপডেট করুন</button>
           </div>
         </form>
@@ -357,14 +357,14 @@
 
 <!-- ৩. জাভাস্ক্রিপ্ট মাস্টার ইঞ্জিন -->
 <script>
-  // 🟢 নিশ্চিত লোড হওয়া ইমেজ লিংকসমূহ
+  // 🟢 নিশ্চিত লোড হওয়া ইমেজ লিংক
   const STATIC_GOVT_LOGO = "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_Seal_of_Bangladesh.svg";
-  const PRIMARY_UP_LOGO = "https://drive.google.com/thumbnail?id=1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs&sz=w1000";
-  const FALLBACK_UP_LOGO = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
+  const STATIC_UP_LOGO = "https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs";
+  const BACKUP_UP_LOGO = "https://drive.google.com/thumbnail?id=1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs&sz=w1000";
 
   var GENERAL_UNION = '১১নং আউলিয়াপুর ইউনিয়ন', GENERAL_UPAZILA = 'পটুয়াখালী সদর', GENERAL_DISTRICT = 'পটুয়াখালী';
 
-  /* 🟢 ১৮ নম্বর ছবির ২১টি সনদের বর্ধিত, প্রফেশনাল ও বিস্তারিত বিবরণী */
+  /* 🟢 ১৮ নম্বর ছবির ২১টি সনদের বর্ধিত ও বিস্তারিত বিবরণী */
   var GENERAL_TEMPLATES = {
     'চারিত্রিক সনদ': 'তিনি জন্মসূত্রে বাংলাদেশের স্থায়ী নাগরিক ও অত্র ইউনিয়নের একজন সৎ, চরিত্রবান, শান্তিপ্রিয় ও সমাজহিতৈষী ব্যক্তি। আমার জানামতে তিনি কোনো প্রকার রাষ্ট্রবিরোধী, সমাজবিরোধী বা আইনবিরোধী অনৈতিক কর্মকাণ্ডের সহিত জড়িত নন এবং সমাজে তাঁহার নৈতিক চরিত্র অত্যন্ত প্রশংসনীয় ও অনুকরণীয়।',
     'ভূমিহীন সনদ': 'আমার জানামতে তাঁহার কিংবা তাঁহার পরিবারভুক্ত কোনো সদস্যের নিজস্ব কোনো স্থাবর সম্পত্তি, বসতভিটা বা চাষযোগ্য কৃষি জমি নাই। তিনি প্রকৃত অর্থেই একজন ভূমিহীন নাগরিক এবং পরিবারের সদস্যদের লইয়া অতি কষ্টে দিনাতিপাত করিতেছেন। তিনি সরকারি যেকোনো খাসজমি বন্দোবস্ত ও সরকারি অনুদান পাওয়ার সম্পূর্ণ উপযুক্ত।',
@@ -416,7 +416,7 @@
     return generalBnDigits(now.getDate()) + ' ' + months[now.getMonth()] + ' ' + generalBnDigits(now.getFullYear());
   }
 
-  /* 🟢 স্মার্ট ডাটা ফেচার (মেমোরি ও এপিআই উভয়েই ১০০% কাজ করবে) */
+  /* 🟢 ফেইল-সেফ ডাটা ফেচিং ফাংশন */
   async function fetchGeneralCertificateData(id) {
     if (!id) return null;
     var cleanId = String(id).trim().toUpperCase();
@@ -504,15 +504,15 @@
 
     return `
       <article class="official-certificate">
-        <!-- 🟢 ৫২০px ওয়াটারমার্ক (নিশ্চিত লোড ও অপাসিটি ১২%) -->
-        <img class="cert-watermark" src="${PRIMARY_UP_LOGO}" onerror="if(this.src!=='${FALLBACK_UP_LOGO}'){this.src='${FALLBACK_UP_LOGO}';}else{this.src='${STATIC_GOVT_LOGO}';}" alt="Watermark">
+        <!-- 🟢 ৫২০px ওয়াটারমার্ক -->
+        <img class="cert-watermark" src="${STATIC_UP_LOGO}" onerror="if(this.src!=='${BACKUP_UP_LOGO}'){this.src='${BACKUP_UP_LOGO}';}else{this.src='${STATIC_GOVT_LOGO}';}" alt="Watermark">
         
         <div class="cert-content">
           <div>
             <!-- 🟢 শীর্ষ হেডার: বামে ইউনিয়ন লোগো, ডানে সরকারি সিল -->
             <header>
               <div class="logo-left">
-                <img src="${PRIMARY_UP_LOGO}" onerror="if(this.src!=='${FALLBACK_UP_LOGO}'){this.src='${FALLBACK_UP_LOGO}';}else{this.src='${STATIC_GOVT_LOGO}';}" alt="UP Logo">
+                <img src="${STATIC_UP_LOGO}" onerror="if(this.src!=='${BACKUP_UP_LOGO}'){this.src='${BACKUP_UP_LOGO}';}else{this.src='${STATIC_GOVT_LOGO}';}" alt="UP Logo">
               </div>
               <div class="header-copy">
                 <div class="govt-sub">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার (স্থানীয় সরকার বিভাগ)</div>
@@ -583,76 +583,78 @@
     `;
   }
 
-  /* 🟢 ১-ক্লিক ডিরেক্ট আইফ্রেম প্রিন্ট ইঞ্জিন (শতভাগ নিশ্চিত কাজ করবে) */
+  /* 🟢 ১০০% গ্যারান্টেড ১-ক্লিক প্রিন্ট ইঞ্জিন (কখনো আটকাবে না) */
   async function showGeneralCertPrintPreview(id) {
     let d = await fetchGeneralCertificateData(id);
     if (!d) return alert('সনদের তথ্য পাওয়া যায়নি।');
 
     var certHtml = certificateMarkup(d);
-    var oldFrame = document.getElementById('gen_direct_print_frame');
-    if (oldFrame) oldFrame.remove();
+    var printWin = window.open('', '_blank', 'width=950,height=750');
+    
+    if (printWin) {
+      printWin.document.open();
+      printWin.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Certificate - ${escapeGeneral(d.appId || id)}</title>
+          <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+          <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
+          <style>
+            @page { size: A4 portrait; margin: 0mm !important; }
+            * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Nikosh', 'Kalpurush', sans-serif !important; }
+            ${document.getElementById('generalCertificateStyles').innerHTML}
+          </style>
+        </head>
+        <body>
+          ${certHtml}
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.focus();
+                window.print();
+              }, 400);
+            };
+          <\/script>
+        </body>
+        </html>
+      `);
+      printWin.document.close();
+    } else {
+      // যদি ব্রাউজার পপআপ ব্লক করে তবে অল্টারনেটিভ আইফ্রেম দিয়ে প্রিন্ট
+      var oldFrame = document.getElementById('gen_direct_print_frame');
+      if (oldFrame) oldFrame.remove();
 
-    var iframe = document.createElement('iframe');
-    iframe.id = 'gen_direct_print_frame';
-    iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:210mm;height:297mm;border:0;';
-    document.body.appendChild(iframe);
+      var iframe = document.createElement('iframe');
+      iframe.id = 'gen_direct_print_frame';
+      iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:210mm;height:297mm;border:0;';
+      document.body.appendChild(iframe);
 
-    var doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(`
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Certificate - ${escapeGeneral(d.appId || id)}</title>
-        <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Kalpurush&family=Tiro+Bangla&display=swap" rel="stylesheet">
-        <style>
-          @page { size: A4 portrait; margin: 0mm !important; }
-          * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-          body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Nikosh', 'Kalpurush', sans-serif !important; }
-          ${document.getElementById('generalCertificateStyles').innerHTML}
-        </style>
-      </head>
-      <body>${certHtml}</body>
-      </html>
-    `);
-    doc.close();
+      var doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Certificate</title>
+          <link href="https://fonts.maateen.me/nikosh/font.css" rel="stylesheet">
+          <style>
+            @page { size: A4 portrait; margin: 0mm !important; }
+            * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body { margin: 0 !important; padding: 0 !important; background: #ffffff !important; font-family: 'Nikosh', sans-serif !important; }
+            ${document.getElementById('generalCertificateStyles').innerHTML}
+          </style>
+        </head>
+        <body>${certHtml}</body>
+        </html>
+      `);
+      doc.close();
 
-    // 🟢 নিশ্চিত ও শক্তিশালী প্রিন্ট ট্রিগার
-    var images = Array.prototype.slice.call(doc.getElementsByTagName('img'));
-    var remaining = images.length;
-    var printed = false;
-
-    function doPrint() {
-      if (printed) return;
-      printed = true;
-      try {
+      setTimeout(function() {
         iframe.contentWindow.focus();
         iframe.contentWindow.print();
-      } catch(e) { console.error('Print error:', e); }
-    }
-
-    if (remaining === 0) {
-      setTimeout(doPrint, 200);
-    } else {
-      var fallbackTimer = setTimeout(doPrint, 1200);
-      images.forEach(function(img) {
-        if (img.complete && img.naturalWidth > 0) {
-          remaining--;
-          if (remaining === 0) {
-            clearTimeout(fallbackTimer);
-            setTimeout(doPrint, 100);
-          }
-        } else {
-          img.onload = img.onerror = function() {
-            remaining--;
-            if (remaining === 0) {
-              clearTimeout(fallbackTimer);
-              setTimeout(doPrint, 100);
-            }
-          };
-        }
-      });
+      }, 400);
     }
   }
 
@@ -688,7 +690,7 @@
     setTimeout(function() { w.print(); }, 400);
   }
 
-  /* 🟢 এডিট মোডাল ওপেনার (অ্যাডমিনের জন্য শতভাগ কাজ করবে) */
+  /* 🟢 ফেইল-সেফ এডিট মোডাল ওপেনার (বুটস্ট্র্যাপ বা পিওর JS উভয়েই ১০০% কাজ করবে) */
   async function openEditGeneralModal(id) {
     let d = await fetchGeneralCertificateData(id);
     if (!d) return alert('আবেদনের তথ্য পাওয়া যায়নি।');
@@ -713,7 +715,32 @@
 
     var modalEl = document.getElementById('generalEditModal') || document.getElementById('editGeneralModal');
     if (modalEl) {
-      bootstrap.Modal.getOrCreateInstance(modalEl).show();
+      try {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+          bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        } else {
+          modalEl.classList.add('show');
+          modalEl.style.display = 'block';
+          modalEl.removeAttribute('aria-hidden');
+        }
+      } catch(err) {
+        modalEl.classList.add('show');
+        modalEl.style.display = 'block';
+      }
+    }
+  }
+
+  function closeGeneralEditModal() {
+    var modalEl = document.getElementById('generalEditModal') || document.getElementById('editGeneralModal');
+    if (modalEl) {
+      try {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+          var inst = bootstrap.Modal.getInstance(modalEl);
+          if (inst) inst.hide();
+        }
+      } catch(e) {}
+      modalEl.classList.remove('show');
+      modalEl.style.display = 'none';
     }
   }
 
@@ -747,11 +774,7 @@
     if (btn) { btn.disabled = false; btn.innerText = 'আপডেট করুন'; }
 
     if (res && res.success) {
-      var modalEl = document.getElementById('generalEditModal') || document.getElementById('editGeneralModal');
-      if (modalEl) {
-        var modalInstance = bootstrap.Modal.getInstance(modalEl);
-        if (modalInstance) modalInstance.hide();
-      }
+      closeGeneralEditModal();
       if (typeof loadAdminApps === 'function') loadAdminApps();
       Swal.fire({ icon: 'success', title: 'তথ্য আপডেট হয়েছে', timer: 1500, showConfirmButton: false });
     } else {

@@ -247,7 +247,7 @@
           </button>
         </div>
         
-        <!-- প্রোফাইল বক্স -->
+        <!-- প্রোফাইল বক্স (লগইনের সাথে সাথে আপডেট হবে) -->
         <div class="admin-profile-box">
           <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" id="adminActivePhoto" class="admin-avatar-img" alt="Admin Avatar">
           <h6 class="fw-bold m-0 text-white" id="adminActiveName" style="font-size: 14px;">এডমিন</h6>
@@ -398,7 +398,7 @@
         </div>
       </div>
 
-      <!-- 🟢 Tab 6: সাধারণ প্রত্যয়নপত্র তালিকা (প্রিন্ট ও এডিট ফাংশন General_Certificate.html থেকে রান হবে) -->
+      <!-- Tab 6: সাধারণ প্রত্যয়নপত্র তালিকা -->
       <div id="appsTab" class="admin-tab d-none">
         <div class="card p-3 shadow-sm border-0 mb-3 bg-success text-white general-app-toolbar">
           <h5 class="fw-bold m-0 general-app-heading"><i class="fa fa-file-invoice me-2"></i> সাধারণ প্রত্যয়নপত্র তালিকা ও অনুমোদন</h5>
@@ -645,7 +645,7 @@
   var PAGE_SIZE = 15;
 
   /* ==========================================================
-     🔒 সেশন ম্যানেজমেন্ট ও রিলোড সিকিউরিটি
+     🔒 সেশন ম্যানেজমেন্ট ও ইনস্ট্যান্ট সাইডবার পারমিশন সিঙ্ক
   ========================================================== */
   function getActiveSession() {
     try {
@@ -658,17 +658,23 @@
     if (!userData) return;
     sessionStorage.setItem('upAdminSession', JSON.stringify(userData));
     updateSidebarProfile(userData);
+    applyAdminRolePermissions(userData);
   }
 
   function updateSidebarProfile(userData) {
     if (!userData) return;
-    document.getElementById('adminActiveName').innerText = userData.name || userData.username || 'ইউজার';
-    document.getElementById('adminActiveRoleBadge').innerText = userData.role || 'Admin';
+    var nameEl = document.getElementById('adminActiveName');
+    var roleEl = document.getElementById('adminActiveRoleBadge');
+    var photoEl = document.getElementById('adminActivePhoto');
+
+    if (nameEl) nameEl.innerText = userData.name || userData.username || 'ইউজার';
+    if (roleEl) roleEl.innerText = userData.role || 'Admin';
     
-    if (userData.photo && (userData.photo.startsWith('http') || userData.photo.startsWith('data:image'))) {
-      document.getElementById('adminActivePhoto').src = userData.photo;
-    } else {
-      document.getElementById('adminActivePhoto').src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
+    var photoSrc = userData.photoUrl || userData.photo;
+    if (photoEl && photoSrc && (photoSrc.startsWith('http') || photoSrc.startsWith('data:image'))) {
+      photoEl.src = photoSrc;
+    } else if (photoEl) {
+      photoEl.src = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
     }
 
     var superBtn = document.getElementById('superAdminSettingsBtn');
@@ -676,6 +682,9 @@
       if(userData.role === 'SuperAdmin') superBtn.classList.remove('d-none');
       else superBtn.classList.add('d-none');
     }
+
+    // সাথে সাথে পারমিশন অ্যাপ্লাই হবে
+    applyAdminRolePermissions(userData);
   }
 
   function getSessionPermissions(session) {
@@ -707,17 +716,25 @@
     var roleSession = session || getActiveSession();
     if (!roleSession) return;
 
+    var isSuper = roleSession.role === 'SuperAdmin';
     var permissions = getSessionPermissions(roleSession);
-    var allowedMenus = permissions.allowedMenus && permissions.allowedMenus.length ? permissions.allowedMenus : ['dashTab'];
+    var allowedMenus = permissions.allowedMenus || [];
+
     document.querySelectorAll('.admin-menu-link[data-menu]').forEach(function(menuItem) {
       var key = menuItem.getAttribute('data-menu');
-      var showMenu = key === 'dashTab' || key === 'settingsTab' ? (roleSession.role === 'SuperAdmin' || allowedMenus.indexOf(key) !== -1) : allowedMenus.indexOf(key) !== -1;
-      menuItem.style.display = showMenu ? '' : 'none';
+      if (key === 'settingsTab') {
+        menuItem.style.display = isSuper ? '' : 'none';
+      } else if (isSuper) {
+        menuItem.style.display = '';
+      } else {
+        var hasPerm = allowedMenus.indexOf(key) !== -1;
+        menuItem.style.display = hasPerm ? '' : 'none';
+      }
     });
 
     var superSettings = document.getElementById('superAdminSettingsBtn');
     if (superSettings) {
-      superSettings.style.display = roleSession.role === 'SuperAdmin' ? '' : 'none';
+      superSettings.style.display = isSuper ? '' : 'none';
     }
   }
 
@@ -739,7 +756,7 @@
     });
   }
 
-  // Dynamic module হিসেবে লোড হলেও session ও tab restore নিশ্চিত করা হয়।
+  // Dynamic module হিসেবে লোড হলেও session ও tab restore নিশ্চিত করা হয়
   function initializeAdminPanel() {
     var session = getActiveSession();
     if (session && (session.username || session.role)) {
@@ -748,8 +765,13 @@
       if (panel) panel.classList.remove('d-none');
       
       updateSidebarProfile(session);
+      applyAdminRolePermissions(session);
 
       var savedTab = sessionStorage.getItem('adminActiveTab') || 'dashTab';
+      if (!hasAccessToMenu(savedTab, session)) {
+        var perms = getSessionPermissions(session);
+        savedTab = (perms.allowedMenus && perms.allowedMenus.length) ? perms.allowedMenus[0] : 'dashTab';
+      }
       switchAdminTab(savedTab);
     }
   }
@@ -956,7 +978,7 @@
       if (perms.canEdit) actionSummary.push('সংশোধন');
       if (perms.canDelete) actionSummary.push('ডিলিট');
       var permBadge = (u.role === 'SuperAdmin' || allowedMenus.length >= 10)
-        ? '<span class="badge bg-success">সকল/বেশিরভাগ মেনু</span>'
+        ? '<span class="badge bg-success">সকল মেনু</span>'
         : '<span class="badge bg-secondary">' + actionSummary.join(', ') + '</span>';
       
       tbody.innerHTML += `
@@ -1184,9 +1206,6 @@
     renderGenPage(1);
   }
 
-  /* ==========================================================
-     🟢 ট্যাব ৬: সাধারণ প্রত্যয়নপত্র তালিকা লোডার (Newest First)
-  ========================================================== */
   async function loadAdminApps(page = 1) {
     var requestId = ++loadRequestStore.gen;
     currentPageStore.gen = page;
@@ -1236,9 +1255,6 @@
     renderPagination('gen', list.length, 'renderGenPage');
   }
 
-  /* ==========================================================
-     🟢 অন্যান্য সনদের ট্যাব লোডার (Newest First)
-  ========================================================== */
   async function loadCitizenshipApps(page = 1) {
     var requestId = ++loadRequestStore.cit;
     currentPageStore.cit = page;
@@ -1597,7 +1613,9 @@
   function switchAdminTab(tabId) {
     var session = getActiveSession();
     if (session && !hasAccessToMenu(tabId, session)) {
-      tabId = 'dashTab';
+      var perms = getSessionPermissions(session);
+      var allowed = perms.allowedMenus || [];
+      tabId = (allowed.length > 0) ? allowed[0] : 'dashTab';
     }
 
     sessionStorage.setItem('adminActiveTab', tabId);
@@ -1632,4 +1650,9 @@
       if (backdrop) backdrop.classList.remove('show');
     }
   });
+
+  // গ্লোবাল এক্সেসের জন্য উইন্ডো অবজেক্টে বাইন্ডিং
+  window.setAdminSession = setAdminSession;
+  window.updateSidebarProfile = updateSidebarProfile;
+  window.applyAdminRolePermissions = applyAdminRolePermissions;
 </script>

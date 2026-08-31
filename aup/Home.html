@@ -4,11 +4,11 @@
 <!-- ========================================== -->
 
 <style>
-  /* 🟢 হিরো ব্যানার স্টাইল (বাটন ক্লিক ফিক্সড) */
+  /* 🟢 হিরো ব্যানার স্টাইল */
   .hero-smart-banner {
     background: linear-gradient(135deg, #00582f 0%, #007a40 60%, #024e2b 100%);
     border-radius: 20px;
-    padding: 35px 30px;
+    padding: 30px 28px;
     color: #ffffff;
     box-shadow: 0 15px 35px rgba(0, 104, 55, 0.2);
     position: relative;
@@ -24,8 +24,20 @@
     height: 200px;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 50%;
-    pointer-events: none !important; /* ক্লিকের বাধা দূর করা হয়েছে */
+    pointer-events: none !important;
     z-index: 1;
+  }
+
+  /* 🟢 ব্যানার হেডিং ১ লাইনে ফিক্সড */
+  .hero-banner-heading {
+    font-size: clamp(19px, 2.1vw, 24.5px) !important;
+    white-space: nowrap !important;
+    letter-spacing: -0.2px;
+  }
+  @media (max-width: 991.98px) {
+    .hero-banner-heading {
+      white-space: normal !important;
+    }
   }
 
   /* 🟢 আপনার তথ্য যাচাই করুন সার্চ বার */
@@ -53,7 +65,7 @@
   .verify-live-search input {
     border: none;
     outline: none;
-    font-size: 15px;
+    font-size: 14.5px;
     width: 100%;
     color: #1e293b;
     background: transparent;
@@ -200,14 +212,14 @@
   <!-- 🟢 হিরো ব্যানার সেকশন -->
   <div class="hero-smart-banner">
     <div class="row align-items-center g-3">
-      <div class="col-lg-5">
+      <div class="col-lg-6">
         <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">স্মার্ট সেবা • ক্যাশলেস ইউনিয়ন</span>
-        <h2 class="fw-bold mb-2 text-white">নাগরিক সেবায় ডিজিটাল ইউনিয়ন পরিষদ</h2>
-        <p class="text-white-50 mb-0" style="font-size: 14.5px;">
+        <h2 class="fw-bold mb-2 text-white hero-banner-heading">নাগরিক সেবায় ডিজিটাল ইউনিয়ন পরিষদ</h2>
+        <p class="text-white-50 mb-0" style="font-size: 14px;">
           ঘরে বসেই নির্ভুল ও দ্রুত সময়ে সকল প্রকার সনদ এবং ট্রেড লাইসেন্স গ্রহণ করুন।
         </p>
       </div>
-      <div class="col-lg-7 verify-live-search-wrap">
+      <div class="col-lg-6 verify-live-search-wrap">
         <!-- 🟢 আপনার তথ্য যাচাই করুন সার্চ বক্স -->
         <div class="text-end mb-1">
           <span class="badge bg-light text-success fw-bold px-3 py-1 rounded-pill"><i class="fa-solid fa-shield-halved me-1"></i>আপনার তথ্য যাচাই করুন</span>
@@ -225,7 +237,7 @@
 
   <div class="row g-4">
     
-    <!-- 🟢 বাম পাশ (col-lg-9): ২৫টি সেবা অথবা সার্চ রেজাল্ট কার্ড এখানেই আসবে -->
+    <!-- 🟢 বাম পাশ (col-lg-9): ২৫টি সেবা অথবা সার্চ রেজাল্ট কার্ড -->
     <div class="col-lg-9">
       
       <!-- কন্টেইনার ১: স্বাভাবিক অবস্থায় ২৫টি সেবার গ্রিড দৃশ্যমান থাকবে -->
@@ -319,20 +331,26 @@
 
     </div>
 
-    <!-- 🟢 ডান পাশ (col-lg-3): পরিচিতি, হটলাইন ও ই-সেবা লিংক (সর্বদা অ্যাক্টিভ) -->
+    <!-- 🟢 ডান পাশ (col-lg-3): পরিচিতি বক্স (বামপাশের মতো হেডার সহ), হটলাইন ও ই-সেবা লিংক -->
     <div class="col-lg-3">
       
-      <!-- পরিচিতি উইজেট -->
-      <div class="smart-widget-card text-center p-3">
-        <img src="https://lh3.googleusercontent.com/d/1vZUuzu8m0kk5V3rc5x9Meb8nnh-bL660" alt="Planner" class="rounded-4 border mb-2 img-fluid shadow-sm" style="max-height: 170px; width: 100%; object-fit: cover;">
-        <small class="text-success fw-bold d-block">পরিকল্পনা ও সার্বিক পরিচালনায়:</small>
-        <h6 class="fw-bold text-dark m-0 mt-1">মোঃ কামরুল ইসলাম সবুজ</h6>
-        <small class="text-muted d-block">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</small>
-        <div class="d-flex justify-content-center gap-2 mt-2">
-          <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold" onclick="openPhoneCallModal('01710181059', 'মোঃ কামরুল ইসলাম সবুজ')">
-            <i class="fa-solid fa-phone me-1"></i> কল
-          </button>
-          <a href="https://facebook.com/kisabuj35" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold"><i class="fa-brands fa-facebook me-1"></i> ফেসবুক</a>
+      <!-- পরিচিতি উইজেট (হেডার সহ সাজানো) -->
+      <div class="smart-widget-card text-center">
+        <div class="smart-widget-header text-start">
+          <i class="fa-solid fa-user-tie me-2"></i>পরিকল্পনা ও সার্বিক পরিচালনায়
+        </div>
+        <div class="p-3">
+          <img src="https://lh3.googleusercontent.com/d/1vZUuzu8m0kk5V3rc5x9Meb8nnh-bL660" alt="Planner" class="rounded-4 border mb-2 img-fluid shadow-sm" style="max-height: 165px; width: 100%; object-fit: cover;">
+          <h6 class="fw-bold text-dark m-0 mt-2" style="font-size: 15.5px;">মোঃ কামরুল ইসলাম সবুজ</h6>
+          <small class="text-muted d-block" style="font-size: 12.5px;">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</small>
+          <div class="d-flex justify-content-center gap-2 mt-3">
+            <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold" onclick="openPhoneCallModal('01710181059', 'মোঃ কামরুল ইসলাম সবুজ')">
+              <i class="fa-solid fa-phone me-1"></i> কল
+            </button>
+            <a href="https://facebook.com/kisabuj35" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold">
+              <i class="fa-brands fa-facebook me-1"></i> ফেসবুক
+            </a>
+          </div>
         </div>
       </div>
 
@@ -590,7 +608,7 @@
       </div>
     `;
 
-    // 🟢 লুপ চালিয়ে ওই মোবাইল/এনআইডি/আইডির সকল আবেদন একে একে কার্ড হিসেবে রেন্ডার করা
+    // 🟢 লুপ চালিয়ে ওই ব্যক্তির সকল আবেদন একে একে কার্ড হিসেবে রেন্ডার করা
     list.forEach(function(data) {
       var isApproved = (data.status === 'Approved');
       var isPending = (data.status === 'Pending');
@@ -616,7 +634,7 @@
         verifiedSeal = '<div class="alert alert-danger border-danger py-2 px-3 mb-3 rounded-3 small fw-bold text-danger"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> আবেদনটি পরিষদ কর্তৃক বাতিল করা হয়েছে।</div>';
       }
 
-      // ৩. শর্ত: লাইসেন্স নং ও সনদ নং শুধুমাত্র Approved হলেই প্রদর্শন হবে (Pending/Rejected হলে দেখাবে না)
+      // ৩. শর্ত: লাইসেন্স নং ও সনদ নং শুধুমাত্র Approved হলেই প্রদর্শন হবে
       var certOrLicNoHtml = '';
       if (isApproved) {
         if (data.licNo) {
@@ -626,7 +644,7 @@
         }
       }
 
-      // ৪. শর্ত: প্রিন্ট বাটন লজিক (শুধু Pending অবস্থায় আবেদন কপি প্রিন্ট বাটন থাকবে, Approved/Rejected হলে কোনো বাটন থাকবে না)
+      // ৪. শর্ত: প্রিন্ট বাটন লজিক (শুধু Pending অবস্থায় আবেদন কপি প্রিন্ট বাটন থাকবে)
       var actionBtnHtml = '';
       if (isPending) {
         var applicationType = data.type || data.serviceType || '';
@@ -639,7 +657,6 @@
         }
       }
 
-      // একক কার্ড জেনারেশন (Nikosh ও স্পষ্ট ফন্টে)
       allCardsHtml += `
         <div class="card p-4 border mb-4 bg-white shadow-sm rounded-4 text-start" style="font-family: 'Nikosh', 'Kalpurush', sans-serif;">
           <div class="d-flex justify-content-between align-items-center mb-3">

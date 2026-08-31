@@ -13,7 +13,7 @@
     box-shadow: 0 15px 35px rgba(0, 104, 55, 0.2);
     position: relative;
     overflow: hidden;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
   .hero-smart-banner::after {
     content: "";
@@ -26,24 +26,25 @@
     border-radius: 50%;
   }
 
-  /* 🟢 সেবা সার্চ বার */
-  .service-live-search {
+  /* 🟢 নাগরিক তথ্য যাচাই সার্চ বার */
+  .verify-live-search {
     background: #ffffff;
     border-radius: 50px;
     padding: 6px 8px 6px 20px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
     border: 2px solid #e2e8f0;
     transition: all 0.3s ease;
   }
-  .service-live-search:focus-within {
-    border-color: #006837;
-    box-shadow: 0 8px 25px rgba(0, 104, 55, 0.18);
+  .verify-live-search:focus-within {
+    border-color: #ffc107;
+    box-shadow: 0 8px 30px rgba(0, 104, 55, 0.25);
   }
-  .service-live-search input {
+  .verify-live-search input {
     border: none;
     outline: none;
     font-size: 14.5px;
     width: 100%;
+    color: #1e293b;
   }
 
   /* 🟢 প্রিমিয়াম সার্ভিস কার্ড */
@@ -159,23 +160,37 @@
 <!-- 1. PUBLIC HOME PAGE VIEW -->
 <div id="publicHome" class="view-section container my-4">
   
-  <!-- 🟢 হিরো ব্যানার সেকশন -->
+  <!-- 🟢 হিরো ব্যানার সেকশন (আপনার তথ্য যাচাই করুন) -->
   <div class="hero-smart-banner">
     <div class="row align-items-center g-3">
-      <div class="col-lg-8">
+      <div class="col-lg-6">
         <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">স্মার্ট সেবা • ক্যাশলেস ইউনিয়ন</span>
         <h2 class="fw-bold mb-2 text-white">নাগরিক সেবায় ডিজিটাল ইউনিয়ন পরিষদ</h2>
-        <p class="text-white-50 mb-0" style="font-size: 15px;">
+        <p class="text-white-50 mb-0" style="font-size: 14.5px;">
           ঘরে বসেই নির্ভুল ও দ্রুত সময়ে সকল প্রকার সনদ এবং ট্রেড লাইসেন্স গ্রহণ করুন।
         </p>
       </div>
-      <div class="col-lg-4">
-        <!-- লাইভ সেবা সার্চ বার -->
-        <div class="service-live-search d-flex align-items-center">
+      <div class="col-lg-6">
+        <!-- 🟢 তথ্য যাচাই সার্চ বার -->
+        <div class="verify-live-search d-flex align-items-center">
           <i class="fa-solid fa-search text-success me-2 fs-5"></i>
-          <input type="text" id="homeServiceSearch" placeholder="সেবার নাম লিখে খুঁজুন..." onkeyup="filterHomeServices(this.value)">
+          <input type="text" id="heroVerifyInput" placeholder="আপনার তথ্য যাচাই করুন (মোবাইল / এনআইডি / নাম)..." onkeydown="if(event.key==='Enter') executeHomeSearch()">
+          <button class="btn btn-success btn-sm rounded-pill px-3 py-2 fw-bold text-nowrap ms-2" onclick="executeHomeSearch()">
+            <i class="fa-solid fa-search me-1"></i> যাচাই করুন
+          </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- 🟢 হোম পেজে সরাসরি তথ্য যাচাইয়ের রেজাল্ট কন্টেইনার -->
+  <div id="homeVerifyResultsContainer" class="d-none mb-4">
+    <div class="card p-4 shadow-lg border-0 rounded-4 bg-white">
+      <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+        <h5 class="fw-bold text-success m-0"><i class="fa-solid fa-list-check me-2"></i>নাগরিক সেবা ও সনদ তথ্য যাচাই ফলাফল</h5>
+        <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="closeHomeVerifyResults()"><i class="fa-solid fa-times me-1"></i> বন্ধ করুন</button>
+      </div>
+      <div id="homeVerifyOutput"></div>
     </div>
   </div>
 
@@ -235,26 +250,26 @@
             </div>
 
             <!-- অন্যান্য ২০টি সাধারণ প্রত্যয়ন -->
-            <div class="col-6 col-md-3 service-item" data-name="বিবিধ প্রত্যয়নপত্র general"><div class="service-card-modern" onclick="openGeneralServicePage('বিবিধ প্রত্যয়নপত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-file-signature"></i></div><p class="service-card-title">বিবিধ প্রত্যয়নপত্র</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="চারিত্রিক সনদ character"><div class="service-card-modern" onclick="openGeneralServicePage('চারিত্রিক সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-user-check"></i></div><p class="service-card-title">চারিত্রিক সনদ</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="ভূমিহীন সনদ landless"><div class="service-card-modern" onclick="openGeneralServicePage('ভূমিহীন সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-house-chimney-crack"></i></div><p class="service-card-title">ভূমিহীন সনদ</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="অবিবাহিত সনদ unmarried"><div class="service-card-modern" onclick="openGeneralServicePage('অবিবাহিত সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-user"></i></div><p class="service-card-title">অবিবাহিত সনদ</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="পুনঃ বিবাহ না হওয়া সনদ"><div class="service-card-modern" onclick="openGeneralServicePage('পুনঃ বিবাহ না হওয়া সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-ring"></i></div><p class="service-card-title">পুনঃ বিবাহ না হওয়া সনদ</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="বার্ষিক আয়ের প্রত্যয়ন income"><div class="service-card-modern" onclick="openGeneralServicePage('বার্ষিক আয়ের প্রত্যয়ন')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-money-bill-wave"></i></div><p class="service-card-title">বার্ষিক আয়ের প্রত্যয়ন</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="একই নামের প্রত্যয়ন same name"><div class="service-card-modern" onclick="openGeneralServicePage('একই নামের প্রত্যয়ন')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-equals"></i></div><p class="service-card-title">একই নামের প্রত্যয়ন</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="প্রতিবন্ধী সনদপত্র disability"><div class="service-card-modern" onclick="openGeneralServicePage('প্রতিবন্ধী সনদপত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-wheelchair"></i></div><p class="service-card-title">প্রতিবন্ধী সনদপত্র</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="অনাপত্তি সনদপত্র noc"><div class="service-card-modern" onclick="openGeneralServicePage('অনাপত্তি সনদপত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-file-contract"></i></div><p class="service-card-title">অনাপত্তি সনদপত্র</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="আর্থিক অসচ্ছলতার সনদপত্র financial"><div class="service-card-modern" onclick="openGeneralServicePage('আর্থিক অসচ্ছলতার সনদপত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-hand-holding-dollar"></i></div><p class="service-card-title">আর্থিক অসচ্ছলতার সনদ</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="বিবাহিত সনদ married"><div class="service-card-modern" onclick="openGeneralServicePage('বিবাহিত সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-heart"></i></div><p class="service-card-title">বিবাহিত সনদ</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="দ্বিতীয় বিবাহের অনুমতি পত্র"><div class="service-card-modern" onclick="openGeneralServicePage('দ্বিতীয় বিবাহের অনুমতি পত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-file-signature"></i></div><p class="service-card-title">দ্বিতীয় বিবাহের অনুমতি</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="নতুন ভোটারের প্রত্যয়ন পত্র voter"><div class="service-card-modern" onclick="openGeneralServicePage('নতুন ভোটারের প্রত্যয়ন পত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-check-to-slot"></i></div><p class="service-card-title">নতুন ভোটারের প্রত্যয়ন</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="ভোটার স্থানান্তরের প্রত্যয়ন পত্র"><div class="service-card-modern" onclick="openGeneralServicePage('ভোটার স্থানান্তরের প্রত্যয়ন পত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-arrow-right-arrow-left"></i></div><p class="service-card-title">ভোটার স্থানান্তর প্রত্যয়ন</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="বেকারত্বের সনদপত্র unemployed"><div class="service-card-modern" onclick="openGeneralServicePage('বেকারত্বের সনদপত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-user-slash"></i></div><p class="service-card-title">বেকারত্বের সনদপত্র</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="অস্থায়ীভাবে বসবাসের প্রত্যয়ন পত্র"><div class="service-card-modern" onclick="openGeneralServicePage('অস্থায়ীভাবে বসবাসের প্রত্যয়ন পত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-house-user"></i></div><p class="service-card-title">অস্থায়ী বসবাসের প্রত্যয়ন</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="জাতীয়তা সনদ nationality"><div class="service-card-modern" onclick="openGeneralServicePage('জাতীয়তা সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-flag"></i></div><p class="service-card-title">জাতীয়তা সনদ</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="স্থায়ী বাসিন্দা সনদ resident"><div class="service-card-modern" onclick="openGeneralServicePage('স্থায়ী বাসিন্দা সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-location-dot"></i></div><p class="service-card-title">স্থায়ী বাসিন্দা সনদ</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="এতিম সনদ orphan"><div class="service-card-modern" onclick="openGeneralServicePage('এতিম সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-child"></i></div><p class="service-card-title">এতিম সনদ</p></div></div>
-            <div class="col-6 col-md-3 service-item" data-name="মাসিক আয়ের সনদ monthly income"><div class="service-card-modern" onclick="openGeneralServicePage('মাসিক আয়ের সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-sack-dollar"></i></div><p class="service-card-title">মাসিক আয়ের সনদ</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('বিবিধ প্রত্যয়নপত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-file-signature"></i></div><p class="service-card-title">বিবিধ প্রত্যয়নপত্র</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('চারিত্রিক সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-user-check"></i></div><p class="service-card-title">চারিত্রিক সনদ</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('ভূমিহীন সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-house-chimney-crack"></i></div><p class="service-card-title">ভূমিহীন সনদ</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('অবিবাহিত সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-user"></i></div><p class="service-card-title">অবিবাহিত সনদ</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('পুনঃ বিবাহ না হওয়া সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-ring"></i></div><p class="service-card-title">পুনঃ বিবাহ না হওয়া সনদ</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('বার্ষিক আয়ের প্রত্যয়ন')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-money-bill-wave"></i></div><p class="service-card-title">বার্ষিক আয়ের প্রত্যয়ন</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('একই নামের প্রত্যয়ন')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-equals"></i></div><p class="service-card-title">একই নামের প্রত্যয়ন</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('প্রতিবন্ধী সনদপত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-wheelchair"></i></div><p class="service-card-title">প্রতিবন্ধী সনদপত্র</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('অনাপত্তি সনদপত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-file-contract"></i></div><p class="service-card-title">অনাপত্তি সনদপত্র</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('আর্থিক অসচ্ছলতার সনদপত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-hand-holding-dollar"></i></div><p class="service-card-title">আর্থিক অসচ্ছলতার সনদ</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('বিবাহিত সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-heart"></i></div><p class="service-card-title">বিবাহিত সনদ</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('দ্বিতীয় বিবাহের অনুমতি পত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-file-signature"></i></div><p class="service-card-title">দ্বিতীয় বিবাহের অনুমতি</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('নতুন ভোটারের প্রত্যয়ন পত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-check-to-slot"></i></div><p class="service-card-title">নতুন ভোটারের প্রত্যয়ন</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('ভোটার স্থানান্তরের প্রত্যয়ন পত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-arrow-right-arrow-left"></i></div><p class="service-card-title">ভোটার স্থানান্তর প্রত্যয়ন</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('বেকারত্বের সনদপত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-user-slash"></i></div><p class="service-card-title">বেকারত্বের সনদপত্র</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('অস্থায়ীভাবে বসবাসের প্রত্যয়ন পত্র')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-house-user"></i></div><p class="service-card-title">অস্থায়ী বসবাসের প্রত্যয়ন</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('জাতীয়তা সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-flag"></i></div><p class="service-card-title">জাতীয়তা সনদ</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('স্থায়ী বাসিন্দা সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-location-dot"></i></div><p class="service-card-title">স্থায়ী বাসিন্দা সনদ</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('এতিম সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-child"></i></div><p class="service-card-title">এতিম সনদ</p></div></div>
+            <div class="col-6 col-md-3 service-item"><div class="service-card-modern" onclick="openGeneralServicePage('মাসিক আয়ের সনদ')"><div class="service-icon-wrap bg-light text-success"><i class="fa-solid fa-sack-dollar"></i></div><p class="service-card-title">মাসিক আয়ের সনদ</p></div></div>
 
           </div>
         </div>
@@ -264,14 +279,13 @@
     <!-- ডান পাশ: পরিচিতি, হটলাইন ও ই-সেবা লিংক -->
     <div class="col-lg-3">
       
-      <!-- পরিচিতি উইজেট (কল বাটন পপআপ সহ) -->
+      <!-- পরিচিতি উইজেট -->
       <div class="smart-widget-card text-center p-3">
         <img src="https://lh3.googleusercontent.com/d/1vZUuzu8m0kk5V3rc5x9Meb8nnh-bL660" alt="Planner" class="rounded-4 border mb-2 img-fluid shadow-sm" style="max-height: 170px; width: 100%; object-fit: cover;">
         <small class="text-success fw-bold d-block">পরিকল্পনা ও সার্বিক পরিচালনায়:</small>
         <h6 class="fw-bold text-dark m-0 mt-1">মোঃ কামরুল ইসলাম সবুজ</h6>
         <small class="text-muted d-block">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</small>
         <div class="d-flex justify-content-center gap-2 mt-2">
-          <!-- 🟢 আধুনিক কল পপআপ বাটন -->
           <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold" onclick="openPhoneCallModal('01710181059', 'মোঃ কামরুল ইসলাম সবুজ')">
             <i class="fa-solid fa-phone me-1"></i> কল
           </button>
@@ -292,30 +306,18 @@
         </div>
       </div>
 
-      <!-- 🟢 গুরুত্বপূর্ণ ইউনিয়ন ই-সেবা পোর্টাল লিংক -->
+      <!-- জরুরি নাগরিক ই-সেবা লিংক -->
       <div class="smart-widget-card">
         <div class="smart-widget-header" style="background: linear-gradient(90deg, #0f172a, #1e293b);">
           <i class="fa-solid fa-globe me-2 text-warning"></i>জরুরি নাগরিক ই-সেবা লিংক
         </div>
         <div class="p-2">
-          <a href="https://bdris.gov.bd" target="_blank" class="service-link-item">
-            <i class="fa-solid fa-baby text-primary me-2"></i> জন্ম ও মৃত্যু নিবন্ধন আবেদন
-          </a>
-          <a href="https://vsmart.dgf.gov.bd" target="_blank" class="service-link-item">
-            <i class="fa-solid fa-wheat-awn text-warning me-2"></i> ভিজিডি / ভিজিএফ খাদ্য সহায়তা
-          </a>
-          <a href="http://www.dss.gov.bd" target="_blank" class="service-link-item">
-            <i class="fa-solid fa-person-cane text-danger me-2"></i> বয়স্ক, বিধবা ও প্রতিবন্ধী ভাতা
-          </a>
-          <a href="https://dwa.gov.bd" target="_blank" class="service-link-item">
-            <i class="fa-solid fa-person-breastfeeding text-info me-2"></i> মাতৃত্বকালীন মা-শিশু সহায়তা
-          </a>
-          <a href="https://land.gov.bd" target="_blank" class="service-link-item">
-            <i class="fa-solid fa-map-location-dot text-success me-2"></i> ই-নামজারি ও খতিয়ান সেবা
-          </a>
-          <a href="https://services.nidw.gov.bd" target="_blank" class="service-link-item">
-            <i class="fa-solid fa-id-card-clip text-dark me-2"></i> ভোটার ও স্মার্ট NID সেবা
-          </a>
+          <a href="https://bdris.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-baby text-primary me-2"></i> জন্ম ও মৃত্যু নিবন্ধন আবেদন</a>
+          <a href="https://vsmart.dgf.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-wheat-awn text-warning me-2"></i> ভিজিডি / ভিজিএফ খাদ্য সহায়তা</a>
+          <a href="http://www.dss.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-person-cane text-danger me-2"></i> বয়স্ক, বিধবা ও প্রতিবন্ধী ভাতা</a>
+          <a href="https://dwa.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-person-breastfeeding text-info me-2"></i> মাতৃত্বকালীন মা-শিশু সহায়তা</a>
+          <a href="https://land.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-map-location-dot text-success me-2"></i> ই-নামজারি ও খতিয়ান সেবা</a>
+          <a href="https://services.nidw.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-id-card-clip text-dark me-2"></i> ভোটার ও স্মার্ট NID সেবা</a>
         </div>
       </div>
 
@@ -334,11 +336,11 @@
             <i class="fa-solid fa-magnifying-glass"></i>
           </div>
           <h4 class="fw-bold text-dark">আবেদন ট্র্যাকিং ও নাগরিক সেবা যাচাই</h4>
-          <p class="text-muted small">ট্র্যাকিং আইডি, মোবাইল নম্বর, NID অথবা লাইসেন্স নম্বর দিয়ে অনুসন্ধান করুন</p>
+          <p class="text-muted small">মোবাইল নম্বর, জাতীয় পরিচয়পত্র (NID), নাম অথবা ট্র্যাকিং নম্বর দিয়ে অনুসন্ধান করুন</p>
         </div>
 
         <div class="input-group input-group-lg mb-3 shadow-sm rounded-pill overflow-hidden border">
-          <input type="text" id="trackInput" class="form-control border-0 px-4" placeholder="যেমন: 01710181059 অথবা AUL-TR-440173">
+          <input type="text" id="trackInput" class="form-control border-0 px-4" placeholder="যেমন: 01710181059 অথবা 2362798851 অথবা AUL-TR-440173">
           <button class="btn btn-success fw-bold px-4" onclick="executeTrack()"><i class="fa fa-search me-1"></i> ট্র্যাক করুন</button>
         </div>
         
@@ -346,7 +348,6 @@
           <i class="fa-solid fa-circle-info text-success me-1"></i> মোবাইল নম্বর দিলে ওই নম্বরে নেওয়া <strong>সকল সেবার তালিকা</strong> দেখতে পাবেন।
         </div>
 
-        <!-- 🟢 সব আবেদনের রেজাল্ট এইখানে আসবে -->
         <div id="trackOutput"></div>
       </div>
     </div>
@@ -415,7 +416,7 @@
   </div>
 </div>
 
-<!-- 🟢 ৭. আধুনিক ফোন কল ও যোগাযোগ পপআপ মডাল -->
+<!-- 🟢 ৭. ফোন কল পপআপ মডাল -->
 <div class="modal fade" id="phoneCallModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-sm">
     <div class="modal-content border-0 shadow-lg rounded-4 text-center p-4">
@@ -445,22 +446,9 @@
 </div>
 
 <!-- ========================================================== -->
-<!-- 🟢 JAVASCRIPT LOGIC ENGINE (100% CLEANED & BUG-FREE)       -->
+<!-- 🟢 JAVASCRIPT MASTER ENGINE                                -->
 <!-- ========================================================== -->
 <script>
-  function filterHomeServices(query) {
-    var q = query.toLowerCase().trim();
-    var items = document.querySelectorAll('.service-item');
-    items.forEach(function(item) {
-      var name = (item.getAttribute('data-name') || '').toLowerCase();
-      if (!q || name.indexOf(q) !== -1) {
-        item.style.display = 'block';
-      } else {
-        item.style.display = 'none';
-      }
-    });
-  }
-
   function copyTrackingCode() {
     var code = document.getElementById('successAppId').innerText;
     navigator.clipboard.writeText(code);
@@ -494,13 +482,41 @@
     });
   }
 
-  // 🟢 নির্ভুল মাল্টিপল ট্র্যাকিং লজিক
-  async function executeTrack() {
+  // 🟢 হোম পেজের হিরো সার্চ বার এক্সেকিউটর
+  function executeHomeSearch() {
+    var query = document.getElementById('heroVerifyInput').value.trim();
+    if (!query) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'তথ্য দিন',
+        text: 'অনুগ্রহ করে মোবাইল নম্বর, এনআইডি, নাম অথবা ট্র্যাকিং আইডি লিখুন।'
+      });
+      return;
+    }
+    renderVerificationCards(query, 'homeVerifyOutput', function() {
+      document.getElementById('homeVerifyResultsContainer').classList.remove('d-none');
+      document.getElementById('homeVerifyResultsContainer').scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  function closeHomeVerifyResults() {
+    document.getElementById('homeVerifyResultsContainer').classList.add('d-none');
+    document.getElementById('homeVerifyOutput').innerHTML = '';
+  }
+
+  // 🟢 ট্র্যাকিং পেজের সার্চ এক্সেকিউটর
+  function executeTrack() {
     var query = document.getElementById('trackInput').value.trim();
-    var output = document.getElementById('trackOutput');
-    if(!query) return alert('অনুগ্রহ করে ট্র্যাকিং আইডি, মোবাইল বা লাইসেন্স নম্বর লিখুন!');
-    
-    output.innerHTML = '<p class="text-center text-success py-4"><i class="fa fa-spinner fa-spin fa-2x"></i><br><span class="mt-2 d-block fw-bold">সার্ভার থেকে তথ্য অনুসন্ধান করা হচ্ছে...</span></p>';
+    if (!query) return alert('অনুগ্রহ করে ট্র্যাকিং আইডি, মোবাইল বা লাইসেন্স নম্বর লিখুন!');
+    renderVerificationCards(query, 'trackOutput');
+  }
+
+  // 🟢 সার্বজনীন ভেরিফিকেশন কার্ড রেন্ডারার ইঞ্জিন
+  async function renderVerificationCards(query, outputElementId, onSuccessCallback) {
+    var output = document.getElementById(outputElementId);
+    if (!output) return;
+
+    output.innerHTML = '<p class="text-center text-success py-4"><i class="fa fa-spinner fa-spin fa-2x"></i><br><span class="mt-2 d-block fw-bold">সার্ভার থেকে আপনার তথ্য যাচাই ও অনুসন্ধান করা হচ্ছে...</span></p>';
     
     const res = await callBackendAPI('trackApplication', query);
 
@@ -513,8 +529,9 @@
       }
     }
 
-    if(list.length === 0) {
-      output.innerHTML = '<div class="alert alert-danger text-center shadow-sm mt-3 rounded-4 p-3"><i class="fa-solid fa-triangle-exclamation me-1"></i> কোনো আবেদন বা সেবার তথ্য পাওয়া যায়নি! সঠিক তথ্য দিয়ে চেষ্টা করুন।</div>';
+    if (list.length === 0) {
+      output.innerHTML = '<div class="alert alert-danger text-center shadow-sm mt-3 rounded-4 p-3"><i class="fa-solid fa-triangle-exclamation me-1"></i> উক্ত তথ্যের অধীনে কোনো আবেদন বা সেবার রেকর্ড পাওয়া যায়নি! সঠিক তথ্য দিয়ে চেষ্টা করুন।</div>';
+      if (typeof onSuccessCallback === 'function') onSuccessCallback();
       return;
     }
 
@@ -523,7 +540,7 @@
     if (list.length > 1) {
       allCardsHtml += `
         <div class="alert alert-success d-flex justify-content-between align-items-center mb-3 py-2 px-3 rounded-3">
-          <span><i class="fa-solid fa-list-check me-2"></i>উক্ত নম্বরের অধীনে মোট <strong>${list.length}টি</strong> আবেদন পাওয়া গেছে</span>
+          <span><i class="fa-solid fa-list-check me-2"></i>আপনার অধীনে মোট <strong>${list.length}টি</strong> সেবার রেকর্ড পাওয়া গেছে</span>
           <span class="badge bg-success">${list.length} টি রেকর্ড</span>
         </div>
       `;
@@ -545,7 +562,17 @@
             ? '<div class="alert alert-warning border-warning py-2 px-3 mb-3 rounded-3 small fw-bold text-dark"><i class="fa-solid fa-clock text-warning me-1"></i> আবেদনটি বর্তমানে প্রক্রিয়াধীন/অপেক্ষমাণ রয়েছে।</div>'
             : '<div class="alert alert-danger border-danger py-2 px-3 mb-3 rounded-3 small fw-bold text-danger"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> আবেদনটি পরিষদ কর্তৃক বাতিল করা হয়েছে।</div>');
 
-      // বাটন লজিক: শুধু Pending হলে আবেদন কপি প্রিন্ট বাটন থাকবে, Approved হলে কোনো বাটন থাকবে না
+      // 🟢 শর্ত ১: লাইসেন্স নং ও সনদ নং শুধুমাত্র Approved হলেই প্রদর্শন হবে
+      var certOrLicNoHtml = '';
+      if (isApproved) {
+        if (data.licNo) {
+          certOrLicNoHtml = `<div class="col-md-12 text-danger fw-bold mt-1" style="font-size: 17px;">লাইসেন্স নং: ${data.licNo}</div>`;
+        } else if (data.certNo) {
+          certOrLicNoHtml = `<div class="col-md-12 text-danger fw-bold mt-1" style="font-size: 17px;">সনদ নং: ${data.certNo}</div>`;
+        }
+      }
+
+      // 🟢 শর্ত ২: প্রিন্ট বাটন লজিক (শুধু Pending অবস্থায় আবেদন কপি প্রিন্ট বাটন থাকবে)
       var actionBtnHtml = '';
       if (isPending) {
         var applicationType = data.type || data.serviceType || '';
@@ -558,7 +585,7 @@
         }
       }
 
-      // একক কার্ড জেনারেশন (Nikosh / স্পষ্ট নম্বর সহ)
+      // একক কার্ড জেনারেশন (Nikosh / স্পষ্ট নম্বর ও সুন্দর লেআউট)
       allCardsHtml += `
         <div class="card p-4 border mb-4 bg-white shadow-sm rounded-4 text-start" style="font-family: 'Nikosh', 'Kalpurush', sans-serif;">
           <div class="d-flex justify-content-between align-items-center mb-3">
@@ -575,8 +602,7 @@
             <div class="col-md-6"><strong>মোবাইল নম্বর:</strong> <span class="fw-bold text-dark" style="font-size: 16.5px;">${data.mobile || '-'}</span></div>
             <div class="col-md-6"><strong>জাতীয় পরিচয়পত্র / জন্মনিবন্ধন:</strong> <span class="fw-bold text-dark" style="font-size: 16px;">${data.nid || '-'}</span></div>
             <div class="col-md-6"><strong>আবেদনের তারিখ:</strong> <span class="text-dark">${data.applyDate || data.date || '-'}</span></div>
-            ${data.licNo ? `<div class="col-md-12 text-danger fw-bold mt-1" style="font-size: 17px;">লাইসেন্স নং: ${data.licNo}</div>` : ''}
-            ${data.certNo ? `<div class="col-md-12 text-danger fw-bold mt-1" style="font-size: 17px;">সনদ নং: ${data.certNo}</div>` : ''}
+            ${certOrLicNoHtml}
           </div>
 
           ${actionBtnHtml ? `<div class="border-top mt-2 pt-2 text-end">${actionBtnHtml}</div>` : ''}
@@ -585,6 +611,7 @@
     });
 
     output.innerHTML = allCardsHtml;
+    if (typeof onSuccessCallback === 'function') onSuccessCallback();
   }
 
   async function doAdminLogin() {

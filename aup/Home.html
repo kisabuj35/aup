@@ -4,7 +4,7 @@
 <!-- ========================================== -->
 
 <style>
-  /* 🟢 হিরো ব্যানার স্টাইল (বাটন ক্লিক ফিক্সড) */
+  /* 🟢 হিরো ব্যানার স্টাইল */
   .hero-smart-banner {
     background: linear-gradient(135deg, #00582f 0%, #007a40 60%, #024e2b 100%);
     border-radius: 20px;
@@ -24,7 +24,7 @@
     height: 200px;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 50%;
-    pointer-events: none !important; /* ক্লিকের বাধা দূর করা হয়েছে */
+    pointer-events: none !important;
     z-index: 1;
   }
 
@@ -81,9 +81,6 @@
     color: #ffc107 !important;
     transform: scale(1.04) !important;
   }
-  .verify-btn-action:active {
-    transform: scale(0.97) !important;
-  }
 
   /* 🟢 প্রিমিয়াম সার্ভিস কার্ড */
   .service-card-modern {
@@ -119,9 +116,6 @@
     margin-bottom: 10px;
     transition: all 0.3s ease;
   }
-  .service-card-modern:hover .service-icon-wrap {
-    transform: scale(1.1);
-  }
   .service-card-title {
     font-size: 13.5px;
     font-weight: 700;
@@ -139,7 +133,6 @@
     border-radius: 20px;
   }
 
-  /* সাইডবার উইজেট */
   .smart-widget-card {
     background: #ffffff;
     border-radius: 16px;
@@ -155,23 +148,6 @@
     font-weight: 700;
     font-size: 14.5px;
   }
-  .smart-hotline-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 14px;
-    border-radius: 10px;
-    color: #ffffff !important;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 13px;
-    margin-bottom: 8px;
-    transition: transform 0.2s ease;
-  }
-  .smart-hotline-btn:hover {
-    transform: translateX(3px);
-  }
-
   .service-link-item {
     display: flex;
     align-items: center;
@@ -225,10 +201,10 @@
 
   <div class="row g-4">
     
-    <!-- 🟢 বাম পাশ (col-lg-9): ২৫টি সেবা অথবা সার্চ রেজাল্ট কার্ড এখানেই আসবে -->
+    <!-- 🟢 বাম পাশ (col-lg-9): ২৫টি সেবা অথবা সার্চ রেজাল্ট কার্ড -->
     <div class="col-lg-9">
       
-      <!-- কন্টেইনার ১: স্বাভাবিক অবস্থায় ২৫টি সেবার গ্রিড দৃশ্যমান থাকবে -->
+      <!-- কন্টেইনার ১: স্বাভাবিক অবস্থায় ২৫টি সেবার গ্রিড -->
       <div id="homeServicesContainer" class="smart-widget-card mb-4">
         <div class="smart-widget-header d-flex justify-content-between align-items-center">
           <span><i class="fa-solid fa-layer-group me-2"></i>সকল নাগরিক ও প্রশাসনিক সেবাসমূহ</span>
@@ -238,7 +214,7 @@
           <div class="row g-2" id="homeServiceGrid">
             
             <!-- ১. নাগরিকত্ব সনদ -->
-            <div class="col-6 col-md-3 service-item" data-name="নাগরিকত্ব সনদ citizenship">
+            <div class="col-6 col-md-3 service-item">
               <div class="service-card-modern border-danger" onclick="navToSection('citizenView')">
                 <span class="priority-badge bg-danger text-white">জনপ্রিয়</span>
                 <div class="service-icon-wrap bg-danger-subtle text-danger"><i class="fa-solid fa-id-card"></i></div>
@@ -247,7 +223,7 @@
             </div>
             
             <!-- ২. ট্রেড লাইসেন্স -->
-            <div class="col-6 col-md-3 service-item" data-name="ট্রেড লাইসেন্স trade license business">
+            <div class="col-6 col-md-3 service-item">
               <div class="service-card-modern border-success" onclick="navToSection('tradeView')">
                 <span class="priority-badge bg-success text-white">ব্যবসা</span>
                 <div class="service-icon-wrap bg-success-subtle text-success"><i class="fa-solid fa-briefcase"></i></div>
@@ -256,7 +232,7 @@
             </div>
             
             <!-- ৩. ওয়ারিশান সনদ -->
-            <div class="col-6 col-md-3 service-item" data-name="ওয়ারিশান সনদ warishan">
+            <div class="col-6 col-md-3 service-item">
               <div class="service-card-modern border-warning" onclick="openMasterService('ওয়ারিশান সনদ')">
                 <span class="priority-badge bg-warning text-dark">জরুরি</span>
                 <div class="service-icon-wrap bg-warning-subtle text-dark"><i class="fa-solid fa-sitemap"></i></div>
@@ -265,7 +241,7 @@
             </div>
             
             <!-- ৪. উত্তরাধিকারী সনদ -->
-            <div class="col-6 col-md-3 service-item" data-name="উত্তরাধিকারী সনদ succession">
+            <div class="col-6 col-md-3 service-item">
               <div class="service-card-modern border-primary" onclick="openMasterService('উত্তরাধিকারী সনদ')">
                 <div class="service-icon-wrap bg-primary-subtle text-primary"><i class="fa-solid fa-users"></i></div>
                 <p class="service-card-title text-primary">উত্তরাধিকারী সনদ</p>
@@ -273,7 +249,7 @@
             </div>
             
             <!-- ৫. পারিবারিক সনদ -->
-            <div class="col-6 col-md-3 service-item" data-name="পারিবারিক সনদ family certificate">
+            <div class="col-6 col-md-3 service-item">
               <div class="service-card-modern border-info" onclick="openMasterService('পারিবারিক সনদ')">
                 <div class="service-icon-wrap bg-info-subtle text-info-emphasis"><i class="fa-solid fa-people-roof"></i></div>
                 <p class="service-card-title text-dark">পারিবারিক সনদ</p>
@@ -306,7 +282,7 @@
         </div>
       </div>
 
-      <!-- 🟢 কন্টেইনার ২: সার্চ করার পর এই কন্টেইনারটি ২৫টি সেবার বদলে প্রদর্শিত হবে -->
+      <!-- 🟢 কন্টেইনার ২: সার্চ করার পর ২৫টি সেবার বদলে এটি দেখাবে -->
       <div id="homeVerifyResultsContainer" class="smart-widget-card mb-4 d-none">
         <div class="smart-widget-header d-flex justify-content-between align-items-center bg-success text-white">
           <span><i class="fa-solid fa-list-check me-2"></i>নাগরিক সেবা ও সনদ তথ্য যাচাই ফলাফল</span>
@@ -319,209 +295,20 @@
 
     </div>
 
-    <!-- 🟢 ডান পাশ (col-lg-3): পরিচিতি, হটলাইন ও ই-সেবা লিংক (সর্বদা অ্যাক্টিভ) -->
+    <!-- 🟢 ডান পাশ (col-lg-3): সর্বদা দৃশ্যমান সাইডবার -->
     <div class="col-lg-3">
-      
-      <!-- পরিচিতি উইজেট -->
       <div class="smart-widget-card text-center p-3">
         <img src="https://lh3.googleusercontent.com/d/1vZUuzu8m0kk5V3rc5x9Meb8nnh-bL660" alt="Planner" class="rounded-4 border mb-2 img-fluid shadow-sm" style="max-height: 170px; width: 100%; object-fit: cover;">
         <small class="text-success fw-bold d-block">পরিকল্পনা ও সার্বিক পরিচালনায়:</small>
         <h6 class="fw-bold text-dark m-0 mt-1">মোঃ কামরুল ইসলাম সবুজ</h6>
         <small class="text-muted d-block">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</small>
-        <div class="d-flex justify-content-center gap-2 mt-2">
-          <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold" onclick="openPhoneCallModal('01710181059', 'মোঃ কামরুল ইসলাম সবুজ')">
-            <i class="fa-solid fa-phone me-1"></i> কল
-          </button>
-          <a href="https://facebook.com/kisabuj35" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold"><i class="fa-brands fa-facebook me-1"></i> ফেসবুক</a>
-        </div>
       </div>
-
-      <!-- জরুরি হেল্পলাইন -->
-      <div class="smart-widget-card">
-        <div class="smart-widget-header">
-          <i class="fa-solid fa-phone-volume me-2"></i>জরুরি সরকারি সেবা
-        </div>
-        <div class="p-3">
-          <a href="tel:333" class="smart-hotline-btn bg-primary"><span>জাতীয় তথ্য বাতায়ন</span> <span>৩৩৩</span></a>
-          <a href="tel:999" class="smart-hotline-btn bg-danger"><span>জরুরি পুলিশ ও ফায়ার</span> <span>৯৯৯</span></a>
-          <a href="tel:109" class="smart-hotline-btn bg-warning text-dark"><span>নারী ও শিশু হেল্পলাইন</span> <span>১০৯</span></a>
-          <a href="tel:106" class="smart-hotline-btn bg-info text-dark"><span>দুদক হটলাইন</span> <span>১০৬</span></a>
-        </div>
-      </div>
-
-      <!-- জরুরি নাগরিক ই-সেবা লিংক -->
-      <div class="smart-widget-card">
-        <div class="smart-widget-header" style="background: linear-gradient(90deg, #0f172a, #1e293b);">
-          <i class="fa-solid fa-globe me-2 text-warning"></i>জরুরি নাগরিক ই-সেবা লিংক
-        </div>
-        <div class="p-2">
-          <a href="https://bdris.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-baby text-primary me-2"></i> জন্ম ও মৃত্যু নিবন্ধন আবেদন</a>
-          <a href="https://vsmart.dgf.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-wheat-awn text-warning me-2"></i> ভিজিডি / ভিজিএফ খাদ্য সহায়তা</a>
-          <a href="http://www.dss.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-person-cane text-danger me-2"></i> বয়স্ক, বিধবা ও প্রতিবন্ধী ভাতা</a>
-          <a href="https://dwa.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-person-breastfeeding text-info me-2"></i> মাতৃত্বকালীন মা-শিশু সহায়তা</a>
-          <a href="https://land.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-map-location-dot text-success me-2"></i> ই-নামজারি ও খতিয়ান সেবা</a>
-          <a href="https://services.nidw.gov.bd" target="_blank" class="service-link-item"><i class="fa-solid fa-id-card-clip text-dark me-2"></i> ভোটার ও স্মার্ট NID সেবা</a>
-        </div>
-      </div>
-
     </div>
 
   </div>
 </div>
 
-<!-- 2. TRACKING SECTION -->
-<div id="trackSection" class="view-section container my-5 d-none">
-  <div class="row justify-content-center">
-    <div class="col-md-9 col-lg-8">
-      <div class="card p-4 shadow-lg border-0 rounded-4 bg-white">
-        <div class="text-center mb-4">
-          <div class="service-icon-wrap bg-success-subtle text-success mx-auto mb-2" style="width:60px; height:60px; font-size:24px;">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </div>
-          <h4 class="fw-bold text-dark">আবেদন ট্র্যাকিং ও নাগরিক সেবা যাচাই</h4>
-          <p class="text-muted small">মোবাইল নম্বর, জাতীয় পরিচয়পত্র (NID), নাম অথবা ট্র্যাকিং নম্বর দিয়ে অনুসন্ধান করুন</p>
-        </div>
-
-        <form onsubmit="event.preventDefault(); executeTrack();" class="input-group input-group-lg mb-3 shadow-sm rounded-pill overflow-hidden border">
-          <input type="text" id="trackInput" class="form-control border-0 px-4" placeholder="মোবাইল নম্বর / এনআইডি নম্বর / আপনার নাম লিখুন">
-          <button type="button" class="btn btn-success fw-bold px-4" onclick="executeTrack()"><i class="fa fa-search me-1"></i> ট্র্যাক করুন</button>
-        </form>
-        
-        <div id="trackOutput"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 3. SERVICE INFO SECTION -->
-<div id="serviceInfoSection" class="view-section container my-5 d-none">
-  <div class="card p-4 shadow-sm border-0 rounded-4 bg-white">
-    <h4 class="fw-bold text-success mb-3 border-bottom pb-2"><i class="fa fa-info-circle me-2"></i> নাগরিক সেবা গ্রহণ নির্দেশিকা</h4>
-    <div class="row g-3">
-      <div class="col-md-4"><div class="p-3 border rounded-3 bg-light"><h6 class="fw-bold text-dark">১. অনলাইন আবেদন</h6><p class="text-muted small m-0">প্রয়োজনীয় সনদ নির্বাচন করে সঠিক তথ্য ও এনআইডি নম্বর দিয়ে ফরম পূরণ করুন।</p></div></div>
-      <div class="col-md-4"><div class="p-3 border rounded-3 bg-light"><h6 class="fw-bold text-dark">২. প্রশাসনিক যাচাই</h6><p class="text-muted small m-0">ইউপি সচিব ও সংশ্লিষ্ট ওয়ার্ড মেম্বার আপনার দেওয়া তথ্য যাচাই করবেন।</p></div></div>
-      <div class="col-md-4"><div class="p-3 border rounded-3 bg-light"><h6 class="fw-bold text-dark">৩. ডিজিটাল সনদ সংগ্রহ</h6><p class="text-muted small m-0">অনুমোদনের পর ট্র্যাকিং আইডি দিয়ে যেকোনো সময় মূল সনদ ডাউনলোড ও প্রিন্ট করুন।</p></div></div>
-    </div>
-  </div>
-</div>
-
-<!-- 4. NOTICE SECTION -->
-<div id="noticeSection" class="view-section container my-5 d-none">
-  <div class="card p-4 shadow-sm border-0 rounded-4 bg-white">
-    <h4 class="fw-bold text-success mb-3 border-bottom pb-2"><i class="fa fa-bullhorn me-2"></i> নোটিশ বাতায়ন</h4>
-    <div class="alert alert-success border-0 rounded-3">
-      <h6 class="fw-bold">স্মার্ট ক্যাশলেস সেবা চালু সংক্রান্ত বিজ্ঞপ্তি</h6>
-      <p class="m-0 text-muted">১১নং আউলিয়াপুর ইউনিয়নের সকল নাগরিককে ডিজিটাল সেবার আওতায় আনা হয়েছে। ঘরে বসেই সকল সেবার জন্য আবেদন করুন।</p>
-    </div>
-  </div>
-</div>
-
-<!-- 5. LOGIN SECTION -->
-<div id="loginSection" class="view-section container my-5 d-none">
-  <div class="row justify-content-center">
-    <div class="col-md-4">
-      <div class="card p-4 shadow-lg border-0 rounded-4 bg-white text-center">
-        <div class="service-icon-wrap bg-success-subtle text-success mx-auto mb-3" style="width:64px; height:64px; font-size:26px;">
-          <i class="fa-solid fa-user-shield"></i>
-        </div>
-        <h4 class="fw-bold text-dark mb-1">প্রশাসনিক সাইন ইন</h4>
-        <p class="text-muted small mb-4">ইউপি কর্মকর্তা ও অনুমোদিত এডমিন প্যানেল</p>
-        <form onsubmit="event.preventDefault(); doAdminLogin();">
-          <input type="text" id="admUser" class="form-control rounded-pill mb-3 px-3 py-2" placeholder="ইউজারনেম" required>
-          <input type="password" id="admPass" class="form-control rounded-pill mb-4 px-3 py-2" placeholder="গোপন পাসওয়ার্ড" required>
-          <button type="submit" class="btn btn-success w-100 fw-bold rounded-pill py-2" id="admLoginBtn">লগইন করুন</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 6. SUCCESS MODAL -->
-<div class="modal fade" id="successModal" tabindex="-1" data-bs-backdrop="static">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow-lg rounded-4 text-center p-4">
-      <div class="service-icon-wrap bg-success-subtle text-success mx-auto mb-2" style="width:70px; height:70px; font-size:32px;">
-        <i class="fa-solid fa-check"></i>
-      </div>
-      <h4 class="fw-bold text-success mb-2">আবেদন সফলভাবে জমা হয়েছে!</h4>
-      <p class="text-muted mb-3">আপনার ট্র্যাকিং নম্বরটি সংরক্ষণ করুন:</p>
-      <div class="mb-3"><span class="badge bg-success-subtle text-success border border-success px-4 py-2 fs-5 fw-bold" id="successAppId">AUL-000000</span></div>
-      <div class="d-flex justify-content-center gap-2">
-        <button class="btn btn-outline-dark fw-bold px-3 btn-sm rounded-pill" onclick="copyTrackingCode()"><i class="fa fa-copy me-1"></i> কপি</button>
-        <button class="btn btn-info text-white fw-bold px-3 btn-sm rounded-pill" id="successAppCopyBtn"><i class="fa fa-print me-1"></i> আবেদন কপি প্রিন্ট</button>
-        <button class="btn btn-success fw-bold px-4 btn-sm rounded-pill" data-bs-dismiss="modal">ঠিক আছে</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 🟢 ৭. ফোন কল পপআপ মডাল -->
-<div class="modal fade" id="phoneCallModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content border-0 shadow-lg rounded-4 text-center p-4">
-      <div class="service-icon-wrap bg-success-subtle text-success mx-auto mb-2" style="width:60px; height:60px; font-size:24px;">
-        <i class="fa-solid fa-phone-volume"></i>
-      </div>
-      <h5 class="fw-bold text-dark mb-1" id="callPersonName">যোগাযোগ নম্বর</h5>
-      <p class="text-muted small mb-3">১১নং আউলিয়াপুর ইউনিয়ন পরিষদ</p>
-      
-      <div class="p-2 mb-3 bg-light border rounded-3">
-        <strong class="fs-5 text-success tracking-wide" id="callNumberDisplay">০১৭১০-১৮১০৫৯</strong>
-      </div>
-
-      <div class="d-grid gap-2">
-        <a href="tel:01710181059" id="callDirectLink" class="btn btn-success fw-bold rounded-pill">
-          <i class="fa-solid fa-phone me-1"></i> সরাসরি কল করুন
-        </a>
-        <button type="button" class="btn btn-outline-dark fw-bold rounded-pill" onclick="copyModalPhone()">
-          <i class="fa-solid fa-copy me-1"></i> নাম্বার কপি করুন
-        </button>
-        <a href="https://wa.me/8801710181059" id="callWhatsappLink" target="_blank" class="btn btn-outline-success fw-bold rounded-pill">
-          <i class="fa-brands fa-whatsapp me-1"></i> হোয়াটসঅ্যাপে মেসেজ
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ========================================================== -->
-<!-- 🟢 JAVASCRIPT MASTER ENGINE (100% CLEAN & ERROR-FREE)      -->
-<!-- ========================================================== -->
 <script>
-  function copyTrackingCode() {
-    var code = document.getElementById('successAppId').innerText;
-    navigator.clipboard.writeText(code);
-    Swal.fire({
-      icon: 'success',
-      title: 'কপি হয়েছে!',
-      text: 'ট্র্যাকিং আইডি: ' + code,
-      timer: 1500,
-      showConfirmButton: false
-    });
-  }
-
-  function openPhoneCallModal(phone, name) {
-    var cleanPhone = phone.replace(/[^0-9]/g, '');
-    document.getElementById('callPersonName').innerText = name || 'যোগাযোগ নম্বর';
-    document.getElementById('callNumberDisplay').innerText = phone;
-    document.getElementById('callDirectLink').href = 'tel:' + cleanPhone;
-    document.getElementById('callWhatsappLink').href = 'https://wa.me/88' + cleanPhone;
-    bootstrap.Modal.getOrCreateInstance(document.getElementById('phoneCallModal')).show();
-  }
-
-  function copyModalPhone() {
-    var p = document.getElementById('callNumberDisplay').innerText;
-    navigator.clipboard.writeText(p);
-    Swal.fire({
-      icon: 'success',
-      title: 'নাম্বার কপি হয়েছে!',
-      text: p,
-      timer: 1400,
-      showConfirmButton: false
-    });
-  }
-
-  // 🟢 হোম পেজের হিরো সার্চ এক্সেকিউটর (ক্লিক ও এন্টার উভয় ক্ষেত্রে কাজ করবে)
   function executeHomeSearch() {
     var inputElem = document.getElementById('heroVerifyInput');
     var query = inputElem ? inputElem.value.trim() : '';
@@ -550,14 +337,7 @@
     document.getElementById('homeServicesContainer').scrollIntoView({ behavior: 'smooth' });
   }
 
-  function executeTrack() {
-    var inputElem = document.getElementById('trackInput');
-    var query = inputElem ? inputElem.value.trim() : '';
-    if (!query) return alert('অনুগ্রহ করে ট্র্যাকিং আইডি, মোবাইল বা এনআইডি নম্বর লিখুন!');
-    renderVerificationCards(query, 'trackOutput');
-  }
-
-  // 🟢 সার্বজনীন ভেরিফিকেশন কার্ড রেন্ডারার (সকল রেকর্ড একটার নিচে আরেকটা শো করবে)
+  // 🟢 মাল্টিপল কার্ড রেন্ডারিং ইঞ্জিন
   async function renderVerificationCards(query, outputElementId, onSuccessCallback) {
     var output = document.getElementById(outputElementId);
     if (!output) return;
@@ -582,7 +362,6 @@
     }
 
     var allCardsHtml = '';
-
     allCardsHtml += `
       <div class="alert alert-success d-flex justify-content-between align-items-center mb-3 py-2 px-3 rounded-3">
         <span><i class="fa-solid fa-list-check me-2"></i>মোট <strong>${list.length}টি</strong> সেবার রেকর্ড পাওয়া গেছে</span>
@@ -590,33 +369,20 @@
       </div>
     `;
 
-    // 🟢 লুপ চালিয়ে ওই মোবাইল/এনআইডি/আইডির সকল আবেদন একে একে কার্ড হিসেবে রেন্ডার করা
     list.forEach(function(data) {
       var isApproved = (data.status === 'Approved');
       var isPending = (data.status === 'Pending');
       var isRejected = (data.status === 'Rejected');
 
-      // ১. স্ট্যাটাস ব্যাজ
       var statusBadge = '';
       if (isApproved) {
-        statusBadge = '<span class="badge bg-success fs-6"><i class="fa-solid fa-circle-check me-1"></i>Approved (অনুমোদিত)</span>';
+        statusBadge = '<span class="badge bg-success fs-6"><i class="fa-solid fa-circle-check me-1"></i>অনুমোদিত</span>';
       } else if (isRejected) {
-        statusBadge = '<span class="badge bg-danger fs-6"><i class="fa-solid fa-circle-xmark me-1"></i>Rejected (বাতিল)</span>';
+        statusBadge = '<span class="badge bg-danger fs-6"><i class="fa-solid fa-circle-xmark me-1"></i>বাতিল</span>';
       } else {
-        statusBadge = '<span class="badge bg-warning text-dark fs-6"><i class="fa-solid fa-clock me-1"></i>Pending (অপেক্ষমাণ)</span>';
+        statusBadge = '<span class="badge bg-warning text-dark fs-6"><i class="fa-solid fa-clock me-1"></i>অপেক্ষমাণ</span>';
       }
 
-      // ২. ভেরিফিকেশন সিল বক্স
-      var verifiedSeal = '';
-      if (isApproved) {
-        verifiedSeal = '<div class="alert alert-success border-success py-2 px-3 mb-3 rounded-3 small fw-bold text-success"><i class="fa-solid fa-circle-check text-success me-1"></i> এই সনদটি ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কর্তৃক অনুমোদিত ও ভেরিফাইড।</div>';
-      } else if (isPending) {
-        verifiedSeal = '<div class="alert alert-warning border-warning py-2 px-3 mb-3 rounded-3 small fw-bold text-dark"><i class="fa-solid fa-clock text-warning me-1"></i> আবেদনটি বর্তমানে প্রক্রিয়াধীন/অপেক্ষমাণ রয়েছে।</div>';
-      } else {
-        verifiedSeal = '<div class="alert alert-danger border-danger py-2 px-3 mb-3 rounded-3 small fw-bold text-danger"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> আবেদনটি পরিষদ কর্তৃক বাতিল করা হয়েছে।</div>';
-      }
-
-      // ৩. শর্ত: লাইসেন্স নং ও সনদ নং শুধুমাত্র Approved হলেই প্রদর্শন হবে (Pending/Rejected হলে দেখাবে না)
       var certOrLicNoHtml = '';
       if (isApproved) {
         if (data.licNo) {
@@ -626,74 +392,41 @@
         }
       }
 
-      // ৪. শর্ত: প্রিন্ট বাটন লজিক (শুধু Pending অবস্থায় আবেদন কপি প্রিন্ট বাটন থাকবে, Approved/Rejected হলে কোনো বাটন থাকবে না)
       var actionBtnHtml = '';
       if (isPending) {
         var applicationType = data.type || data.serviceType || '';
-        if (applicationType === 'পারিবারিক সনদ' || applicationType === 'উত্তরাধিকারী সনদ' || (data.appId && (data.appId.indexOf('AUL-FW-') === 0 || data.appId.indexOf('AUL-UW-') === 0))) {
+        if (applicationType === 'পারিবারিক সনদ' || applicationType === 'উত্তরাধিকারী সনদ') {
           actionBtnHtml = `<button type="button" class="btn btn-outline-primary fw-bold rounded-pill px-4 mt-2" onclick="printFamilyApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
-        } else if (applicationType === 'ওয়ারিশান সনদ' || (data.appId && data.appId.indexOf('WAR') > -1)) {
+        } else if (applicationType === 'ওয়ারিশান সনদ') {
           actionBtnHtml = `<button type="button" class="btn btn-outline-primary fw-bold rounded-pill px-4 mt-2" onclick="printWarishanApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
         } else {
           actionBtnHtml = `<button type="button" class="btn btn-outline-primary fw-bold rounded-pill px-4 mt-2" onclick="printGeneralAppCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
         }
       }
 
-      // একক কার্ড জেনারেশন (Nikosh ও স্পষ্ট ফন্টে)
       allCardsHtml += `
         <div class="card p-4 border mb-4 bg-white shadow-sm rounded-4 text-start" style="font-family: 'Nikosh', 'Kalpurush', sans-serif;">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-bold text-success m-0" style="font-size: 19px;"><i class="fa-solid fa-circle-user me-2"></i>${data.applicantName || data.name}</h5>
-            ${statusBadge}
+          <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+            <h5 class="fw-bold text-success m-0"><i class="fa-solid fa-user-check me-2"></i>${data.applicantName || data.name || 'তথ্য'}</h5>
+            <div>${statusBadge}</div>
           </div>
-          
-          ${verifiedSeal}
-
-          <div class="row g-2 border-top pt-2" style="font-size: 16px; line-height: 1.8;">
-            <div class="col-md-6"><strong>সেবার নাম:</strong> <span class="text-dark">${data.type || '-'}</span></div>
-            <div class="col-md-6"><strong>ট্র্যাকিং আইডি:</strong> <span class="fw-bold text-primary" style="font-family: monospace; font-size: 16px;">${data.appId}</span></div>
-            <div class="col-md-6"><strong>পিতা/স্বামীর নাম:</strong> <span class="text-dark">${data.fatherName || data.fatherSpouseName || '-'}</span></div>
-            <div class="col-md-6"><strong>মোবাইল:</strong> <span class="fw-bold text-dark" style="font-size: 16px;">${data.mobile || '-'}</span></div>
-            <div class="col-md-6"><strong>NID / জন্মনিবন্ধন:</strong> <span class="fw-bold text-dark" style="font-size: 16px;">${data.nid || '-'}</span></div>
-            <div class="col-md-6"><strong>আবেদনের তারিখ:</strong> <span class="text-dark">${data.applyDate || data.date || '-'}</span></div>
+          <div class="row g-2">
+            <div class="col-md-6"><strong>সেবার নাম:</strong> ${data.type || data.serviceType || 'সনদ'}</div>
+            <div class="col-md-6"><strong>ট্র্যাকিং আইডি:</strong> <span class="text-primary fw-bold">${data.appId}</span></div>
+            <div class="col-md-6"><strong>পিতা/স্বামীর নাম:</strong> ${data.fatherName || data.fatherSpouseName || 'প্রযোজ্য নয়'}</div>
+            <div class="col-md-6"><strong>মোবাইল:</strong> ${data.mobile || ''}</div>
+            <div class="col-md-6"><strong>NID:</strong> ${data.nid || ''}</div>
+            <div class="col-md-6"><strong>আবেদনের তারিখ:</strong> ${data.applyDate || data.date || ''}</div>
             ${certOrLicNoHtml}
           </div>
-
-          ${actionBtnHtml ? `<div class="border-top mt-2 pt-2 text-end">${actionBtnHtml}</div>` : ''}
+          <div class="mt-3 text-end">
+            ${actionBtnHtml}
+          </div>
         </div>
       `;
     });
 
     output.innerHTML = allCardsHtml;
     if (typeof onSuccessCallback === 'function') onSuccessCallback();
-  }
-
-  async function doAdminLogin() {
-    var u = document.getElementById('admUser').value.trim();
-    var p = document.getElementById('admPass').value.trim();
-    var btn = document.getElementById('admLoginBtn');
-
-    if(!u || !p) return alert('ইউজারনেম এবং পাসওয়ার্ড প্রদান করুন!');
-    btn.disabled = true; btn.innerText = 'যাচাই হচ্ছে...';
-
-    const res = await callBackendAPI('adminLogin', { username: u, password: p });
-    btn.disabled = false; btn.innerText = 'লগইন করুন';
-
-    if(res && res.success) {
-      sessionStorage.setItem('upAdminSession', JSON.stringify(res));
-      document.getElementById('adminAuthBtn').innerHTML = '<i class="fa fa-tachometer-alt me-1"></i> এডমিন প্যানেল';
-      document.getElementById('adminAuthBtn').className = 'btn btn-sm btn-success fw-bold px-3 rounded-pill';
-      
-      navToSection('adminPanel');
-      if (typeof applyAdminRolePermissions === 'function') applyAdminRolePermissions(res);
-      if (typeof switchAdminTab === 'function') switchAdminTab('dashTab');
-      if (typeof loadAdminDashboard === 'function') loadAdminDashboard();
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'লগইন ব্যর্থ',
-        text: res ? res.message : 'ইউজারনেম বা পাসওয়ার্ড সঠিক নয়!'
-      });
-    }
   }
 </script>

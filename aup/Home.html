@@ -4,7 +4,7 @@
 <!-- ========================================== -->
 
 <style>
-  /* 🟢 হিরো ব্যানার স্টাইল (বাটন ক্লিক ফিক্সড) */
+  /* 🟢 হিরো ব্যানার স্টাইল */
   .hero-smart-banner {
     background: linear-gradient(135deg, #00582f 0%, #007a40 60%, #024e2b 100%);
     border-radius: 20px;
@@ -24,19 +24,19 @@
     height: 200px;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 50%;
-    pointer-events: none !important; /* ক্লিক যাতে আটকে না যায় */
+    pointer-events: none !important; /* বাটন ক্লিক সচল রাখতে */
     z-index: 1;
   }
 
-  /* 🟢 নাগরিক তথ্য যাচাই সার্চ বার */
+  /* 🟢 আপনার তথ্য যাচাই করুন সার্চ বার */
   .verify-live-search-wrap {
     position: relative;
-    z-index: 10; /* বাটনের উপর সম্পূর্ণ ক্লিক অগ্রাধিকার */
+    z-index: 10;
   }
   .verify-live-search {
     background: #ffffff;
     border-radius: 50px;
-    padding: 5px 6px 5px 20px;
+    padding: 4px 6px 4px 20px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.18);
     border: 2px solid #e2e8f0;
     transition: all 0.3s ease;
@@ -51,7 +51,7 @@
   .verify-live-search input {
     border: none;
     outline: none;
-    font-size: 15px;
+    font-size: 14.5px;
     width: 100%;
     color: #1e293b;
     background: transparent;
@@ -63,11 +63,14 @@
     cursor: pointer !important;
     font-weight: bold;
     border-radius: 50px;
-    padding: 8px 22px;
+    padding: 9px 24px;
     font-size: 14px;
     white-space: nowrap;
     transition: all 0.2s ease;
     z-index: 20;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
   .verify-btn-action:hover {
     background: #004d28 !important;
@@ -189,18 +192,21 @@
   <!-- 🟢 হিরো ব্যানার সেকশন -->
   <div class="hero-smart-banner">
     <div class="row align-items-center g-3">
-      <div class="col-lg-6">
+      <div class="col-lg-5">
         <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">স্মার্ট সেবা • ক্যাশলেস ইউনিয়ন</span>
         <h2 class="fw-bold mb-2 text-white">নাগরিক সেবায় ডিজিটাল ইউনিয়ন পরিষদ</h2>
         <p class="text-white-50 mb-0" style="font-size: 14.5px;">
           ঘরে বসেই নির্ভুল ও দ্রুত সময়ে সকল প্রকার সনদ এবং ট্রেড লাইসেন্স গ্রহণ করুন।
         </p>
       </div>
-      <div class="col-lg-6 verify-live-search-wrap">
-        <!-- 🟢 তথ্য যাচাই সার্চ বার -->
+      <div class="col-lg-7 verify-live-search-wrap">
+        <!-- 🟢 আপনার তথ্য যাচাই করুন সার্চ বক্স -->
+        <div class="text-end mb-1">
+          <span class="badge bg-light text-success fw-bold px-3 py-1 rounded-pill"><i class="fa-solid fa-shield-halved me-1"></i>আপনার তথ্য যাচাই করুন</span>
+        </div>
         <form onsubmit="event.preventDefault(); executeHomeSearch();" class="verify-live-search">
           <i class="fa-solid fa-search text-success me-2 fs-5"></i>
-          <input type="text" id="heroVerifyInput" placeholder="আপনার তথ্য যাচাই করুন (মোবাইল / এনআইডি / নাম)..." autocomplete="off">
+          <input type="text" id="heroVerifyInput" placeholder="মোবাইল নম্বর / এনআইডি নম্বর / আপনার নাম লিখুন" autocomplete="off">
           <button type="button" class="verify-btn-action" onclick="executeHomeSearch()">
             <i class="fa-solid fa-search me-1"></i> যাচাই করুন
           </button>
@@ -369,7 +375,7 @@
         </div>
 
         <form onsubmit="event.preventDefault(); executeTrack();" class="input-group input-group-lg mb-3 shadow-sm rounded-pill overflow-hidden border">
-          <input type="text" id="trackInput" class="form-control border-0 px-4" placeholder="যেমন: 01717221406 অথবা 2362798851 অথবা AUL-WAR-999796">
+          <input type="text" id="trackInput" class="form-control border-0 px-4" placeholder="মোবাইল নম্বর / এনআইডি নম্বর / আপনার নাম লিখুন">
           <button type="button" class="btn btn-success fw-bold px-4" onclick="executeTrack()"><i class="fa fa-search me-1"></i> ট্র্যাক করুন</button>
         </form>
         
@@ -471,7 +477,7 @@
 </div>
 
 <!-- ========================================================== -->
-<!-- 🟢 JAVASCRIPT MASTER ENGINE                                -->
+<!-- 🟢 JAVASCRIPT MASTER ENGINE (100% CLEAN & ERROR-FREE)      -->
 <!-- ========================================================== -->
 <script>
   function copyTrackingCode() {
@@ -507,7 +513,7 @@
     });
   }
 
-  // 🟢 হোম পেজের হিরো সার্চ এক্সেকিউটর (ক্লিক ও এন্টার দুটোতেই কাজ করবে)
+  // 🟢 হোম পেজের হিরো সার্চ এক্সেকিউটর (ক্লিক ও এন্টার উভয় ক্ষেত্রে কাজ করবে)
   function executeHomeSearch() {
     var inputElem = document.getElementById('heroVerifyInput');
     var query = inputElem ? inputElem.value.trim() : '';
@@ -515,11 +521,12 @@
       Swal.fire({
         icon: 'warning',
         title: 'তথ্য দিন',
-        text: 'অনুগ্রহ করে মোবাইল নম্বর, এনআইডি, নাম অথবা ট্র্যাকিং আইডি লিখুন।'
+        text: 'অনুগ্রহ করে মোবাইল নম্বর, এনআইডি নম্বর অথবা আপনার নাম লিখুন।'
       });
       return;
     }
 
+    // ২৫টি সেবার গ্রিড হাইড করে সার্চ রেজাল্ট কন্টেইনার শো করা হবে
     document.getElementById('homeServicesContainer').classList.add('d-none');
     document.getElementById('homeVerifyResultsContainer').classList.remove('d-none');
     
@@ -528,6 +535,7 @@
     });
   }
 
+  // 🟢 সেবাসমূহ ফিরে যান (২৫টি সেবার গ্রিড পুনরায় শো করা)
   function closeHomeVerifyResults() {
     document.getElementById('homeVerifyResultsContainer').classList.add('d-none');
     document.getElementById('homeServicesContainer').classList.remove('d-none');
@@ -536,14 +544,15 @@
     document.getElementById('homeServicesContainer').scrollIntoView({ behavior: 'smooth' });
   }
 
+  // 🟢 ট্র্যাকিং পেজের সার্চ এক্সেকিউটর
   function executeTrack() {
     var inputElem = document.getElementById('trackInput');
     var query = inputElem ? inputElem.value.trim() : '';
-    if (!query) return alert('অনুগ্রহ করে ট্র্যাকিং আইডি, মোবাইল বা লাইসেন্স নম্বর লিখুন!');
+    if (!query) return alert('অনুগ্রহ করে ট্র্যাকিং আইডি, মোবাইল বা এনআইডি নম্বর লিখুন!');
     renderVerificationCards(query, 'trackOutput');
   }
 
-  // 🟢 সার্বজনীন ভেরিফিকেশন কার্ড রেন্ডারার
+  // 🟢 সার্বজনীন ভেরিফিকেশন কার্ড রেন্ডারার ইঞ্জিন (সকল রেকর্ড একটার পর একটা শো করবে)
   async function renderVerificationCards(query, outputElementId, onSuccessCallback) {
     var output = document.getElementById(outputElementId);
     if (!output) return;
@@ -576,43 +585,56 @@
       </div>
     `;
 
+    // 🟢 লুপ চালিয়ে ওই মোবাইল/এনআইডি/আইডির সকল আবেদন একে একে কার্ড হিসেবে রেন্ডার করা
     list.forEach(function(data) {
       var isApproved = (data.status === 'Approved');
       var isPending = (data.status === 'Pending');
+      var isRejected = (data.status === 'Rejected');
 
-      var statusBadge = isApproved 
-        ? '<span class="badge bg-success fs-6">Approved (অনুমোদিত)</span>' 
-        : ((data.status === 'Rejected') ? '<span class="badge bg-danger fs-6">Rejected (বাতিল)</span>' : '<span class="badge bg-warning text-dark fs-6">Pending (অপেক্ষমাণ)</span>');
+      // ১. স্ট্যাটাস ব্যাজ
+      var statusBadge = '';
+      if (isApproved) {
+        statusBadge = '<span class="badge bg-success fs-6"><i class="fa-solid fa-circle-check me-1"></i>Approved (অনুমোদিত)</span>';
+      } else if (isRejected) {
+        statusBadge = '<span class="badge bg-danger fs-6"><i class="fa-solid fa-circle-xmark me-1"></i>Rejected (বাতিল)</span>';
+      } else {
+        statusBadge = '<span class="badge bg-warning text-dark fs-6"><i class="fa-solid fa-clock me-1"></i>Pending (অপেক্ষমাণ)</span>';
+      }
 
-      var verifiedSeal = isApproved 
-        ? '<div class="alert alert-success border-success py-2 px-3 mb-3 rounded-3 small fw-bold text-success"><i class="fa-solid fa-circle-check text-success me-1"></i> এই সনদটি ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কর্তৃক অনুমোদিত ও ভেরিফাইড।</div>'
-        : (isPending 
-            ? '<div class="alert alert-warning border-warning py-2 px-3 mb-3 rounded-3 small fw-bold text-dark"><i class="fa-solid fa-clock text-warning me-1"></i> আবেদনটি বর্তমানে প্রক্রিয়াধীন/অপেক্ষমাণ রয়েছে।</div>'
-            : '<div class="alert alert-danger border-danger py-2 px-3 mb-3 rounded-3 small fw-bold text-danger"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> আবেদনটি পরিষদ কর্তৃক বাতিল করা হয়েছে।</div>');
+      // ২. ভেরিফিকেশন সিল বক্স
+      var verifiedSeal = '';
+      if (isApproved) {
+        verifiedSeal = '<div class="alert alert-success border-success py-2 px-3 mb-3 rounded-3 small fw-bold text-success"><i class="fa-solid fa-circle-check text-success me-1"></i> এই সনদটি ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কর্তৃক অনুমোদিত ও ভেরিফাইড।</div>';
+      } else if (isPending) {
+        verifiedSeal = '<div class="alert alert-warning border-warning py-2 px-3 mb-3 rounded-3 small fw-bold text-dark"><i class="fa-solid fa-clock text-warning me-1"></i> আবেদনটি বর্তমানে প্রক্রিয়াধীন/অপেক্ষমাণ রয়েছে।</div>';
+      } else {
+        verifiedSeal = '<div class="alert alert-danger border-danger py-2 px-3 mb-3 rounded-3 small fw-bold text-danger"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> আবেদনটি পরিষদ কর্তৃক বাতিল করা হয়েছে।</div>';
+      }
 
-      // শুধুমাত্র Approved হলেই লাইসেন্স/সনদ নম্বর দৃশ্যমান হবে
+      // ৩. শর্ত: লাইসেন্স নং ও সনদ নং শুধুমাত্র Approved হলেই প্রদর্শন হবে (Pending/Rejected হলে দেখাবে না)
       var certOrLicNoHtml = '';
       if (isApproved) {
         if (data.licNo) {
-          certOrLicNoHtml = `<div class="col-md-12 text-danger fw-bold mt-1" style="font-size: 17px;">লাইসেন্স নং: ${data.licNo}</div>`;
+          certOrLicNoHtml = `<div class="col-md-12 text-danger fw-bold mt-1" style="font-size: 16.5px;">লাইসেন্স নং: ${data.licNo}</div>`;
         } else if (data.certNo) {
-          certOrLicNoHtml = `<div class="col-md-12 text-danger fw-bold mt-1" style="font-size: 17px;">সনদ নং: ${data.certNo}</div>`;
+          certOrLicNoHtml = `<div class="col-md-12 text-danger fw-bold mt-1" style="font-size: 16.5px;">সনদ নং: ${data.certNo}</div>`;
         }
       }
 
-      // শুধু Pending থাকলে আবেদন কপি প্রিন্ট বাটন থাকবে
+      // ৪. শর্ত: প্রিন্ট বাটন লজিক (শুধু Pending অবস্থায় আবেদন কপি প্রিন্ট বাটন থাকবে, Approved/Rejected হলে কোনো বাটন থাকবে না)
       var actionBtnHtml = '';
       if (isPending) {
         var applicationType = data.type || data.serviceType || '';
-        if(applicationType === 'পারিবারিক সনদ' || applicationType === 'উত্তরাধিকারী সনদ' || (data.appId && (data.appId.indexOf('AUL-FW-') === 0 || data.appId.indexOf('AUL-UW-') === 0))) {
+        if (applicationType === 'পারিবারিক সনদ' || applicationType === 'উত্তরাধিকারী সনদ' || (data.appId && (data.appId.indexOf('AUL-FW-') === 0 || data.appId.indexOf('AUL-UW-') === 0))) {
           actionBtnHtml = `<button type="button" class="btn btn-outline-primary fw-bold rounded-pill px-4 mt-2" onclick="printFamilyApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
-        } else if(applicationType === 'ওয়ারিশান সনদ' || (data.appId && data.appId.indexOf('WAR') > -1)) {
+        } else if (applicationType === 'ওয়ারিশান সনদ' || (data.appId && data.appId.indexOf('WAR') > -1)) {
           actionBtnHtml = `<button type="button" class="btn btn-outline-primary fw-bold rounded-pill px-4 mt-2" onclick="printWarishanApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
         } else {
           actionBtnHtml = `<button type="button" class="btn btn-outline-primary fw-bold rounded-pill px-4 mt-2" onclick="printGeneralAppCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
         }
       }
 
+      // একক কার্ড জেনারেশন (Nikosh ও স্পষ্ট ফন্টে)
       allCardsHtml += `
         <div class="card p-4 border mb-4 bg-white shadow-sm rounded-4 text-start" style="font-family: 'Nikosh', 'Kalpurush', sans-serif;">
           <div class="d-flex justify-content-between align-items-center mb-3">
@@ -626,8 +648,8 @@
             <div class="col-md-6"><strong>সেবার নাম:</strong> <span class="text-dark">${data.type || '-'}</span></div>
             <div class="col-md-6"><strong>ট্র্যাকিং আইডি:</strong> <span class="fw-bold text-primary" style="font-family: monospace; font-size: 16px;">${data.appId}</span></div>
             <div class="col-md-6"><strong>পিতা/স্বামীর নাম:</strong> <span class="text-dark">${data.fatherName || data.fatherSpouseName || '-'}</span></div>
-            <div class="col-md-6"><strong>মোবাইল নম্বর:</strong> <span class="fw-bold text-dark" style="font-size: 16.5px;">${data.mobile || '-'}</span></div>
-            <div class="col-md-6"><strong>জাতীয় পরিচয়পত্র / জন্মনিবন্ধন:</strong> <span class="fw-bold text-dark" style="font-size: 16px;">${data.nid || '-'}</span></div>
+            <div class="col-md-6"><strong>মোবাইল:</strong> <span class="fw-bold text-dark" style="font-size: 16px;">${data.mobile || '-'}</span></div>
+            <div class="col-md-6"><strong>NID / জন্মনিবন্ধন:</strong> <span class="fw-bold text-dark" style="font-size: 16px;">${data.nid || '-'}</span></div>
             <div class="col-md-6"><strong>আবেদনের তারিখ:</strong> <span class="text-dark">${data.applyDate || data.date || '-'}</span></div>
             ${certOrLicNoHtml}
           </div>

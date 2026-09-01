@@ -144,7 +144,7 @@ for (var h = 0; h < familyHeaders.length; h++) {
 function ensureWarishanSchema() {
   var sheet = getSheet('Warishan');
   var headers = [
-    'AppID','ApplicantName','FatherSpouse','DeceasedName','NID','Mobile','WardNo','Village','PostOffice','Status','Date','SignatoryRole','SmarakNo','WarishanJSON','DeceasedFather','DeceasedRelation','DeceasedWard','DeceasedVillage','DeceasedPostOffice','DeceasedUpazila','DeceasedDistrict'
+    'AppID','ApplicantName','FatherSpouse','DeceasedName','NID','Mobile','WardNo','Village','PostOffice','Status','Date','SignatoryRole','SmarakNo','WarishanJSON','DeceasedFather','DeceasedRelation','DeceasedWard','DeceasedVillage','DeceasedPostOffice','DeceasedUnion','DeceasedUpazila','DeceasedDistrict'
   ];
   var maxCols = Math.max(sheet.getLastColumn(), headers.length);
   var currentHeaders = sheet.getRange(1, 1, 1, maxCols).getValues()[0];
@@ -217,7 +217,7 @@ function submitWarishanApplication(data) {
     var sheet = ss.getSheetByName("Warishan");
     if (!sheet) {
       sheet = ss.insertSheet("Warishan");
-      sheet.appendRow(["AppID", "ApplicantName", "FatherSpouse", "DeceasedName", "NID", "Mobile", "WardNo", "Village", "PostOffice", "Status", "Date", "SignatoryRole", "SmarakNo", "WarishanJSON", "DeceasedFather", "DeceasedRelation", "DeceasedWard", "DeceasedVillage", "DeceasedPostOffice", "DeceasedUpazila", "DeceasedDistrict"]);
+      sheet.appendRow(["AppID", "ApplicantName", "FatherSpouse", "DeceasedName", "NID", "Mobile", "WardNo", "Village", "PostOffice", "Status", "Date", "SignatoryRole", "SmarakNo", "WarishanJSON", "DeceasedFather", "DeceasedRelation", "DeceasedWard", "DeceasedVillage", "DeceasedPostOffice", "DeceasedUnion", "DeceasedUpazila", "DeceasedDistrict"]);
     }
     
     var appId = "AUL-WAR-" + Math.floor(1000 + Math.random() * 9000);

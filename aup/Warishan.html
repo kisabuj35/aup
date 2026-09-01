@@ -265,6 +265,7 @@
             <div class="col-md-4"><label class="form-label fw-bold text-danger">ওয়ার্ড নম্বর *</label><select id="warDeceasedWard" class="form-select border-danger" required><option value="০১">০১</option><option value="০২">০২</option><option value="০৩">০৩</option><option value="০৪">০৪</option><option value="০৫">০৫</option><option value="০৬">০৬</option><option value="০৭">০৭</option><option value="০৮">০৮</option><option value="০৯">০৯</option></select></div>
             <div class="col-md-4"><label class="form-label fw-bold text-danger">গ্রাম/মহল্লা *</label><input type="text" id="warDeceasedVillage" class="form-control border-danger" placeholder="মৃত ব্যক্তির গ্রামের নাম" required></div>
             <div class="col-md-4"><label class="form-label fw-bold text-danger">ডাকঘর *</label><input type="text" id="warDeceasedPost" class="form-control border-danger" placeholder="মৃত ব্যক্তির ডাকঘর" required></div>
+            <div class="col-md-4"><label class="form-label fw-bold text-danger">ইউনিয়ন *</label><input type="text" id="warDeceasedUnion" class="form-control border-danger" value="১১নং আউলিয়াপুর ইউনিয়ন" required></div>
             <div class="col-md-4"><label class="form-label fw-bold text-danger">উপজেলা *</label><input type="text" id="warDeceasedUpazila" class="form-control border-danger" value="পটুয়াখালী সদর" required></div>
             <div class="col-md-4"><label class="form-label fw-bold text-danger">জেলা *</label><input type="text" id="warDeceasedDistrict" class="form-control border-danger" value="পটুয়াখালী" required></div>
           </div>
@@ -393,6 +394,7 @@
               <div class="col-md-4"><label class="form-label fw-bold">ওয়ার্ড নম্বর *</label><select id="editWarDeceasedWard" class="form-select" required><option value="০১">০১</option><option value="০২">০২</option><option value="০৩">০৩</option><option value="০৪">০৪</option><option value="০৫">০৫</option><option value="০৬">০৬</option><option value="০৭">০৭</option><option value="০৮">০৮</option><option value="০৯">০৯</option></select></div>
               <div class="col-md-4"><label class="form-label fw-bold">গ্রাম/মহল্লা *</label><input type="text" id="editWarDeceasedVillage" class="form-control" required></div>
               <div class="col-md-4"><label class="form-label fw-bold">ডাকঘর *</label><input type="text" id="editWarDeceasedPost" class="form-control" required></div>
+              <div class="col-md-4"><label class="form-label fw-bold">ইউনিয়ন *</label><input type="text" id="editWarDeceasedUnion" class="form-control" required></div>
               <div class="col-md-4"><label class="form-label fw-bold">উপজেলা *</label><input type="text" id="editWarDeceasedUpazila" class="form-control" required></div>
               <div class="col-md-4"><label class="form-label fw-bold">জেলা *</label><input type="text" id="editWarDeceasedDistrict" class="form-control" required></div>
             </div>
@@ -448,6 +450,7 @@
       wardNo: data.deceasedWardNo || data.deceasedWard || '',
       village: data.deceasedVillage || '',
       postOffice: data.deceasedPostOffice || data.deceasedPost || '',
+      union: data.deceasedUnion || '১১নং আউলিয়াপুর ইউনিয়ন',
       upazila: data.deceasedUpazila || '',
       district: data.deceasedDistrict || ''
     };
@@ -458,7 +461,7 @@
     return (address.wardNo ? address.wardNo + ' নং ওয়ার্ড, ' : '') +
       (address.village ? address.village + ' গ্রাম, ' : '') +
       (address.postOffice ? 'ডাকঘর ' + address.postOffice + ', ' : '') +
-      'ইউনিয়ন: ১১নং আউলিয়াপুর, ইউনিয়ন পরিষদ, ' +
+      (address.union ? 'ইউনিয়ন: ' + address.union + ', ' : '') +
       (address.upazila ? address.upazila + ' উপজেলা, ' : '') +
       (address.district ? address.district + ' জেলা' : '');
   }
@@ -571,12 +574,14 @@
     var deceasedWard = document.getElementById('warDeceasedWard').value;
     var deceasedVillage = document.getElementById('warDeceasedVillage').value.trim();
     var deceasedPostOffice = document.getElementById('warDeceasedPost').value.trim();
+    var deceasedUnion = document.getElementById('warDeceasedUnion') ? document.getElementById('warDeceasedUnion').value.trim() : '১১নং আউলিয়াপুর ইউনিয়ন';
     var deceasedUpazila = document.getElementById('warDeceasedUpazila').value.trim();
     var deceasedDistrict = document.getElementById('warDeceasedDistrict').value.trim();
     var deceasedAddressText = [
       deceasedWard ? 'ওয়ার্ড-' + deceasedWard : '',
       deceasedVillage ? 'গ্রাম: ' + deceasedVillage : '',
       deceasedPostOffice ? 'ডাকঘর: ' + deceasedPostOffice : '',
+      deceasedUnion ? 'ইউনিয়ন: ' + deceasedUnion : '',
       deceasedUpazila ? 'উপজেলা: ' + deceasedUpazila : '',
       deceasedDistrict ? 'জেলা: ' + deceasedDistrict : ''
     ].filter(Boolean).join(', ');
@@ -596,6 +601,7 @@
       deceasedWardNo: deceasedWard,
       deceasedVillage: deceasedVillage,
       deceasedPostOffice: deceasedPostOffice,
+      deceasedUnion: deceasedUnion,
       deceasedUpazila: deceasedUpazila,
       deceasedDistrict: deceasedDistrict,
       deceasedAddressText: deceasedAddressText,
@@ -718,6 +724,7 @@
     document.getElementById('editWarDeceasedWard').value = data.deceasedWardNo || data.deceasedWard || '০১';
     document.getElementById('editWarDeceasedVillage').value = data.deceasedVillage || '';
     document.getElementById('editWarDeceasedPost').value = data.deceasedPostOffice || data.deceasedPost || '';
+    document.getElementById('editWarDeceasedUnion').value = data.deceasedUnion || '১১নং আউলিয়াপুর ইউনিয়ন';
     document.getElementById('editWarDeceasedUpazila').value = data.deceasedUpazila || 'পটুয়াখালী সদর';
     document.getElementById('editWarDeceasedDistrict').value = data.deceasedDistrict || 'পটুয়াখালী';
 
@@ -758,6 +765,7 @@
       deceasedWardNo: document.getElementById('editWarDeceasedWard').value,
       deceasedVillage: document.getElementById('editWarDeceasedVillage').value.trim(),
       deceasedPostOffice: document.getElementById('editWarDeceasedPost').value.trim(),
+      deceasedUnion: document.getElementById('editWarDeceasedUnion') ? document.getElementById('editWarDeceasedUnion').value.trim() : '১১নং আউলিয়াপুর ইউনিয়ন',
       deceasedUpazila: document.getElementById('editWarDeceasedUpazila').value.trim(),
       deceasedDistrict: document.getElementById('editWarDeceasedDistrict').value.trim(),
       warishanTree: collectWarishanEditTreeData()

@@ -326,6 +326,7 @@ function submitWarishanApplication(data) {
       data.deceasedWardNo || data.deceasedWard || "",
       data.deceasedVillage || "",
       data.deceasedPostOffice || data.deceasedPost || "",
+      data.deceasedUnion || "১১নং আউলিয়াপুর ইউনিয়ন",
       data.deceasedUpazila || "",
       data.deceasedDistrict || ""
     ];
@@ -373,7 +374,13 @@ function getWarishanDetails(appId) {
           signatoryRole: data[i][11],
           smarakNo: data[i][12],
           warishanTree: tree,
-          deceasedFather: data[i][14] || ""
+          deceasedFather: data[i][14] || "",
+          deceasedWardNo: data[i][16] || "",
+          deceasedVillage: data[i][17] || "",
+          deceasedPostOffice: data[i][18] || "",
+          deceasedUnion: data[i][19] || '১১নং আউলিয়াপুর ইউনিয়ন',
+          deceasedUpazila: data[i][20] || "",
+          deceasedDistrict: data[i][21] || ""
         };
       }
     }
@@ -406,7 +413,13 @@ function getWarishanApps() {
       date: formatBanglaDate(row[10]),
       signatoryRole: row[11] || 'চেয়ারম্যান',
       smarakNo: row[12] || '',
-      deceasedFather: row[14] || ''
+      deceasedFather: row[14] || '',
+      deceasedWardNo: row[16] || '',
+      deceasedVillage: row[17] || '',
+      deceasedPostOffice: row[18] || '',
+      deceasedUnion: row[19] || '১১নং আউলিয়াপুর ইউনিয়ন',
+      deceasedUpazila: row[20] || '',
+      deceasedDistrict: row[21] || ''
     });
   }
   return result;
@@ -456,6 +469,13 @@ function updateWarishanData(ed) {
         sheet.getRange(i + 1, 12).setValue(ed.signatoryRole || 'চেয়ারম্যান');
         if (ed.warishanTree) sheet.getRange(i + 1, 14).setValue(JSON.stringify(ed.warishanTree));
         if (ed.deceasedFather !== undefined) sheet.getRange(i + 1, 15).setValue(ed.deceasedFather);
+        if (ed.deceasedFatherRelation !== undefined) sheet.getRange(i + 1, 16).setValue(ed.deceasedFatherRelation);
+        if (ed.deceasedWardNo !== undefined) sheet.getRange(i + 1, 17).setValue(ed.deceasedWardNo);
+        if (ed.deceasedVillage !== undefined) sheet.getRange(i + 1, 18).setValue(ed.deceasedVillage);
+        if (ed.deceasedPostOffice !== undefined) sheet.getRange(i + 1, 19).setValue(ed.deceasedPostOffice);
+        if (ed.deceasedUnion !== undefined) sheet.getRange(i + 1, 20).setValue(ed.deceasedUnion);
+        if (ed.deceasedUpazila !== undefined) sheet.getRange(i + 1, 21).setValue(ed.deceasedUpazila);
+        if (ed.deceasedDistrict !== undefined) sheet.getRange(i + 1, 22).setValue(ed.deceasedDistrict);
         return { success: true };
       }
     }

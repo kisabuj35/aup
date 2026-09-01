@@ -575,6 +575,19 @@
     renderVerificationCards(query, 'trackOutput');
   }
 
+  function normalizeStatusValue(rawStatus) {
+    var status = (rawStatus === undefined || rawStatus === null) ? 'Pending' : rawStatus.toString().trim();
+    var lowered = status.toLowerCase();
+
+    if (lowered.indexOf('approved') !== -1 || lowered.indexOf('approve') !== -1 || lowered.indexOf('accept') !== -1 || lowered.indexOf('verified') !== -1 || lowered.indexOf('অনুমোদিত') !== -1 || lowered.indexOf('অনুমতি') !== -1) {
+      return 'Approved';
+    }
+    if (lowered.indexOf('rejected') !== -1 || lowered.indexOf('reject') !== -1 || lowered.indexOf('বাতিল') !== -1 || lowered.indexOf('রিজেক্ট') !== -1 || lowered.indexOf('cancel') !== -1) {
+      return 'Rejected';
+    }
+    return 'Pending';
+  }
+
   // 🟢 সার্বজনীন ভেরিফিকেশন কার্ড রেন্ডারার (সকল রেকর্ড একটার নিচে আরেকটা শো করবে)
   async function renderVerificationCards(query, outputElementId, onSuccessCallback) {
     var output = document.getElementById(outputElementId);
@@ -610,9 +623,10 @@
 
     // 🟢 লুপ চালিয়ে ওই ব্যক্তির সকল আবেদন একে একে কার্ড হিসেবে রেন্ডার করা
     list.forEach(function(data) {
-      var isApproved = (data.status === 'Approved');
-      var isPending = (data.status === 'Pending');
-      var isRejected = (data.status === 'Rejected');
+      var computedStatus = normalizeStatusValue(data.status);
+      var isApproved = (computedStatus === 'Approved');
+      var isPending = (computedStatus === 'Pending');
+      var isRejected = (computedStatus === 'Rejected');
 
       // ১. স্ট্যাটাস ব্যাজ
       var statusBadge = '';
@@ -634,7 +648,7 @@
         verifiedSeal = '<div class="alert alert-danger border-danger py-2 px-3 mb-3 rounded-3 small fw-bold text-danger"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> আবেদনটি পরিষদ কর্তৃক বাতিল করা হয়েছে।</div>';
       }
 
-      // ৩. শর্ত: লাইসেন্স নং ও সনদ নং শুধুমাত্র Approved হলেই প্রদর্শন হবে
+      // ৩. শর্ত: লাইসেন্স নং ও সনদ নং শুধুমাত্র Approved হলে প্রদর্শন হবে
       var certOrLicNoHtml = '';
       if (isApproved) {
         if (data.licNo) {
@@ -644,9 +658,9 @@
         }
       }
 
-      // ৪. শর্ত: প্রিন্ট বাটন লজিক (শুধু Pending অবস্থায় আবেদন কপি প্রিন্ট বাটন থাকবে)
+      // ৪. শর্ত: প্রিন্ট বাটন শুধুমাত্র Pending/Rejected অবস্থায় থাকবে; Approved তে থাকবে না
       var actionBtnHtml = '';
-      if (isPending) {
+      if (isPending || isRejected) {
         var applicationType = data.type || data.serviceType || '';
         if (applicationType === 'পারিবারিক সনদ' || applicationType === 'উত্তরাধিকারী সনদ' || (data.appId && (data.appId.indexOf('AUL-FW-') === 0 || data.appId.indexOf('AUL-UW-') === 0))) {
           actionBtnHtml = `<button type="button" class="btn btn-outline-primary fw-bold rounded-pill px-4 mt-2" onclick="printFamilyApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;

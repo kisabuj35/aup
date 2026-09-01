@@ -717,7 +717,9 @@
     if (sigRole === 'প্যানেল চেয়ারম্যান' || sigRole === 'প্যানেল চেয়ারম্যান-১') sigRole = 'Panel Chairman';
     else if (sigRole === 'ভারপ্রাপ্ত চেয়ারম্যান') sigRole = 'Acting Chairman';
     else if (sigRole === 'চেয়ারম্যান') sigRole = 'Chairman';
-    var sigName = sigRole === 'Panel Chairman' ? 'Md. Abdus Salam Mridha' : 'Adv. Md. Humayun Kabir';
+    var panelChairName = (window.getUPPanelChairmanName ? window.getUPPanelChairmanName() : 'Md. Abdus Salam Mridha');
+    var chairmanName = (window.getUPChairmanName ? window.getUPChairmanName() : 'Adv. Md. Humayun Kabir');
+    var sigName = sigRole === 'Panel Chairman' ? panelChairName : chairmanName;
     var qrPayload = encodeURIComponent('Government of the People\'s Republic of Bangladesh\nAuliapur Union Parishad\nCitizenship Certificate\nCertificate No: ' + certNo + '\nName: ' + applicantName);
     var qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=0&data=' + qrPayload;
 

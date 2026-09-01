@@ -102,6 +102,151 @@ function initMasterDatabase() {
   getSheet('TradeLicense');
   getSheet('TaxPayers');
   getSheet('Users');
+  ensureSearchIndexSheet();
+}
+
+function ensureSearchIndexSheet() {
+  var sheet = getSheet('SearchIndex');
+  var headers = ['AppID', 'SourceSheet', 'ServiceType', 'ApplicantName', 'Mobile', 'NID', 'Status', 'ApplyDate', 'SearchText', 'PayloadJSON', 'CreatedAt'];
+  var rows = sheet.getDataRange().getValues();
+
+  if (rows.length === 0 || rows[0].length === 0 || (rows[0][0] || '').toString().trim() !== 'AppID') {
+    sheet.clear();
+    sheet.appendRow(headers);
+    sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold').setBackground('#0d6efd').setFontColor('#ffffff');
+  }
+
+  return sheet;
+}
+
+function normalizeSearchText(value) {
+  var v = (value === null || value === undefined) ? '' : value.toString();
+  return toEnglishDigit(v).replace(/[^a-z0-9]/gi, '').toLowerCase();
+}
+
+function upsertSearchIndexRecord(record) {
+  if (!record || !record.appId) return;
+  var indexSheet = ensureSearchIndexSheet();
+  var rows = indexSheet.getDataRange().getValues();
+  var rowValues = [
+    record.appId || '',
+    record.sourceSheet || '',
+    record.serviceType || '',
+    record.applicantName || '',
+    record.mobile || '',
+    record.nid || '',
+    record.status || 'Pending',
+    record.applyDate || '',
+    normalizeSearchText([record.appId, record.applicantName, record.mobile, record.nid, record.serviceType].join(' ')),
+    JSON.stringify(record.payload || {}),
+    new Date().toISOString()
+  ];
+
+  for (var i = 1; i < rows.length; i++) {
+    if ((rows[i][0] || '').toString().trim() === (record.appId || '').toString().trim()) {
+      indexSheet.getRange(i + 1, 1, 1, rowValues.length).setValues([rowValues]);
+      return;
+    }
+  }
+
+  indexSheet.appendRow(rowValues);
+}
+
+function addSearchIndexFromServiceSheet(sheetName, rowData) {
+  if (!rowData || !rowData.appId) return;
+  var appId = (rowData.appId || '').toString().trim();
+  var serviceType = rowData.serviceType || rowData.type || sheetName;
+  var applicantName = rowData.applicantName || rowData.name || rowData.ownerName || rowData.applicantName || '';
+  var mobile = toEnglishDigit(rowData.mobile || rowData.Mobile || '');
+  var nid = toEnglishDigit(rowData.nid || rowData.NID || '');
+  var status = rowData.status || 'Pending';
+  var applyDate = rowData.applyDate || rowData.date || '';
+
+  upsertSearchIndexRecord({
+    appId: appId,
+    sourceSheet: sheetName,
+    serviceType: serviceType,
+    applicantName: applicantName,
+    mobile: mobile,
+    nid: nid,
+    status: status,
+    applyDate: applyDate,
+    payload: rowData
+  });
+}
+
+function syncSearchIndexFromSheets() {
+  var sheets = ['Citizenship', 'FamilyCert', 'Warishan', 'TradeLicense', 'Applications'];
+  for (var s = 0; s < sheets.length; s++) {
+    var sheet = getSheet(sheets[s]);
+    var data = sheet.getDataRange().getValues();
+    for (var i = 1; i < data.length; i++) {
+      var row = data[i];
+      if (!row || !row[0]) continue;
+      var appId = (row[0] || '').toString().trim();
+      if (!appId) continue;
+
+      var item = {};
+      if (sheets[s] === 'Citizenship') {
+        item = {
+          appId: appId,
+          serviceType: 'নাগরিকত্ব সনদ',
+          applicantName: row[1] || '',
+          mobile: toEnglishDigit(row[8] || ''),
+          nid: toEnglishDigit(row[2] || ''),
+          status: row[13] || 'Pending',
+          applyDate: formatBanglaDate(row[14]),
+          type: 'নাগরিকত্ব সনদ'
+        };
+      } else if (sheets[s] === 'Warishan') {
+        item = {
+          appId: appId,
+          serviceType: 'ওয়ারিশান সনদ',
+          applicantName: row[1] || '',
+          mobile: toEnglishDigit(row[5] || ''),
+          nid: toEnglishDigit(row[4] || ''),
+          status: row[9] || 'Pending',
+          applyDate: formatBanglaDate(row[10]),
+          type: 'ওয়ারিশান সনদ'
+        };
+      } else if (sheets[s] === 'FamilyCert') {
+        item = {
+          appId: appId,
+          serviceType: (appId.indexOf('AUL-UW-') === 0) ? 'উত্তরাধিকারী সনদ' : (row[24] || 'পারিবারিক সনদ'),
+          applicantName: row[1] || '',
+          mobile: toEnglishDigit(row[5] || ''),
+          nid: toEnglishDigit(row[2] || ''),
+          status: row[9] || 'Pending',
+          applyDate: formatBanglaDate(row[10]),
+          type: (appId.indexOf('AUL-UW-') === 0) ? 'উত্তরাধিকারী সনদ' : (row[24] || 'পারিবারিক সনদ')
+        };
+      } else if (sheets[s] === 'TradeLicense') {
+        item = {
+          appId: appId,
+          serviceType: 'ট্রেড লাইসেন্স',
+          applicantName: row[4] || '',
+          mobile: toEnglishDigit(row[9] || ''),
+          nid: toEnglishDigit(row[7] || ''),
+          status: row[24] || 'Pending',
+          applyDate: formatBanglaDate(row[22]),
+          type: 'ট্রেড লাইসেন্স'
+        };
+      } else {
+        item = {
+          appId: appId,
+          serviceType: row[1] || 'সাধারণ প্রত্যয়ন',
+          applicantName: row[2] || '',
+          mobile: toEnglishDigit(row[9] || row[8] || ''),
+          nid: toEnglishDigit(row[3] || ''),
+          status: row[14] || row[13] || 'Pending',
+          applyDate: formatBanglaDate(row[15] || row[14]),
+          type: row[1] || 'সাধারণ প্রত্যয়ন'
+        };
+      }
+
+      addSearchIndexFromServiceSheet(sheets[s], item);
+    }
+  }
 }
 
 function normalizeFamilyCertificateType(data) {
@@ -467,14 +612,74 @@ function trackApplication(searchKey) {
 
     var results = [];
     var seenAppIds = {};
+
+    var indexSheet = ensureSearchIndexSheet();
+    var indexRows = indexSheet.getDataRange().getValues();
+    if (indexRows.length > 1) {
+      for (var idx = 1; idx < indexRows.length; idx++) {
+        var indexRow = indexRows[idx];
+        if (!indexRow || !indexRow[0]) continue;
+        var rowText = '';
+        for (var c = 0; c < indexRow.length; c++) {
+          if (indexRow[c] !== null && indexRow[c] !== undefined && indexRow[c] !== '') {
+            rowText += ' ' + indexRow[c].toString().toLowerCase();
+          }
+        }
+        var matched = false;
+        for (var q = 0; q < searchVariants.length; q++) {
+          var candidate = (searchVariants[q] || '').toString().trim();
+          if (!candidate) continue;
+          var candLower = candidate.toLowerCase();
+          var candDigits = toEnglishDigit(candidate).replace(/\D/g, '');
+          if (rowText.indexOf(candLower) > -1) {
+            matched = true;
+            break;
+          }
+          if (candDigits && rowText.replace(/\D/g, '').indexOf(candDigits) > -1) {
+            matched = true;
+            break;
+          }
+        }
+
+        if (!matched) continue;
+
+        var appId = (indexRow[0] || '').toString().trim();
+        if (!appId || seenAppIds[appId]) continue;
+        seenAppIds[appId] = true;
+
+        results.push({
+          appId: appId,
+          sourceSheet: indexRow[1] || '',
+          type: indexRow[2] || 'সাধারণ প্রত্যয়ন',
+          serviceType: indexRow[2] || 'সাধারণ প্রত্যয়ন',
+          applicantName: indexRow[3] || '',
+          name: indexRow[3] || '',
+          mobile: toEnglishDigit(indexRow[4] || ''),
+          nid: toEnglishDigit(indexRow[5] || ''),
+          status: indexRow[6] || 'Pending',
+          applyDate: indexRow[7] || '',
+          date: indexRow[7] || ''
+        });
+      }
+    }
+
+    if (results.length > 0) {
+      var resObj = { found: true, total: results.length, list: results };
+      for (var k in results[0]) {
+        if (!resObj.hasOwnProperty(k)) {
+          resObj[k] = results[0][k];
+        }
+      }
+      return resObj;
+    }
+
     var ss = getSS();
     var allSheets = ss.getSheets();
-
     for (var s = 0; s < allSheets.length; s++) {
       var curSheet = allSheets[s];
       var sName = curSheet.getName().toLowerCase().replace(/[^a-z0-9]/g, '');
 
-      if (sName === 'users' || sName === 'accounts' || sName === 'projects' || sName === 'beneficiaries' || sName === 'taxpayers' || sName === 'taxcollection') {
+      if (sName === 'users' || sName === 'accounts' || sName === 'projects' || sName === 'beneficiaries' || sName === 'taxpayers' || sName === 'taxcollection' || sName === 'searchindex') {
         continue;
       }
 

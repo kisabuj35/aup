@@ -508,8 +508,11 @@
           <form onsubmit="event.preventDefault(); saveUPSettings();">
             <div class="row g-3">
               <div class="col-md-6"><label class="form-label fw-bold">চেয়ারম্যানের নাম *</label><input type="text" id="setChairName" class="form-control" value="অ্যাড. মোঃ হুমায়ুন কবির" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold">চেয়ারম্যানের ইংরেজি নাম</label><input type="text" id="setChairNameEn" class="form-control" value="Adv. Md. Humayun Kabir"></div>
               <div class="col-md-6"><label class="form-label fw-bold">প্যানেল চেয়ারম্যান-১ এর নাম</label><input type="text" id="setPanelChairName" class="form-control" value="মোঃ আবদুস সালাম মৃধা"></div>
+              <div class="col-md-6"><label class="form-label fw-bold">প্যানেল চেয়ারম্যান-১ এর ইংরেজি নাম</label><input type="text" id="setPanelChairNameEn" class="form-control" value="Md. Abdus Salam Mridha"></div>
               <div class="col-md-6"><label class="form-label fw-bold">ইউপি সচিবের নাম *</label><input type="text" id="setSecName" class="form-control" value="মোঃ মোতাহার উদ্দিন" required></div>
+              <div class="col-md-6"><label class="form-label fw-bold">ইউপি সচিবের ইংরেজি নাম</label><input type="text" id="setSecNameEn" class="form-control" value="Md. Motahar Uddin"></div>
               <div class="col-md-6"><label class="form-label fw-bold">হেল্পলাইন নম্বর</label><input type="text" id="setPhone" class="form-control" value="০১XXXXXXXXX"></div>
             </div>
             <div class="text-end mt-4"><button type="submit" class="btn btn-success fw-bold px-4" id="saveUpSettingsBtn"><i class="fa fa-save me-1"></i> সংরক্ষণ করুন</button></div>
@@ -760,7 +763,10 @@
     var defaults = {
       chairman: 'অ্যাড. মোঃ হুমায়ুন কবির',
       panelChairman: 'মোঃ আবদুস সালাম মৃধা',
-      secretary: 'মোঃ মোতাহার উদ্দিন'
+      secretary: 'মোঃ মোতাহার উদ্দিন',
+      chairmanEn: 'Adv. Md. Humayun Kabir',
+      panelChairmanEn: 'Md. Abdus Salam Mridha',
+      secretaryEn: 'Md. Motahar Uddin'
     };
     try {
       var raw = localStorage.getItem('upOfficialSettings');
@@ -782,20 +788,29 @@
   function loadUPSettingsForm() {
     var settings = getUPOfficialSettings();
     var chair = document.getElementById('setChairName');
+    var chairEn = document.getElementById('setChairNameEn');
     var panel = document.getElementById('setPanelChairName');
+    var panelEn = document.getElementById('setPanelChairNameEn');
     var sec = document.getElementById('setSecName');
+    var secEn = document.getElementById('setSecNameEn');
     var phone = document.getElementById('setPhone');
     if (chair) chair.value = settings.chairman || '';
+    if (chairEn) chairEn.value = settings.chairmanEn || '';
     if (panel) panel.value = settings.panelChairman || '';
+    if (panelEn) panelEn.value = settings.panelChairmanEn || '';
     if (sec) sec.value = settings.secretary || '';
+    if (secEn) secEn.value = settings.secretaryEn || '';
     if (phone) phone.value = phone.value || '০১XXXXXXXXX';
   }
 
   function saveUPSettings() {
     var payload = {
       chairman: document.getElementById('setChairName').value.trim(),
+      chairmanEn: document.getElementById('setChairNameEn').value.trim(),
       panelChairman: document.getElementById('setPanelChairName').value.trim(),
+      panelChairmanEn: document.getElementById('setPanelChairNameEn').value.trim(),
       secretary: document.getElementById('setSecName').value.trim(),
+      secretaryEn: document.getElementById('setSecNameEn').value.trim(),
       phone: document.getElementById('setPhone').value.trim()
     };
 

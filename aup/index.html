@@ -683,7 +683,10 @@
       return {
         chairman: 'অ্যাড. মোঃ হুমায়ুন কবির',
         panelChairman: 'মোঃ আবদুস সালাম মৃধা',
-        secretary: 'মোঃ মোতাহার উদ্দিন'
+        secretary: 'মোঃ মোতাহার উদ্দিন',
+        chairmanEn: 'Adv. Md. Humayun Kabir',
+        panelChairmanEn: 'Md. Abdus Salam Mridha',
+        secretaryEn: 'Md. Motahar Uddin'
       };
     }
 
@@ -703,25 +706,48 @@
       return getUPOfficialSettings().chairman || getDefaultUPOfficialSettings().chairman;
     }
 
+    function getUPChairmanNameEn() {
+      return getUPOfficialSettings().chairmanEn || getDefaultUPOfficialSettings().chairmanEn;
+    }
+
     function getUPPanelChairmanName() {
       return getUPOfficialSettings().panelChairman || getDefaultUPOfficialSettings().panelChairman;
+    }
+
+    function getUPPanelChairmanNameEn() {
+      return getUPOfficialSettings().panelChairmanEn || getDefaultUPOfficialSettings().panelChairmanEn;
     }
 
     function getUPSecretaryName() {
       return getUPOfficialSettings().secretary || getDefaultUPOfficialSettings().secretary;
     }
 
+    function getUPSecretaryNameEn() {
+      return getUPOfficialSettings().secretaryEn || getDefaultUPOfficialSettings().secretaryEn;
+    }
+
     window.getUPChairmanName = getUPChairmanName;
+    window.getUPChairmanNameEn = getUPChairmanNameEn;
     window.getUPPanelChairmanName = getUPPanelChairmanName;
+    window.getUPPanelChairmanNameEn = getUPPanelChairmanNameEn;
     window.getUPSecretaryName = getUPSecretaryName;
+    window.getUPSecretaryNameEn = getUPSecretaryNameEn;
 
     async function refreshUPOfficialSettingsFromServer() {
       if (typeof callBackendAPI !== 'function') return;
       try {
+        const localSettings = getUPOfficialSettings();
+        const defaults = getDefaultUPOfficialSettings();
+        const hasLocalCustomValues = JSON.stringify(localSettings) !== JSON.stringify(defaults);
+        if (hasLocalCustomValues) return;
+
         const serverSettings = await callBackendAPI('getUPSettings');
         if (serverSettings && typeof serverSettings === 'object' && !Array.isArray(serverSettings)) {
-          const merged = Object.assign({}, getDefaultUPOfficialSettings(), serverSettings);
-          localStorage.setItem('upOfficialSettings', JSON.stringify(merged));
+          const merged = Object.assign({}, defaults, serverSettings);
+          const serverLooksCustom = JSON.stringify(merged) !== JSON.stringify(defaults);
+          if (serverLooksCustom) {
+            localStorage.setItem('upOfficialSettings', JSON.stringify(merged));
+          }
         }
       } catch (e) {
         console.warn('UP settings sync failed:', e);

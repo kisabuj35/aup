@@ -1549,7 +1549,10 @@ function getUPOfficialSettings() {
   var defaults = {
     chairman: 'অ্যাড. মোঃ হুমায়ুন কবির',
     panelChairman: 'মোঃ আবদুস সালাম মৃধা',
-    secretary: 'মোঃ মোতাহার উদ্দিন'
+    secretary: 'মোঃ মোতাহার উদ্দিন',
+    chairmanEn: 'Adv. Md. Humayun Kabir',
+    panelChairmanEn: 'Md. Abdus Salam Mridha',
+    secretaryEn: 'Md. Motahar Uddin'
   };
   try {
     var props = PropertiesService.getScriptProperties();

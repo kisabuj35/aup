@@ -800,7 +800,7 @@
     if (panelEn) panelEn.value = settings.panelChairmanEn || '';
     if (sec) sec.value = settings.secretary || '';
     if (secEn) secEn.value = settings.secretaryEn || '';
-    if (phone) phone.value = phone.value || '০১XXXXXXXXX';
+    if (phone) phone.value = settings.phone || '০১XXXXXXXXX';
   }
 
   function saveUPSettings() {
@@ -1716,6 +1716,7 @@
     else if(tabId === 'appsTab') loadAdminApps();
     else if(tabId === 'taxTab') loadTaxPayers();
     else if(tabId === 'dashTab') loadAdminDashboard();
+    else if(tabId === 'upSettingsTab') loadUPSettingsForm();
     else if(tabId === 'settingsTab') loadAdminUsers();
   }
 

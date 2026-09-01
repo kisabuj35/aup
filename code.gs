@@ -380,28 +380,44 @@ function trackApplication(searchKey) {
       return variants;
     }
 
-    function rowMatchesQuery(row, queryVariants) {
-      if (!row || !row[0]) return false;
-      var textValues = [];
-      var rawCellText = '';
+    function getSheetMatchColumns(sheetName) {
+      var name = (sheetName || '').toLowerCase();
+      if (name.indexOf('citizen') > -1) {
+        return [0, 1, 2, 3, 8, 16, 9, 10, 11, 12, 13, 14, 15];
+      }
+      if (name.indexOf('family') > -1) {
+        return [0, 1, 2, 3, 5, 9, 10, 13, 24];
+      }
+      if (name.indexOf('warishan') > -1) {
+        return [0, 1, 2, 4, 5, 9, 10];
+      }
+      if (name.indexOf('trade') > -1) {
+        return [0, 1, 4, 5, 7, 9, 24];
+      }
+      return [0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    }
+
+    function rowMatchesQuery(row, queryVariants, sheetName) {
+      if (!row || !row.length || !row[0]) return false;
+
+      var matchColumns = getSheetMatchColumns(sheetName);
+      var cellTexts = [];
+      var rowText = '';
 
       for (var c = 0; c < row.length; c++) {
         var cell = row[c];
         if (cell !== null && cell !== undefined && cell !== '') {
           var cellText = cell.toString().trim();
           if (!cellText) continue;
-          textValues.push(cellText);
-          textValues.push(toEnglishDigit(cellText));
-          rawCellText += ' ' + cellText.toLowerCase();
+          rowText += ' ' + cellText.toLowerCase();
+          if (matchColumns.indexOf(c) > -1) {
+            cellTexts.push(cellText);
+            cellTexts.push(toEnglishDigit(cellText));
+          }
         }
       }
 
-      if (textValues.length === 0) return false;
-
-      var combined = textValues.join(' ');
-      var combinedUpper = toEnglishDigit(combined).toUpperCase();
-      var combinedLower = combined.toLowerCase();
-      var combinedDigits = combinedUpper.replace(/\D/g, '');
+      if (cellTexts.length === 0) return false;
 
       for (var i = 0; i < queryVariants.length; i++) {
         var candidate = (queryVariants[i] || '').toString().trim();
@@ -411,19 +427,26 @@ function trackApplication(searchKey) {
         var candLower = candidate.toLowerCase();
         var candDigits = candUpper.replace(/\D/g, '');
 
-        if (combinedUpper.indexOf(candUpper) > -1 || combinedLower.indexOf(candLower) > -1) {
-          return true;
-        }
+        for (var j = 0; j < cellTexts.length; j++) {
+          var cellVal = (cellTexts[j] || '').toString();
+          var cellUpper = toEnglishDigit(cellVal).toUpperCase();
+          var cellLower = cellVal.toLowerCase();
+          var cellDigits = cellUpper.replace(/\D/g, '');
 
-        if (candDigits && combinedDigits) {
-          if (combinedDigits.indexOf(candDigits) > -1 || candDigits.indexOf(combinedDigits) > -1 || combinedDigits.indexOf(candDigits.slice(-9)) > -1 || candDigits.indexOf(combinedDigits.slice(-9)) > -1) {
+          if (cellUpper.indexOf(candUpper) > -1 || cellLower.indexOf(candLower) > -1) {
             return true;
+          }
+
+          if (candDigits && cellDigits) {
+            if (cellDigits.indexOf(candDigits) > -1 || candDigits.indexOf(cellDigits) > -1 || cellDigits.indexOf(candDigits.slice(-9)) > -1 || candDigits.indexOf(cellDigits.slice(-9)) > -1) {
+              return true;
+            }
           }
         }
       }
 
       var queryString = (queryVariants[0] || '').toString().trim().toLowerCase();
-      if (queryString.length >= 3 && rawCellText.indexOf(queryString) > -1) {
+      if (queryString.length >= 3 && rowText.indexOf(queryString) > -1) {
         return true;
       }
 
@@ -459,7 +482,7 @@ function trackApplication(searchKey) {
       for (var r = 1; r < sheetData.length; r++) {
         var row = sheetData[r];
         if (!row || !row[0]) continue;
-        if (!rowMatchesQuery(row, searchVariants)) continue;
+        if (!rowMatchesQuery(row, searchVariants, curSheet.getName())) continue;
 
         var appId = row[0].toString().trim();
         if (!appId || seenAppIds[appId]) continue;

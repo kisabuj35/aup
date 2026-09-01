@@ -571,16 +571,37 @@
     var btn = document.getElementById('warSubmitBtn');
     btn.disabled = true; btn.innerText = 'জমা হচ্ছে...';
 
+    var applicantWard = document.getElementById('warAppWard').value;
+    var applicantVillage = document.getElementById('warAppVillage').value.trim();
+    var applicantPostOffice = document.getElementById('warAppPost').value.trim();
+
     var deceasedWard = document.getElementById('warDeceasedWard').value;
     var deceasedVillage = document.getElementById('warDeceasedVillage').value.trim();
     var deceasedPostOffice = document.getElementById('warDeceasedPost').value.trim();
     var deceasedUnion = document.getElementById('warDeceasedUnion') ? document.getElementById('warDeceasedUnion').value.trim() : '১১নং আউলিয়াপুর ইউনিয়ন';
     var deceasedUpazila = document.getElementById('warDeceasedUpazila').value.trim();
     var deceasedDistrict = document.getElementById('warDeceasedDistrict').value.trim();
+
+    document.getElementById('warAppWard').value = deceasedWard || applicantWard;
+    document.getElementById('warAppVillage').value = deceasedVillage || applicantVillage;
+    document.getElementById('warAppPost').value = deceasedPostOffice || applicantPostOffice;
+
+    document.getElementById('warDeceasedWard').value = applicantWard || deceasedWard;
+    document.getElementById('warDeceasedVillage').value = applicantVillage || deceasedVillage;
+    document.getElementById('warDeceasedPost').value = applicantPostOffice || deceasedPostOffice;
+
+    var finalApplicantWard = document.getElementById('warAppWard').value;
+    var finalApplicantVillage = document.getElementById('warAppVillage').value.trim();
+    var finalApplicantPostOffice = document.getElementById('warAppPost').value.trim();
+
+    var finalDeceasedWard = document.getElementById('warDeceasedWard').value;
+    var finalDeceasedVillage = document.getElementById('warDeceasedVillage').value.trim();
+    var finalDeceasedPostOffice = document.getElementById('warDeceasedPost').value.trim();
+
     var deceasedAddressText = [
-      deceasedWard ? 'ওয়ার্ড-' + deceasedWard : '',
-      deceasedVillage ? 'গ্রাম: ' + deceasedVillage : '',
-      deceasedPostOffice ? 'ডাকঘর: ' + deceasedPostOffice : '',
+      finalDeceasedWard ? 'ওয়ার্ড-' + finalDeceasedWard : '',
+      finalDeceasedVillage ? 'গ্রাম: ' + finalDeceasedVillage : '',
+      finalDeceasedPostOffice ? 'ডাকঘর: ' + finalDeceasedPostOffice : '',
       deceasedUnion ? 'ইউনিয়ন: ' + deceasedUnion : '',
       deceasedUpazila ? 'উপজেলা: ' + deceasedUpazila : '',
       deceasedDistrict ? 'জেলা: ' + deceasedDistrict : ''
@@ -598,18 +619,18 @@
       deceasedParentRelation: document.getElementById('warDeceasedRelation').value,
       DeceasedFatherRelation: document.getElementById('warDeceasedRelation').value,
       DeceasedRelation: document.getElementById('warDeceasedRelation').value,
-      deceasedWardNo: deceasedWard,
-      deceasedVillage: deceasedVillage,
-      deceasedPostOffice: deceasedPostOffice,
+      deceasedWardNo: finalDeceasedWard,
+      deceasedVillage: finalDeceasedVillage,
+      deceasedPostOffice: finalDeceasedPostOffice,
       deceasedUnion: deceasedUnion,
       deceasedUpazila: deceasedUpazila,
       deceasedDistrict: deceasedDistrict,
       deceasedAddressText: deceasedAddressText,
       nid: document.getElementById('warAppNid').value.trim(),
       mobile: document.getElementById('warAppMobile').value.trim(),
-      wardNo: document.getElementById('warAppWard').value,
-      village: document.getElementById('warAppVillage').value.trim(),
-      postOffice: document.getElementById('warAppPost').value.trim(),
+      wardNo: finalApplicantWard,
+      village: finalApplicantVillage,
+      postOffice: finalApplicantPostOffice,
       warishanTree: warishanTree
     };
 

@@ -204,6 +204,179 @@
     color: #006837;
     transform: translateX(3px);
   }
+
+  /* 🟢 ভেরিফিকেশন কার্ড ফাইন-টিউন */
+  .verification-result-shell {
+    font-family: "Noto Sans Bengali", "Hind Siliguri", "Kalpurush", "Segoe UI", sans-serif;
+    color: #0f172a;
+    letter-spacing: 0.01em;
+  }
+  .verification-result-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fffb 100%);
+    border: 1px solid #dfe7e3;
+    border-left: 5px solid #0b8f52;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    border-radius: 18px;
+    padding: 18px 18px 14px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+  .verification-result-card:hover {
+    box-shadow: 0 14px 30px rgba(11, 143, 82, 0.12);
+    transform: translateY(-2px);
+  }
+  .verification-result-card.status-approved {
+    border-left-color: #1bbf6d;
+  }
+  .verification-result-card.status-pending {
+    border-left-color: #f4b301;
+  }
+  .verification-result-card.status-rejected {
+    border-left-color: #dc2626;
+  }
+  .verification-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #edf2ef;
+  }
+  .verification-card-title {
+    margin: 0;
+    font-size: clamp(18px, 2vw, 22px);
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .verification-card-title i {
+    color: #0b8f52;
+    font-size: 18px;
+  }
+  .verification-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .verification-status-approved {
+    background: #eafaf1;
+    color: #0a7a44;
+    border-color: #cfeed9;
+  }
+  .verification-status-pending {
+    background: #fff7db;
+    color: #8a6200;
+    border-color: #f3dd8b;
+  }
+  .verification-status-rejected {
+    background: #feeceb;
+    color: #b42318;
+    border-color: #f7c2bf;
+  }
+  .verification-note {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .verification-note.success {
+    background: #eafaf1;
+    border: 1px solid #cfeed9;
+    color: #0a7a44;
+  }
+  .verification-note.warning {
+    background: #fff7db;
+    border: 1px solid #f3dd8b;
+    color: #8a6200;
+  }
+  .verification-note.danger {
+    background: #feeceb;
+    border: 1px solid #f7c2bf;
+    color: #b42318;
+  }
+  .verification-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 18px;
+    align-items: start;
+  }
+  .verification-meta {
+    min-width: 0;
+  }
+  .verification-meta strong {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: #475569;
+    margin-bottom: 4px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .verification-meta span {
+    display: block;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #0f172a;
+    word-break: break-word;
+    font-weight: 600;
+  }
+  .verification-meta-wide {
+    grid-column: 1 / -1;
+  }
+  .verification-meta-wide span {
+    font-size: 16px;
+    color: #b42318;
+    font-weight: 800;
+  }
+  .verification-action-wrap {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #edf2ef;
+    text-align: right;
+  }
+  .verification-print-btn {
+    background: linear-gradient(135deg, #eef7ff 0%, #e7f7ee 100%);
+    color: #0b5bc5;
+    border: 1px solid #bfd9ff;
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-weight: 800;
+    font-size: 13.5px;
+    transition: all 0.2s ease;
+  }
+  .verification-print-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(13, 92, 197, 0.12);
+  }
+  @media (max-width: 767.98px) {
+    .verification-card-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .verification-card-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
 </style>
 
 <!-- 1. PUBLIC HOME PAGE VIEW -->
@@ -631,30 +804,30 @@
       // ১. স্ট্যাটাস ব্যাজ
       var statusBadge = '';
       if (isApproved) {
-        statusBadge = '<span class="badge bg-success fs-6"><i class="fa-solid fa-circle-check me-1"></i>Approved (অনুমোদিত)</span>';
+        statusBadge = '<span class="verification-status-badge verification-status-approved"><i class="fa-solid fa-circle-check"></i>Approved (অনুমোদিত)</span>';
       } else if (isRejected) {
-        statusBadge = '<span class="badge bg-danger fs-6"><i class="fa-solid fa-circle-xmark me-1"></i>Rejected (বাতিল)</span>';
+        statusBadge = '<span class="verification-status-badge verification-status-rejected"><i class="fa-solid fa-circle-xmark"></i>Rejected (বাতিল)</span>';
       } else {
-        statusBadge = '<span class="badge bg-warning text-dark fs-6"><i class="fa-solid fa-clock me-1"></i>Pending (অপেক্ষমাণ)</span>';
+        statusBadge = '<span class="verification-status-badge verification-status-pending"><i class="fa-solid fa-clock"></i>Pending (অপেক্ষমাণ)</span>';
       }
 
       // ২. ভেরিফিকেশন সিল বক্স
       var verifiedSeal = '';
       if (isApproved) {
-        verifiedSeal = '<div class="alert alert-success border-success py-2 px-3 mb-3 rounded-3 small fw-bold text-success"><i class="fa-solid fa-circle-check text-success me-1"></i> এই সনদটি ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কর্তৃক অনুমোদিত ও ভেরিফাইড।</div>';
+        verifiedSeal = '<div class="verification-note success"><i class="fa-solid fa-circle-check"></i> এই সনদটি ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কর্তৃক অনুমোদিত ও ভেরিফাইড।</div>';
       } else if (isPending) {
-        verifiedSeal = '<div class="alert alert-warning border-warning py-2 px-3 mb-3 rounded-3 small fw-bold text-dark"><i class="fa-solid fa-clock text-warning me-1"></i> আবেদনটি বর্তমানে প্রক্রিয়াধীন/অপেক্ষমাণ রয়েছে।</div>';
+        verifiedSeal = '<div class="verification-note warning"><i class="fa-solid fa-clock"></i> আবেদনটি বর্তমানে প্রক্রিয়াধীন/অপেক্ষমাণ রয়েছে।</div>';
       } else {
-        verifiedSeal = '<div class="alert alert-danger border-danger py-2 px-3 mb-3 rounded-3 small fw-bold text-danger"><i class="fa-solid fa-circle-xmark text-danger me-1"></i> আবেদনটি পরিষদ কর্তৃক বাতিল করা হয়েছে।</div>';
+        verifiedSeal = '<div class="verification-note danger"><i class="fa-solid fa-circle-xmark"></i> আবেদনটি পরিষদ কর্তৃক বাতিল করা হয়েছে।</div>';
       }
 
       // ৩. শর্ত: লাইসেন্স নং ও সনদ নং শুধুমাত্র Approved হলে প্রদর্শন হবে
       var certOrLicNoHtml = '';
       if (isApproved) {
         if (data.licNo) {
-          certOrLicNoHtml = `<div class="col-md-12 text-danger fw-bold mt-1" style="font-size: 16.5px;">লাইসেন্স নং: ${data.licNo}</div>`;
+          certOrLicNoHtml = `<div class="verification-meta verification-meta-wide"><strong>লাইসেন্স নং</strong><span>${data.licNo}</span></div>`;
         } else if (data.certNo) {
-          certOrLicNoHtml = `<div class="col-md-12 text-danger fw-bold mt-1" style="font-size: 16.5px;">সনদ নং: ${data.certNo}</div>`;
+          certOrLicNoHtml = `<div class="verification-meta verification-meta-wide"><strong>সনদ নং</strong><span>${data.certNo}</span></div>`;
         }
       }
 
@@ -663,34 +836,36 @@
       if (isPending || isRejected) {
         var applicationType = data.type || data.serviceType || '';
         if (applicationType === 'পারিবারিক সনদ' || applicationType === 'উত্তরাধিকারী সনদ' || (data.appId && (data.appId.indexOf('AUL-FW-') === 0 || data.appId.indexOf('AUL-UW-') === 0))) {
-          actionBtnHtml = `<button type="button" class="btn btn-outline-primary fw-bold rounded-pill px-4 mt-2" onclick="printFamilyApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
+          actionBtnHtml = `<button type="button" class="verification-print-btn" onclick="printFamilyApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
         } else if (applicationType === 'ওয়ারিশান সনদ' || (data.appId && data.appId.indexOf('WAR') > -1)) {
-          actionBtnHtml = `<button type="button" class="btn btn-outline-primary fw-bold rounded-pill px-4 mt-2" onclick="printWarishanApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
+          actionBtnHtml = `<button type="button" class="verification-print-btn" onclick="printWarishanApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
         } else {
-          actionBtnHtml = `<button type="button" class="btn btn-outline-primary fw-bold rounded-pill px-4 mt-2" onclick="printGeneralAppCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
+          actionBtnHtml = `<button type="button" class="verification-print-btn" onclick="printGeneralAppCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
         }
       }
 
       allCardsHtml += `
-        <div class="card p-4 border mb-4 bg-white shadow-sm rounded-4 text-start" style="font-family: 'Nikosh', 'Kalpurush', sans-serif;">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-bold text-success m-0" style="font-size: 19px;"><i class="fa-solid fa-circle-user me-2"></i>${data.applicantName || data.name}</h5>
-            ${statusBadge}
-          </div>
-          
-          ${verifiedSeal}
+        <div class="verification-result-shell">
+          <div class="verification-result-card status-${isApproved ? 'approved' : (isRejected ? 'rejected' : 'pending')}">
+            <div class="verification-card-header">
+              <h5 class="verification-card-title"><i class="fa-solid fa-circle-user"></i>${data.applicantName || data.name}</h5>
+              ${statusBadge}
+            </div>
+            
+            ${verifiedSeal}
 
-          <div class="row g-2 border-top pt-2" style="font-size: 16px; line-height: 1.8;">
-            <div class="col-md-6"><strong>সেবার নাম:</strong> <span class="text-dark">${data.type || '-'}</span></div>
-            <div class="col-md-6"><strong>ট্র্যাকিং আইডি:</strong> <span class="fw-bold text-primary" style="font-family: monospace; font-size: 16px;">${data.appId}</span></div>
-            <div class="col-md-6"><strong>পিতা/স্বামীর নাম:</strong> <span class="text-dark">${data.fatherName || data.fatherSpouseName || '-'}</span></div>
-            <div class="col-md-6"><strong>মোবাইল:</strong> <span class="fw-bold text-dark" style="font-size: 16px;">${data.mobile || '-'}</span></div>
-            <div class="col-md-6"><strong>NID / জন্মনিবন্ধন:</strong> <span class="fw-bold text-dark" style="font-size: 16px;">${data.nid || '-'}</span></div>
-            <div class="col-md-6"><strong>আবেদনের তারিখ:</strong> <span class="text-dark">${data.applyDate || data.date || '-'}</span></div>
-            ${certOrLicNoHtml}
-          </div>
+            <div class="verification-card-grid">
+              <div class="verification-meta"><strong>সেবার নাম</strong><span>${data.type || '-'}</span></div>
+              <div class="verification-meta"><strong>ট্র্যাকিং আইডি</strong><span style="font-family: monospace; color: #0b5bc5; font-weight: 800;">${data.appId}</span></div>
+              <div class="verification-meta"><strong>পিতা/স্বামীর নাম</strong><span>${data.fatherName || data.fatherSpouseName || '-'}</span></div>
+              <div class="verification-meta"><strong>মোবাইল</strong><span>${data.mobile || '-'}</span></div>
+              <div class="verification-meta"><strong>NID / জন্মনিবন্ধন</strong><span>${data.nid || '-'}</span></div>
+              <div class="verification-meta"><strong>আবেদনের তারিখ</strong><span>${data.applyDate || data.date || '-'}</span></div>
+              ${certOrLicNoHtml}
+            </div>
 
-          ${actionBtnHtml ? `<div class="border-top mt-2 pt-2 text-end">${actionBtnHtml}</div>` : ''}
+            ${actionBtnHtml ? `<div class="verification-action-wrap">${actionBtnHtml}</div>` : ''}
+          </div>
         </div>
       `;
     });

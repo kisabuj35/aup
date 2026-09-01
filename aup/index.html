@@ -263,7 +263,6 @@
       );
       padding: 5px;
       box-shadow: 0 0 24px rgba(34, 197, 94, 0.32);
-      animation: ringRotate 6s linear infinite;
     }
     .loader-portrait-wrap::after {
       content: "";
@@ -288,8 +287,7 @@
       background-repeat: no-repeat;
       display: block;
       box-shadow: inset 0 0 16px rgba(255,255,255,0.42);
-      transform: none;
-      animation: none;
+      transform: scale(1.04);
     }
     .loader-title {
       font-size: 1.02rem;
@@ -325,10 +323,6 @@
     }
     @keyframes globalLoaderSpin { 100% { transform: rotate(360deg); } }
     @keyframes gradientSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    @keyframes ringRotate {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }

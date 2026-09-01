@@ -65,7 +65,7 @@ function getSheet(sheetName) {
       headers = ['AppID','Name','NID','FatherName','MotherName','Mobile','WardNo','Village',
       'PostOffice','Status','ApplyDate','SignatoryRole','Members_JSON','DeceasedName','DeceasedFather','DeceasedMother','DeceasedDate','ApplicantRelation','DeceasedWard','DeceasedVillage','DeceasedPostOffice','DeceasedUnion','DeceasedUpazila','DeceasedDistrict','CertificateType'];
     } else if (sheetName === 'Warishan') {
-      headers = ['AppID', 'ApplicantName', 'FatherSpouse', 'DeceasedName', 'NID', 'Mobile', 'WardNo', 'Village', 'PostOffice', 'Status', 'Date', 'SignatoryRole', 'SmarakNo', 'WarishanJSON', 'DeceasedFather', 'DeceasedRelation', 'DeceasedWard', 'DeceasedVillage', 'DeceasedPostOffice', 'DeceasedUpazila', 'DeceasedDistrict'];
+      headers = ['AppID', 'ApplicantName', 'FatherSpouse', 'DeceasedName', 'NID', 'Mobile', 'WardNo', 'Village', 'PostOffice', 'Status', 'Date', 'SignatoryRole', 'SmarakNo', 'WarishanJSON', 'DeceasedFather', 'DeceasedRelation', 'DeceasedWard', 'DeceasedVillage', 'DeceasedPostOffice', 'DeceasedUnion', 'DeceasedUpazila', 'DeceasedDistrict'];
     } else if (sheetName === 'TradeLicense') {
       headers = ['AppID', 'LicenseNo', 'ReceiptNo', 'OrgName', 'OwnerName', 'FatherName', 'MotherName', 'NID', 'DOB', 'Mobile', 'OwnerAddress', 'Category', 'BizDetails', 'BizAddress', 'BizStartDate', 'FiscalYear', 'Capital', 'LicenseFee', 'VatFee', 'CommTax', 'SignTax', 'TotalFee', 'ApplyDate', 'SignatoryRole', 'Status', 'Photo'];
     } else if (sheetName === 'Applications') {
@@ -244,8 +244,9 @@ function submitWarishanApplication(data) {
       data.deceasedWardNo || data.deceasedWard || "", // Q: DeceasedWard
       data.deceasedVillage || "",              // R: DeceasedVillage
       data.deceasedPostOffice || data.deceasedPost || "", // S: DeceasedPostOffice
-      data.deceasedUpazila || "",              // T: DeceasedUpazila
-      data.deceasedDistrict || ""               // U: DeceasedDistrict
+      data.deceasedUnion || "১১নং আউলিয়াপুর ইউনিয়ন", // T: DeceasedUnion
+      data.deceasedUpazila || "",              // U: DeceasedUpazila
+      data.deceasedDistrict || ""               // V: DeceasedDistrict
     ];
     
     sheet.appendRow(rowData);

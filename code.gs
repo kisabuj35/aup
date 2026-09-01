@@ -76,7 +76,7 @@ function getSheet(sheetName) {
       headers = ['AppID','Name','NID','FatherName','MotherName','Mobile','WardNo','Village',
       'PostOffice','Status','ApplyDate','SignatoryRole','Members_JSON','DeceasedName','DeceasedFather','DeceasedMother','DeceasedDate','ApplicantRelation','DeceasedWard','DeceasedVillage','DeceasedPostOffice','DeceasedUnion','DeceasedUpazila','DeceasedDistrict','CertificateType'];
     } else if (sheetName === 'Warishan') {
-      headers = ['AppID', 'ApplicantName', 'FatherSpouse', 'DeceasedName', 'NID', 'Mobile', 'WardNo', 'Village', 'PostOffice', 'Status', 'Date', 'SignatoryRole', 'SmarakNo', 'WarishanJSON', 'DeceasedFather', 'DeceasedRelation', 'DeceasedWard', 'DeceasedVillage', 'DeceasedPostOffice', 'DeceasedUpazila', 'DeceasedDistrict'];
+      headers = ['AppID', 'ApplicantName', 'FatherSpouse', 'DeceasedName', 'NID', 'Mobile', 'WardNo', 'Village', 'PostOffice', 'Status', 'Date', 'SignatoryRole', 'SmarakNo', 'WarishanJSON', 'DeceasedFather', 'DeceasedRelation', 'DeceasedWard', 'DeceasedVillage', 'DeceasedPostOffice', 'DeceasedUnion', 'DeceasedUpazila', 'DeceasedDistrict'];
     } else if (sheetName === 'TradeLicense') {
       headers = ['AppID', 'LicenseNo', 'ReceiptNo', 'OrgName', 'OwnerName', 'FatherName', 'MotherName', 'NID', 'DOB', 'Mobile', 'OwnerAddress', 'Category', 'BizDetails', 'BizAddress', 'BizStartDate', 'FiscalYear', 'Capital', 'LicenseFee', 'VatFee', 'CommTax', 'SignTax', 'TotalFee', 'ApplyDate', 'SignatoryRole', 'Status', 'Photo'];
     } else if (sheetName === 'Applications') {
@@ -102,8 +102,26 @@ function initMasterDatabase() {
   getSheet('TradeLicense');
   getSheet('TaxPayers');
   getSheet('Users');
+  ensureWarishanSchema();
   ensureSearchIndexSheet();
   syncSearchIndexFromSheets();
+}
+
+function ensureWarishanSchema() {
+  var sheet = getSheet('Warishan');
+  var headers = [
+    'AppID','ApplicantName','FatherSpouse','DeceasedName','NID','Mobile','WardNo','Village','PostOffice','Status','Date','SignatoryRole','SmarakNo','WarishanJSON','DeceasedFather','DeceasedRelation','DeceasedWard','DeceasedVillage','DeceasedPostOffice','DeceasedUnion','DeceasedUpazila','DeceasedDistrict'
+  ];
+  var maxCols = Math.max(sheet.getLastColumn(), headers.length);
+  var currentHeaders = sheet.getRange(1, 1, 1, maxCols).getValues()[0];
+  for (var i = 0; i < headers.length; i++) {
+    if ((currentHeaders[i] || '').toString().trim() !== headers[i]) {
+      sheet.getRange(1, i + 1).setValue(headers[i]);
+    }
+  }
+  sheet.getRange(1, 1, 1, headers.length)
+    .setFontWeight('bold').setBackground('#006837').setFontColor('#ffffff');
+  return sheet;
 }
 
 function ensureSearchIndexSheet() {

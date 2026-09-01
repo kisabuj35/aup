@@ -348,74 +348,109 @@ function trackApplication(searchKey) {
       return 'Pending';
     }
 
-    var rawQuery = "";
-    if (typeof searchKey === 'object' && searchKey !== null) {
-      rawQuery = searchKey.query || searchKey.appId || searchKey.searchKey || searchKey.mobile || searchKey.nid || "";
-    } else {
-      rawQuery = (searchKey || "").toString();
+    function buildSearchVariants(value) {
+      var variants = [];
+      if (value === undefined || value === null) return variants;
+      var raw = value.toString().trim();
+      if (!raw) return variants;
+
+      var rawEnglish = toEnglishDigit(raw);
+      var values = [
+        raw,
+        raw.toLowerCase(),
+        raw.toUpperCase(),
+        rawEnglish,
+        rawEnglish.toLowerCase(),
+        rawEnglish.toUpperCase()
+      ];
+
+      for (var i = 0; i < values.length; i++) {
+        var v = values[i];
+        if (v && variants.indexOf(v) === -1) variants.push(v);
+      }
+
+      var digitsOnly = rawEnglish.replace(/\D/g, '');
+      if (digitsOnly) {
+        variants.push(digitsOnly);
+        if (digitsOnly.length >= 10) variants.push(digitsOnly.slice(-10));
+        if (digitsOnly.length >= 9) variants.push(digitsOnly.slice(-9));
+        if (digitsOnly.length >= 8) variants.push(digitsOnly.slice(-8));
+      }
+
+      return variants;
     }
-    rawQuery = rawQuery.trim();
-    if (!rawQuery) return { found: false };
 
-    var queryEng = toEnglishDigit(rawQuery).toUpperCase();
-    var queryDigits = queryEng.replace(/\D/g, ''); // কেবল সংখ্যা
-    var significantMob = queryDigits.length >= 9 ? queryDigits.slice(-9) : ''; // শেষ ৯ বা ১০ ডিজিট
-    var nameQuery = rawQuery.toLowerCase();
-
-    var results = [];
-    var seenAppIds = {};
-
-    // 🟢 শক্তিশালী সেল ও রো স্ক্যানার (শূন্য থাকা বা না থাকা উভয় ক্ষেত্রে কাজ করবে)
-    function checkRowMatch(row) {
+    function rowMatchesQuery(row, queryVariants) {
       if (!row || !row[0]) return false;
-      var rowFullText = "";
-      var foundDirect = false;
+      var textValues = [];
+      var rawCellText = '';
 
       for (var c = 0; c < row.length; c++) {
         var cell = row[c];
-        if (cell !== null && cell !== undefined && cell !== "") {
-          var cellStr = cell.toString().trim();
-          var cellEng = toEnglishDigit(cellStr).toUpperCase();
-          var cellDigits = cellEng.replace(/\D/g, '');
-
-          // ১. আইডি ও কোড সরাসরি মিললে
-          if (queryEng.length >= 4 && (cellEng === queryEng || cellEng.indexOf(queryEng) > -1)) {
-            foundDirect = true;
-          }
-
-          // ২. মোবাইল নম্বর মিললে (শূন্য ছাড়া বা শূন্যসহ যেকোনো ফরম্যাটে)
-          if (significantMob && cellDigits.length >= 9 && cellDigits.indexOf(significantMob) > -1) {
-            foundDirect = true;
-          }
-
-          // ৩. এনআইডি / জন্ম নিবন্ধন মিললে (সম্পূর্ণ বা আংশিক)
-          if (queryDigits.length >= 6 && cellDigits.length >= 6 && (cellDigits === queryDigits || cellDigits.indexOf(queryDigits) > -1 || queryDigits.indexOf(cellDigits) > -1)) {
-            foundDirect = true;
-          }
-
-          rowFullText += " " + cellStr.toLowerCase();
+        if (cell !== null && cell !== undefined && cell !== '') {
+          var cellText = cell.toString().trim();
+          if (!cellText) continue;
+          textValues.push(cellText);
+          textValues.push(toEnglishDigit(cellText));
+          rawCellText += ' ' + cellText.toLowerCase();
         }
       }
 
-      if (foundDirect) return true;
+      if (textValues.length === 0) return false;
 
-      // ৪. নাম দিয়ে মিললে
-      if (nameQuery.length >= 3 && rowFullText.indexOf(nameQuery) > -1) {
+      var combined = textValues.join(' ');
+      var combinedUpper = toEnglishDigit(combined).toUpperCase();
+      var combinedLower = combined.toLowerCase();
+      var combinedDigits = combinedUpper.replace(/\D/g, '');
+
+      for (var i = 0; i < queryVariants.length; i++) {
+        var candidate = (queryVariants[i] || '').toString().trim();
+        if (!candidate) continue;
+
+        var candUpper = toEnglishDigit(candidate).toUpperCase();
+        var candLower = candidate.toLowerCase();
+        var candDigits = candUpper.replace(/\D/g, '');
+
+        if (combinedUpper.indexOf(candUpper) > -1 || combinedLower.indexOf(candLower) > -1) {
+          return true;
+        }
+
+        if (candDigits && combinedDigits) {
+          if (combinedDigits.indexOf(candDigits) > -1 || candDigits.indexOf(combinedDigits) > -1 || combinedDigits.indexOf(candDigits.slice(-9)) > -1 || candDigits.indexOf(combinedDigits.slice(-9)) > -1) {
+            return true;
+          }
+        }
+      }
+
+      var queryString = (queryVariants[0] || '').toString().trim().toLowerCase();
+      if (queryString.length >= 3 && rawCellText.indexOf(queryString) > -1) {
         return true;
       }
 
       return false;
     }
 
+    var rawQuery = "";
+    if (typeof searchKey === 'object' && searchKey !== null) {
+      rawQuery = searchKey.query || searchKey.appId || searchKey.searchKey || searchKey.mobile || searchKey.nid || searchKey.name || "";
+    } else {
+      rawQuery = (searchKey || "").toString();
+    }
+    rawQuery = rawQuery.trim();
+    if (!rawQuery) return { found: false };
+
+    var searchVariants = buildSearchVariants(rawQuery);
+    if (!searchVariants.length) return { found: false };
+
+    var results = [];
+    var seenAppIds = {};
     var ss = getSS();
     var allSheets = ss.getSheets();
 
-    // 🟢 স্প্রেডশিটের সকল আবেদন শিট ব্রাউজ করা
     for (var s = 0; s < allSheets.length; s++) {
       var curSheet = allSheets[s];
       var sName = curSheet.getName().toLowerCase().replace(/[^a-z0-9]/g, '');
 
-      // ইউজার, অ্যাকাউন্টস বা অন্যান্য শিট বাদে
       if (sName === 'users' || sName === 'accounts' || sName === 'projects' || sName === 'beneficiaries' || sName === 'taxpayers' || sName === 'taxcollection') {
         continue;
       }
@@ -423,86 +458,84 @@ function trackApplication(searchKey) {
       var sheetData = curSheet.getDataRange().getValues();
       for (var r = 1; r < sheetData.length; r++) {
         var row = sheetData[r];
-        if (!row[0]) continue;
+        if (!row || !row[0]) continue;
+        if (!rowMatchesQuery(row, searchVariants)) continue;
 
-        if (checkRowMatch(row)) {
-          var appId = row[0].toString().trim();
-          if (appId && !seenAppIds[appId]) {
-            seenAppIds[appId] = true;
+        var appId = row[0].toString().trim();
+        if (!appId || seenAppIds[appId]) continue;
+        seenAppIds[appId] = true;
 
-            var serviceType = 'প্রত্যয়নপত্র';
-            var licNo = '';
-            var certNo = '';
-            var appName = row[1] || '';
-            var father = '';
-            var nidVal = '';
-            var mobVal = '';
-            var applyDateVal = '';
-            var statusVal = 'Pending';
+        var serviceType = 'প্রত্যয়নপত্র';
+        var licNo = '';
+        var certNo = '';
+        var appName = row[1] || '';
+        var father = '';
+        var nidVal = '';
+        var mobVal = '';
+        var applyDateVal = '';
+        var statusVal = 'Pending';
 
-            if (sName.indexOf('trade') > -1) {
-              var isRenew = appId.indexOf('AUL-RN-') === 0;
-              serviceType = isRenew ? 'নবায়নকৃত ট্রেড লাইসেন্স' : 'ট্রেড লাইসেন্স';
-              licNo = toEnglishDigit(row[1] || '');
-              appName = (row[4] || '') + (row[3] ? ' (' + row[3] + ')' : '');
-              father = row[5] || '';
-              nidVal = toEnglishDigit(row[7] || '');
-              mobVal = toEnglishDigit(row[9] || '');
-              applyDateVal = formatBanglaDate(row[22]);
-              statusVal = normalizeStatusName(row[24] || 'Pending');
-            } else if (sName.indexOf('citizen') > -1) {
-              serviceType = 'নাগরিকত্ব সনদ';
-              certNo = toEnglishDigit(row[16] || '');
-              appName = row[1] || '';
-              father = row[3] || '';
-              nidVal = toEnglishDigit(row[2] || '');
-              mobVal = toEnglishDigit(row[8] || '');
-              applyDateVal = formatBanglaDate(row[14]);
-              statusVal = normalizeStatusName(row[13] || 'Pending');
-            } else if (sName.indexOf('family') > -1) {
-              serviceType = (appId.indexOf('AUL-UW-') === 0) ? 'উত্তরাধিকারী সনদ' : (row[24] || 'পারিবারিক সনদ');
-              appName = row[1] || '';
-              father = row[3] || '';
-              nidVal = toEnglishDigit(row[2] || '');
-              mobVal = toEnglishDigit(row[5] || '');
-              applyDateVal = formatBanglaDate(row[10]);
-              statusVal = normalizeStatusName(row[9] || 'Pending');
-            } else if (sName.indexOf('warishan') > -1) {
-              serviceType = 'ওয়ারিশান সনদ';
-              appName = row[1] || '';
-              father = row[2] || '';
-              nidVal = toEnglishDigit(row[4] || '');
-              mobVal = toEnglishDigit(row[5] || '');
-              applyDateVal = formatBanglaDate(row[10]);
-              statusVal = normalizeStatusName(row[9] || 'Pending');
-            } else {
-              serviceType = row[1] || 'সাধারণ প্রত্যয়ন';
-              appName = row[2] || row[1] || '';
-              father = row[4] || row[3] || '';
-              nidVal = toEnglishDigit(row[3] || row[2] || '');
-              mobVal = toEnglishDigit(row[9] || row[8] || row[5] || '');
-              applyDateVal = formatBanglaDate(row[15] || row[14] || row[10]);
-              statusVal = normalizeStatusName(row[14] || row[13] || row[9] || 'Pending');
-            }
-
-            results.push({
-              appId: appId,
-              licNo: licNo,
-              certNo: certNo,
-              type: serviceType,
-              serviceType: serviceType,
-              applicantName: appName,
-              name: appName,
-              fatherName: father,
-              fatherSpouseName: father,
-              nid: nidVal,
-              mobile: mobVal,
-              applyDate: applyDateVal,
-              date: applyDateVal,
-              status: statusVal
-            });
-          }
+        if (sName.indexOf('trade') > -1) {
+          var isRenew = appId.indexOf('AUL-RN-') === 0;
+          serviceType = isRenew ? 'নবায়নকৃত ট্রেড লাইসেন্স' : 'ট্রেড লাইসেন্স';
+          licNo = toEnglishDigit(row[1] || '');
+          appName = (row[4] || '') + (row[3] ? ' (' + row[3] + ')' : '');
+          father = row[5] || '';
+          nidVal = toEnglishDigit(row[7] || '');
+          mobVal = toEnglishDigit(row[9] || '');
+          applyDateVal = formatBanglaDate(row[22]);
+          statusVal = normalizeStatusName(row[24] || 'Pending');
+        } else if (sName.indexOf('citizen') > -1) {
+          serviceType = 'নাগরিকত্ব সনদ';
+          certNo = toEnglishDigit(row[16] || '');
+          appName = row[1] || '';
+          father = row[3] || '';
+          nidVal = toEnglishDigit(row[2] || '');
+          mobVal = toEnglishDigit(row[8] || '');
+          applyDateVal = formatBanglaDate(row[14]);
+          statusVal = normalizeStatusName(row[13] || 'Pending');
+        } else if (sName.indexOf('family') > -1) {
+          serviceType = (appId.indexOf('AUL-UW-') === 0) ? 'উত্তরাধিকারী সনদ' : (row[24] || 'পারিবারিক সনদ');
+          appName = row[1] || '';
+          father = row[3] || '';
+          nidVal = toEnglishDigit(row[2] || '');
+          mobVal = toEnglishDigit(row[5] || '');
+          applyDateVal = formatBanglaDate(row[10]);
+          statusVal = normalizeStatusName(row[9] || 'Pending');
+        } else if (sName.indexOf('warishan') > -1) {
+          serviceType = 'ওয়ারিশান সনদ';
+          appName = row[1] || '';
+          father = row[2] || '';
+          nidVal = toEnglishDigit(row[4] || '');
+          mobVal = toEnglishDigit(row[5] || '');
+          applyDateVal = formatBanglaDate(row[10]);
+          statusVal = normalizeStatusName(row[9] || 'Pending');
+        } else {
+          serviceType = row[1] || 'সাধারণ প্রত্যয়ন';
+          appName = row[2] || row[1] || '';
+          father = row[4] || row[3] || '';
+          nidVal = toEnglishDigit(row[3] || row[2] || '');
+          mobVal = toEnglishDigit(row[9] || row[8] || row[5] || '');
+          applyDateVal = formatBanglaDate(row[15] || row[14] || row[10]);
+          statusVal = normalizeStatusName(row[14] || row[13] || row[9] || 'Pending');
         }
+
+        results.push({
+          appId: appId,
+          licNo: licNo,
+          certNo: certNo,
+          type: serviceType,
+          serviceType: serviceType,
+          applicantName: appName,
+          name: appName,
+          fatherName: father,
+          fatherSpouseName: father,
+          nid: nidVal,
+          mobile: mobVal,
+          applyDate: applyDateVal,
+          date: applyDateVal,
+          status: statusVal
+        });
       }
     }
 
@@ -523,8 +556,7 @@ function trackApplication(searchKey) {
     }
 
     return resObj;
-
-  } catch(err) {
+  } catch (err) {
     return { found: false, error: err.toString() };
   }
 }

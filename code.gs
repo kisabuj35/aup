@@ -175,6 +175,23 @@ function addSearchIndexFromServiceSheet(sheetName, rowData) {
   });
 }
 
+function registerSearchIndexRecordFromSubmission(sheetName, record) {
+  if (!record || !record.appId) return;
+
+  var payload = record.payload || record;
+  upsertSearchIndexRecord({
+    appId: record.appId,
+    sourceSheet: sheetName,
+    serviceType: record.serviceType || record.type || sheetName,
+    applicantName: record.applicantName || record.name || record.ownerName || '',
+    mobile: toEnglishDigit(record.mobile || record.Mobile || ''),
+    nid: toEnglishDigit(record.nid || record.NID || ''),
+    status: record.status || 'Pending',
+    applyDate: record.applyDate || record.date || '',
+    payload: payload
+  });
+}
+
 function syncSearchIndexFromSheets() {
   var sheets = ['Citizenship', 'FamilyCert', 'Warishan', 'TradeLicense', 'Applications'];
   for (var s = 0; s < sheets.length; s++) {
@@ -299,6 +316,17 @@ function submitWarishanApplication(data) {
     ];
     
     sheet.appendRow(rowData);
+    registerSearchIndexRecordFromSubmission('Warishan', {
+      appId: appId,
+      serviceType: 'ওয়ারিশান সনদ',
+      applicantName: data.applicantName || '',
+      mobile: data.mobile || '',
+      nid: data.nid || '',
+      status: 'Pending',
+      applyDate: date,
+      date: date,
+      payload: rowData
+    });
     return { success: true, appId: appId };
   } catch (e) {
     return { success: false, error: e.toString() };
@@ -814,6 +842,17 @@ function submitCitizenshipDirect(formData) {
     ];
 
     sheet.appendRow(newRow);
+    registerSearchIndexRecordFromSubmission('Citizenship', {
+      appId: trackingId,
+      serviceType: 'নাগরিকত্ব সনদ',
+      applicantName: formData.name || '',
+      mobile: formData.mobile || '',
+      nid: formData.nid || '',
+      status: 'Pending',
+      applyDate: date,
+      date: date,
+      payload: { ...formData, appId: trackingId, certNo: certNo }
+    });
     return { success: true, appId: trackingId, certNo: certNo };
   } catch(e) {
     return { success: false, error: e.toString() };
@@ -859,6 +898,17 @@ function submitFamilyDirect(formData) {
       certificateType
     ];
     sheet.appendRow(row);
+    registerSearchIndexRecordFromSubmission('FamilyCert', {
+      appId: trackingId,
+      serviceType: certificateType,
+      applicantName: formData.name || '',
+      mobile: formData.mobile || '',
+      nid: formData.nid || '',
+      status: 'Pending',
+      applyDate: date,
+      date: date,
+      payload: { ...formData, appId: trackingId, type: certificateType }
+    });
 
     return {
       success: true,
@@ -890,6 +940,17 @@ function submitApplication(formData) {
 
     var sheet = getSheet('Applications');
     sheet.appendRow([trackingId, type, formData.name, "'" + toEnglishDigit(formData.nid), formData.fatherName, formData.motherName, formatBanglaDate(formData.dob || ''), formData.maritalStatus || 'অবিবাহিত', formData.spouseName || '', "'" + toEnglishDigit(formData.mobile), toEnglishDigit(formData.wardNo), formData.village, formData.postOffice || 'আউলিয়াপুর ময়দান', 'বরিশাল', 'Pending', date, 'চেয়ারম্যান', '']);
+    registerSearchIndexRecordFromSubmission('Applications', {
+      appId: trackingId,
+      serviceType: type,
+      applicantName: formData.name || '',
+      mobile: formData.mobile || '',
+      nid: formData.nid || '',
+      status: 'Pending',
+      applyDate: date,
+      date: date,
+      payload: { ...formData, appId: trackingId, type: type }
+    });
     return { success: true, appId: trackingId };
   } catch(e) {
     return { success: false, error: e.toString() };
@@ -913,6 +974,17 @@ function submitTradeLicenseApplication(data) {
       data.capital || '', '200', '30', data.commTax || '0', data.signTax || '0',
       toEnglishDigit(data.totalFee || '0'), date, 'চেয়ারম্যান', 'Pending', data.photo || ''
     ]);
+    registerSearchIndexRecordFromSubmission('TradeLicense', {
+      appId: trackingId,
+      serviceType: 'ট্রেড লাইসেন্স',
+      applicantName: data.ownerName || data.orgName || '',
+      mobile: data.mobile || '',
+      nid: data.nid || '',
+      status: 'Pending',
+      applyDate: date,
+      date: date,
+      payload: { ...data, appId: trackingId, type: 'ট্রেড লাইসেন্স' }
+    });
 
     return { success: true, appId: trackingId, licNo: licNo };
   } catch(e) {
@@ -936,6 +1008,17 @@ function submitTradeRenewalApplication(data) {
       '200', '30', data.commTax || '0', data.signTax || '0', toEnglishDigit(data.totalFee || '0'),
       date, 'চেয়ারম্যান', 'Pending', data.photo || ''
     ]);
+    registerSearchIndexRecordFromSubmission('TradeLicense', {
+      appId: renewalAppId,
+      serviceType: 'ট্রেড লাইসেন্স',
+      applicantName: data.ownerName || data.orgName || '',
+      mobile: data.mobile || '',
+      nid: data.nid || '',
+      status: 'Pending',
+      applyDate: date,
+      date: date,
+      payload: { ...data, appId: renewalAppId, type: 'ট্রেড লাইসেন্স' }
+    });
 
     return { success: true, appId: renewalAppId, licNo: data.originalLicNo };
   } catch(e) {

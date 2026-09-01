@@ -846,7 +846,9 @@
       });
     });
 
-    var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান') ? '(মোঃ আবদুস সালাম)<br>ইউ.পি সদস্য ৬নং ওয়ার্ড ও প্যানেল চেয়ারম্যান-১<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ' : '(অ্যাড. মোঃ হুমায়ুন কবির)<br>চেয়ারম্যান<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>পটুয়াখালী সদর, পটুয়াখালী।';
+    var panelChairName = window.getUPPanelChairmanName ? window.getUPPanelChairmanName() : 'মোঃ আবদুস সালাম মৃধা';
+    var chairmanName = window.getUPChairmanName ? window.getUPChairmanName() : 'অ্যাড. মোঃ হুমায়ুন কবির';
+    var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান' || data.signatoryRole === 'প্যানেল চেয়ারম্যান-১') ? '(' + panelChairName + ')<br>ইউ.পি সদস্য ৬নং ওয়ার্ড ও প্যানেল চেয়ারম্যান-১<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ' : '(' + chairmanName + ')<br>চেয়ারম্যান<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>পটুয়াখালী সদর, পটুয়াখালী।';
 
     var decFatherText = getDeceasedParentText(data);
     var decNameText = formatMrito(data.deceasedName);
@@ -977,7 +979,9 @@
       return rows;
     };
 
-    var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান') ? '(মোঃ আবদুস সালাম)<br>ইউ.পি সদস্য ৬নং ওয়ার্ড ও প্যানেল চেয়ারম্যান-১<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ' : '(অ্যাড. মোঃ হুমায়ুন কবির)<br>চেয়ারম্যান<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>পটুয়াখালী সদর, পটুয়াখালী।';
+    var panelChairName = window.getUPPanelChairmanName ? window.getUPPanelChairmanName() : 'মোঃ আবদুস সালাম মৃধা';
+    var chairmanName = window.getUPChairmanName ? window.getUPChairmanName() : 'অ্যাড. মোঃ হুমায়ুন কবির';
+    var chairTitle = (data.signatoryRole === 'প্যানেল চেয়ারম্যান' || data.signatoryRole === 'প্যানেল চেয়ারম্যান-১') ? '(' + panelChairName + ')<br>ইউ.পি সদস্য ৬নং ওয়ার্ড ও প্যানেল চেয়ারম্যান-১<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ' : '(' + chairmanName + ')<br>চেয়ারম্যান<br>১১নং আউলিয়াপুর ইউনিয়ন পরিষদ<br>পটুয়াখালী সদর, পটুয়াখালী।';
 
     var decFatherText = getDeceasedParentText(data);
     var decNameText = formatMrito(data.deceasedName);

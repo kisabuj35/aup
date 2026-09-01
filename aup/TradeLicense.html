@@ -984,13 +984,13 @@
       var qrPayload = "১১নং আউলিয়াপুর ইউনিয়ন পরিষদ\nট্রেড লাইসেন্স নং: " + (data.licNo || data.appId) + "\nপ্রতিষ্ঠান: " + data.orgName + "\nমালিক: " + data.ownerName + "\nমোবাইল: " + data.mobile + "\nমেয়াদ: ৩০ জুন " + fiscalEndYear + " ইং পর্যন্ত\nযাচাই: সত্য ও অনুমোদিত";
       document.getElementById('tcQrCode').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(qrPayload);
 
-      document.getElementById('tcSecName').innerText = data.secName || 'মোঃ মোতাহার উদ্দিন';
+      document.getElementById('tcSecName').innerText = data.secName || (window.getUPSecretaryName ? window.getUPSecretaryName() : 'মোঃ মোতাহার উদ্দিন');
       document.getElementById('tcSignatoryRole').innerText = data.signatoryRole || 'চেয়ারম্যান';
       
       if(data.signatoryRole === 'প্যানেল চেয়ারম্যান-১' || data.signatoryRole === 'প্যানেল চেয়ারম্যান') {
-        document.getElementById('tcSignatoryName').innerText = data.panelName || 'মোঃ আবদুস সালাম মৃধা';
+        document.getElementById('tcSignatoryName').innerText = data.panelName || (window.getUPPanelChairmanName ? window.getUPPanelChairmanName() : 'মোঃ আবদুস সালাম মৃধা');
       } else {
-        document.getElementById('tcSignatoryName').innerText = data.chairName || 'অ্যাড. মোঃ হুমায়ুন কবির';
+        document.getElementById('tcSignatoryName').innerText = data.chairName || (window.getUPChairmanName ? window.getUPChairmanName() : 'অ্যাড. মোঃ হুমায়ুন কবির');
       }
 
       // 🟢 সরাসরি ১-ক্লিকে প্রিন্ট ট্রিগার

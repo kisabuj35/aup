@@ -251,8 +251,8 @@ function generalBody(d){
 /* 🟢 অফিসিয়াল A4 সনদ মার্কআপ (৪টি অংশ আকর্ষণীয়ভাবে বড় ও সাজানো) */
 function certificateMarkup(d){
   var logo='https://lh3.googleusercontent.com/d/1_LMOoAtirVZeGxE4sz_CVQtQpInPPQTs';
-  var chair=escapeGeneral(d.chairName||'অ্যাড. মোঃ হুমায়ুন কবির');
-  var role=escapeGeneral(d.signatoryRole||'চেয়ারম্যান');
+  var chair=escapeGeneral((window.getUPChairmanName ? window.getUPChairmanName() : (d.chairName||'অ্যাড. মোঃ হুমায়ুন কবির')));
+  var role=escapeGeneral((d.signatoryRole||'চেয়ারম্যান'));
   var certTitle=escapeGeneral(d.type||'প্রত্যয়নপত্র');
   if(!certTitle.endsWith('সনদ')&&!certTitle.endsWith('পত্র')) certTitle+=' পত্র';
 

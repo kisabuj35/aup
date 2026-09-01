@@ -679,6 +679,55 @@
       setTimeout(() => alertEl.remove(), 4000);
     }
 
+    function getDefaultUPOfficialSettings() {
+      return {
+        chairman: 'অ্যাড. মোঃ হুমায়ুন কবির',
+        panelChairman: 'মোঃ আবদুস সালাম মৃধা',
+        secretary: 'মোঃ মোতাহার উদ্দিন'
+      };
+    }
+
+    function getUPOfficialSettings() {
+      var defaults = getDefaultUPOfficialSettings();
+      try {
+        var raw = localStorage.getItem('upOfficialSettings');
+        if (!raw) return defaults;
+        var parsed = JSON.parse(raw);
+        return Object.assign({}, defaults, parsed || {});
+      } catch (e) {
+        return defaults;
+      }
+    }
+
+    function getUPChairmanName() {
+      return getUPOfficialSettings().chairman || getDefaultUPOfficialSettings().chairman;
+    }
+
+    function getUPPanelChairmanName() {
+      return getUPOfficialSettings().panelChairman || getDefaultUPOfficialSettings().panelChairman;
+    }
+
+    function getUPSecretaryName() {
+      return getUPOfficialSettings().secretary || getDefaultUPOfficialSettings().secretary;
+    }
+
+    window.getUPChairmanName = getUPChairmanName;
+    window.getUPPanelChairmanName = getUPPanelChairmanName;
+    window.getUPSecretaryName = getUPSecretaryName;
+
+    async function refreshUPOfficialSettingsFromServer() {
+      if (typeof callBackendAPI !== 'function') return;
+      try {
+        const serverSettings = await callBackendAPI('getUPSettings');
+        if (serverSettings && typeof serverSettings === 'object' && !Array.isArray(serverSettings)) {
+          const merged = Object.assign({}, getDefaultUPOfficialSettings(), serverSettings);
+          localStorage.setItem('upOfficialSettings', JSON.stringify(merged));
+        }
+      } catch (e) {
+        console.warn('UP settings sync failed:', e);
+      }
+    }
+
     // 🟢 মূল সেন্ট্রাল API রিকোয়েস্ট হ্যান্ডলার
     async function callBackendAPI(actionName, payload = {}) {
       showGlobalLoader();
@@ -732,6 +781,7 @@
         loadModule('module-AdminPanel', 'Admin_Panel.html')
       ]);
 
+      await refreshUPOfficialSettingsFromServer();
       checkAdminSession();
     });
 

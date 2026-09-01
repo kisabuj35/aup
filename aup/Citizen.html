@@ -539,8 +539,8 @@
     var qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=140x140&margin=0&data=" + encodeURIComponent(qrPayload);
 
     var sigRole = getVal('signatoryRole') || 'চেয়ারম্যান';
-    var sigName = (sigRole === 'প্যানেল চেয়ারম্যান') ? 'মোঃ আবদুস সালাম মৃধা' : 'অ্যাড. মোঃ হুমায়ুন কবির';
-    var sigDesignation = (sigRole === 'প্যানেল চেয়ারম্যান') ? 'প্যানেল চেয়ারম্যান-১' : 'চেয়ারম্যান';
+    var sigName = (sigRole === 'প্যানেল চেয়ারম্যান' || sigRole === 'প্যানেল চেয়ারম্যান-১') ? (window.getUPPanelChairmanName ? window.getUPPanelChairmanName() : 'মোঃ আবদুস সালাম মৃধা') : (window.getUPChairmanName ? window.getUPChairmanName() : 'অ্যাড. মোঃ হুমায়ুন কবির');
+    var sigDesignation = (sigRole === 'প্যানেল চেয়ারম্যান' || sigRole === 'প্যানেল চেয়ারম্যান-১') ? 'প্যানেল চেয়ারম্যান-১' : 'চেয়ারম্যান';
 
     var spouseRow = (maritalStatus === 'বিবাহিত' && spouseName) ? `
       <tr>

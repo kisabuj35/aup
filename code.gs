@@ -1545,6 +1545,28 @@ function deleteAdminUser(uname) {
 
 function deleteUser(uname) { return deleteAdminUser(uname); }
 
+function getUPOfficialSettings() {
+  var defaults = {
+    chairman: 'অ্যাড. মোঃ হুমায়ুন কবির',
+    panelChairman: 'মোঃ আবদুস সালাম মৃধা',
+    secretary: 'মোঃ মোতাহার উদ্দিন'
+  };
+  try {
+    var props = PropertiesService.getScriptProperties();
+    var saved = props.getProperty('UP_OFFICIAL_SETTINGS');
+    if (!saved) return defaults;
+    return Object.assign({}, defaults, JSON.parse(saved));
+  } catch (e) {
+    return defaults;
+  }
+}
+
+function saveUPOfficialSettings(data) {
+  var settings = Object.assign({}, getUPOfficialSettings(), data || {});
+  PropertiesService.getScriptProperties().setProperty('UP_OFFICIAL_SETTINGS', JSON.stringify(settings));
+  return { success: true, data: settings };
+}
+
 function updateTradeLicenseData(ed) {
   try {
     var sheet = getSheet('TradeLicense');
@@ -1650,6 +1672,10 @@ function doPost(e) {
       result = updateWarishanData(data);
     } else if (action === 'saveEditedApplication') {
       result = saveEditedApplication(data);
+    } else if (action === 'saveUPSettings') {
+      result = saveUPOfficialSettings(data);
+    } else if (action === 'getUPSettings') {
+      result = getUPOfficialSettings();
     } else {
       if (typeof this[action] === 'function') {
         result = this[action](data);

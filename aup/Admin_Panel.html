@@ -756,6 +756,68 @@
     });
   }
 
+  function getUPOfficialSettings() {
+    var defaults = {
+      chairman: 'অ্যাড. মোঃ হুমায়ুন কবির',
+      panelChairman: 'মোঃ আবদুস সালাম মৃধা',
+      secretary: 'মোঃ মোতাহার উদ্দিন'
+    };
+    try {
+      var raw = localStorage.getItem('upOfficialSettings');
+      if (!raw) return defaults;
+      var parsed = JSON.parse(raw);
+      return Object.assign({}, defaults, parsed || {});
+    } catch (e) {
+      return defaults;
+    }
+  }
+
+  function setUPOfficialSettings(data) {
+    var current = getUPOfficialSettings();
+    var next = Object.assign({}, current, data || {});
+    localStorage.setItem('upOfficialSettings', JSON.stringify(next));
+    return next;
+  }
+
+  function loadUPSettingsForm() {
+    var settings = getUPOfficialSettings();
+    var chair = document.getElementById('setChairName');
+    var panel = document.getElementById('setPanelChairName');
+    var sec = document.getElementById('setSecName');
+    var phone = document.getElementById('setPhone');
+    if (chair) chair.value = settings.chairman || '';
+    if (panel) panel.value = settings.panelChairman || '';
+    if (sec) sec.value = settings.secretary || '';
+    if (phone) phone.value = phone.value || '০১XXXXXXXXX';
+  }
+
+  function saveUPSettings() {
+    var payload = {
+      chairman: document.getElementById('setChairName').value.trim(),
+      panelChairman: document.getElementById('setPanelChairName').value.trim(),
+      secretary: document.getElementById('setSecName').value.trim(),
+      phone: document.getElementById('setPhone').value.trim()
+    };
+
+    if (!payload.chairman || !payload.secretary) {
+      Swal.fire({ icon: 'warning', title: 'নাম পূরণ করুন', text: 'চেয়ারম্যান ও সচিবের নাম আবশ্যক।' });
+      return;
+    }
+
+    var saved = setUPOfficialSettings(payload);
+    if (typeof callBackendAPI === 'function') {
+      callBackendAPI('saveUPSettings', saved).catch(function() {});
+    }
+
+    Swal.fire({
+      icon: 'success',
+      title: 'সংরক্ষিত হয়েছে',
+      text: 'চেয়ারম্যান, সচিব ও প্যানেল চেয়ারম্যানের নাম এখন সারা পোর্টালে অটোমেটিক ব্যবহৃত হবে।',
+      timer: 1800,
+      showConfirmButton: false
+    });
+  }
+
   // Dynamic module হিসেবে লোড হলেও session ও tab restore নিশ্চিত করা হয়
   function initializeAdminPanel() {
     var session = getActiveSession();

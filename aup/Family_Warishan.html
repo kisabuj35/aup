@@ -512,12 +512,12 @@
 
     var sig = d.signatoryRole || 'চেয়ারম্যান';
     document.getElementById('prSignRole').innerText = sig;
-    if(sig === 'প্যানেল চেয়ারম্যান') {
-      document.getElementById('prChairName').innerText = '(মোঃ আবদুস সালাম মৃধা)';
+    if(sig === 'প্যানেল চেয়ারম্যান' || sig === 'প্যানেল চেয়ারম্যান-১') {
+      document.getElementById('prChairName').innerText = '(' + (window.getUPPanelChairmanName ? window.getUPPanelChairmanName() : 'মোঃ আবদুস সালাম মৃধা') + ')';
     } else if(sig === 'ভারপ্রাপ্ত চেয়ারম্যান') {
       document.getElementById('prChairName').innerText = '(ভারপ্রাপ্ত চেয়ারম্যান)';
     } else {
-      document.getElementById('prChairName').innerText = '(অ্যাড. মোঃ হুমায়ুন কবির)';
+      document.getElementById('prChairName').innerText = '(' + (window.getUPChairmanName ? window.getUPChairmanName() : 'অ্যাড. মোঃ হুমায়ুন কবির') + ')';
     }
 
     var tbody = document.getElementById('prMembersTbody');

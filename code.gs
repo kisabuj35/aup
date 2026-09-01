@@ -103,6 +103,7 @@ function initMasterDatabase() {
   getSheet('TaxPayers');
   getSheet('Users');
   ensureSearchIndexSheet();
+  syncSearchIndexFromSheets();
 }
 
 function ensureSearchIndexSheet() {
@@ -128,8 +129,9 @@ function upsertSearchIndexRecord(record) {
   if (!record || !record.appId) return;
   var indexSheet = ensureSearchIndexSheet();
   var rows = indexSheet.getDataRange().getValues();
+  var appId = (record.appId || '').toString().trim();
   var rowValues = [
-    record.appId || '',
+    appId,
     record.sourceSheet || '',
     record.serviceType || '',
     record.applicantName || '',
@@ -137,19 +139,32 @@ function upsertSearchIndexRecord(record) {
     record.nid || '',
     record.status || 'Pending',
     record.applyDate || '',
-    normalizeSearchText([record.appId, record.applicantName, record.mobile, record.nid, record.serviceType].join(' ')),
+    normalizeSearchText([appId, record.applicantName, record.mobile, record.nid, record.serviceType].join(' ')),
     JSON.stringify(record.payload || {}),
     new Date().toISOString()
   ];
 
   for (var i = 1; i < rows.length; i++) {
-    if ((rows[i][0] || '').toString().trim() === (record.appId || '').toString().trim()) {
+    if ((rows[i][0] || '').toString().trim() === appId) {
       indexSheet.getRange(i + 1, 1, 1, rowValues.length).setValues([rowValues]);
       return;
     }
   }
 
   indexSheet.appendRow(rowValues);
+}
+
+function deleteSearchIndexRecord(appId) {
+  var raw = (appId || '').toString().trim();
+  if (!raw) return;
+  var indexSheet = ensureSearchIndexSheet();
+  var rows = indexSheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if ((rows[i][0] || '').toString().trim() === raw) {
+      indexSheet.deleteRow(i + 1);
+      return;
+    }
+  }
 }
 
 function addSearchIndexFromServiceSheet(sheetName, rowData) {
@@ -414,6 +429,7 @@ function updateAppStatus(appId, newStatus) {
                         (sheetsToSearch[s] === 'Warishan') ? 10 : 
                         (sheetsToSearch[s] === 'TradeLicense' ? 25 : 15);
         sheet.getRange(i + 1, statusCol).setValue(newStatus);
+        syncSearchIndexFromSheets();
         return { success: true };
       }
     }
@@ -640,6 +656,10 @@ function trackApplication(searchKey) {
 
     var results = [];
     var seenAppIds = {};
+
+    if (getSheet('SearchIndex').getLastRow() <= 1) {
+      syncSearchIndexFromSheets();
+    }
 
     var indexSheet = ensureSearchIndexSheet();
     var indexRows = indexSheet.getDataRange().getValues();
@@ -1214,10 +1234,14 @@ function deleteApplication(appId) {
       var rowAEng = toEnglishDigit(rowA).toUpperCase();
       if (rowAEng === queryEng || rowAEng.indexOf(queryEng) > -1) {
         sheet.deleteRow(i + 1);
+        deleteSearchIndexRecord(rawQuery);
+        syncSearchIndexFromSheets();
         return { success: true };
       }
     }
   }
+  deleteSearchIndexRecord(rawQuery);
+  syncSearchIndexFromSheets();
   return { success: false };
 }
 

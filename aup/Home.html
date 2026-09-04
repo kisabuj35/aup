@@ -728,48 +728,69 @@ function normalizeStatusValue(rawStatus) {
 // 🟢 সার্বজনীন ভেরিফিকেশন কার্ড রেন্ডারার (সকল রেকর্ড একটার নিচে আরেকটা শো করবে)
 async function renderVerificationCards(query, outputElementId, onSuccessCallback) {
   var output = document.getElementById(outputElementId);
-  if (!output) {
-    console.error("❌ Output element not found:", outputElementId);
-    return;
-  }
-
+  if (!output) return;
+  
   console.log("🔍 সার্চ শুরু - Query:", query);
   output.innerHTML = '<p class="text-center text-success py-4"><i class="fa fa-spinner fa-spin fa-2x"></i><br><span class="mt-2 d-block fw-bold">সার্ভার থেকে আপনার সকল তথ্য যাচাই ও অনুসন্ধান করা হচ্ছে...</span></p>';
-
+  
   try {
     const res = await callBackendAPI('trackApplication', query);
-
+    
     console.log("📦 API Response:", res);
-    console.log("✅ found:", res ? res.found : 'N/A');
-    console.log("📋 list:", res && res.list ? res.list : 'N/A');
-    console.log("🔢 Total results:", res && res.list ? res.list.length : 0);
-
+    console.log(" Response keys:", Object.keys(res));
+    console.log("✅ found:", res.found);
+    console.log("📋 list:", res.list);
+    console.log("🔢 Total:", res.total);
+    
     var list = [];
+    
     if (res && res.found) {
+      // প্রথম চেষ্টা: list array থেকে
       if (Array.isArray(res.list) && res.list.length > 0) {
         list = res.list;
-        console.log("✅ অ্যারে থেকে পাওয়া:", list.length, "টি রেকর্ড");
-      } else if (res.appId) {
+        console.log("✅ list array থেকে পাওয়া:", list.length, "টি রেকর্ড");
+      }
+      // দ্বিতীয় চেষ্টা: total count চেক করে
+      else if (res.total && res.total > 0 && Array.isArray(res.list)) {
+        list = res.list;
+        console.log("✅ total count থেকে পাওয়া:", list.length, "টি রেকর্ড");
+      }
+      // তৃতীয় চেষ্টা: যদি শুধু ১টি রেকর্ড আসে (individual properties)
+      else if (res.appId) {
         list = [res];
-        console.log("⚠️ শুধু ১টি রেকর্ড পাওয়া গেছে");
-      } else {
-        console.warn("⚠️ অজানা ফরম্যাট:", res);
+        console.log("⚠️ শুধু ১টি রেকর্ড (individual properties)");
+      }
+      // চতুর্থ চেষ্টা: response object থেকে সব properties extract করা
+      else {
+        console.log("⚠️ অজানা ফরম্যাট, response object চেক করা হচ্ছে...");
+        console.log("Response object:", JSON.stringify(res, null, 2));
+        
+        // যদি response এ multiple records থাকে কিন্তু list property না থাকে
+        if (res.records && Array.isArray(res.records)) {
+          list = res.records;
+        } else if (res.data && Array.isArray(res.data)) {
+          list = res.data;
+        } else {
+          // fallback: শুধু ১টি রেকর্ড
+          list = [res];
+        }
       }
     } else {
       console.error("❌ কোনো রেকর্ড পাওয়া যায়নি বা found=false");
     }
-
+    
     console.log("🎯 চূড়ান্ত লিস্ট:", list);
-
+    console.log("🎯 চূড়ান্ত লিস্ট length:", list.length);
+    
     if (list.length === 0) {
       output.innerHTML = '<div class="alert alert-danger text-center shadow-sm mt-3 rounded-4 p-4"><i class="fa-solid fa-triangle-exclamation me-1 fa-2x d-block mb-2"></i><h5 class="fw-bold">কোনো রেকর্ড পাওয়া যায়নি!</h5><p class="mb-0">উক্ত তথ্যের অধীনে কোনো আবেদন বা সেবার রেকর্ড পাওয়া যায়নি! সঠিক তথ্য দিয়ে আবার চেষ্টা করুন।</p></div>';
       if (typeof onSuccessCallback === 'function') onSuccessCallback();
       return;
     }
-
+    
     var allCardsHtml = '';
-
-    // 🟢 হেডার - মোট ফলাফল সংখ্যা
+    
+    //  হেডার - মোট ফলাফল সংখ্যা
     allCardsHtml += `
       <div class="alert alert-success d-flex justify-content-between align-items-center mb-4 py-3 px-4 rounded-4 shadow-sm">
         <div>
@@ -779,16 +800,16 @@ async function renderVerificationCards(query, outputElementId, onSuccessCallback
         <span class="badge bg-white text-success fs-6 px-3 py-2">${toBanglaDigit(list.length)} টি আবেদন</span>
       </div>
     `;
-
-    // 🟢 লুপ চালিয়ে ওই ব্যক্তির সকল আবেদন একে একে কার্ড হিসেবে রেন্ডার করা
+    
+    //  লুপ চালিয়ে ওই ব্যক্তির সকল আবেদন একে একে কার্ড হিসেবে রেন্ডার করা
     list.forEach(function(data, index) {
-      console.log(`📇 কার্ড ${index + 1}:`, data);
-
+      console.log(` কার্ড ${index + 1}:`, data);
+      
       var computedStatus = normalizeStatusValue(data.status);
       var isApproved = (computedStatus === 'Approved');
       var isPending = (computedStatus === 'Pending');
       var isRejected = (computedStatus === 'Rejected');
-
+      
       // ১. স্ট্যাটাস ব্যাজ
       var statusBadge = '';
       if (isApproved) {
@@ -798,7 +819,7 @@ async function renderVerificationCards(query, outputElementId, onSuccessCallback
       } else {
         statusBadge = '<span class="verification-status-badge verification-status-pending"><i class="fa-solid fa-clock"></i>Pending (অপেক্ষমাণ)</span>';
       }
-
+      
       // ২. ভেরিফিকেশন সিল বক্স
       var verifiedSeal = '';
       if (isApproved) {
@@ -808,7 +829,7 @@ async function renderVerificationCards(query, outputElementId, onSuccessCallback
       } else {
         verifiedSeal = '<div class="verification-note danger"><i class="fa-solid fa-circle-xmark"></i> আবেদনটি পরিষদ কর্তৃক বাতিল করা হয়েছে।</div>';
       }
-
+      
       // ৩. শর্ত: লাইসেন্স নং ও সনদ নং শুধুমাত্র Approved হলে প্রদর্শন হবে
       var certOrLicNoHtml = '';
       if (isApproved) {
@@ -818,8 +839,8 @@ async function renderVerificationCards(query, outputElementId, onSuccessCallback
           certOrLicNoHtml = `<div class="verification-meta verification-meta-wide"><strong>সনদ নং</strong><span>${toBanglaDigit(data.certNo)}</span></div>`;
         }
       }
-
-      // ৪. শর্ত: প্রিন্ট বাটন শুধুমাত্র Pending/Rejected অবস্থায় থাকবে; Approved তে থাকবে না
+      
+      // . শর্ত: প্রিন্ট বাটন শুধুমাত্র Pending/Rejected অবস্থায় থাকবে; Approved তে থাকবে না
       var actionBtnHtml = '';
       if (isPending || isRejected) {
         var applicationType = data.type || data.serviceType || '';
@@ -831,8 +852,8 @@ async function renderVerificationCards(query, outputElementId, onSuccessCallback
           actionBtnHtml = `<button type="button" class="verification-print-btn" onclick="printGeneralAppCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
         }
       }
-
-      //  কার্ড HTML - প্রতিটি আবেদনের জন্য আলাদা কার্ড
+      
+      // কার্ড HTML - প্রতিটি আবেদনের জন্য আলাদা কার্ড
       allCardsHtml += `
         <div class="verification-result-shell mb-3">
           <div class="verification-result-card status-${isApproved ? 'approved' : (isRejected ? 'rejected' : 'pending')}">
@@ -859,11 +880,11 @@ async function renderVerificationCards(query, outputElementId, onSuccessCallback
         </div>
       `;
     });
-
+    
     output.innerHTML = allCardsHtml;
-
+    
     if (typeof onSuccessCallback === 'function') onSuccessCallback();
-
+    
   } catch (error) {
     console.error("❌ এরর:", error);
     output.innerHTML = '<div class="alert alert-danger text-center shadow-sm mt-3 rounded-4 p-4"><i class="fa-solid fa-triangle-exclamation me-1 fa-2x d-block mb-2"></i><h5 class="fw-bold">সার্ভার সংযোগ সমস্যা!</h5><p class="mb-0">অনুগ্রহ করে আবার চেষ্টা করুন।</p></div>';

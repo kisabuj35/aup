@@ -795,12 +795,12 @@ async function renderVerificationCards(query, outputElementId, onSuccessCallback
   
   var list = [];
   if (res && res.found) {
-    if (Array.isArray(res.list)) {
-      list = res.list;
-    } else if (res.appId) {
-      list = [res];
-    }
+  if (Array.isArray(res.list)) {
+    list = res.list;
+  } else if (res.appId) {
+    list = [res];  // ⚠️ এখানে শুধু ১টি রেকর্ড নেওয়া হচ্ছে
   }
+}
   
   if (list.length === 0) {
     output.innerHTML = '<div class="alert alert-danger text-center shadow-sm mt-3 rounded-4 p-4"><i class="fa-solid fa-triangle-exclamation me-1 fa-2x d-block mb-2"></i><h5 class="fw-bold">কোনো রেকর্ড পাওয়া যায়নি!</h5><p class="mb-0">উক্ত তথ্যের অধীনে কোনো আবেদন বা সেবার রেকর্ড পাওয়া যায়নি! সঠিক তথ্য দিয়ে আবার চেষ্টা করুন।</p></div>';

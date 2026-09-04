@@ -764,117 +764,125 @@
   }
 
   // 🟢 সার্বজনীন ভেরিফিকেশন কার্ড রেন্ডারার (সকল রেকর্ড একটার নিচে আরেকটা শো করবে)
-  async function renderVerificationCards(query, outputElementId, onSuccessCallback) {
-    var output = document.getElementById(outputElementId);
-    if (!output) return;
-
-    output.innerHTML = '<p class="text-center text-success py-4"><i class="fa fa-spinner fa-spin fa-2x"></i><br><span class="mt-2 d-block fw-bold">সার্ভার থেকে আপনার সকল তথ্য যাচাই ও অনুসন্ধান করা হচ্ছে...</span></p>';
+// 🟢 সার্বজনীন ভেরিফিকেশন কার্ড রেন্ডারার (সকল রেকর্ড একটার নিচে আরেকটা শো করবে)
+async function renderVerificationCards(query, outputElementId, onSuccessCallback) {
+  var output = document.getElementById(outputElementId);
+  if (!output) return;
+  
+  output.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-success mb-3" role="status"></div><p class="text-success fw-bold">সার্ভার থেকে আপনার সকল তথ্য যাচাই ও অনুসন্ধান করা হচ্ছে...</p></div>';
+  
+  const res = await callBackendAPI('trackApplication', query);
+  
+  var list = [];
+  if (res && res.found) {
+    if (Array.isArray(res.list)) {
+      list = res.list;
+    } else if (res.appId) {
+      list = [res];
+    }
+  }
+  
+  if (list.length === 0) {
+    output.innerHTML = '<div class="alert alert-danger text-center shadow-sm mt-3 rounded-4 p-4"><i class="fa-solid fa-triangle-exclamation me-1 fa-2x d-block mb-2"></i><h5 class="fw-bold">কোনো রেকর্ড পাওয়া যায়নি!</h5><p class="mb-0">উক্ত তথ্যের অধীনে কোনো আবেদন বা সেবার রেকর্ড পাওয়া যায়নি! সঠিক তথ্য দিয়ে আবার চেষ্টা করুন।</p></div>';
+    if (typeof onSuccessCallback === 'function') onSuccessCallback();
+    return;
+  }
+  
+  var allCardsHtml = '';
+  
+  // 🟢 হেডার - মোট ফলাফল সংখ্যা
+  allCardsHtml += `
+    <div class="alert alert-success d-flex justify-content-between align-items-center mb-4 py-3 px-4 rounded-4 shadow-sm">
+      <div>
+        <i class="fa-solid fa-circle-check me-2 text-white"></i>
+        <span class="fw-bold text-white">মোট <span class="fs-4">${toBanglaDigit(list.length)}</span>টি</span> সেবার রেকর্ড পাওয়া গেছে
+      </div>
+      <span class="badge bg-white text-success fs-6 px-3 py-2">${toBanglaDigit(list.length)} টি আবেদন</span>
+    </div>
+  `;
+  
+  // 🟢 লুপ চালিয়ে ওই ব্যক্তির সকল আবেদন একে একে কার্ড হিসেবে রেন্ডার করা
+  list.forEach(function(data, index) {
+    var computedStatus = normalizeStatusValue(data.status);
+    var isApproved = (computedStatus === 'Approved');
+    var isPending = (computedStatus === 'Pending');
+    var isRejected = (computedStatus === 'Rejected');
     
-    const res = await callBackendAPI('trackApplication', query);
-
-    var list = [];
-    if (res && res.found) {
-      if (Array.isArray(res.list)) {
-        list = res.list;
-      } else if (res.appId) {
-        list = [res];
+    // ১. স্ট্যাটাস ব্যাজ
+    var statusBadge = '';
+    if (isApproved) {
+      statusBadge = '<span class="verification-status-badge verification-status-approved"><i class="fa-solid fa-circle-check"></i>Approved (অনুমোদিত)</span>';
+    } else if (isRejected) {
+      statusBadge = '<span class="verification-status-badge verification-status-rejected"><i class="fa-solid fa-circle-xmark"></i>Rejected (বাতিল)</span>';
+    } else {
+      statusBadge = '<span class="verification-status-badge verification-status-pending"><i class="fa-solid fa-clock"></i>Pending (অপেক্ষমাণ)</span>';
+    }
+    
+    // ২. ভেরিফিকেশন সিল বক্স
+    var verifiedSeal = '';
+    if (isApproved) {
+      verifiedSeal = '<div class="verification-note success"><i class="fa-solid fa-circle-check"></i> এই সনদটি ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কর্তৃক অনুমোদিত ও ভেরিফাইড।</div>';
+    } else if (isPending) {
+      verifiedSeal = '<div class="verification-note warning"><i class="fa-solid fa-clock"></i> আবেদনটি বর্তমানে প্রক্রিয়াধীন/অপেক্ষমাণ রয়েছে।</div>';
+    } else {
+      verifiedSeal = '<div class="verification-note danger"><i class="fa-solid fa-circle-xmark"></i> আবেদনটি পরিষদ কর্তৃক বাতিল করা হয়েছে।</div>';
+    }
+    
+    // ৩. শর্ত: লাইসেন্স নং ও সনদ নং শুধুমাত্র Approved হলে প্রদর্শন হবে
+    var certOrLicNoHtml = '';
+    if (isApproved) {
+      if (data.licNo) {
+        certOrLicNoHtml = `<div class="verification-meta verification-meta-wide"><strong>লাইসেন্স নং</strong><span>${toBanglaDigit(data.licNo)}</span></div>`;
+      } else if (data.certNo) {
+        certOrLicNoHtml = `<div class="verification-meta verification-meta-wide"><strong>সনদ নং</strong><span>${toBanglaDigit(data.certNo)}</span></div>`;
       }
     }
-
-    if (list.length === 0) {
-      output.innerHTML = '<div class="alert alert-danger text-center shadow-sm mt-3 rounded-4 p-4"><i class="fa-solid fa-triangle-exclamation me-1 fa-2x d-block mb-2"></i>উক্ত তথ্যের অধীনে কোনো আবেদন বা সেবার রেকর্ড পাওয়া যায়নি! সঠিক তথ্য দিয়ে আবার চেষ্টা করুন।</div>';
-      if (typeof onSuccessCallback === 'function') onSuccessCallback();
-      return;
+    
+    // ৪. শর্ত: প্রিন্ট বাটন শুধুমাত্র Pending/Rejected অবস্থায় থাকবে; Approved তে থাকবে না
+    var actionBtnHtml = '';
+    if (isPending || isRejected) {
+      var applicationType = data.type || data.serviceType || '';
+      if (applicationType === 'পারিবারিক সনদ' || applicationType === 'উত্তরাধিকারী সনদ' || (data.appId && (data.appId.indexOf('AUL-FW-') === 0 || data.appId.indexOf('AUL-UW-') === 0))) {
+        actionBtnHtml = `<button type="button" class="verification-print-btn" onclick="printFamilyApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
+      } else if (applicationType === 'ওয়ারিশান সনদ' || (data.appId && data.appId.indexOf('WAR') > -1)) {
+        actionBtnHtml = `<button type="button" class="verification-print-btn" onclick="printWarishanApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
+      } else {
+        actionBtnHtml = `<button type="button" class="verification-print-btn" onclick="printGeneralAppCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
+      }
     }
-
-    var allCardsHtml = '';
-
+    
+    //  কার্ড HTML - প্রতিটি আবেদনের জন্য আলাদা কার্ড
     allCardsHtml += `
-      <div class="alert alert-success d-flex justify-content-between align-items-center mb-3 py-2 px-3 rounded-3">
-        <span><i class="fa-solid fa-list-check me-2"></i>মোট <strong>${list.length}টি</strong> সেবার রেকর্ড পাওয়া গেছে</span>
-        <span class="badge bg-success fs-6">${list.length} টি আবেদন</span>
+      <div class="verification-result-shell mb-3">
+        <div class="verification-result-card status-${isApproved ? 'approved' : (isRejected ? 'rejected' : 'pending')}">
+          <div class="verification-card-header">
+            <h5 class="verification-card-title">
+              <i class="fa-solid fa-circle-user"></i>
+              ${data.applicantName || data.name || 'নাম নেই'}
+              <small class="text-muted ms-2 fs-6">#${toBanglaDigit(index + 1)}</small>
+            </h5>
+            ${statusBadge}
+          </div>
+          ${verifiedSeal}
+          <div class="verification-card-grid">
+            <div class="verification-meta"><strong>সেবার নাম</strong><span>${data.type || data.serviceType || '-'}</span></div>
+            <div class="verification-meta"><strong>ট্র্যাকিং আইডি</strong><span style="font-family: monospace; color: #0b5bc5; font-weight: 800;">${data.appId}</span></div>
+            <div class="verification-meta"><strong>পিতা/স্বামীর নাম</strong><span>${data.fatherName || data.fatherSpouseName || '-'}</span></div>
+            <div class="verification-meta"><strong>মোবাইল</strong><span>${toBanglaDigit(data.mobile || '-')}</span></div>
+            <div class="verification-meta"><strong>NID / জন্মনিবন্ধন</strong><span>${toBanglaDigit(data.nid || '-')}</span></div>
+            <div class="verification-meta"><strong>আবেদনের তারিখ</strong><span>${data.applyDate || data.date || '-'}</span></div>
+            ${certOrLicNoHtml}
+          </div>
+          ${actionBtnHtml ? `<div class="verification-action-wrap">${actionBtnHtml}</div>` : ''}
+        </div>
       </div>
     `;
-
-    // 🟢 লুপ চালিয়ে ওই ব্যক্তির সকল আবেদন একে একে কার্ড হিসেবে রেন্ডার করা
-    list.forEach(function(data) {
-      var computedStatus = normalizeStatusValue(data.status);
-      var isApproved = (computedStatus === 'Approved');
-      var isPending = (computedStatus === 'Pending');
-      var isRejected = (computedStatus === 'Rejected');
-
-      // ১. স্ট্যাটাস ব্যাজ
-      var statusBadge = '';
-      if (isApproved) {
-        statusBadge = '<span class="verification-status-badge verification-status-approved"><i class="fa-solid fa-circle-check"></i>Approved (অনুমোদিত)</span>';
-      } else if (isRejected) {
-        statusBadge = '<span class="verification-status-badge verification-status-rejected"><i class="fa-solid fa-circle-xmark"></i>Rejected (বাতিল)</span>';
-      } else {
-        statusBadge = '<span class="verification-status-badge verification-status-pending"><i class="fa-solid fa-clock"></i>Pending (অপেক্ষমাণ)</span>';
-      }
-
-      // ২. ভেরিফিকেশন সিল বক্স
-      var verifiedSeal = '';
-      if (isApproved) {
-        verifiedSeal = '<div class="verification-note success"><i class="fa-solid fa-circle-check"></i> এই সনদটি ১১নং আউলিয়াপুর ইউনিয়ন পরিষদ কর্তৃক অনুমোদিত ও ভেরিফাইড।</div>';
-      } else if (isPending) {
-        verifiedSeal = '<div class="verification-note warning"><i class="fa-solid fa-clock"></i> আবেদনটি বর্তমানে প্রক্রিয়াধীন/অপেক্ষমাণ রয়েছে।</div>';
-      } else {
-        verifiedSeal = '<div class="verification-note danger"><i class="fa-solid fa-circle-xmark"></i> আবেদনটি পরিষদ কর্তৃক বাতিল করা হয়েছে।</div>';
-      }
-
-      // ৩. শর্ত: লাইসেন্স নং ও সনদ নং শুধুমাত্র Approved হলে প্রদর্শন হবে
-      var certOrLicNoHtml = '';
-      if (isApproved) {
-        if (data.licNo) {
-          certOrLicNoHtml = `<div class="verification-meta verification-meta-wide"><strong>লাইসেন্স নং</strong><span>${data.licNo}</span></div>`;
-        } else if (data.certNo) {
-          certOrLicNoHtml = `<div class="verification-meta verification-meta-wide"><strong>সনদ নং</strong><span>${data.certNo}</span></div>`;
-        }
-      }
-
-      // ৪. শর্ত: প্রিন্ট বাটন শুধুমাত্র Pending/Rejected অবস্থায় থাকবে; Approved তে থাকবে না
-      var actionBtnHtml = '';
-      if (isPending || isRejected) {
-        var applicationType = data.type || data.serviceType || '';
-        if (applicationType === 'পারিবারিক সনদ' || applicationType === 'উত্তরাধিকারী সনদ' || (data.appId && (data.appId.indexOf('AUL-FW-') === 0 || data.appId.indexOf('AUL-UW-') === 0))) {
-          actionBtnHtml = `<button type="button" class="verification-print-btn" onclick="printFamilyApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
-        } else if (applicationType === 'ওয়ারিশান সনদ' || (data.appId && data.appId.indexOf('WAR') > -1)) {
-          actionBtnHtml = `<button type="button" class="verification-print-btn" onclick="printWarishanApplicationCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
-        } else {
-          actionBtnHtml = `<button type="button" class="verification-print-btn" onclick="printGeneralAppCopy('${data.appId}')"><i class="fa fa-file-invoice me-1"></i> আবেদন কপি প্রিন্ট</button>`;
-        }
-      }
-
-      allCardsHtml += `
-        <div class="verification-result-shell">
-          <div class="verification-result-card status-${isApproved ? 'approved' : (isRejected ? 'rejected' : 'pending')}">
-            <div class="verification-card-header">
-              <h5 class="verification-card-title"><i class="fa-solid fa-circle-user"></i>${data.applicantName || data.name}</h5>
-              ${statusBadge}
-            </div>
-            
-            ${verifiedSeal}
-
-            <div class="verification-card-grid">
-              <div class="verification-meta"><strong>সেবার নাম</strong><span>${data.type || '-'}</span></div>
-              <div class="verification-meta"><strong>ট্র্যাকিং আইডি</strong><span style="font-family: monospace; color: #0b5bc5; font-weight: 800;">${data.appId}</span></div>
-              <div class="verification-meta"><strong>পিতা/স্বামীর নাম</strong><span>${data.fatherName || data.fatherSpouseName || '-'}</span></div>
-              <div class="verification-meta"><strong>মোবাইল</strong><span>${data.mobile || '-'}</span></div>
-              <div class="verification-meta"><strong>NID / জন্মনিবন্ধন</strong><span>${data.nid || '-'}</span></div>
-              <div class="verification-meta"><strong>আবেদনের তারিখ</strong><span>${data.applyDate || data.date || '-'}</span></div>
-              ${certOrLicNoHtml}
-            </div>
-
-            ${actionBtnHtml ? `<div class="verification-action-wrap">${actionBtnHtml}</div>` : ''}
-          </div>
-        </div>
-      `;
-    });
-
-    output.innerHTML = allCardsHtml;
-    if (typeof onSuccessCallback === 'function') onSuccessCallback();
-  }
+  });
+  
+  output.innerHTML = allCardsHtml;
+  
+  if (typeof onSuccessCallback === 'function') onSuccessCallback();
+}
 
   async function doAdminLogin() {
     var u = document.getElementById('admUser').value.trim();

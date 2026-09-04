@@ -28,7 +28,27 @@
     pointer-events: none !important;
     z-index: 1;
   }
+.verification-result-shell {
+  margin-bottom: 20px;
+}
 
+.verification-result-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fffb 100%);
+  border: 1px solid #dfe7e3;
+  border-left: 5px solid #0b8f52;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  border-radius: 18px;
+  padding: 18px 18px 14px;
+  margin-bottom: 18px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.verification-result-card:hover {
+  box-shadow: 0 14px 30px rgba(11, 143, 82, 0.12);
+  transform: translateY(-2px);
+}
   /* 🟢 ব্যানার হেডিং ১ লাইনে ফিক্সড */
   .hero-banner-heading {
     font-size: clamp(19px, 2.1vw, 24.5px) !important;

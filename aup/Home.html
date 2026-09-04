@@ -912,4 +912,26 @@ async function renderVerificationCards(query, outputElementId, onSuccessCallback
       });
     }
   }
+  // 🟢 বাংলা ডিজিট কনভার্টার (ফ্রন্টএন্ডে দেখানোর জন্য)
+function toBanglaDigit(str) {
+  if (str === null || str === undefined || str === '') return '';
+  var s = str.toString();
+  var bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+  for(var i=0; i<10; i++) s = s.replace(new RegExp(i, 'g'), bn[i]);
+  return s;
+}
+
+// 🟢 স্ট্যাটাস নরমালাইজার
+function normalizeStatusValue(rawStatus) {
+  var status = (rawStatus === undefined || rawStatus === null) ? 'Pending' : rawStatus.toString().trim();
+  var lowered = status.toLowerCase();
+  
+  if (lowered.indexOf('approved') !== -1 || lowered.indexOf('approve') !== -1 || lowered.indexOf('accept') !== -1 || lowered.indexOf('verified') !== -1 || lowered.indexOf('অনুমোদিত') !== -1 || lowered.indexOf('অনুমতি') !== -1) {
+    return 'Approved';
+  }
+  if (lowered.indexOf('rejected') !== -1 || lowered.indexOf('reject') !== -1 || lowered.indexOf('বাতিল') !== -1 || lowered.indexOf('রিজেক্ট') !== -1 || lowered.indexOf('cancel') !== -1) {
+    return 'Rejected';
+  }
+  return 'Pending';
+}
 </script>
